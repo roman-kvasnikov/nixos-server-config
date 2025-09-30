@@ -13,5 +13,9 @@
       options = "--delete-older-than 7d";
       randomizedDelaySec = "1h"; # Случайная задержка для SSD
     };
+
+    settings = {
+      experimental-features = ["nix-command" "flakes"];
+    };
   };
 }
