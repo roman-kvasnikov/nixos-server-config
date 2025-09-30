@@ -5,19 +5,24 @@
 
   environment = {
     systemPackages = with pkgs; [
-      # Основные утилиты (должны быть в системе для скриптов)
+      # CLI утилиты
       curl
-      wget
       git
+      wget
+      eza
+      bat
+      jq
+      ffmpeg
+      tree
 
-      # Архиваторы (системные зависимости)
+      # Архиваторы
       gzip
       p7zip
       zip
       unzip
       unrar
 
-      # Мониторинг (для системных служб)
+      # Мониторинг
       htop
       btop
     ];

@@ -3,6 +3,6 @@
 
   environment.systemPackages = with pkgs; [
     gnupg
-    pinentry-gtk2
+    pinentry-bemenu
   ];
 }
