@@ -7,6 +7,7 @@
     ./gnupg.nix
     ./hardware.nix
     ./i18n.nix
+    ./immich.nix
     ./networking.nix
     ./nix.nix
     ./security.nix
