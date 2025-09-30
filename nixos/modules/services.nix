@@ -18,7 +18,7 @@
     };
 
     # Автоматические обновления безопасности
-    automatic-timers = true;
+    # automatic-timers = true;
 
     # Автоматическое монтирование USB (для Files/Nautilus)
     udisks2.enable = true;
