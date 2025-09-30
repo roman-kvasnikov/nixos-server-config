@@ -1,10 +1,5 @@
 {
   systemd = {
-    extraConfig = ''
-      DefaultTimeoutStopSec=30s
-      DefaultLimitNOFILE=1048576
-    '';
-
     services = {
       NetworkManager-wait-online.enable = true;
       systemd-networkd-wait-online.enable = false;
