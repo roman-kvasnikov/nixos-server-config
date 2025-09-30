@@ -8,6 +8,9 @@
 
     firewall = {
       enable = true;
+
+      allowPing = false;
+      logRefusedConnections = true;
     };
   };
 }

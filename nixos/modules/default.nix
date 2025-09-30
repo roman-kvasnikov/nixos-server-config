@@ -12,8 +12,10 @@
     ./immich.nix
     ./jellyfin.nix
     # ./kitty.nix
+    ./monitoring.nix
     ./networking.nix
     ./nix.nix
+    ./openssh.nix
     ./samba.nix
     ./security.nix
     ./services.nix
@@ -21,5 +23,6 @@
     ./time.nix
     ./user.nix
     ./xrdp.nix
+    ./zram.nix
   ];
 }
