@@ -17,6 +17,10 @@
     nixosConfigurations = nixpkgs.lib.nixosSystem {
       inherit system version;
 
+      specialArgs = {
+        inherit inputs hostname version;
+      };
+
       modules = [
         ./hosts/${hostname}/configuration.nix
       ];
