@@ -15,6 +15,9 @@
       ffmpeg
       tree
 
+      # Terminal
+      firefox
+
       # Архиваторы
       gzip
       p7zip
