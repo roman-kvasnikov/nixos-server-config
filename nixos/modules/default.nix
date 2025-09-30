@@ -1,17 +1,16 @@
 {
   imports = [
-    ./fish
     ./boot.nix
     ./cockpit.nix
     ./de.nix
     ./environment.nix
+    ./fish.nix
     ./fonts.nix
     ./gnupg.nix
     ./hardware.nix
     ./i18n.nix
     ./immich.nix
     ./jellyfin.nix
-    # ./kitty.nix
     ./minidlna.nix
     ./monitoring.nix
     ./networking.nix

@@ -12,19 +12,18 @@
   } @ inputs: let
     hostname = "home-server";
     system = "x86_64-linux";
+    version = "25.05";
   in {
-    nixosConfigurations = {
-      ${hostname} = nixpkgs.lib.nixosSystem {
-        inherit system;
+    nixosConfigurations.${hostname} = nixpkgs.lib.nixosSystem {
+      inherit system version;
 
-        specialArgs = {
-          inherit inputs hostname;
-        };
-
-        modules = [
-          ./hosts/${hostname}/configuration.nix
-        ];
+      specialArgs = {
+        inherit inputs hostname version;
       };
+
+      modules = [
+        ./hosts/${hostname}/configuration.nix
+      ];
     };
   };
 }

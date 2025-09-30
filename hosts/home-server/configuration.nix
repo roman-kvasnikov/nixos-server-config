@@ -1,4 +1,4 @@
-{
+{version, ...}: {
   imports = [
     ./hardware-configuration.nix
     ../../nixos
@@ -16,5 +16,5 @@
     };
   };
 
-  system.stateVersion = "25.05";
+  system.stateVersion = version;
 }
