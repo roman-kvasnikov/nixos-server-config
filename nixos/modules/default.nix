@@ -12,6 +12,7 @@
     ./immich.nix
     ./jellyfin.nix
     # ./kitty.nix
+    ./minidlna.nix
     ./monitoring.nix
     ./networking.nix
     ./nix.nix
