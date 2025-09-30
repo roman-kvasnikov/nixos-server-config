@@ -11,7 +11,7 @@
     ./i18n.nix
     ./immich.nix
     ./jellyfin.nix
-    ./kitty.nix
+    # ./kitty.nix
     ./networking.nix
     ./nix.nix
     ./samba.nix
