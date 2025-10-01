@@ -20,7 +20,7 @@
         "map to guest" = "bad user";
       };
       "public" = {
-        "path" = "/mnt/Shares/Public";
+        "path" = "/home/Shares/Public";
         "browseable" = "yes";
         "read only" = "no";
         "guest ok" = "yes";
@@ -28,16 +28,6 @@
         "directory mask" = "0755";
         "force user" = "nobody";
         "force group" = "nogroup";
-      };
-      "private" = {
-        "path" = "/mnt/Shares/Private";
-        "browseable" = "yes";
-        "read only" = "no";
-        "guest ok" = "no";
-        "create mask" = "0644";
-        "directory mask" = "0755";
-        "force user" = "username";
-        "force group" = "groupname";
       };
     };
   };
