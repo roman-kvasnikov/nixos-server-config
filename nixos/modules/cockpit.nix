@@ -1,4 +1,8 @@
-{
+{pkgs, ...}: {
+  environment.systemPackages = with pkgs; [
+    cockpit
+  ];
+
   services.cockpit = {
     enable = true;
 
@@ -13,6 +17,4 @@
       };
     };
   };
-
-  # networking.firewall.allowedTCPPorts = [9090];
 }
