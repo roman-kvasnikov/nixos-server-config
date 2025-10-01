@@ -4,8 +4,6 @@
 
     openFirewall = true;
 
-    securityType = "user";
-
     settings = {
       media_dir = [
         "P,/home/DLNA/Pictures/"
