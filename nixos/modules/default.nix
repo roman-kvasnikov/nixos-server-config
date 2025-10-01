@@ -13,7 +13,6 @@
     ./security.nix
     ./services.nix
     ./user.nix
-    ./xrdp.nix
     ./zram.nix
   ];
 }

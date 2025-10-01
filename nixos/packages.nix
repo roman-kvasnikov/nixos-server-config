@@ -28,6 +28,7 @@
       # Мониторинг
       htop
       btop
+      lm_sensors
     ];
   };
 }
