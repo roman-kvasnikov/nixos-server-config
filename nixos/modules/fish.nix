@@ -1,9 +1,5 @@
-{
-  lib,
-  pkgs,
-  ...
-}: {
-  programs.fish = lib.mkForce {
+{pkgs, ...}: {
+  programs.fish = {
     enable = true;
 
     shellAliases = {

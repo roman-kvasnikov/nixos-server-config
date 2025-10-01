@@ -2,24 +2,16 @@
   imports = [
     ./boot.nix
     ./cockpit.nix
-    ./de.nix
-    ./environment.nix
     ./fish.nix
-    ./fonts.nix
-    ./hardware.nix
-    ./i18n.nix
     ./immich.nix
     ./jellyfin.nix
     ./minidlna.nix
-    ./monitoring.nix
     ./networking.nix
     ./nix.nix
     ./openssh.nix
     ./samba.nix
     ./security.nix
     ./services.nix
-    ./systemd.nix
-    ./time.nix
     ./user.nix
     ./xrdp.nix
     ./zram.nix
