@@ -19,7 +19,7 @@
     enable = true;
 
     maxretry = 3;
-    bantime = 3600;
+    bantime = "1h";
     ignoreIP = [
       "10.0.0.0/8"
       "172.16.0.0/12"
