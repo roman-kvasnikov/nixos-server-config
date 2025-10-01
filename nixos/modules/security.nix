@@ -19,7 +19,6 @@
     enable = true;
 
     maxretry = 3;
-    findtime = 600;
     bantime = 3600;
     ignoreIP = [
       "10.0.0.0/8"
