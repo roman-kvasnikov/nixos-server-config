@@ -15,7 +15,7 @@
     version = "25.05";
   in {
     nixosConfigurations.${hostname} = nixpkgs.lib.nixosSystem {
-      inherit system version;
+      inherit system;
 
       specialArgs = {
         inherit inputs hostname version;
