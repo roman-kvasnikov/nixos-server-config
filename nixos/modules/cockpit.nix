@@ -9,6 +9,7 @@
     settings = {
       WebService = {
         AllowUnencrypted = true;
+        ProtocolHeader = "X-Forwarded-Proto";
       };
     };
   };
