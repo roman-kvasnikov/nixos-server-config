@@ -2,7 +2,7 @@
   description = "Roman-Kvasnikov's NixOS Home Server Configuration";
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-25.05";
   };
 
   outputs = {

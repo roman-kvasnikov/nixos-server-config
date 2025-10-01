@@ -1,8 +1,9 @@
 {
-  services = {
-    xrdp.enable = true;
-    xrdp.defaultWindowManager = "startxfce4";
+  services.xrdp = {
+    enable = true;
+
+    defaultWindowManager = "startxfce4";
   };
 
-  networking.firewall.allowedTCPPorts = [3389]; # порт RDP
+  networking.firewall.allowedTCPPorts = [3389];
 }

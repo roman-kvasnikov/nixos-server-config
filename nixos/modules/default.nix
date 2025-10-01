@@ -6,7 +6,6 @@
     ./environment.nix
     ./fish.nix
     ./fonts.nix
-    ./gnupg.nix
     ./hardware.nix
     ./i18n.nix
     ./immich.nix
