@@ -2,15 +2,13 @@
   services.openssh = {
     enable = true;
 
+    openFirewall = true;
+
     settings = {
-      LoginGraceTime = "1m";
-      PermitRootLogin = "no";
-      MaxSessions = 1;
-      PubkeyAuthentication = true;
-      PasswordAuthentication = true; # Нужно изменить на false в production.
-      PermitEmptyPasswords = false;
-      X11Forwarding = false;
-      AllowUsers = ["romank"];
+      AllowUsers = ["romank"]; # If specified, login is allowed only for the listed users
+      PasswordAuthentication = true; # Specifies whether password authentication is allowed
+      PermitRootLogin = "no"; # Whether the root user can login using ssh
+      X11Forwarding = false; # Whether to allow X11 connections to be forwarded
     };
   };
 }

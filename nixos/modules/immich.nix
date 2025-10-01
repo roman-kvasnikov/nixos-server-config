@@ -7,6 +7,4 @@
 
     openFirewall = true;
   };
-
-  # networking.firewall.allowedTCPPorts = [2283];
 }

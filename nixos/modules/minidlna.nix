@@ -1,36 +1,24 @@
 {
-  services = {
-    minidlna = {
-      enable = true;
+  services.minidlna = {
+    enable = true;
 
-      openFirewall = true;
+    openFirewall = true;
 
-      settings = {
-        friendly_name = "NixOS-DLNA";
+    securityType = "user";
 
-        # https://mylinuxramblings.wordpress.com/2016/02/19/mini-how-to-installing-minidlna-in-ubuntu/
-        # "A" for audio    (eg. media_dir=A,/var/lib/minidlna/music)
-        # "P" for pictures (eg. media_dir=P,/var/lib/minidlna/pictures)
-        # "V" for video    (eg. media_dir=V,/var/lib/minidlna/videos)
-        # "PV" for pictures and video (eg. media_dir=PV,/var/lib/minidlna/digital_camera)
+    settings = {
+      media_dir = [
+        "P,/home/DLNA/Pictures/"
+        "V,/home/DLNA/Videos/"
+      ];
 
-        media_dir = [
-          "A,/home/DLNA/Music/"
-          "P,/home/DLNA/Pictures/"
-          "V,/home/DLNA/Videos/"
-        ];
-
-        inotify = "yes";
-        log_level = "error";
-        announceInterval = 60;
-      };
+      inotify = "yes";
     };
   };
 
-  users.users.minidlna = {
-    extraGroups = ["users" "samba" "wheel"];
+  users.users = {
+    minidlna = {
+      isNormalUser = false;
+    };
   };
-
-  networking.firewall.allowedTCPPorts = [8200];
-  networking.firewall.allowedUDPPorts = [1900];
 }

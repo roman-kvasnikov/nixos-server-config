@@ -1,4 +1,3 @@
-# https://wiki.nixos.org/wiki/Samba
 {
   services.samba = {
     enable = true;
@@ -8,8 +7,8 @@
     settings = {
       global = {
         "workgroup" = "WORKGROUP";
-        "server string" = "smbnix";
-        "netbios name" = "smbnix";
+        "server string" = "j4";
+        "netbios name" = "j4";
         "security" = "user";
         #"use sendfile" = "yes";
         #"max protocol" = "smb2";
@@ -19,6 +18,7 @@
         "guest account" = "nobody";
         "map to guest" = "bad user";
       };
+
       "public" = {
         "path" = "/home/Shares/Public";
         "browseable" = "yes";
@@ -26,8 +26,6 @@
         "guest ok" = "yes";
         "create mask" = "0644";
         "directory mask" = "0755";
-        "force user" = "nobody";
-        "force group" = "nogroup";
       };
     };
   };
@@ -39,15 +37,16 @@
   };
 
   services.avahi = {
-    publish.enable = true;
-    publish.userServices = true;
-    # ^^ Needed to allow samba to automatically register mDNS records (without the need for an `extraServiceFile`
-    nssmdns4 = true;
-    # ^^ Not one hundred percent sure if this is needed- if it aint broke, don't fix it
     enable = true;
-    openFirewall = true;
-  };
 
-  # networking.firewall.allowedTCPPorts = [135 139 445];
-  # networking.firewall.allowedUDPPorts = [137 138];
+    openFirewall = true;
+
+    publish = {
+      enable = true;
+
+      userServices = true;
+    };
+
+    nssmdns4 = true;
+  };
 }

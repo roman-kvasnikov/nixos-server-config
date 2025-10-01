@@ -1,7 +1,13 @@
 {
   services.jellyfin = {
     enable = true;
+
+    openFirewall = true;
   };
 
-  # networking.firewall.allowedTCPPorts = [8096];
+  environment.systemPackages = with pkgs; [
+    jellyfin
+    jellyfin-web
+    jellyfin-ffmpeg
+  ];
 }
