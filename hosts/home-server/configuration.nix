@@ -13,7 +13,6 @@
   services.homepage-dashboard = {
     # These options were already present in my configuration.
     enable = true;
-    package = unstable.homepage-dashboard;
 
     # The following options were what I planned to add.
 
