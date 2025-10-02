@@ -13,11 +13,13 @@
   services.homepage-dashboard = {
     # These options were already present in my configuration.
     enable = true;
+    listenPort = 8082;
 
     # The following options were what I planned to add.
 
     # https://gethomepage.dev/latest/configs/settings/
-    settings = {};
+    settings = {
+    };
 
     # https://gethomepage.dev/latest/configs/bookmarks/
     bookmarks = [
@@ -48,4 +50,6 @@
     customJS = "";
     customCSS = "";
   };
+
+  networking.firewall.allowedTCPPorts = [8082];
 }
