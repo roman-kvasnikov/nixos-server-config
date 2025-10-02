@@ -15,4 +15,6 @@
     ./user.nix
     ./zram.nix
   ];
+
+  cockpit.enable = true;
 }
