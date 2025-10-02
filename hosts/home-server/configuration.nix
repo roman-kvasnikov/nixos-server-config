@@ -52,4 +52,10 @@
   };
 
   networking.firewall.allowedTCPPorts = [8082];
+
+  environment = {
+    sessionVariables = {
+      HOMEPAGE_ALLOWED_HOSTS = "*";
+    };
+  };
 }
