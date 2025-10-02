@@ -1,44 +1,19 @@
-{
-  config,
-  pkgs,
-  ...
-}: let
-  cfg = config.cockpit;
-in {
-  # ============================================================================
-  # MODULE OPTIONS
-  # ============================================================================
+{pkgs, ...}: {
+  environment.systemPackages = with pkgs; [
+    cockpit
+  ];
 
-  options.cockpit = {
-    enable = mkEnableOption "Cockpit service";
+  services.cockpit = {
+    enable = true;
 
-    port = mkOption {
-      type = types.port;
-      default = 9090;
-      description = "Port for Cockpit web interface";
-    };
-  };
+    port = 9090;
 
-  # ============================================================================
-  # MODULE IMPLEMENTATION
-  # ============================================================================
+    openFirewall = true;
 
-  config = mkIf cfg.enable {
-    environment.systemPackages = with pkgs; [
-      cockpit
-    ];
-
-    services.cockpit = {
-      enable = true;
-
-      port = cfg.port;
-
-      openFirewall = true;
-
-      settings = {
-        WebService = {
-          AllowUnencrypted = true;
-        };
+    settings = {
+      WebService = {
+        AllowUnencrypted = true;
+        ProtocolHeader = "X-Forwarded-Proto";
       };
     };
   };
