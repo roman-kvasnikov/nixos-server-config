@@ -91,8 +91,6 @@ in {
 
       openFirewall = true;
 
-      securityType = "user";
-
       settings =
         {
           global = lib.mkMerge [

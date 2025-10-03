@@ -5,10 +5,10 @@
 
     cockpit-proxy = {
       enable = true;
-      domain = "192.168.1.11"; # IP вашего сервера
+      domain = "192.168.1.11";
 
-      # Отключаем SSL
-      enableSSL = false;
+      # Только HTTP, без SSL
+      useHTTPOnly = true;
       allowUnencrypted = true;
     };
 

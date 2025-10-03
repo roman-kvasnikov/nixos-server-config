@@ -54,6 +54,12 @@ in {
       description = "Allow unencrypted HTTP connections to Cockpit (useful for home networks)";
     };
 
+    useHTTPOnly = mkOption {
+      type = types.bool;
+      default = false;
+      description = "Use only HTTP without SSL (for local networks, disables all SSL configuration)";
+    };
+
     sslCertificate = mkOption {
       type = types.nullOr types.path;
       default = null;
@@ -93,25 +99,33 @@ in {
             Origins =
               if cfg.useSubdirectory
               then "${
-                if cfg.enableSSL
+                if cfg.useHTTPOnly
+                then "http"
+                else if cfg.enableSSL
                 then "https"
                 else "http"
               }://${cfg.domain} ${
-                if cfg.enableSSL
+                if cfg.useHTTPOnly
+                then "ws"
+                else if cfg.enableSSL
                 then "wss"
                 else "ws"
               }://${cfg.domain}"
               else "${
-                if cfg.enableSSL
+                if cfg.useHTTPOnly
+                then "http"
+                else if cfg.enableSSL
                 then "https"
                 else "http"
               }://${cfg.domain} ${
-                if cfg.enableSSL
+                if cfg.useHTTPOnly
+                then "ws"
+                else if cfg.enableSSL
                 then "wss"
                 else "ws"
               }://${cfg.domain}";
             ProtocolHeader = "X-Forwarded-Proto";
-            AllowUnencrypted = cfg.allowUnencrypted;
+            AllowUnencrypted = cfg.allowUnencrypted || cfg.useHTTPOnly;
           }
           // optionalAttrs cfg.useSubdirectory {
             UrlRoot = cfg.urlPath;
@@ -127,67 +141,71 @@ in {
       recommendedOptimisation = true;
       recommendedGzipSettings = false; # Gzip must be off for Cockpit
 
-      virtualHosts."${cfg.domain}" = {
-        forceSSL = mkIf cfg.enableSSL true;
+      virtualHosts."${cfg.domain}" = mkMerge [
+        # Base configuration
+        {
+          locations =
+            if cfg.useSubdirectory
+            then {
+              "${cfg.urlPath}/" = {
+                proxyPass = "${
+                  if cfg.allowUnencrypted || cfg.useHTTPOnly
+                  then "http"
+                  else "https"
+                }://${cfg.cockpitHost}:${toString cfg.cockpitPort}${cfg.urlPath}/";
+                extraConfig = ''
+                  proxy_set_header Host $host;
+                  proxy_set_header X-Forwarded-Proto $scheme;
 
-        enableACME = cfg.enableACME;
+                  # Required for web sockets
+                  proxy_http_version 1.1;
+                  proxy_buffering off;
+                  proxy_set_header Upgrade $http_upgrade;
+                  proxy_set_header Connection "upgrade";
 
-        sslCertificate =
-          if cfg.enableACME
-          then null
-          else cfg.sslCertificate;
-        sslCertificateKey =
-          if cfg.enableACME
-          then null
-          else cfg.sslCertificateKey;
+                  # Pass ETag header from Cockpit to clients
+                  gzip off;
+                '';
+              };
+            }
+            else {
+              "/" = {
+                proxyPass = "${
+                  if cfg.allowUnencrypted || cfg.useHTTPOnly
+                  then "http"
+                  else "https"
+                }://${cfg.cockpitHost}:${toString cfg.cockpitPort}";
+                extraConfig = ''
+                  proxy_set_header Host $host;
+                  proxy_set_header X-Forwarded-Proto $scheme;
 
-        locations =
-          if cfg.useSubdirectory
-          then {
-            "${cfg.urlPath}/" = {
-              proxyPass = "${
-                if cfg.allowUnencrypted
-                then "http"
-                else "https"
-              }://${cfg.cockpitHost}:${toString cfg.cockpitPort}${cfg.urlPath}/";
-              extraConfig = ''
-                proxy_set_header Host $host;
-                proxy_set_header X-Forwarded-Proto $scheme;
+                  # Required for web sockets
+                  proxy_http_version 1.1;
+                  proxy_buffering off;
+                  proxy_set_header Upgrade $http_upgrade;
+                  proxy_set_header Connection "upgrade";
 
-                # Required for web sockets
-                proxy_http_version 1.1;
-                proxy_buffering off;
-                proxy_set_header Upgrade $http_upgrade;
-                proxy_set_header Connection "upgrade";
-
-                # Pass ETag header from Cockpit to clients
-                gzip off;
-              '';
+                  # Pass ETag header from Cockpit to clients
+                  gzip off;
+                '';
+              };
             };
-          }
-          else {
-            "/" = {
-              proxyPass = "${
-                if cfg.allowUnencrypted
-                then "http"
-                else "https"
-              }://${cfg.cockpitHost}:${toString cfg.cockpitPort}";
-              extraConfig = ''
-                proxy_set_header Host $host;
-                proxy_set_header X-Forwarded-Proto $scheme;
+        }
 
-                # Required for web sockets
-                proxy_http_version 1.1;
-                proxy_buffering off;
-                proxy_set_header Upgrade $http_upgrade;
-                proxy_set_header Connection "upgrade";
-
-                # Pass ETag header from Cockpit to clients
-                gzip off;
-              '';
-            };
-          };
-      };
+        # SSL configuration (only if not using HTTP only mode)
+        (mkIf (!cfg.useHTTPOnly) {
+          forceSSL = mkIf cfg.enableSSL true;
+          enableACME = cfg.enableACME;
+          sslCertificate =
+            if cfg.enableACME
+            then null
+            else cfg.sslCertificate;
+          sslCertificateKey =
+            if cfg.enableACME
+            then null
+            else cfg.sslCertificateKey;
+        })
+      ];
     };
 
     # ACME configuration if enabled
