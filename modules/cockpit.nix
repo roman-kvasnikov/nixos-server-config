@@ -87,7 +87,7 @@ in {
     services.cockpit = {
       enable = true;
       port = cfg.cockpitPort;
-      settings = {
+      settings = lib.mkForce {
         WebService =
           {
             Origins =
