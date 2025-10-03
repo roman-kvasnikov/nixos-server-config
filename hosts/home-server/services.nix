@@ -10,6 +10,8 @@
     sambactl = {
       enable = true;
 
+      users = ["romank"];
+
       shares = {
         public = {
           "path" = "/home/public";

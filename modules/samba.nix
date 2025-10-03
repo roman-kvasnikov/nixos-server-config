@@ -18,6 +18,13 @@ in {
       default = /dev/null;
     };
 
+    users = lib.mkOption {
+      description = "List of users to create Samba accounts for";
+      type = lib.types.listOf lib.types.str;
+      default = [];
+      example = ["user1" "user2"];
+    };
+
     globalSettings = lib.mkOption {
       description = "Global Samba parameters";
       type = lib.types.attrsOf lib.types.str;
@@ -64,7 +71,7 @@ in {
       example = lib.literalExpression ''
         CoolShare = {
           "path" = "/mnt/CoolShare";
-          "fruit:aapl" = "yes";
+          ...
         };
       '';
     };
@@ -78,6 +85,58 @@ in {
         shareSettings = cfg.commonSettings // share;
       in "d ${shareSettings."path"} 0775 ${shareSettings."force user"} ${shareSettings."force group"} - -"
     ) (lib.attrValues cfg.shares);
+
+    systemd.services.samba-user-sync = {
+      Unit = {
+        Description = "Sync Samba users from shares configuration";
+        Before = ["samba-smbd.service"];
+      };
+
+      Service = {
+        Type = "oneshot";
+        RemainAfterExit = true;
+
+        ExecStart = pkgs.writeShellScript "samba-user-sync" ''
+          users='${lib.concatStringsSep " " cfg.users}'
+
+          for user in $users; do
+            # Проверить, что пользователь существует в системе
+            if id "$user" >/dev/null 2>&1; then
+              if ! smbpasswd -e "$user" >/dev/null 2>&1; then
+                echo "Creating Samba user: $user"
+                # Создать пользователя Samba без пароля сначала
+                smbpasswd -a "$user" -n
+                smbpasswd -e "$user"
+                echo "Samba user $user created"
+              else
+                echo "Samba user $user already exists"
+              fi
+
+              # Синхронизировать пароль с системным
+              echo "Syncing password for user: $user"
+              # Получить системный пароль и установить его в Samba
+              system_password=$(getent shadow "$user" | cut -d: -f2)
+              if [ "$system_password" != "*" ] && [ "$system_password" != "!" ] && [ -n "$system_password" ]; then
+                # Установить системный пароль в Samba
+                echo "$user:$system_password" | smbpasswd -s
+                echo "Password synced for user: $user"
+              else
+                echo "Warning: No system password found for user $user, using default"
+                # Установить пароль по умолчанию
+                echo "$user:changeme" | smbpasswd -s
+                echo "Default password 'changeme' set for user: $user"
+              fi
+            else
+              echo "Warning: System user $user does not exist, skipping Samba user creation"
+            fi
+          done
+        '';
+      };
+
+      Install = {
+        WantedBy = ["multi-user.target"];
+      };
+    };
 
     services.samba = {
       enable = true;
