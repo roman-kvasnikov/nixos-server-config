@@ -7,6 +7,7 @@
     immichctl.enable = true;
     jellyfinctl.enable = true;
     minidlnactl.enable = true;
+    sambactl.enable = true;
 
     # Additional Services
     udisks2.enable = true; # Автоматическое монтирование USB
