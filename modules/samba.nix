@@ -11,40 +11,98 @@ in {
       description = "Enable Samba";
       default = false;
     };
+
+    passwordFile = lib.mkOption {
+      description = "Path to Samba password file";
+      type = lib.types.path;
+      default = /dev/null;
+    };
+
+    globalSettings = lib.mkOption {
+      description = "Global Samba parameters";
+      type = lib.types.attrsOf lib.types.str;
+      default = {};
+      example = {
+        "browseable" = "yes";
+        "writeable" = "yes";
+        "read only" = "no";
+        "guest ok" = "no";
+      };
+    };
+
+    commonSettings = lib.mkOption {
+      description = "Parameters applied to each share";
+      type = lib.types.attrsOf lib.types.str;
+      default = {};
+      example = {
+        "security" = "user";
+        "invalid users" = ["root"];
+      };
+      apply = old:
+        lib.attrsets.mergeAttrsList [
+          {
+            "public" = "yes";
+            "preserve case" = "yes";
+            "short preserve case" = "yes";
+            "browseable" = "yes";
+            "writeable" = "yes";
+            "guest ok" = "yes";
+            "read only" = "no";
+            "create mask" = "0644";
+            "directory mask" = "0755";
+            "force user" = "nobody";
+            "force group" = "nogroup";
+          }
+          old
+        ];
+    };
+
+    shares = lib.mkOption {
+      description = "Samba shares";
+      type = lib.types.attrs;
+      default = {};
+      example = lib.literalExpression ''
+        CoolShare = {
+          "path" = "/mnt/CoolShare";
+          "fruit:aapl" = "yes";
+        };
+      '';
+    };
   };
 
   config = lib.mkIf cfg.enable {
     environment.systemPackages = [config.services.samba.package];
+
+    systemd.tmpfiles.rules = map (
+      share: let
+        shareSettings = cfg.commonSettings // share;
+      in "d ${shareSettings."path"} 0775 ${shareSettings."force user"} ${shareSettings."force group"} - -"
+    ) (lib.attrValues cfg.shares);
 
     services.samba = {
       enable = true;
 
       openFirewall = true;
 
-      settings = {
-        global = {
-          "workgroup" = lib.mkDefault "WORKGROUP";
-          "server string" = lib.mkDefault config.networking.hostName;
-          "netbios name" = lib.mkDefault config.networking.hostName;
-          "security" = lib.mkDefault "user";
-          "invalid users" = ["root"];
-          "hosts allow" = lib.mkDefault "192.168.1.0/24 127.0.0.1 localhost";
-          "hosts deny" = lib.mkDefault "0.0.0.0/0";
-          "guest account" = lib.mkDefault "nobody";
-          "map to guest" = lib.mkDefault "bad user";
-        };
-
-        "public" = {
-          "path" = "/mnt/Shares/Public";
-          "browseable" = "yes";
-          "read only" = "no";
-          "guest ok" = "yes";
-          "create mask" = "0644";
-          "directory mask" = "0755";
-          "force user" = "nobody";
-          "force group" = "nogroup";
-        };
-      };
+      settings =
+        {
+          global = lib.mkMerge [
+            {
+              "workgroup" = lib.mkDefault "WORKGROUP";
+              "server string" = lib.mkDefault config.networking.hostName;
+              "netbios name" = lib.mkDefault config.networking.hostName;
+              "security" = lib.mkForce "user";
+              "invalid users" = lib.mkForce ["root"];
+              "hosts allow" = lib.mkForce "192.168.1.0/24 127.0.0.1 localhost";
+              "hosts deny" = lib.mkForce "0.0.0.0/0";
+              "guest account" = lib.mkForce "nobody";
+              "map to guest" = lib.mkForce "bad user";
+              "passdb backend" = lib.mkForce "tdbsam";
+            }
+            cfg.globalSettings
+          ];
+        }
+        // builtins.mapAttrs (_name: value: cfg.commonSettings // value) cfg.shares;
     };
 
     services.samba-wsdd = {
