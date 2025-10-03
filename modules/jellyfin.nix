@@ -9,6 +9,7 @@ in {
   options.services.jellyfinctl = {
     enable = lib.mkEnableOption {
       description = "Enable Jellyfin";
+      default = false;
     };
   };
 

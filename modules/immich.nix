@@ -9,6 +9,7 @@ in {
   options.services.immichctl = {
     enable = lib.mkEnableOption {
       description = "Enable Immich";
+      default = false;
     };
   };
 

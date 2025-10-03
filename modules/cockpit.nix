@@ -9,6 +9,7 @@ in {
   options.services.cockpitctl = {
     enable = lib.mkEnableOption {
       description = "Enable Cockpit";
+      default = false;
     };
   };
 

@@ -9,6 +9,7 @@ in {
   options.services.minidlnactl = {
     enable = lib.mkEnableOption {
       description = "Enable Minidlna";
+      default = false;
     };
   };
 

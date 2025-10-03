@@ -9,6 +9,7 @@ in {
   options.services.fishctl = {
     enable = lib.mkEnableOption {
       description = "Enable Fish Shell";
+      default = false;
     };
   };
 

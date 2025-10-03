@@ -9,6 +9,7 @@ in {
   options.services.sambactl = {
     enable = lib.mkEnableOption {
       description = "Enable Samba";
+      default = false;
     };
   };
 
