@@ -28,7 +28,7 @@ in {
           "netbios name" = lib.mkDefault config.networking.hostName;
           "security" = lib.mkDefault "user";
           "invalid users" = ["root"];
-          "hosts allow" = lib.mkDefault "192.168.0.0/24 127.0.0.1 localhost";
+          "hosts allow" = lib.mkDefault "192.168.1.0/24 127.0.0.1 localhost";
           "hosts deny" = lib.mkDefault "0.0.0.0/0";
           "guest account" = lib.mkDefault "nobody";
           "map to guest" = lib.mkDefault "bad user";
