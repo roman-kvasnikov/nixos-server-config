@@ -1,10 +1,29 @@
 {
-  services.immich = {
-    enable = true;
+  config,
+  lib,
+  pkgs,
+  ...
+}: let
+  cfg = config.services.immichctl;
+in {
+  options.services.immichctl = {
+    enable = lib.mkEnableOption {
+      description = "Enable Immich";
+    };
+  };
 
-    host = "0.0.0.0";
-    port = 2283;
+  config = lib.mkIf cfg.enable {
+    environment.systemPackages = with pkgs; [
+      immich
+    ];
 
-    openFirewall = true;
+    services.immich = {
+      enable = true;
+
+      host = "0.0.0.0";
+      port = 2283;
+
+      openFirewall = true;
+    };
   };
 }
