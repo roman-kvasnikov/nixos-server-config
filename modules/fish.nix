@@ -1,4 +1,9 @@
 {pkgs, ...}: {
+  environment.systemPackages = with pkgs; [
+    eza
+    bat
+  ];
+
   programs.fish = {
     enable = true;
 
@@ -12,4 +17,6 @@
 
     shellInit = with pkgs; ''set -g fish_greeting'';
   };
+
+  users.defaultUserShell = pkgs.fish;
 }
