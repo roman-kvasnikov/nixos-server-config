@@ -35,12 +35,14 @@ in {
         };
 
         "public" = {
-          "path" = "/home/Shares/Public";
+          "path" = "/mnt/Shares/Public";
           "browseable" = "yes";
           "read only" = "no";
           "guest ok" = "yes";
           "create mask" = "0644";
           "directory mask" = "0755";
+          "force user" = "nobody";
+          "force group" = "nogroup";
         };
       };
     };
