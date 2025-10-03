@@ -86,57 +86,12 @@ in {
       in "d ${shareSettings."path"} 0775 ${shareSettings."force user"} ${shareSettings."force group"} - -"
     ) (lib.attrValues cfg.shares);
 
-    systemd.services.samba-user-sync = {
-      description = "Sync Samba users from shares configuration with system passwords";
-      before = ["samba-smbd.service"];
-      wantedBy = ["multi-user.target"];
-
-      serviceConfig = {
-        Type = "oneshot";
-        RemainAfterExit = true;
-
-        ExecStart = pkgs.writeShellScript "samba-user-sync" ''
-          users='${lib.concatStringsSep " " cfg.users}'
-
-          for user in $users; do
-            # Проверить, что пользователь существует в системе
-            if id "$user" >/dev/null 2>&1; then
-              if ! smbpasswd -e "$user" >/dev/null 2>&1; then
-                echo "Creating Samba user: $user"
-                # Создать пользователя Samba без пароля сначала
-                smbpasswd -a "$user" -n
-                smbpasswd -e "$user"
-                echo "Samba user $user created"
-              else
-                echo "Samba user $user already exists"
-              fi
-
-              # Синхронизировать пароль с системным
-              echo "Syncing password for user: $user"
-              # Получить системный пароль и установить его в Samba
-              system_password=$(getent shadow "$user" | cut -d: -f2)
-              if [ "$system_password" != "*" ] && [ "$system_password" != "!" ] && [ -n "$system_password" ]; then
-                # Установить системный пароль в Samba
-                echo "$user:$system_password" | smbpasswd -s
-                echo "Password synced for user: $user"
-              else
-                echo "Warning: No system password found for user $user, using default"
-                # Установить пароль по умолчанию
-                echo "$user:changeme" | smbpasswd -s
-                echo "Default password 'changeme' set for user: $user"
-              fi
-            else
-              echo "Warning: System user $user does not exist, skipping Samba user creation"
-            fi
-          done
-        '';
-      };
-    };
-
     services.samba = {
       enable = true;
 
       openFirewall = true;
+
+      securityType = "user";
 
       settings =
         {

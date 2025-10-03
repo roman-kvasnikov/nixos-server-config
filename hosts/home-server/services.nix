@@ -1,7 +1,17 @@
 {
   services = {
     # User Services
-    cockpitctl.enable = true;
+    # cockpitctl.enable = true;
+
+    cockpit-proxy = {
+      enable = true;
+      domain = "192.168.1.11"; # IP вашего сервера
+
+      # Отключаем SSL
+      enableSSL = false;
+      allowUnencrypted = true;
+    };
+
     opensshctl.enable = true;
     fishctl.enable = true;
     immichctl.enable = true;
