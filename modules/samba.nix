@@ -87,12 +87,11 @@ in {
     ) (lib.attrValues cfg.shares);
 
     systemd.services.samba-user-sync = {
-      Unit = {
-        Description = "Sync Samba users from shares configuration";
-        Before = ["samba-smbd.service"];
-      };
+      description = "Sync Samba users from shares configuration with system passwords";
+      before = ["samba-smbd.service"];
+      wantedBy = ["multi-user.target"];
 
-      Service = {
+      serviceConfig = {
         Type = "oneshot";
         RemainAfterExit = true;
 
@@ -131,10 +130,6 @@ in {
             fi
           done
         '';
-      };
-
-      Install = {
-        WantedBy = ["multi-user.target"];
       };
     };
 
