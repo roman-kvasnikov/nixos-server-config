@@ -1,7 +1,7 @@
 {hostname, ...}: {
   networking = {
     hostName = hostname;
-    useDHCP = true;
+    #useDHCP = true;
 
     networkmanager = {
       enable = true;
