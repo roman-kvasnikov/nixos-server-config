@@ -1,6 +1,6 @@
 {
   services = {
-    cockpit.enable = true;
+    cockpitctl.enable = true;
 
     udisks2.enable = true; # Автоматическое монтирование USB
 

@@ -4,9 +4,9 @@
   pkgs,
   ...
 }: let
-  cfg = config.services.cockpit;
+  cfg = config.services.cockpitctl;
 in {
-  options.services.cockpit = {
+  options.services.cockpitctl = {
     enable = lib.mkEnableOption {
       description = "Enable Cockpit";
     };
