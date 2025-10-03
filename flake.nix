@@ -10,7 +10,7 @@
     nixpkgs,
     ...
   } @ inputs: let
-    hostname = "homelab";
+    hostname = "home-server";
     system = "x86_64-linux";
     version = "25.05";
   in {
