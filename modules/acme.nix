@@ -16,13 +16,12 @@ in {
     security = {
       acme = {
         acceptTerms = true;
+        defaults.email = config.server.email;
         certs = {
           "${config.server.domain}" = {
-            email = config.server.email;
             webroot = "/var/lib/acme/${config.server.domain}";
           };
           "immich.${config.server.domain}" = {
-            email = config.server.email;
             webroot = "/var/lib/acme/immich.${config.server.domain}";
           };
         };
