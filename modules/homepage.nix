@@ -73,7 +73,17 @@
     ];
   };
 
-  networking.firewall = {
-    allowedTCPPorts = [8082];
+  services.nginx = lib.mkIf cfgNginx.enable {
+    virtualHosts = {
+      "cockpit.${config.server.domain}" = {
+        enableACME = cfgAcme.enable;
+        forceSSL = cfgAcme.enable;
+        locations."/" = {
+          proxyPass = "http://127.0.0.1:8082";
+          proxyWebsockets = true;
+          recommendedProxySettings = true;
+        };
+      };
+    };
   };
 }
