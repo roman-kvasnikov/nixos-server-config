@@ -18,14 +18,21 @@ in {
   config = lib.mkIf cfg.enable {
     environment.systemPackages = with pkgs; [
       cockpit
+      cockpit-bridge
+      cockpit-system
+      cockpit-networkmanager
+      cockpit-storaged
     ];
 
     services.cockpit = {
       enable = true;
 
+      listenAddress = "127.0.0.1";
+
       settings = {
         WebService = {
           AllowUnencrypted = false;
+          Origins = "https://${config.server.domain}";
         };
       };
     };
