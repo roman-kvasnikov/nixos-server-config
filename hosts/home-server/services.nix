@@ -1,7 +1,7 @@
 {
   services = {
     # User Services
-    cockpitctl.enable = true;
+    cockpitctl.enable = false;
 
     # cockpit-proxy = {
     #   enable = true;
