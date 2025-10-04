@@ -21,23 +21,29 @@ in {
 
     services.cockpit = {
       enable = true;
+    };
 
-      port = 9090;
+    services.nginx = lib.mkIf cfgNginx.enable {
+      virtualHosts = {
+        "cockpit.${config.server.domain}" = {
+          enableACME = cfgAcme.enable;
+          forceSSL = cfgAcme.enable;
+          locations."/" = {
+            proxyPass = "http://127.0.0.1:9090";
+            proxyWebsockets = true;
+            recommendedProxySettings = true;
+            extraConfig = ''
+              client_max_body_size 500M;
+              proxy_read_timeout   600s;
+              proxy_send_timeout   600s;
+              send_timeout         600s;
 
-      openFirewall = true;
-
-      settings = {
-        WebService = {
-          AllowUnencrypted = true;
-          ProtocolHeader = "X-Forwarded-Proto";
+              # Cockpit обычно использует заголовки WebSocket, но
+              # proxyWebsockets = true уже это покрывает.
+            '';
+          };
         };
       };
     };
-
-    # services.nginx.virtualHosts = lib.mkIf cfgNginx.enable {
-    #   "${config.server.domain}" = {
-    #     proxyPass = "http://127.0.0.1:9090";
-    #   };
-    # };
   };
 }
