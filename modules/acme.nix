@@ -21,10 +21,12 @@ in {
           "${config.server.domain}" = {
             dnsProvider = "namecheap";
             credentialsFile = "/etc/secrets/namecheap.env";
+            webroot = null;
           };
           "immich.${config.server.domain}" = {
             dnsProvider = "namecheap";
             credentialsFile = "/etc/secrets/namecheap.env";
+            webroot = null;
           };
         };
       };
