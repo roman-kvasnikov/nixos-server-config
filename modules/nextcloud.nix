@@ -7,6 +7,8 @@
   ...
 }: let
   cfg = config.services.nextcloudctl;
+  cfgAcme = config.services.acmectl;
+  cfgNginx = config.services.nginxctl;
   nextCloudApps = config.services.nextcloud.package.packages.apps;
 in {
   options.services.nextcloudctl = {
