@@ -5,6 +5,7 @@
   ...
 }: let
   cfg = config.services.nextcloudctl;
+  nextCloudApps = config.services.nextcloud.package.packages.apps;
 in {
   options.services.nextcloudctl = {
     enable = lib.mkEnableOption {
@@ -23,9 +24,9 @@ in {
       config.dbtype = "sqlite";
 
       extraAppsEnable = true;
-      # extraApps = {
-      #   inherit (config.services.nextcloud.package.packages.apps) news contacts calendar tasks;
-      # };
+      extraApps = {
+        inherit (nextCloudApps) bookmarks calendar contacts tasks deck notes;
+      };
     };
     networking.firewall.allowedTCPPorts = [80 443];
   };
