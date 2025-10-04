@@ -22,7 +22,7 @@ in {
       config.adminpassFile = "/etc/nextcloud-admin-pass";
       config.dbtype = "sqlite";
 
-      # extraAppsEnable = true;
+      extraAppsEnable = true;
       # extraApps = {
       #   inherit (config.services.nextcloud.package.packages.apps) news contacts calendar tasks;
       # };
