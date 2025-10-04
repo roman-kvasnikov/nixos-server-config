@@ -28,9 +28,19 @@ in {
       openFirewall = true;
     };
 
-    services.nginx.virtualHosts = lib.mkIf cfgNginx.enable {
-      "immich.${config.server.domain}" = {
-        proxyPass = "http://127.0.0.1:2283";
+    services.nginx = lib.mkIf cfgNginx.enable {
+      virtualHosts = {
+        "immich.${config.server.domain}" = {
+          enableACME = config.services.acmectl.enable;
+          forceSSL = config.services.acmectl.enable;
+          locations."/" = {
+            proxyPass = "http://127.0.0.1:2283";
+            proxyWebsockets = false;
+            extraConfig =
+              "proxy_ssl_server_name on;"
+              + "proxy_pass_header Authorization;";
+          };
+        };
       };
     };
   };

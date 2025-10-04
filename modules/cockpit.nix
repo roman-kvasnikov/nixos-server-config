@@ -34,10 +34,10 @@ in {
       };
     };
 
-    services.nginx.virtualHosts = lib.mkIf cfgNginx.enable {
-      "${config.server.domain}" = {
-        proxyPass = "http://127.0.0.1:9090";
-      };
-    };
+    # services.nginx.virtualHosts = lib.mkIf cfgNginx.enable {
+    #   "${config.server.domain}" = {
+    #     proxyPass = "http://127.0.0.1:9090";
+    #   };
+    # };
   };
 }

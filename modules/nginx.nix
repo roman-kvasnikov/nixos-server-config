@@ -18,12 +18,9 @@ in {
 
       recommendedProxySettings = true;
       recommendedTlsSettings = true;
-
-      virtualHosts."${config.server.domain}" = {
-        enableACME = config.services.acmectl.enable;
-        forceSSL = config.services.acmectl.enable;
-      };
     };
+
+    networking.firewall.allowedTCPPorts = [80 443];
   };
 }
 # https://nohup.no/nixos-nixos/
