@@ -3,6 +3,7 @@
     romank = {
       isNormalUser = true;
       extraGroups = ["wheel" "users" "networkmanager" "samba"];
+      createHome = true;
     };
   };
 }

@@ -1,0 +1,44 @@
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}: let
+  cfg = config.services.nextcloudctl;
+in {
+  options.services.nextcloudctl = {
+    enable = lib.mkEnableOption {
+      description = "Enable Nextcloud";
+      default = false;
+    };
+  };
+
+  config = lib.mkIf cfg.enable {
+    environment.etc."nextcloud-admin-pass".text = "123";
+    services.nextcloud = {
+      enable = true;
+      package = pkgs.nextcloud31;
+      hostName = "localhost";
+      config.adminpassFile = "/etc/nextcloud-admin-pass";
+      config.dbtype = "sqlite";
+
+      extraAppsEnable = true;
+      extraApps = {
+        inherit (config.services.nextcloud.package.packages.apps) news contacts calendar tasks;
+      };
+    };
+  };
+}
+#   "bookmarks"
+# , "calendar"
+# , "contacts"
+# , "deck"
+# , "keeweb"
+# , "mail"
+# , "news"
+# , "notes"
+# , "onlyoffice"
+# , "polls"
+# , "tasks"
+# , "twofactor_webauthn"
+

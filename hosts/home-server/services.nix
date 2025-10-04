@@ -16,6 +16,7 @@
     fishctl.enable = true;
     immichctl.enable = true;
     jellyfinctl.enable = true;
+    nextcloudctl.enable = true;
     minidlnactl.enable = true;
     sambactl = {
       enable = true;
