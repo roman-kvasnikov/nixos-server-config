@@ -4,9 +4,9 @@
   pkgs,
   ...
 }: {
-  environment.systemVariables = {
-    HOMEPAGE_ALLOWED_HOSTS = config.server.domain;
-  };
+  # environment.systemVariables = {
+  #   HOMEPAGE_ALLOWED_HOSTS = config.server.domain;
+  # };
 
   services.homepage-dashboard = {
     enable = true;
