@@ -18,8 +18,8 @@
       title = "Kvasnikov's Home Server";
       description = "My NixOS Home Server Configuration";
       startUrl = "https://cockpit.${config.server.domain}/";
-      theme = "dark";
-      color = "slate";
+      # theme = "dark";
+      # color = "slate";
     };
 
     # https://gethomepage.dev/latest/configs/bookmarks/
@@ -97,6 +97,14 @@
           cpu = true;
           disk = "/";
           memory = true;
+          cputemp = true;
+          tempmin = 0;
+          tempmax = 100;
+          uptime = true;
+          units = "imperial";
+          refresh = 3000;
+          diskUnits = "bytes";
+          network = true;
         };
       }
     ];
