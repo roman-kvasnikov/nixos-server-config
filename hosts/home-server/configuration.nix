@@ -7,9 +7,10 @@
     ./security.nix
     ./user.nix
     ./zram.nix
-    ./packages.nix
-    ../../modules
+    ./settings.nix
     ./services.nix
+    ../../modules
+    ./packages.nix
   ];
 
   i18n.defaultLocale = "en_US.UTF-8";

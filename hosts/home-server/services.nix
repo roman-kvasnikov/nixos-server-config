@@ -1,23 +1,17 @@
 {
   services = {
     # User Services
+    acmectl.enable = true;
+    nginxctl.enable = true;
+
     cockpitctl.enable = false;
-
-    # cockpit-proxy = {
-    #   enable = true;
-    #   domain = "192.168.1.11";
-
-    #   # Только HTTP, без SSL
-    #   useHTTPOnly = true;
-    #   allowUnencrypted = true;
-    # };
-
     opensshctl.enable = true;
     fishctl.enable = true;
     immichctl.enable = true;
     jellyfinctl.enable = true;
     nextcloudctl.enable = true;
     minidlnactl.enable = true;
+
     sambactl = {
       enable = true;
 

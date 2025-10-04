@@ -1,3 +1,5 @@
+# https://mich-murphy.com/configure-nextcloud-nixos/
+# https://nixos.wiki/wiki/Nextcloud
 {
   config,
   lib,
@@ -16,18 +18,24 @@ in {
 
   config = lib.mkIf cfg.enable {
     environment.etc."nextcloud-admin-pass".text = "123";
+
     services.nextcloud = {
       enable = true;
+
       package = pkgs.nextcloud31;
       hostName = "192.168.1.11";
-      config.adminpassFile = "/etc/nextcloud-admin-pass";
-      config.dbtype = "sqlite";
+
+      config = {
+        adminpassFile = "/etc/nextcloud-admin-pass";
+        dbtype = "sqlite";
+      };
 
       extraAppsEnable = true;
       extraApps = {
         inherit (nextCloudApps) bookmarks calendar contacts tasks deck notes;
       };
     };
+
     networking.firewall.allowedTCPPorts = [80 443];
   };
 }

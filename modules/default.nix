@@ -1,5 +1,7 @@
 {
   imports = [
+    ./acme.nix
+    ./nginx.nix
     ./cockpit.nix
     ./fish.nix
     ./immich.nix

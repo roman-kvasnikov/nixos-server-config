@@ -5,6 +5,7 @@
   ...
 }: let
   cfg = config.services.immichctl;
+  cfgNginx = config.services.nginxctl;
 in {
   options.services.immichctl = {
     enable = lib.mkEnableOption {
@@ -25,6 +26,14 @@ in {
       port = 2283;
 
       openFirewall = true;
+    };
+
+    config = lib.mkIf cfgNginx.enable {
+      services.nginx.virtualHosts = {
+        "immich.${config.server.domain}" = {
+          proxyPass = "http://127.0.0.1:2283";
+        };
+      };
     };
   };
 }
