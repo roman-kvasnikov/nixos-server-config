@@ -22,11 +22,17 @@ in {
 
     services.cockpit = {
       enable = true;
+
+      settings = {
+        WebService = {
+          AllowUnencrypted = false;
+        };
+      };
     };
 
     services.nginx = lib.mkIf cfgNginx.enable {
       virtualHosts = {
-        "cockpit.${config.server.domain}" = {
+        "${config.server.domain}" = {
           enableACME = cfgAcme.enable;
           forceSSL = cfgAcme.enable;
           locations."/" = {
