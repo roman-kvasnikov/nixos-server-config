@@ -23,7 +23,7 @@ in {
       enable = true;
 
       package = pkgs.nextcloud31;
-      hostName = "192.168.1.11";
+      hostName = "nextcloud.${config.server.domain}";
 
       config = {
         adminpassFile = "/etc/nextcloud-admin-pass";
@@ -35,8 +35,6 @@ in {
         inherit (nextCloudApps) bookmarks calendar contacts tasks deck notes;
       };
     };
-
-    networking.firewall.allowedTCPPorts = [80 443];
   };
 }
 #   "bookmarks"

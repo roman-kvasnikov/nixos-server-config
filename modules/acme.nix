@@ -4,6 +4,11 @@
   ...
 }: let
   cfg = config.services.acmectl;
+  commonCertOptions = {
+    dnsProvider = "namecheap";
+    credentialsFile = "/etc/secrets/namecheap.env";
+    webroot = null;
+  };
 in {
   options.services.acmectl = {
     enable = lib.mkEnableOption {
@@ -17,18 +22,17 @@ in {
       acme = {
         acceptTerms = true;
         defaults.email = config.server.email;
-        certs = {
-          "${config.server.domain}" = {
-            dnsProvider = "namecheap";
-            credentialsFile = "/etc/secrets/namecheap.env";
-            webroot = null;
-          };
-          "immich.${config.server.domain}" = {
-            dnsProvider = "namecheap";
-            credentialsFile = "/etc/secrets/namecheap.env";
-            webroot = null;
-          };
-        };
+
+        certs = lib.listToAttrs (map (domain: {
+            name = domain;
+            value = commonCertOptions;
+          }) [
+            config.server.domain
+            "cockpit.${config.server.domain}"
+            "nextcloud.${config.server.domain}"
+            "immich.${config.server.domain}"
+            "jellyfin.${config.server.domain}"
+          ]);
       };
     };
   };
