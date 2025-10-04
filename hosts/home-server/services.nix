@@ -4,7 +4,7 @@
     acmectl.enable = true;
     nginxctl.enable = true;
 
-    cockpitctl.enable = false;
+    cockpitctl.enable = true;
     nextcloudctl.enable = true;
     immichctl.enable = true;
     jellyfinctl.enable = true;
