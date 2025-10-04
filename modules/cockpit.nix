@@ -5,6 +5,7 @@
   ...
 }: let
   cfg = config.services.cockpitctl;
+  cfgAcme = config.services.acmectl;
   cfgNginx = config.services.nginxctl;
 in {
   options.services.cockpitctl = {

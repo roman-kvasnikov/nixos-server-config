@@ -5,11 +5,11 @@
     nginxctl.enable = true;
 
     cockpitctl.enable = false;
-    opensshctl.enable = true;
-    fishctl.enable = true;
+    nextcloudctl.enable = true;
     immichctl.enable = true;
     jellyfinctl.enable = true;
-    nextcloudctl.enable = true;
+    opensshctl.enable = true;
+    fishctl.enable = true;
     minidlnactl.enable = true;
 
     sambactl = {

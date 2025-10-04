@@ -5,6 +5,8 @@
   ...
 }: let
   cfg = config.services.jellyfinctl;
+  cfgAcme = config.services.acmectl;
+  cfgNginx = config.services.nginxctl;
 in {
   options.services.jellyfinctl = {
     enable = lib.mkEnableOption {
