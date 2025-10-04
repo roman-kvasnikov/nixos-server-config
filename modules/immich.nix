@@ -29,7 +29,7 @@ in {
     };
 
     services.nginx.virtualHosts = lib.mkIf cfgNginx.enable {
-      "immich.kvasok.xyz" = {
+      "immich.${config.server.domain}" = {
         proxyPass = "http://127.0.0.1:2283";
       };
     };
