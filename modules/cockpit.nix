@@ -18,10 +18,6 @@ in {
   config = lib.mkIf cfg.enable {
     environment.systemPackages = with pkgs; [
       cockpit
-      cockpit-bridge
-      cockpit-system
-      cockpit-networkmanager
-      cockpit-storaged
     ];
 
     services.cockpit = {
