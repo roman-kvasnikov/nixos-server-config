@@ -4,6 +4,7 @@
     ./nginx.nix
     ./cockpit.nix
     ./fish.nix
+    ./homepage.nix
     ./immich.nix
     ./jellyfin.nix
     ./minidlna.nix
