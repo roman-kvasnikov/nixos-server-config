@@ -72,4 +72,8 @@
       }
     ];
   };
+
+  networking.firewall = {
+    allowedTCPPorts = [8082];
+  };
 }
