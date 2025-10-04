@@ -34,7 +34,7 @@ in {
       settings = {
         WebService = {
           AllowUnencrypted = false;
-          Origins = "https://${config.server.domain}";
+          Origins = lib.mkForce "https://${config.server.domain}";
         };
       };
     };
