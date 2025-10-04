@@ -35,7 +35,7 @@ in {
           enableACME = cfgAcme.enable;
           forceSSL = cfgAcme.enable;
           locations."/" = {
-            proxyPass = "http://[::1]:2283";
+            proxyPass = "http://127.0.0.1:2283";
             proxyWebsockets = true;
             recommendedProxySettings = true;
             extraConfig = ''
