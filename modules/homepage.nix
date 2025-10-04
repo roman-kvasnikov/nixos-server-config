@@ -11,59 +11,20 @@
   services.homepage-dashboard = {
     enable = true;
 
+    package = unstable.homepage-dashboard;
+
     allowedHosts = "cockpit.${config.server.domain}";
 
+    # https://gethomepage.dev/latest/configs/settings/
     settings = {
       title = "Kvasnikov's Home Server";
+      description = "My NixOS Home Server Configuration";
+      startUrl = "https://cockpit.${config.server.domain}/";
+      theme = "dark";
+      color = "slate";
     };
 
-    widgets = [
-      {
-        resources = {
-          cpu = true;
-          disk = "/";
-          memory = true;
-        };
-      }
-    ];
-
-    # https://pictogrammers.com/library/mdi/
-    services = [
-      {
-        "Self-hosted services" = [
-          {
-            "Immich" = {
-              description = "Immich";
-              href = "https://immich.${config.server.domain}/";
-              siteMonitor = "https://immich.${config.server.domain}/";
-            };
-            "Jellyfin" = {
-              description = "Jellyfin";
-              href = "https://jellyfin.${config.server.domain}/";
-              siteMonitor = "https://jellyfin.${config.server.domain}/";
-            };
-            "Nextcloud" = {
-              description = "Nextcloud";
-              href = "https://nextcloud.${config.server.domain}/";
-              siteMonitor = "https://nextcloud.${config.server.domain}/";
-            };
-          }
-        ];
-      }
-      {
-        "My Second Group" = [
-          {
-            "My Second Service" = {
-              description = "Homepage is the best";
-              href = "https://${config.server.domain}/";
-            };
-          }
-        ];
-      }
-    ];
-
-    # listenPort=
-    # oopenFirewall
+    # https://gethomepage.dev/latest/configs/bookmarks/
     bookmarks = [
       {
         Developer = [
@@ -90,6 +51,67 @@
         ];
       }
     ];
+
+    # https://gethomepage.dev/latest/configs/services/
+    # https://pictogrammers.com/library/mdi/
+    services = [
+      {
+        "Self-hosted services" = [
+          {
+            "Immich" = {
+              description = "Immich";
+              href = "https://immich.${config.server.domain}/";
+              siteMonitor = "https://immich.${config.server.domain}/";
+            };
+          }
+          {
+            "Jellyfin" = {
+              description = "Jellyfin";
+              href = "https://jellyfin.${config.server.domain}/";
+              siteMonitor = "https://jellyfin.${config.server.domain}/";
+            };
+          }
+          {
+            "Nextcloud" = {
+              description = "Nextcloud";
+              href = "https://nextcloud.${config.server.domain}/";
+              siteMonitor = "https://nextcloud.${config.server.domain}/";
+            };
+          }
+        ];
+      }
+      {
+        "My Second Group" = [
+          {
+            "My Second Service" = {
+              description = "Homepage is the best";
+              href = "https://${config.server.domain}/";
+            };
+          }
+        ];
+      }
+    ];
+
+    # https://gethomepage.dev/latest/configs/service-widgets/
+    widgets = [
+      {
+        resources = {
+          cpu = true;
+          disk = "/";
+          memory = true;
+        };
+      }
+    ];
+
+    # https://gethomepage.dev/latest/configs/kubernetes/
+    # kubernetes = {};
+
+    # https://gethomepage.dev/latest/configs/docker/
+    # docker = {};
+
+    # https://gethomepage.dev/latest/configs/custom-css-js/
+    # customJS = "";
+    # customCSS = "";
   };
 
   services.nginx = {
