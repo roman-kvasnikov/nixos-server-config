@@ -19,10 +19,12 @@ in {
         defaults.email = config.server.email;
         certs = {
           "${config.server.domain}" = {
-            webroot = "/var/lib/acme/${config.server.domain}";
+            dnsProvider = "namecheap";
+            credentialsFile = "/etc/secrets/namecheap.env";
           };
           "immich.${config.server.domain}" = {
-            webroot = "/var/lib/acme/immich.${config.server.domain}";
+            dnsProvider = "namecheap";
+            credentialsFile = "/etc/secrets/namecheap.env";
           };
         };
       };
