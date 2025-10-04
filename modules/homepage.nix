@@ -13,21 +13,25 @@
 
     allowedHosts = "cockpit.${config.server.domain}";
 
+    widgets = [
+      {
+        resources = {
+          cpu = true;
+          disk = "/";
+          memory = true;
+        };
+      }
+    ];
+
     # https://pictogrammers.com/library/mdi/
     services = [
       {
         "Self-hosted services" = [
           {
-            "Blog" = {
-              description = "Blog";
-              href = "http://${config.server.domain}/";
-              siteMonitor = "http://blog.${config.server.domain}/";
-              icon = "sonarr.png";
-            };
             "Immich" = {
               description = "Immich";
-              href = "http://immich.${config.server.domain}/";
-              siteMonitor = "http://immich.${config.server.domain}/";
+              href = "https://immich.${config.server.domain}/";
+              siteMonitor = "https://immich.${config.server.domain}/";
             };
           }
         ];
