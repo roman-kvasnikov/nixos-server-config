@@ -27,7 +27,9 @@ in {
     services.cockpit = {
       enable = true;
 
-      listenAddress = "127.0.0.1";
+      allowed-origins = [
+        "https://${config.server.domain}"
+      ];
 
       settings = {
         WebService = {
