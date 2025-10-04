@@ -107,6 +107,23 @@
           network = true;
         };
       }
+      {
+        datetime = {
+          text_size = "xl";
+          format = {
+            timeStyle = "short";
+          };
+        };
+      }
+      {
+        search = {
+          provider = "custom";
+          url = "https://www.ecosia.org/search?q=";
+          target = "_blank";
+          suggestionUrl = "https://ac.ecosia.org/autocomplete?type=list&q=";
+          showSearchSuggestions = true;
+        };
+      }
     ];
 
     # https://gethomepage.dev/latest/configs/kubernetes/
