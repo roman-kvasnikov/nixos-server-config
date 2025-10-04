@@ -13,7 +13,7 @@
   networking.firewall = {
     enable = true;
 
-    allowPing = false;
+    allowPing = true;
     logRefusedConnections = true;
   };
 
