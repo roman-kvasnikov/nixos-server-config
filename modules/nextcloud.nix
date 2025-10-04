@@ -24,6 +24,7 @@ in {
 
       package = pkgs.nextcloud31;
       hostName = "nextcloud.${config.server.domain}";
+      https = true;
 
       config = {
         adminpassFile = "/etc/nextcloud-admin-pass";
@@ -33,6 +34,15 @@ in {
       extraAppsEnable = true;
       extraApps = {
         inherit (nextCloudApps) bookmarks calendar contacts tasks deck notes;
+      };
+    };
+
+    services.nginx = lib.mkIf cfgNginx.enable {
+      virtualHosts = {
+        "nextcloud.${config.server.domain}" = {
+          enableACME = cfgAcme.enable;
+          forceSSL = cfgAcme.enable;
+        };
       };
     };
   };
