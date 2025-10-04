@@ -18,6 +18,7 @@ in {
         acceptTerms = true;
         certs = {
           "${config.server.domain}".email = config.server.email;
+          "immich.${config.server.domain}".email = config.server.email;
         };
       };
     };
