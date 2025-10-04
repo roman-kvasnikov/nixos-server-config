@@ -17,8 +17,14 @@ in {
       acme = {
         acceptTerms = true;
         certs = {
-          "${config.server.domain}".email = config.server.email;
-          "immich.${config.server.domain}".email = config.server.email;
+          "${config.server.domain}" = {
+            email = config.server.email;
+            webroot = "/var/lib/acme/${config.server.domain}";
+          };
+          "immich.${config.server.domain}" = {
+            email = config.server.email;
+            webroot = "/var/lib/acme/immich.${config.server.domain}";
+          };
         };
       };
     };
