@@ -11,8 +11,6 @@
   services.homepage-dashboard = {
     enable = true;
 
-    package = unstable.homepage-dashboard;
-
     allowedHosts = "cockpit.${config.server.domain}";
 
     # https://gethomepage.dev/latest/configs/settings/
