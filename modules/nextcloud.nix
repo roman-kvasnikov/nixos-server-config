@@ -27,6 +27,7 @@ in {
         inherit (config.services.nextcloud.package.packages.apps) news contacts calendar tasks;
       };
     };
+    networking.firewall.allowedTCPPorts = [80 443];
   };
 }
 #   "bookmarks"
