@@ -11,7 +11,7 @@
   services.homepage-dashboard = {
     enable = true;
 
-    allowedHosts = config.server.domain;
+    allowedHosts = "cockpit.${config.server.domain}";
 
     # https://pictogrammers.com/library/mdi/
     services = [
