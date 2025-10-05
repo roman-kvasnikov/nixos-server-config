@@ -29,6 +29,8 @@ in {
       group = "media";
     };
 
+    users.groups.media = {};
+
     services.nginx = lib.mkIf cfgNginx.enable {
       virtualHosts = {
         "torrent.${config.server.domain}" = {
