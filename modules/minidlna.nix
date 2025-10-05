@@ -32,11 +32,5 @@ in {
         inotify = "yes";
       };
     };
-
-    users.users = {
-      minidlna = {
-        isSystemUser = true;
-      };
-    };
   };
 }

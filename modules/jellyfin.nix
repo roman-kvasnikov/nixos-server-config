@@ -7,6 +7,9 @@
   cfg = config.services.jellyfinctl;
   cfgAcme = config.services.acmectl;
   cfgNginx = config.services.nginxctl;
+
+  user = "jellyfin";
+  group = "media";
 in {
   options.services.jellyfinctl = {
     enable = lib.mkEnableOption {
@@ -24,6 +27,18 @@ in {
 
     services.jellyfin = {
       enable = true;
+
+      user = user;
+      group = group;
+    };
+
+    users = {
+      users.${user} = {
+        isSystemUser = true;
+        group = group;
+      };
+
+      groups.${group} = {};
     };
 
     services.nginx = lib.mkIf cfgNginx.enable {

@@ -7,6 +7,9 @@
   cfg = config.services.qbittorrentctl;
   cfgAcme = config.services.acmectl;
   cfgNginx = config.services.nginxctl;
+
+  user = "qbittorrent";
+  group = "media";
 in {
   options.services.qbittorrentctl = {
     enable = lib.mkEnableOption {
@@ -23,23 +26,24 @@ in {
     services.qbittorrent = {
       enable = true;
 
-      user = "qbittorrent";
-      group = "qbittorrent";
+      user = user;
+      group = group;
 
-      profileDir = "/var/lib/qbittorrent";
+      profileDir = "/home/qbittorrent";
     };
 
     systemd.tmpfiles.rules = [
-      "d /var/lib/qbittorrent 0750 qbittorrent qbittorrent"
+      "d /home/qbittorrent 0750 ${user} ${group} - -"
     ];
 
-    users.users.qbittorrent = {
-      isSystemUser = true;
+    users = {
+      users.${user} = {
+        isSystemUser = true;
+        group = group;
+      };
 
-      group = "qbittorrent";
+      groups.${group} = {};
     };
-
-    users.groups.qbittorrent = {};
 
     services.nginx = lib.mkIf cfgNginx.enable {
       virtualHosts = {

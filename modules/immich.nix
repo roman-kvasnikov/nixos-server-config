@@ -7,6 +7,9 @@
   cfg = config.services.immichctl;
   cfgAcme = config.services.acmectl;
   cfgNginx = config.services.nginxctl;
+
+  user = "immich";
+  group = "media";
 in {
   options.services.immichctl = {
     enable = lib.mkEnableOption {
@@ -24,6 +27,18 @@ in {
       enable = true;
 
       host = "127.0.0.1";
+
+      user = user;
+      group = group;
+    };
+
+    users = {
+      users.${user} = {
+        isSystemUser = true;
+        group = group;
+      };
+
+      groups.${group} = {};
     };
 
     services.nginx = lib.mkIf cfgNginx.enable {

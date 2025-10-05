@@ -23,6 +23,10 @@
           "path" = "/home/public";
         };
 
+        movies = {
+          "path" = "/home/movies";
+        };
+
         romank = {
           "path" = "/home/romank";
           "public" = "no";

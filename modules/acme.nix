@@ -1,3 +1,9 @@
+# Namecheap DNS API
+# https://www.namecheap.com/support/api/intro/
+# /etc/secrets/namecheap.env
+# NAMECHEAP_API_USER=
+# NAMECHEAP_API_KEY=
+# NAMECHEAP_API_IP=
 {
   config,
   lib,
