@@ -16,6 +16,10 @@ in {
   };
 
   config = lib.mkIf cfg.enable {
+    environment.systemPackages = with pkgs; [
+      qbittorrent
+    ];
+
     services.qbittorrent = {
       enable = true;
 
@@ -33,13 +37,9 @@ in {
       isSystemUser = true;
 
       group = "qbittorrent";
-
-      uid = 1001;
     };
 
-    users.groups.qbittorrent = {
-      gid = 1001;
-    };
+    users.groups.qbittorrent = {};
 
     services.nginx = lib.mkIf cfgNginx.enable {
       virtualHosts = {
