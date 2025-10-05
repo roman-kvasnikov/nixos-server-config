@@ -29,7 +29,7 @@ in {
       user = user;
       group = group;
 
-      # profileDir = "/home/qbittorrent";
+      profileDir = "/home/qBittorrent";
     };
 
     # systemd.tmpfiles.rules = [
