@@ -30,14 +30,14 @@ in {
       group = group;
     };
 
-    # users = {
-    #   users.${user} = {
-    #     isSystemUser = true;
-    #     group = group;
-    #   };
+    users = {
+      users.${user} = {
+        isSystemUser = true;
+        group = group;
+      };
 
-    #   groups.${group} = {};
-    # };
+      groups.${group} = {};
+    };
 
     services.nginx = lib.mkIf cfgNginx.enable {
       virtualHosts = {
