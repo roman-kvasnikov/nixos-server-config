@@ -26,24 +26,24 @@ in {
     services.qbittorrent = {
       enable = true;
 
-      # user = user;
-      # group = group;
+      user = user;
+      group = group;
 
-      profileDir = "/home/qBittorrent";
+      # profileDir = "/home/qBittorrent";
     };
 
     # systemd.tmpfiles.rules = [
     #   "d /home/qbittorrent 0750 ${user} ${group} - -"
     # ];
 
-    # users = {
-    #   users.${user} = {
-    #     isSystemUser = true;
-    #     group = group;
-    #   };
+    users = {
+      users.${user} = {
+        isSystemUser = true;
+        group = group;
+      };
 
-    #   groups.${group} = {};
-    # };
+      groups.${group} = {};
+    };
 
     services.nginx = lib.mkIf cfgNginx.enable {
       virtualHosts = {
