@@ -28,13 +28,7 @@ in {
 
       user = user;
       group = group;
-
-      # profileDir = "/home/qBittorrent";
     };
-
-    # systemd.tmpfiles.rules = [
-    #   "d /home/qbittorrent 0750 ${user} ${group} - -"
-    # ];
 
     users = {
       users.${user} = {

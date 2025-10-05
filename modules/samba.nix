@@ -55,8 +55,8 @@ in {
             "writeable" = "yes";
             "guest ok" = "yes";
             "read only" = "no";
-            "create mask" = "0644";
-            "directory mask" = "0755";
+            "create mask" = "0777";
+            "directory mask" = "0777";
             "force user" = "nobody";
             "force group" = "nogroup";
           }
@@ -83,7 +83,7 @@ in {
     systemd.tmpfiles.rules = map (
       share: let
         shareSettings = cfg.commonSettings // share;
-      in "d ${shareSettings."path"} 0775 ${shareSettings."force user"} ${shareSettings."force group"} - -"
+      in "d ${shareSettings."path"} 0777 ${shareSettings."force user"} ${shareSettings."force group"} - -"
     ) (lib.attrValues cfg.shares);
 
     services.samba = {

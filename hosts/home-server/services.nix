@@ -31,6 +31,8 @@
           "path" = "/home/romank";
           "public" = "no";
           "guest ok" = "no";
+          "create mask" = "0770";
+          "directory mask" = "0770";
           "force user" = "romank";
           "force group" = "romank";
           "valid users" = ["romank"];

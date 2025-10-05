@@ -13,6 +13,9 @@
     # Terminal
     kitty
 
+    # File Manager
+    yazi
+
     # Архиваторы
     gzip
     p7zip
