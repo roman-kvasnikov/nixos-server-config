@@ -8,6 +8,7 @@
     nextcloudctl.enable = true;
     immichctl.enable = true;
     jellyfinctl.enable = true;
+    qbittorrentctl.enable = true;
     opensshctl.enable = true;
     fishctl.enable = true;
     minidlnactl.enable = true;

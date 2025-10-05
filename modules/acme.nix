@@ -32,6 +32,7 @@ in {
             "nextcloud.${config.server.domain}"
             "immich.${config.server.domain}"
             "jellyfin.${config.server.domain}"
+            "torrent.${config.server.domain}"
           ]);
       };
     };

@@ -10,6 +10,7 @@
     ./minidlna.nix
     ./nextcloud.nix
     ./openssh.nix
+    ./qbittorrent.nix
     ./samba.nix
   ];
 }
