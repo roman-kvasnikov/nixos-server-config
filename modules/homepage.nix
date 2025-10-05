@@ -11,13 +11,13 @@
   services.homepage-dashboard = {
     enable = true;
 
-    allowedHosts = "cockpit.${config.server.domain}";
+    allowedHosts = "${config.server.domain}";
 
     # https://gethomepage.dev/latest/configs/settings/
     settings = {
       title = "Kvasnikov's Home Server";
       description = "My NixOS Home Server Configuration";
-      startUrl = "https://cockpit.${config.server.domain}/";
+      startUrl = "https://${config.server.domain}/";
       # theme = "dark";
       # color = "slate";
     };
@@ -139,7 +139,7 @@
 
   services.nginx = {
     virtualHosts = {
-      "cockpit.${config.server.domain}" = {
+      "${config.server.domain}" = {
         enableACME = true;
         forceSSL = true;
         locations."/" = {

@@ -24,20 +24,20 @@ in {
       enable = true;
 
       allowed-origins = [
-        "https://${config.server.domain}"
+        "https://cockpit.${config.server.domain}"
       ];
 
       settings = {
         WebService = {
           AllowUnencrypted = false;
-          Origins = lib.mkForce "https://${config.server.domain}";
+          Origins = lib.mkForce "https://cockpit.${config.server.domain}";
         };
       };
     };
 
     services.nginx = lib.mkIf cfgNginx.enable {
       virtualHosts = {
-        "${config.server.domain}" = {
+        "cockpit.${config.server.domain}" = {
           enableACME = cfgAcme.enable;
           forceSSL = cfgAcme.enable;
           locations."/" = {
