@@ -32,9 +32,9 @@ in {
       profileDir = "/home/qbittorrent";
     };
 
-    systemd.tmpfiles.rules = [
-      "d /home/qbittorrent 0750 ${user} ${group} - -"
-    ];
+    # systemd.tmpfiles.rules = [
+    #   "d /home/qbittorrent 0750 ${user} ${group} - -"
+    # ];
 
     users = {
       users.${user} = {
