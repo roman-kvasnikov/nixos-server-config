@@ -19,17 +19,27 @@ in {
     services.qbittorrent = {
       enable = true;
 
-      user = "media";
-      group = "media";
+      user = "qbittorrent";
+      group = "qbittorrent";
+
+      profileDir = "/var/lib/qbittorrent";
     };
 
-    users.users.media = {
+    systemd.tmpfiles.rules = [
+      "d /var/lib/qbittorrent 0750 qbittorrent qbittorrent"
+    ];
+
+    users.users.qbittorrent = {
       isSystemUser = true;
 
-      group = "media";
+      group = "qbittorrent";
+
+      uid = 1001;
     };
 
-    users.groups.media = {};
+    users.groups.qbittorrent = {
+      gid = 1001;
+    };
 
     services.nginx = lib.mkIf cfgNginx.enable {
       virtualHosts = {
