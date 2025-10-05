@@ -9,7 +9,7 @@
   cfgNginx = config.services.nginxctl;
 
   user = "qbittorrent";
-  group = "qbittorrent";
+  group = "media";
 in {
   options.services.qbittorrentctl = {
     enable = lib.mkEnableOption {
@@ -26,8 +26,8 @@ in {
     services.qbittorrent = {
       enable = true;
 
-      # user = user;
-      # group = group;
+      user = user;
+      group = group;
     };
 
     # users = {
