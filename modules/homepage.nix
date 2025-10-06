@@ -130,17 +130,17 @@
         };
       }
       {
+        search = {
+          provider = "google";
+          target = "_blank";
+        };
+      }
+      {
         datetime = {
           text_size = "xl";
           format = {
             timeStyle = "short";
           };
-        };
-      }
-      {
-        search = {
-          provider = "google";
-          target = "_blank";
         };
       }
     ];
