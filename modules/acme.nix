@@ -39,6 +39,7 @@ in {
             "immich.${config.server.domain}"
             "jellyfin.${config.server.domain}"
             "torrent.${config.server.domain}"
+            "files.${config.server.domain}"
           ]);
       };
     };
