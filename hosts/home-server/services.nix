@@ -12,6 +12,7 @@
     opensshctl.enable = true;
     fishctl.enable = true;
     minidlnactl.enable = true;
+    xrayctl.enable = true;
     # filebrowserctl.enable = true;
 
     sambactl = {
