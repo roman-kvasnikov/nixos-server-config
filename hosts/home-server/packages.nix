@@ -16,6 +16,9 @@
     # File Manager
     yazi
 
+    # File Bot
+    filebot
+
     # Архиваторы
     gzip
     p7zip
