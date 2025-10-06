@@ -2,7 +2,7 @@
   users.users = {
     romank = {
       isNormalUser = true;
-      extraGroups = ["wheel" "users"];
+      extraGroups = ["wheel" "users" "media"];
     };
   };
 }

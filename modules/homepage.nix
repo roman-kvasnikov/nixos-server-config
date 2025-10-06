@@ -2,35 +2,43 @@
   config,
   lib,
   pkgs,
+  inputs,
   ...
 }: {
   # environment.systemVariables = {
   #   HOMEPAGE_ALLOWED_HOSTS = config.server.domain;
   # };
 
+  # https://gethomepage.dev/
   services.homepage-dashboard = {
     enable = true;
 
     allowedHosts = "${config.server.domain}";
 
-    # https://gethomepage.dev/latest/configs/settings/
     settings = {
       title = "Kvasnikov's Home Server";
-      description = "My NixOS Home Server Configuration";
-      startUrl = "https://${config.server.domain}/";
-      # theme = "dark";
-      # color = "slate";
+
+      # background = "${inputs.wallpapers}/landscape_monicore_instagram.jpg";
+
+      background = {
+        image = "${inputs.wallpapers}/landscape_monicore_instagram.jpg";
+        blur = "sm";
+        saturate = "50";
+        brightness = "50";
+        opacity = "50";
+      };
+
+      headerStyle = "boxedWidgets";
     };
 
-    # https://gethomepage.dev/latest/configs/bookmarks/
     bookmarks = [
       {
         Developer = [
           {
-            Github = [
+            GitHub = [
               {
                 abbr = "GH";
-                href = "https://github.com/";
+                href = "https://github.com/roman-kvasnikov";
               }
             ];
           }
@@ -56,6 +64,13 @@
       {
         "Self-hosted services" = [
           {
+            "Cockpit" = {
+              description = "Cockpit";
+              href = "https://cockpit.${config.server.domain}/";
+              siteMonitor = "https://cockpit.${config.server.domain}/";
+            };
+          }
+          {
             "Immich" = {
               description = "Immich";
               href = "https://immich.${config.server.domain}/";
@@ -67,6 +82,13 @@
               description = "Jellyfin";
               href = "https://jellyfin.${config.server.domain}/";
               siteMonitor = "https://jellyfin.${config.server.domain}/";
+            };
+          }
+          {
+            "Torrent" = {
+              description = "Torrent";
+              href = "https://torrent.${config.server.domain}/";
+              siteMonitor = "https://torrent.${config.server.domain}/";
             };
           }
           {
@@ -95,7 +117,7 @@
       {
         resources = {
           cpu = true;
-          disk = "/";
+          disk = "/home";
           memory = true;
           cputemp = true;
           tempmin = 0;
@@ -117,11 +139,8 @@
       }
       {
         search = {
-          provider = "custom";
-          url = "https://www.ecosia.org/search?q=";
+          provider = "google";
           target = "_blank";
-          suggestionUrl = "https://ac.ecosia.org/autocomplete?type=list&q=";
-          showSearchSuggestions = true;
         };
       }
     ];
