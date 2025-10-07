@@ -6,6 +6,7 @@
     ./deluge.nix
     # ./filebrowser.nix
     ./fish.nix
+    ./git.nix
     ./homepage.nix
     ./immich.nix
     ./jellyfin.nix

@@ -73,7 +73,6 @@ in {
       cockpitctl.enable = true;
       delugectl.enable = true;
       # filebrowserctl.enable = true;
-      fishctl.enable = true;
       immichctl.enable = true;
       jellyfinctl.enable = true;
       nextcloudctl.enable = true;

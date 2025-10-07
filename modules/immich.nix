@@ -30,8 +30,8 @@ in {
 
         host = "127.0.0.1";
 
-        user = "immich";
-        group = "immich";
+        # user = cfgServer.systemUser;
+        group = cfgServer.systemGroup;
       };
     })
 
