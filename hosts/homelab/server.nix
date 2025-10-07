@@ -10,7 +10,10 @@ in {
   ];
 
   options.server = {
-    enable = lib.mkEnableOption "Enable server";
+    enable = lib.mkEnableOption {
+      default = true;
+      description = "Enable server";
+    };
 
     email = lib.mkOption {
       type = lib.types.str;
