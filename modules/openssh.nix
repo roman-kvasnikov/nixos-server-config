@@ -5,6 +5,7 @@
   ...
 }: let
   cfg = config.services.opensshctl;
+  cfgServer = config.server;
 in {
   options.services.opensshctl = {
     enable = lib.mkEnableOption "Enable OpenSSH";
@@ -21,7 +22,7 @@ in {
       openFirewall = true;
 
       settings = {
-        AllowUsers = [config.server.adminUser];
+        AllowUsers = [cfgServer.adminUser];
         PasswordAuthentication = true;
         PermitRootLogin = "no";
         X11Forwarding = false;

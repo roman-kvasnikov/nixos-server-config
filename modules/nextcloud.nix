@@ -7,6 +7,7 @@
   ...
 }: let
   cfg = config.services.nextcloudctl;
+  cfgServer = config.server;
   cfgAcme = config.services.acmectl;
   cfgNginx = config.services.nginxctl;
 in {
@@ -16,7 +17,7 @@ in {
     host = lib.mkOption {
       type = lib.types.str;
       description = "Host of the Nextcloud module";
-      default = "nextcloud.${config.server.domain}";
+      default = "nextcloud.${cfgServer.domain}";
     };
 
     adminpassFile = lib.mkOption {
@@ -32,31 +33,39 @@ in {
     };
   };
 
-  config = lib.mkIf cfg.enable {
-    services.nextcloud = {
-      enable = true;
+  config = lib.mkMerge [
+    (lib.mkIf cfg.enable {
+      services.nextcloud = {
+        enable = true;
 
-      package = pkgs.nextcloud31;
+        package = pkgs.nextcloud31;
 
-      hostName = cfg.host;
-      https = true;
+        hostName = cfg.host;
+        https = true;
 
-      config = {
-        adminpassFile = cfg.adminpassFile;
-        dbtype = "sqlite";
+        config = {
+          adminpassFile = cfg.adminpassFile;
+          dbtype = "sqlite";
+        };
+
+        extraAppsEnable = true;
+        extraApps = lib.genAttrs cfg.apps (app: config.services.nextcloud.package.packages.apps.${app});
       };
+    })
 
-      extraAppsEnable = true;
-      extraApps = lib.genAttrs cfg.apps (app: config.services.nextcloud.package.packages.apps.${app});
-    };
+    (lib.mkIf (cfg.enable && cfgAcme.enable) {
+      security.acme.certs."${cfg.host}" = cfgAcme.commonCertOptions;
+    })
 
-    services.nginx = lib.mkIf cfgNginx.enable {
-      virtualHosts = {
-        "${cfg.host}" = {
-          enableACME = cfgAcme.enable;
-          forceSSL = cfgAcme.enable;
+    (lib.mkIf (cfg.enable && cfgNginx.enable) {
+      services.nginx = {
+        virtualHosts = {
+          "${cfg.host}" = {
+            enableACME = cfgAcme.enable;
+            forceSSL = cfgAcme.enable;
+          };
         };
       };
-    };
-  };
+    })
+  ];
 }

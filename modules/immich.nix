@@ -5,6 +5,7 @@
   ...
 }: let
   cfg = config.services.immichctl;
+  cfgServer = config.server;
   cfgAcme = config.services.acmectl;
   cfgNginx = config.services.nginxctl;
 in {
@@ -14,42 +15,50 @@ in {
     host = lib.mkOption {
       type = lib.types.str;
       description = "Host of the Immich module";
-      default = "immich.${config.server.domain}";
+      default = "immich.${cfgServer.domain}";
     };
   };
 
-  config = lib.mkIf cfg.enable {
-    environment.systemPackages = with pkgs; [
-      immich
-    ];
+  config = lib.mkMerge [
+    (lib.mkIf cfg.enable {
+      environment.systemPackages = with pkgs; [
+        immich
+      ];
 
-    services.immich = {
-      enable = true;
+      services.immich = {
+        enable = true;
 
-      host = "127.0.0.1";
+        host = "127.0.0.1";
 
-      user = config.server.systemUser;
-      group = config.server.systemGroup;
-    };
+        user = cfgServer.systemUser;
+        group = cfgServer.systemGroup;
+      };
+    })
 
-    services.nginx = lib.mkIf cfgNginx.enable {
-      virtualHosts = {
-        "${cfg.host}" = {
-          enableACME = cfgAcme.enable;
-          forceSSL = cfgAcme.enable;
-          locations."/" = {
-            proxyPass = "http://127.0.0.1:2283";
-            proxyWebsockets = true;
-            recommendedProxySettings = true;
-            extraConfig = ''
-              client_max_body_size 50000M;
-              proxy_read_timeout   600s;
-              proxy_send_timeout   600s;
-              send_timeout         600s;
-            '';
+    (lib.mkIf (cfg.enable && cfgAcme.enable) {
+      security.acme.certs."${cfg.host}" = cfgAcme.commonCertOptions;
+    })
+
+    (lib.mkIf (cfg.enable && cfgNginx.enable) {
+      services.nginx = {
+        virtualHosts = {
+          "${cfg.host}" = {
+            enableACME = cfgAcme.enable;
+            forceSSL = cfgAcme.enable;
+            locations."/" = {
+              proxyPass = "http://127.0.0.1:2283";
+              proxyWebsockets = true;
+              recommendedProxySettings = true;
+              extraConfig = ''
+                client_max_body_size 50000M;
+                proxy_read_timeout   600s;
+                proxy_send_timeout   600s;
+                send_timeout         600s;
+              '';
+            };
           };
         };
       };
-    };
-  };
+    })
+  ];
 }

@@ -5,6 +5,7 @@
   ...
 }: let
   cfg = config.services.filebrowserctl;
+  cfgServer = config.server;
   cfgAcme = config.services.acmectl;
   cfgNginx = config.services.nginxctl;
 in {
@@ -14,34 +15,42 @@ in {
     host = lib.mkOption {
       type = lib.types.str;
       description = "Host of the Filebrowser module";
-      default = "files.${config.server.domain}";
+      default = "files.${cfgServer.domain}";
     };
   };
 
-  config = lib.mkIf cfg.enable {
-    environment.systemPackages = with pkgs; [
-      filebrowser
-    ];
+  config = lib.mkMerge [
+    (lib.mkIf cfg.enable {
+      environment.systemPackages = with pkgs; [
+        filebrowser
+      ];
 
-    services.filebrowser = {
-      enable = true;
+      services.filebrowser = {
+        enable = true;
 
-      user = config.server.systemUser;
-      group = config.server.systemGroup;
+        user = cfgServer.systemUser;
+        group = cfgServer.systemGroup;
 
-      settings = {};
-    };
+        settings = {};
+      };
+    })
 
-    services.nginx = lib.mkIf cfgNginx.enable {
-      virtualHosts = {
-        "${cfg.host}" = {
-          enableACME = cfgAcme.enable;
-          forceSSL = cfgAcme.enable;
-          locations."/" = {
-            proxyPass = "http://127.0.0.1:8080"; # порт Filebrowser по умолчанию
+    (lib.mkIf (cfg.enable && cfgAcme.enable) {
+      security.acme.certs."${cfg.host}" = cfgAcme.commonCertOptions;
+    })
+
+    (lib.mkIf (cfg.enable && cfgNginx.enable) {
+      services.nginx = {
+        virtualHosts = {
+          "${cfg.host}" = {
+            enableACME = cfgAcme.enable;
+            forceSSL = cfgAcme.enable;
+            locations."/" = {
+              proxyPass = "http://127.0.0.1:8080";
+            };
           };
         };
       };
-    };
-  };
+    })
+  ];
 }

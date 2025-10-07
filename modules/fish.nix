@@ -27,14 +27,6 @@ in {
         lt = "eza -aT --color=always --group-directories-first --icons";
         cat = "bat --paging=never";
       };
-
-      shellInit = with pkgs; ''
-        set -g fish_greeting
-
-        if systemctl is-active --quiet xray; and test -f /etc/fish/proxy-env.fish
-            source /etc/fish/proxy-env.fish
-        end
-      '';
     };
 
     users.defaultUserShell = pkgs.fish;
