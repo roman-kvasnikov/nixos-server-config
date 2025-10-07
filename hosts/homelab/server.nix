@@ -10,10 +10,10 @@ in {
   ];
 
   options.server = {
-    enable = lib.mkEnableOption {
-      default = true;
-      description = "Enable server";
-    };
+    # enable = lib.mkEnableOption {
+    #   default = true;
+    #   description = "Enable server";
+    # };
 
     email = lib.mkOption {
       type = lib.types.str;
@@ -52,7 +52,8 @@ in {
     };
   };
 
-  config = lib.mkIf cfg.enable {
+  # config = lib.mkIf cfg.enable {
+  config = {
     users = {
       users = {
         ${config.server.systemUser} = {
