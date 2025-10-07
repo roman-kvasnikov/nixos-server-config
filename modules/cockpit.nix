@@ -33,7 +33,9 @@ in {
         ];
 
         settings = {
-          AllowUnencrypted = false;
+          WebService = {
+            AllowUnencrypted = false;
+          };
         };
       };
     })
