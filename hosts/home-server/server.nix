@@ -1,4 +1,10 @@
-{lib, ...}: {
+{
+  config,
+  lib,
+  ...
+}: let
+  cfg = config.server;
+in {
   options.server = {
     enable = lib.mkEnableOption "Enable server";
 
