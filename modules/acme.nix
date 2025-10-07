@@ -21,11 +21,7 @@ in {
 
   config = lib.mkIf cfg.enable {
     environment.etc = {
-      ${cfg.commonCertOptions.credentialsFile}.text = ''
-        NAMECHEAP_API_USER=RomanKW
-        NAMECHEAP_API_KEY=545cef3f919847b28999ca3eb2b643b9
-        NAMECHEAP_API_IP=188.243.2.115
-      '';
+      ${cfg.commonCertOptions.credentialsFile}.source = lib.mkIf cfg.enable "${cfg.commonCertOptions.credentialsFile}";
     };
 
     security = {
