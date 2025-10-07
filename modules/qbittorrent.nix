@@ -11,10 +11,10 @@ in {
   options.services.qbittorrentctl = {
     enable = lib.mkEnableOption "Enable qBittorrent";
 
-    url = lib.mkOption {
+    host = lib.mkOption {
       type = lib.types.str;
-      description = "URL of the qBittorrent module";
-      default = "https://torrent.${config.server.domain}";
+      description = "Host of the qBittorrent module";
+      default = "torrent.${config.server.domain}";
     };
   };
 
@@ -32,7 +32,7 @@ in {
 
     services.nginx = lib.mkIf cfgNginx.enable {
       virtualHosts = {
-        "${cfg.url}" = {
+        "${cfg.host}" = {
           enableACME = cfgAcme.enable;
           forceSSL = cfgAcme.enable;
           locations."/" = {

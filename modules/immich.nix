@@ -11,10 +11,10 @@ in {
   options.services.immichctl = {
     enable = lib.mkEnableOption "Enable Immich";
 
-    url = lib.mkOption {
+    host = lib.mkOption {
       type = lib.types.str;
-      description = "URL of the Immich module";
-      default = "https://immich.${config.server.domain}";
+      description = "Host of the Immich module";
+      default = "immich.${config.server.domain}";
     };
   };
 
@@ -34,7 +34,7 @@ in {
 
     services.nginx = lib.mkIf cfgNginx.enable {
       virtualHosts = {
-        "${cfg.url}" = {
+        "${cfg.host}" = {
           enableACME = cfgAcme.enable;
           forceSSL = cfgAcme.enable;
           locations."/" = {

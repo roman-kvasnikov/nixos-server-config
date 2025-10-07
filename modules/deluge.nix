@@ -11,10 +11,10 @@ in {
   options.services.delugectl = {
     enable = lib.mkEnableOption "Enable Deluge";
 
-    url = lib.mkOption {
+    host = lib.mkOption {
       type = lib.types.str;
-      description = "URL of the Deluge module";
-      default = "https://torrent.${config.server.domain}";
+      description = "Host of the Deluge module";
+      default = "torrent.${config.server.domain}";
     };
   };
 
@@ -35,7 +35,7 @@ in {
 
     services.nginx = lib.mkIf cfgNginx.enable {
       virtualHosts = {
-        "${cfg.url}" = {
+        "${cfg.host}" = {
           enableACME = cfgAcme.enable;
           forceSSL = cfgAcme.enable;
           locations."/" = {

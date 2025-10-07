@@ -11,10 +11,10 @@ in {
   options.services.jellyfinctl = {
     enable = lib.mkEnableOption "Enable Jellyfin";
 
-    url = lib.mkOption {
+    host = lib.mkOption {
       type = lib.types.str;
-      description = "URL of the Jellyfin module";
-      default = "https://jellyfin.${config.server.domain}";
+      description = "Host of the Jellyfin module";
+      default = "jellyfin.${config.server.domain}";
     };
   };
 
@@ -34,7 +34,7 @@ in {
 
     services.nginx = lib.mkIf cfgNginx.enable {
       virtualHosts = {
-        "${cfg.url}" = {
+        "${cfg.host}" = {
           enableACME = cfgAcme.enable;
           forceSSL = cfgAcme.enable;
           locations."/" = {

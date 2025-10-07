@@ -13,6 +13,12 @@ in {
       description = "Enable UniFi";
       default = false;
     };
+
+    host = lib.mkOption {
+      type = lib.types.str;
+      description = "Host of the UniFi module";
+      default = "unifi.${config.server.domain}";
+    };
   };
 
   config = lib.mkIf cfg.enable {
@@ -26,7 +32,7 @@ in {
 
     services.nginx = lib.mkIf cfgNginx.enable {
       virtualHosts = {
-        "unifi.${config.server.domain}" = {
+        "${cfg.host}" = {
           enableACME = cfgAcme.enable;
           forceSSL = cfgAcme.enable;
           locations."/" = {

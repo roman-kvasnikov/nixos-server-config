@@ -13,10 +13,10 @@ in {
   options.services.nextcloudctl = {
     enable = lib.mkEnableOption "Enable Nextcloud";
 
-    url = lib.mkOption {
+    host = lib.mkOption {
       type = lib.types.str;
-      description = "URL of the Nextcloud module";
-      default = "https://nextcloud.${config.server.domain}";
+      description = "Host of the Nextcloud module";
+      default = "nextcloud.${config.server.domain}";
     };
 
     adminpassFile = lib.mkOption {
@@ -38,7 +38,7 @@ in {
 
       package = pkgs.nextcloud31;
 
-      hostName = cfg.url;
+      hostName = cfg.host;
       https = true;
 
       config = {
@@ -52,7 +52,7 @@ in {
 
     services.nginx = lib.mkIf cfgNginx.enable {
       virtualHosts = {
-        "${cfg.url}" = {
+        "${cfg.host}" = {
           enableACME = cfgAcme.enable;
           forceSSL = cfgAcme.enable;
         };
