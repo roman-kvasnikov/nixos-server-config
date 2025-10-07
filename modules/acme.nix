@@ -37,6 +37,7 @@ in {
             "torrent.${config.server.domain}"
             # "files.${config.server.domain}"
             # "unifi.${config.server.domain}"
+            "uptime.${config.server.domain}"
           ]);
       };
     };

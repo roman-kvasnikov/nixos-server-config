@@ -115,6 +115,7 @@ in {
       };
 
       # unifictl.enable = false;
+      uptime-kumactl.enable = true;
       xrayctl.enable = true;
 
       # Additional services
