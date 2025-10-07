@@ -18,7 +18,7 @@ in {
     services.xray = {
       enable = true;
 
-      settingsFile = "/etc/xray/config.json";
+      settingsFile = "/etc/secrets/xray/config.json";
     };
   };
 }
