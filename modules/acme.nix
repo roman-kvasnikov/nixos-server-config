@@ -20,10 +20,6 @@ in {
   };
 
   config = lib.mkIf cfg.enable {
-    environment.etc = {
-      ${cfg.commonCertOptions.credentialsFile}.source = lib.mkIf cfg.enable "${cfg.commonCertOptions.credentialsFile}";
-    };
-
     security = {
       acme = {
         acceptTerms = true;
