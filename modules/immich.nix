@@ -17,6 +17,12 @@ in {
       description = "Host of the Immich module";
       default = "immich.${cfgServer.domain}";
     };
+
+    mediaDir = lib.mkOption {
+      type = lib.types.path;
+      description = "Media directory for Immich";
+      default = "/home/Media/Photos";
+    };
   };
 
   config = lib.mkMerge [
@@ -32,6 +38,8 @@ in {
 
         # user = cfgServer.systemUser;
         group = cfgServer.systemGroup;
+
+        mediaDir = cfg.mediaDir;
       };
     })
 
