@@ -1,10 +1,4 @@
 {version, ...}: {
-  i18n.defaultLocale = "en_US.UTF-8";
-
-  time.timeZone = "Europe/Moscow";
-
-  system.stateVersion = version;
-
   imports = [
     ./boot.nix
     ./hardware-configuration.nix
@@ -17,6 +11,12 @@
     ./users.nix
     ./zram.nix
   ];
+
+  # i18n.defaultLocale = "en_US.UTF-8";
+
+  time.timeZone = "Europe/Moscow";
+
+  system.stateVersion = version;
 
   config.services.server.enable = true;
 }
