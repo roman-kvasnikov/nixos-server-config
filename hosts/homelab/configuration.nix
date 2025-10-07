@@ -8,6 +8,7 @@
     ./secrets.nix
     ./security.nix
     ./server.nix
+    ./users.nix
     ./zram.nix
   ];
 
@@ -17,5 +18,5 @@
 
   system.stateVersion = version;
 
-  services.server.enable = true;
+  config.services.server.enable = true;
 }

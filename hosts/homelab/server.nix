@@ -47,12 +47,6 @@ in {
       description = "System group to run the server services as";
       default = "share";
     };
-
-    adminUser = lib.mkOption {
-      type = lib.types.str;
-      description = "Administrative user";
-      default = "romank";
-    };
   };
 
   config = lib.mkIf cfg.enable {
@@ -61,11 +55,6 @@ in {
         ${config.server.systemUser} = {
           isSystemUser = true;
           group = config.server.systemGroup;
-        };
-
-        ${config.server.adminUser} = {
-          isNormalUser = true;
-          extraGroups = ["wheel" "users" config.server.systemGroup];
         };
       };
 
