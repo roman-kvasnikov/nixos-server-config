@@ -5,6 +5,10 @@
 }: let
   cfg = config.server;
 in {
+  imports = [
+    ../../modules
+  ];
+
   options.server = {
     enable = lib.mkEnableOption "Enable server";
 
@@ -67,10 +71,6 @@ in {
 
       groups.${config.server.systemGroup} = {};
     };
-
-    imports = [
-      ../../modules
-    ];
 
     services = {
       # User Services
