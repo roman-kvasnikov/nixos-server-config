@@ -31,20 +31,20 @@ in {
         immich
       ];
 
+      users.users.immich = {
+        isSystemUser = true;
+        group = cfgServer.systemGroup;
+      };
+
       services.immich = {
         enable = true;
 
         host = "127.0.0.1";
 
-        # user = cfgServer.systemUser;
+        user = "immich";
         group = cfgServer.systemGroup;
 
-        mediaLocation = cfg.mediaDir;
-      };
-
-      users.users.immich = {
-        isSystemUser = true;
-        group = cfgServer.systemGroup;
+        # mediaLocation = cfg.mediaDir;
       };
     })
 
