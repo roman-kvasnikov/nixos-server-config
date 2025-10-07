@@ -3,6 +3,7 @@
     ./acme.nix
     ./nginx.nix
     ./cockpit.nix
+    ./deluge.nix
     # ./filebrowser.nix
     ./fish.nix
     ./homepage.nix
