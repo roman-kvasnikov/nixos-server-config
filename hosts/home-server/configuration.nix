@@ -16,4 +16,6 @@
   time.timeZone = "Europe/Moscow";
 
   system.stateVersion = version;
+
+  services.server.enable = true;
 }
