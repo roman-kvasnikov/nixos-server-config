@@ -16,7 +16,7 @@
     ./zram.nix
   ];
 
-  config.services.server.enable = true;
+  # config.services.server.enable = true;
 
   # i18n.defaultLocale = "en_US.UTF-8";
 
