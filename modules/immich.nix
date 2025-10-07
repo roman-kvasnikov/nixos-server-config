@@ -39,7 +39,7 @@ in {
         # user = cfgServer.systemUser;
         group = cfgServer.systemGroup;
 
-        mediaDir = cfg.mediaDir;
+        mediaLocation = cfg.mediaDir;
       };
     })
 
