@@ -41,6 +41,11 @@ in {
 
         mediaLocation = cfg.mediaDir;
       };
+
+      users.users.immich = {
+        isSystemUser = true;
+        group = cfgServer.systemGroup;
+      };
     })
 
     (lib.mkIf (cfg.enable && cfgAcme.enable) {
