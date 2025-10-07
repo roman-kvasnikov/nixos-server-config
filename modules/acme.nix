@@ -4,6 +4,8 @@
   ...
 }: let
   cfg = config.services.acmectl;
+  cfgServer = config.server;
+  cfgServices = config.services;
 in {
   options.services.acmectl = {
     enable = lib.mkEnableOption "Enable ACME";
@@ -23,21 +25,22 @@ in {
     security = {
       acme = {
         acceptTerms = true;
-        defaults.email = config.server.email;
+        defaults.email = cfgServer.email;
 
         certs = lib.listToAttrs (map (domain: {
             name = domain;
             value = cfg.commonCertOptions;
           }) [
-            config.server.domain
-            "cockpit.${config.server.domain}"
-            "nextcloud.${config.server.domain}"
-            "immich.${config.server.domain}"
-            "jellyfin.${config.server.domain}"
-            "torrent.${config.server.domain}"
-            # "files.${config.server.domain}"
-            # "unifi.${config.server.domain}"
-            "uptime.${config.server.domain}"
+            cfgServer.domain
+            cfgServices.cockpitctl.host
+            cfgServices.delugectl.host
+            # cfgServices.filebrowserctl.host
+            cfgServices.immichctl.host
+            cfgServices.jellyfinctl.host
+            cfgServices.nextcloudctl.host
+            # cfgServices.qbittorrentctl.host
+            # cfgServices.unifictl.host
+            cfgServices.uptime-kumactl.host
           ]);
       };
     };

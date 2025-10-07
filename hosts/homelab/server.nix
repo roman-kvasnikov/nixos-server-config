@@ -10,11 +10,6 @@ in {
   ];
 
   options.server = {
-    # enable = lib.mkEnableOption {
-    #   default = true;
-    #   description = "Enable server";
-    # };
-
     email = lib.mkOption {
       type = lib.types.str;
       description = "Email for ACME registration";
@@ -58,7 +53,6 @@ in {
     };
   };
 
-  # config = lib.mkIf cfg.enable {
   config = {
     users = {
       users = {
