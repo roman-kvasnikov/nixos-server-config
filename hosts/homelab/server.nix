@@ -71,13 +71,13 @@ in {
       nginxctl.enable = true;
 
       cockpitctl.enable = true;
-      delugectl.enable = true;
+      delugectl.enable = false;
       # filebrowserctl.enable = true;
       immichctl.enable = true;
       jellyfinctl.enable = true;
       nextcloudctl.enable = true;
       opensshctl.enable = true;
-      qbittorrentctl.enable = false;
+      qbittorrentctl.enable = true;
 
       sambactl = {
         enable = true;
