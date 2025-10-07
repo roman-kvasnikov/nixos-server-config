@@ -9,39 +9,52 @@
   cfg = config.services.nextcloudctl;
   cfgAcme = config.services.acmectl;
   cfgNginx = config.services.nginxctl;
-  nextCloudApps = config.services.nextcloud.package.packages.apps;
 in {
   options.services.nextcloudctl = {
-    enable = lib.mkEnableOption {
-      description = "Enable Nextcloud";
-      default = false;
+    enable = lib.mkEnableOption "Enable Nextcloud";
+
+    url = lib.mkOption {
+      type = lib.types.str;
+      description = "URL of the Nextcloud module";
+      default = "https://nextcloud.${config.server.domain}";
+    };
+
+    adminpassFile = lib.mkOption {
+      type = lib.types.path;
+      description = "Admin password file for Nextcloud";
+      default = "/etc/secrets/nextcloud-admin-pass";
+    };
+
+    apps = lib.mkOption {
+      type = lib.types.listOf lib.types.str;
+      description = "List of Nextcloud apps to enable";
+      default = ["bookmarks" "calendar" "contacts" "tasks" "deck" "notes"];
     };
   };
 
   config = lib.mkIf cfg.enable {
-    environment.etc."nextcloud-admin-pass".text = "123";
-
     services.nextcloud = {
       enable = true;
 
       package = pkgs.nextcloud31;
-      hostName = "nextcloud.${config.server.domain}";
+
+      hostName = cfg.url;
       https = true;
 
       config = {
-        adminpassFile = "/etc/nextcloud-admin-pass";
+        adminpassFile = cfg.adminpassFile;
         dbtype = "sqlite";
       };
 
       extraAppsEnable = true;
       extraApps = {
-        inherit (nextCloudApps) bookmarks calendar contacts tasks deck notes;
+        inherit (config.services.nextcloud.package.packages.apps) ${toString cfg.apps};
       };
     };
 
     services.nginx = lib.mkIf cfgNginx.enable {
       virtualHosts = {
-        "nextcloud.${config.server.domain}" = {
+        "${cfg.url}" = {
           enableACME = cfgAcme.enable;
           forceSSL = cfgAcme.enable;
         };
@@ -49,16 +62,3 @@ in {
     };
   };
 }
-#   "bookmarks"
-# , "calendar"
-# , "contacts"
-# , "deck"
-# , "keeweb"
-# , "mail"
-# , "news"
-# , "notes"
-# , "onlyoffice"
-# , "polls"
-# , "tasks"
-# , "twofactor_webauthn"
-

@@ -10,14 +10,9 @@
     ffmpeg
     tree
 
-    # Terminal
-    kitty
-
-    # File Manager
-    yazi
-
-    # File Bot
-    filebot
+    kitty # Terminal
+    yazi # File Manager
+    filebot # Rename files based on metadata for movies and TV shows
 
     # Архиваторы
     gzip

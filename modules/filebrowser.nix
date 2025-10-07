@@ -7,14 +7,14 @@
   cfg = config.services.filebrowserctl;
   cfgAcme = config.services.acmectl;
   cfgNginx = config.services.nginxctl;
-
-  user = "filebrowser";
-  group = "filebrowser";
 in {
   options.services.filebrowserctl = {
-    enable = lib.mkEnableOption {
-      description = "Enable Filebrowser";
-      default = false;
+    enable = lib.mkEnableOption "Enable Filebrowser";
+
+    url = lib.mkOption {
+      type = lib.types.str;
+      description = "URL of the Filebrowser module";
+      default = "https://files.${config.server.domain}";
     };
   };
 
@@ -26,24 +26,15 @@ in {
     services.filebrowser = {
       enable = true;
 
-      user = user;
-      group = group;
+      user = config.server.systemUser;
+      group = config.server.systemGroup;
 
       settings = {};
     };
 
-    users = {
-      users.${user} = {
-        isSystemUser = true;
-        group = group;
-      };
-
-      groups.${group} = {};
-    };
-
     services.nginx = lib.mkIf cfgNginx.enable {
       virtualHosts = {
-        "files.${config.server.domain}" = {
+        "${cfg.url}" = {
           enableACME = cfgAcme.enable;
           forceSSL = cfgAcme.enable;
           locations."/" = {

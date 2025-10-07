@@ -7,10 +7,7 @@
   cfg = config.services.fishctl;
 in {
   options.services.fishctl = {
-    enable = lib.mkEnableOption {
-      description = "Enable Fish Shell";
-      default = false;
-    };
+    enable = lib.mkEnableOption "Enable Fish Shell";
   };
 
   config = lib.mkIf cfg.enable {

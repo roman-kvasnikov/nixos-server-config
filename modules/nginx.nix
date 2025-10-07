@@ -1,3 +1,4 @@
+# https://nohup.no/nixos-nixos/
 {
   config,
   lib,
@@ -6,10 +7,7 @@
   cfg = config.services.nginxctl;
 in {
   options.services.nginxctl = {
-    enable = lib.mkEnableOption {
-      description = "Enable Nginx";
-      default = false;
-    };
+    enable = lib.mkEnableOption "Enable Nginx";
   };
 
   config = lib.mkIf cfg.enable {
@@ -23,5 +21,3 @@ in {
     networking.firewall.allowedTCPPorts = [80 443];
   };
 }
-# https://nohup.no/nixos-nixos/
-

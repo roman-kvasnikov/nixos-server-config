@@ -7,10 +7,7 @@
   cfg = config.services.minidlnactl;
 in {
   options.services.minidlnactl = {
-    enable = lib.mkEnableOption {
-      description = "Enable Minidlna";
-      default = false;
-    };
+    enable = lib.mkEnableOption "Enable Minidlna";
   };
 
   config = lib.mkIf cfg.enable {

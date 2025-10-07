@@ -13,6 +13,7 @@
     ./openssh.nix
     ./qbittorrent.nix
     ./samba.nix
+    # ./unifi.nix
     ./xray.nix
   ];
 }

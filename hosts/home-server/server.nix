@@ -1,0 +1,118 @@
+{lib, ...}: {
+  options.server = {
+    enable = lib.mkEnableOption "Enable server";
+
+    email = lib.mkOption {
+      type = lib.types.str;
+      description = "Email for ACME registration";
+      default = "roman.kvasok@gmail.com";
+    };
+
+    domain = lib.mkOption {
+      type = lib.types.str;
+      description = "Domain name for the server";
+      default = "kvasok.xyz";
+    };
+
+    ip = lib.mkOption {
+      type = lib.types.str;
+      description = "IP address for the server";
+      default = "192.168.1.11";
+    };
+
+    subnet = lib.mkOption {
+      type = lib.types.str;
+      description = "Subnet for the server";
+      default = "192.168.1.0/24";
+    };
+
+    systemUser = lib.mkOption {
+      type = lib.types.str;
+      description = "System user to run the server services as";
+      default = "share";
+    };
+
+    systemGroup = lib.mkOption {
+      type = lib.types.str;
+      description = "System group to run the server services as";
+      default = "share";
+    };
+
+    adminUser = lib.mkOption {
+      type = lib.types.str;
+      description = "Administrative user";
+      default = "romank";
+    };
+  };
+
+  config = lib.mkIf cfg.enable {
+    users = {
+      users = {
+        ${config.server.systemUser} = {
+          isSystemUser = true;
+          group = config.server.systemGroup;
+        };
+
+        ${config.server.adminUser} = {
+          isNormalUser = true;
+          extraGroups = ["wheel" "users" config.server.systemGroup];
+        };
+      };
+
+      groups.${config.server.systemGroup} = {};
+    };
+
+    imports = [
+      ../../modules
+    ];
+
+    # User Services
+    acmectl.enable = true;
+    nginxctl.enable = true;
+
+    cockpitctl.enable = true;
+    delugectl.enable = true;
+    # filebrowserctl.enable = true;
+    fishctl.enable = true;
+    immichctl.enable = true;
+    jellyfinctl.enable = true;
+    nextcloudctl.enable = true;
+    opensshctl.enable = true;
+    qbittorrentctl.enable = false;
+
+    sambactl = {
+      enable = true;
+
+      users = ["romank"];
+
+      shares = {
+        public = {
+          "path" = "/home/public";
+        };
+
+        movies = {
+          "path" = "/home/movies";
+        };
+
+        romank = {
+          "path" = "/home/romank";
+          "public" = "no";
+          "guest ok" = "no";
+          "create mask" = "0770";
+          "directory mask" = "0770";
+          "force user" = "romank";
+          "force group" = "romank";
+          "valid users" = ["romank"];
+        };
+      };
+    };
+
+    # unifictl.enable = false;
+    xrayctl.enable = true;
+
+    # Additional services
+    dbus.enable = true; # Для работы с systemd
+    udisks2.enable = true; # Автоматическое монтирование USB
+    geoclue2.enable = true; # Геолокация для часовых поясов
+  };
+}

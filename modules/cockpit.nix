@@ -9,9 +9,12 @@
   cfgNginx = config.services.nginxctl;
 in {
   options.services.cockpitctl = {
-    enable = lib.mkEnableOption {
-      description = "Enable Cockpit";
-      default = false;
+    enable = lib.mkEnableOption "Enable Cockpit";
+
+    url = lib.mkOption {
+      type = lib.types.str;
+      description = "URL of the Cockpit module";
+      default = "https://cockpit.${config.server.domain}";
     };
   };
 
@@ -24,20 +27,15 @@ in {
       enable = true;
 
       allowed-origins = [
-        "https://cockpit.${config.server.domain}"
+        cfg.url
       ];
 
-      settings = {
-        WebService = {
-          AllowUnencrypted = false;
-          Origins = lib.mkForce "https://cockpit.${config.server.domain}";
-        };
-      };
+      settings = {};
     };
 
     services.nginx = lib.mkIf cfgNginx.enable {
       virtualHosts = {
-        "cockpit.${config.server.domain}" = {
+        "${cfg.url}" = {
           enableACME = cfgAcme.enable;
           forceSSL = cfgAcme.enable;
           locations."/" = {

@@ -7,10 +7,7 @@
   cfg = config.services.xrayctl;
 in {
   options.services.xrayctl = {
-    enable = lib.mkEnableOption {
-      description = "Enable Xray";
-      default = false;
-    };
+    enable = lib.mkEnableOption "Enable Xray";
   };
 
   config = lib.mkIf cfg.enable {

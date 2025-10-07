@@ -7,14 +7,14 @@
   cfg = config.services.qbittorrentctl;
   cfgAcme = config.services.acmectl;
   cfgNginx = config.services.nginxctl;
-
-  user = "qbittorrent";
-  group = "media";
 in {
   options.services.qbittorrentctl = {
-    enable = lib.mkEnableOption {
-      description = "Enable qBittorrent";
-      default = false;
+    enable = lib.mkEnableOption "Enable qBittorrent";
+
+    url = lib.mkOption {
+      type = lib.types.str;
+      description = "URL of the qBittorrent module";
+      default = "https://torrent.${config.server.domain}";
     };
   };
 
@@ -26,28 +26,19 @@ in {
     services.qbittorrent = {
       enable = true;
 
-      user = user;
-      group = group;
-    };
-
-    users = {
-      users.${user} = {
-        isSystemUser = true;
-        group = group;
-      };
-
-      groups.${group} = {};
+      user = config.server.systemUser;
+      group = config.server.systemGroup;
     };
 
     services.nginx = lib.mkIf cfgNginx.enable {
       virtualHosts = {
-        "torrent.${config.server.domain}" = {
+        "${cfg.url}" = {
           enableACME = cfgAcme.enable;
           forceSSL = cfgAcme.enable;
           locations."/" = {
-            proxyPass = "http://127.0.0.1:8080"; # Проксируем на qBittorrent
-            proxyWebsockets = true; # Поддержка WebSocket (если используется)
-            recommendedProxySettings = true; # Рекомендуемые настройки прокси
+            proxyPass = "http://127.0.0.1:8080";
+            proxyWebsockets = true;
+            recommendedProxySettings = true;
             extraConfig = ''
               client_max_body_size 50000M;
               proxy_read_timeout   600s;

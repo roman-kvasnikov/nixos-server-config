@@ -7,14 +7,14 @@
   cfg = config.services.immichctl;
   cfgAcme = config.services.acmectl;
   cfgNginx = config.services.nginxctl;
-
-  user = "immich";
-  group = "media";
 in {
   options.services.immichctl = {
-    enable = lib.mkEnableOption {
-      description = "Enable Immich";
-      default = false;
+    enable = lib.mkEnableOption "Enable Immich";
+
+    url = lib.mkOption {
+      type = lib.types.str;
+      description = "URL of the Immich module";
+      default = "https://immich.${config.server.domain}";
     };
   };
 
@@ -28,22 +28,13 @@ in {
 
       host = "127.0.0.1";
 
-      user = user;
-      group = group;
-    };
-
-    users = {
-      users.${user} = {
-        isSystemUser = true;
-        group = group;
-      };
-
-      groups.${group} = {};
+      user = config.server.systemUser;
+      group = config.server.systemGroup;
     };
 
     services.nginx = lib.mkIf cfgNginx.enable {
       virtualHosts = {
-        "immich.${config.server.domain}" = {
+        "${cfg.url}" = {
           enableACME = cfgAcme.enable;
           forceSSL = cfgAcme.enable;
           locations."/" = {

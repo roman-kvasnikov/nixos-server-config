@@ -1,16 +1,14 @@
 {version, ...}: {
   imports = [
-    ./nix.nix
-    ./hardware-configuration.nix
     ./boot.nix
+    ./hardware-configuration.nix
     ./networking.nix
-    ./security.nix
-    ./user.nix
-    ./zram.nix
-    ./settings.nix
-    ./services.nix
-    ../../modules
+    ./nix.nix
     ./packages.nix
+    ./secrets.nix
+    ./security.nix
+    ./server.nix
+    ./zram.nix
   ];
 
   i18n.defaultLocale = "en_US.UTF-8";

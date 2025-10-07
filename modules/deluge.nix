@@ -4,32 +4,33 @@
   pkgs,
   ...
 }: let
-  cfg = config.services.jellyfinctl;
+  cfg = config.services.delugectl;
   cfgAcme = config.services.acmectl;
   cfgNginx = config.services.nginxctl;
 in {
-  options.services.jellyfinctl = {
-    enable = lib.mkEnableOption "Enable Jellyfin";
+  options.services.delugectl = {
+    enable = lib.mkEnableOption "Enable Deluge";
 
     url = lib.mkOption {
       type = lib.types.str;
-      description = "URL of the Jellyfin module";
-      default = "https://jellyfin.${config.server.domain}";
+      description = "URL of the Deluge module";
+      default = "https://torrent.${config.server.domain}";
     };
   };
 
   config = lib.mkIf cfg.enable {
     environment.systemPackages = with pkgs; [
-      jellyfin
-      jellyfin-web
-      jellyfin-ffmpeg
+      deluge
     ];
 
-    services.jellyfin = {
+    services.deluge = {
       enable = true;
 
       user = config.server.systemUser;
       group = config.server.systemGroup;
+      web = {
+        enable = true;
+      };
     };
 
     services.nginx = lib.mkIf cfgNginx.enable {
@@ -38,7 +39,7 @@ in {
           enableACME = cfgAcme.enable;
           forceSSL = cfgAcme.enable;
           locations."/" = {
-            proxyPass = "http://127.0.0.1:8096";
+            proxyPass = "http://127.0.0.1:8112";
             proxyWebsockets = true;
             recommendedProxySettings = true;
             extraConfig = ''
