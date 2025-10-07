@@ -50,6 +50,12 @@ in {
       description = "System group to run the server services as";
       default = "share";
     };
+
+    adminUser = lib.mkOption {
+      type = lib.types.str;
+      description = "Admin user for the server";
+      default = "romank";
+    };
   };
 
   # config = lib.mkIf cfg.enable {
