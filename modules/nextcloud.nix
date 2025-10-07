@@ -47,9 +47,7 @@ in {
       };
 
       extraAppsEnable = true;
-      extraApps = {
-        inherit (config.services.nextcloud.package.packages.apps) ${toString cfg.apps};
-      };
+      extraApps = lib.genAttrs cfg.apps (app: config.services.nextcloud.package.packages.apps.${app});
     };
 
     services.nginx = lib.mkIf cfgNginx.enable {
