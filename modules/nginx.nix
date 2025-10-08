@@ -14,9 +14,13 @@ in {
     services.nginx = {
       enable = true;
 
+      recommendedGzipSettings = true;
+      recommendedOptimisation = true;
       recommendedProxySettings = true;
       recommendedTlsSettings = true;
     };
+
+    users.users.nginx.extraGroups = ["acme"];
 
     networking.firewall.allowedTCPPorts = [80 443];
   };

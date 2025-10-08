@@ -43,19 +43,71 @@ in {
         hostName = cfg.host;
         https = true;
 
-        database.createLocally = true;
-        configureRedis = true;
+        caching.redis = true;
+        config = {
+          dbtype = "pgsql";
+          dbname = "nextcloud";
+          dbuser = "nextcloud";
+          dbhost = "/run/postgresql";
+          adminuser = "admin";
+          adminpassFile = cfg.adminpassFile;
+        };
+
+        settings = {
+          overwriteprotocol = "https";
+          default_phone_region = "RU";
+        };
+
         maxUploadSize = "16G";
 
         extraAppsEnable = true;
         autoUpdateApps.enable = true;
         extraApps = lib.genAttrs cfg.apps (app: config.services.nextcloud.package.packages.apps.${app});
 
-        config = {
-          dbtype = "sqlite";
-          adminpassFile = cfg.adminpassFile;
-          overwriteProtocol = "https";
-          defaultPhoneRegion = "RU";
+        extraOptions = {
+          redis = {
+            host = "127.0.0.1";
+            port = 31638;
+            dbindex = 0;
+            timeout = 1.5;
+          };
+        };
+      };
+
+      services = {
+        postgresql = {
+          enable = true;
+          ensureDatabases = ["nextcloud"];
+          ensureUsers = [
+            {
+              name = "nextcloud";
+              ensurePermissions."DATABASE nextcloud" = "ALL PRIVILEGES";
+            }
+          ];
+        };
+        # optional backup for postgresql db
+        postgresqlBackup = {
+          enable = true;
+          location = "/data/backup/nextclouddb";
+          databases = ["nextcloud"];
+          # time to start backup in systemd.time format
+          startAt = "*-*-* 23:15:00";
+        };
+      };
+
+      # ensure postgresql db is started with nextcloud
+      systemd = {
+        services."nextcloud-setup" = {
+          requires = ["postgresql.service"];
+          after = ["postgresql.service"];
+        };
+      };
+
+      services = {
+        redis.servers.nextcloud = {
+          enable = true;
+          port = 31638;
+          bind = "127.0.0.1";
         };
       };
     })
