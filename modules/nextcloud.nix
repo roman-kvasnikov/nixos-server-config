@@ -29,7 +29,7 @@ in {
     apps = lib.mkOption {
       type = lib.types.listOf lib.types.str;
       description = "List of Nextcloud apps to enable";
-      default = ["bookmarks" "calendar" "contacts" "tasks" "deck" "notes"];
+      default = ["bookmarks" "calendar" "contacts" "tasks" "notes" "mail"];
     };
   };
 
@@ -52,7 +52,7 @@ in {
         extraApps = lib.genAttrs cfg.apps (app: config.services.nextcloud.package.packages.apps.${app});
 
         config = {
-          dbtype = "pgsql";
+          dbtype = "sqlite";
           adminpassFile = cfg.adminpassFile;
           overwriteProtocol = "https";
           defaultPhoneRegion = "RU";
