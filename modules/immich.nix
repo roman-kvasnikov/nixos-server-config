@@ -18,11 +18,11 @@ in {
       default = "immich.${cfgServer.domain}";
     };
 
-    mediaDir = lib.mkOption {
-      type = lib.types.path;
-      description = "Media directory for Immich";
-      default = "/mnt/Media/Photos";
-    };
+    # mediaDir = lib.mkOption {
+    #   type = lib.types.path;
+    #   description = "Media directory for Immich";
+    #   default = "/mnt/Media/Photos";
+    # };
   };
 
   config = lib.mkMerge [
@@ -46,7 +46,7 @@ in {
         user = "immich";
         group = cfgServer.systemGroup;
 
-        mediaLocation = "/mnt/Media/Photos";
+        # mediaLocation = "/mnt/Media/Photos";
       };
     })
 
