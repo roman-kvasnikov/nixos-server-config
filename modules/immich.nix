@@ -46,7 +46,7 @@ in {
         user = "immich";
         group = cfgServer.systemGroup;
 
-        # mediaLocation = "/var/lib/immich";
+        mediaLocation = "/mnt/Media/Photos";
       };
     })
 
