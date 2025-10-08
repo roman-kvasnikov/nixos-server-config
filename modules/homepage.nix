@@ -20,13 +20,13 @@
 
       # background = "${inputs.wallpapers}/landscape_monicore_instagram.jpg";
 
-      background = {
-        image = "${inputs.wallpapers}/landscape_monicore_instagram.jpg";
-        blur = "sm";
-        saturate = "50";
-        brightness = "50";
-        opacity = "50";
-      };
+      # background = {
+      #   image = "${inputs.wallpapers}/landscape_monicore_instagram.jpg";
+      #   blur = "sm";
+      #   saturate = "50";
+      #   brightness = "50";
+      #   opacity = "50";
+      # };
 
       headerStyle = "boxedWidgets";
     };

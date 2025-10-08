@@ -4,10 +4,10 @@
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-25.05";
 
-    wallpapers = {
-      url = "github:roman-kvasnikov/wallpapers";
-      flake = false;
-    };
+    # wallpapers = {
+    #   url = "github:roman-kvasnikov/wallpapers";
+    #   flake = false;
+    # };
   };
 
   outputs = {
