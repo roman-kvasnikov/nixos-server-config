@@ -67,48 +67,48 @@ in {
 
     services = {
       # User Services
-      acmectl.enable = true;
-      nginxctl.enable = true;
+      # acmectl.enable = true;
+      # nginxctl.enable = true;
 
-      cockpitctl.enable = true;
-      delugectl.enable = false;
+      # cockpitctl.enable = true;
+      # delugectl.enable = false;
       # filebrowserctl.enable = true;
-      immichctl.enable = true;
-      jellyfinctl.enable = true;
-      nextcloudctl.enable = true;
+      # immichctl.enable = true;
+      # jellyfinctl.enable = true;
+      # nextcloudctl.enable = true;
       opensshctl.enable = true;
-      qbittorrentctl.enable = true;
+      # qbittorrentctl.enable = true;
 
-      sambactl = {
-        enable = true;
+      # sambactl = {
+      #   enable = true;
 
-        users = ["romank"];
+      #   users = ["romank"];
 
-        shares = {
-          public = {
-            "path" = "/home/public";
-          };
+      #   shares = {
+      #     public = {
+      #       "path" = "/home/public";
+      #     };
 
-          movies = {
-            "path" = "/home/movies";
-          };
+      #     movies = {
+      #       "path" = "/home/movies";
+      #     };
 
-          romank = {
-            "path" = "/home/romank";
-            "public" = "no";
-            "guest ok" = "no";
-            "create mask" = "0770";
-            "directory mask" = "0770";
-            "force user" = "romank";
-            "force group" = "romank";
-            "valid users" = ["romank"];
-          };
-        };
-      };
+      #     romank = {
+      #       "path" = "/home/romank";
+      #       "public" = "no";
+      #       "guest ok" = "no";
+      #       "create mask" = "0770";
+      #       "directory mask" = "0770";
+      #       "force user" = "romank";
+      #       "force group" = "romank";
+      #       "valid users" = ["romank"];
+      #     };
+      #   };
+      # };
 
       # unifictl.enable = false;
-      uptime-kumactl.enable = true;
-      xrayctl.enable = true;
+      # uptime-kumactl.enable = true;
+      # xrayctl.enable = true;
 
       # Additional services
       dbus.enable = true; # Для работы с systemd
