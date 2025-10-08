@@ -23,7 +23,7 @@ in {
     adminpassFile = lib.mkOption {
       type = lib.types.path;
       description = "Admin password file for Nextcloud";
-      default = "/etc/secrets/nextcloud-admin-pass";
+      default = "/etc/secrets/nextcloud/nextcloud-admin-pass";
     };
 
     apps = lib.mkOption {
