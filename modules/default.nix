@@ -11,7 +11,7 @@
     # ./immich.nix
     # ./jellyfin.nix
     # ./minidlna.nix
-    # ./nextcloud.nix
+    ./nextcloud.nix
     ./openssh.nix
     # ./qbittorrent.nix
     # ./samba.nix
