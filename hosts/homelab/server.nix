@@ -76,7 +76,6 @@ in {
       # immichctl.enable = true;
       # jellyfinctl.enable = true;
       # nextcloudctl.enable = true;
-      opensshctl.enable = true;
       # qbittorrentctl.enable = true;
 
       # sambactl = {
@@ -111,9 +110,9 @@ in {
       # xrayctl.enable = true;
 
       # Additional services
-      dbus.enable = true; # Для работы с systemd
-      udisks2.enable = true; # Автоматическое монтирование USB
-      geoclue2.enable = true; # Геолокация для часовых поясов
+      # dbus.enable = true; # Для работы с systemd
+      # udisks2.enable = true; # Автоматическое монтирование USB
+      # geoclue2.enable = true; # Геолокация для часовых поясов
     };
   };
 }
