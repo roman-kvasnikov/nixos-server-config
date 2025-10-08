@@ -43,6 +43,8 @@ in {
         hostName = cfg.host;
         https = true;
 
+        database.createLocally = true;
+
         config = {
           adminpassFile = cfg.adminpassFile;
           dbtype = "pgsql";
