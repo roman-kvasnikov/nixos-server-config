@@ -67,8 +67,8 @@ in {
 
     services = {
       # User Services
-      # acmectl.enable = true;
-      # nginxctl.enable = true;
+      acmectl.enable = true;
+      nginxctl.enable = true;
 
       # cockpitctl.enable = true;
       # delugectl.enable = false;

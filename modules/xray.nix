@@ -27,8 +27,6 @@ in {
       xray
     ];
 
-    # environment.etc."${cfg.settingsFile}".source = ../secrets/xray/config.json;
-
     services.xray = {
       enable = true;
 

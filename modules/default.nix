@@ -1,7 +1,7 @@
 {
   imports = [
-    # ./acme.nix
-    # ./nginx.nix
+    ./acme.nix
+    ./nginx.nix
     # ./cockpit.nix
     # ./deluge.nix
     # ./filebrowser.nix
