@@ -45,7 +45,7 @@ in {
 
         config = {
           adminpassFile = cfg.adminpassFile;
-          dbtype = "sqlite";
+          dbtype = "pgsql";
         };
 
         extraAppsEnable = true;
