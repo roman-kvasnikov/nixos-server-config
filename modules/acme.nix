@@ -14,7 +14,7 @@ in {
       description = "Common options for ACME certificates";
       default = {
         dnsProvider = "namecheap";
-        credentialsFile = "/etc/secrets/namecheap.env";
+        credentialsFile = "/etc/secrets/acme/namecheap.env";
         webroot = null;
       };
     };
