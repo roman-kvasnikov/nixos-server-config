@@ -36,7 +36,7 @@ in {
         group = cfgServer.systemGroup;
       };
 
-      systemd.tmpfiles.rules = ["d ${cfg.mediaDir} 0775 immich ${cfgServer.systemGroup} - -"];
+      # systemd.tmpfiles.rules = ["d ${cfg.mediaDir} 0775 immich ${cfgServer.systemGroup} - -"];
 
       services.immich = {
         enable = true;
@@ -46,7 +46,7 @@ in {
         user = "immich";
         group = cfgServer.systemGroup;
 
-        mediaLocation = cfg.mediaDir;
+        # mediaLocation = cfg.mediaDir;
       };
     })
 
