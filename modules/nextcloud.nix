@@ -56,15 +56,7 @@ in {
         settings = {
           overwriteprotocol = "https";
           default_phone_region = "RU";
-        };
 
-        maxUploadSize = "16G";
-
-        extraAppsEnable = true;
-        autoUpdateApps.enable = true;
-        extraApps = lib.genAttrs cfg.apps (app: config.services.nextcloud.package.packages.apps.${app});
-
-        extraOptions = {
           redis = {
             host = "127.0.0.1";
             port = 31638;
@@ -72,6 +64,12 @@ in {
             timeout = 1.5;
           };
         };
+
+        maxUploadSize = "16G";
+
+        extraAppsEnable = true;
+        autoUpdateApps.enable = true;
+        extraApps = lib.genAttrs cfg.apps (app: config.services.nextcloud.package.packages.apps.${app});
       };
 
       services = {
