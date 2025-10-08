@@ -44,14 +44,19 @@ in {
         https = true;
 
         database.createLocally = true;
-
-        config = {
-          adminpassFile = cfg.adminpassFile;
-          dbtype = "pgsql";
-        };
+        configureRedis = true;
+        maxUploadSize = "16G";
 
         extraAppsEnable = true;
+        autoUpdateApps.enable = true;
         extraApps = lib.genAttrs cfg.apps (app: config.services.nextcloud.package.packages.apps.${app});
+
+        config = {
+          dbtype = "pgsql";
+          adminpassFile = cfg.adminpassFile;
+          overwriteProtocol = "https";
+          defaultPhoneRegion = "RU";
+        };
       };
     })
 
