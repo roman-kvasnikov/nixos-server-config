@@ -6,12 +6,12 @@
   pkgs,
   ...
 }: let
-  cfg = config.services.nextcloudctl;
+  cfg = config.homelab.services.nextcloudctl;
   cfgServer = config.server;
   cfgAcme = config.services.acmectl;
   cfgNginx = config.services.nginxctl;
 in {
-  options.services.nextcloudctl = {
+  options.homelab.services.nextcloudctl = {
     enable = lib.mkEnableOption "Enable Nextcloud";
 
     host = lib.mkOption {
@@ -39,7 +39,7 @@ in {
       };
       description = lib.mkOption {
         type = lib.types.str;
-        default = "Self-hosted file sharing solution";
+        default = "Enterprise File Storage and Collaboration";
       };
       icon = lib.mkOption {
         type = lib.types.str;
@@ -88,7 +88,7 @@ in {
 
         extraAppsEnable = true;
         autoUpdateApps.enable = true;
-        extraApps = lib.genAttrs cfg.apps (app: config.services.nextcloud.package.packages.apps.${app});
+        extraApps = lib.genAttrs cfg.apps (app: config.homelab.services.nextcloud.package.packages.apps.${app});
       };
 
       services = {

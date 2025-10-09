@@ -75,7 +75,6 @@ in {
       # filebrowserctl.enable = true;
       # immichctl.enable = true;
       # jellyfinctl.enable = true;
-      nextcloudctl.enable = true;
       # qbittorrentctl.enable = true;
 
       # sambactl = {
@@ -119,6 +118,7 @@ in {
       services = {
         homepagectl.enable = true;
         cockpitctl.enable = true;
+        nextcloudctl.enable = true;
       };
     };
   };
