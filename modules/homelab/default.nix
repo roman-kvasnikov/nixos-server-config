@@ -8,7 +8,7 @@
     # ./jellyfin.nix
     # ./minidlna.nix
     ./nextcloud.nix
-    # ./qbittorrent.nix
+    ./qbittorrent.nix
     # ./samba.nix
     # ./unifi.nix
     # ./uptime-kuma.nix

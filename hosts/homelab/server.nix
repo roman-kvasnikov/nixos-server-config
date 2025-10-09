@@ -75,7 +75,7 @@ in {
       # filebrowserctl.enable = true;
       # immichctl.enable = true;
       # jellyfinctl.enable = true;
-      # qbittorrentctl.enable = true;
+      qbittorrentctl.enable = true;
 
       # sambactl = {
       #   enable = true;
