@@ -131,72 +131,73 @@ in {
           ++ [
             {
               Glances = let
-                port = toString config.services.glances.port;
+                commonOptions = {
+                  type = "glances";
+                  url = "http://localhost:${toString config.services.glances.port}";
+                  version = 4;
+                };
               in [
                 {
                   CPU = {
-                    widget = {
-                      type = "glances";
-                      url = "http://localhost:${port}";
-                      metric = "cpu";
-                      chart = true;
-                      version = 4;
-                    };
+                    widget =
+                      commonOptions
+                      // {
+                        metric = "cpu";
+                        chart = true;
+                        diskUnits = "bytes";
+                        refreshInterval = 5000;
+                        pointsLimit = 15;
+                      };
                   };
                 }
                 {
                   Memory = {
-                    widget = {
-                      type = "glances";
-                      url = "http://localhost:${port}";
-                      metric = "memory";
-                      chart = true;
-                      version = 4;
-                    };
+                    widget =
+                      commonOptions
+                      // {
+                        metric = "memory";
+                        chart = true;
+                      };
                   };
                 }
                 {
                   Disk = {
-                    widget = {
-                      type = "glances";
-                      url = "http://localhost:${port}";
-                      metric = "fs:/";
-                      chart = false;
-                      version = 4;
-                    };
+                    widget =
+                      commonOptions
+                      // {
+                        metric = "fs:/";
+                        chart = true;
+                      };
                   };
                 }
                 {
                   "CPU Temp" = {
-                    widget = {
-                      type = "glances";
-                      url = "http://localhost:${port}";
-                      metric = "sensor:Core 0";
-                      chart = false;
-                      version = 4;
-                    };
+                    widget =
+                      commonOptions
+                      // {
+                        metric = "sensor:Core 0";
+                        chart = true;
+                      };
                   };
                 }
                 {
-                  Network = {
-                    widget = {
-                      type = "glances";
-                      url = "http://localhost:${port}";
-                      metric = "network:enp1s0";
-                      chart = false;
-                      version = 4;
-                    };
+                  "Network Usage" = {
+                    widget =
+                      commonOptions
+                      // {
+                        metric = "network:enp1s0";
+                        chart = true;
+                      };
                   };
                 }
                 {
                   Processes = {
-                    widget = {
-                      type = "glances";
-                      url = "http://localhost:${port}";
-                      metric = "process";
-                      chart = false;
-                      version = 4;
-                    };
+                    widget =
+                      commonOptions
+                      // {
+                        metric = "process";
+                        chart = true;
+                      };
                   };
                 }
               ];
