@@ -119,6 +119,7 @@ in {
         cockpitctl.enable = true;
         nextcloudctl.enable = true;
         qbittorrentctl.enable = true;
+        immichctl.enable = true;
       };
     };
   };

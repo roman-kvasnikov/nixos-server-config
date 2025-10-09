@@ -4,7 +4,7 @@
     # ./deluge.nix
     # ./filebrowser.nix
     ./homepage.nix
-    # ./immich.nix
+    ./immich.nix
     # ./jellyfin.nix
     # ./minidlna.nix
     ./nextcloud.nix

@@ -136,7 +136,7 @@ in {
                       type = "glances";
                       url = "http://localhost:${port}";
                       metric = "cpu";
-                      chart = false;
+                      chart = true;
                       version = 4;
                     };
                   };
@@ -147,7 +147,7 @@ in {
                       type = "glances";
                       url = "http://localhost:${port}";
                       metric = "memory";
-                      chart = false;
+                      chart = true;
                       version = 4;
                     };
                   };

@@ -23,6 +23,33 @@ in {
     #   description = "Media directory for Immich";
     #   default = "/mnt/Media/Photos";
     # };
+
+    homepage = {
+      name = lib.mkOption {
+        type = lib.types.str;
+        default = "Immich";
+      };
+      description = lib.mkOption {
+        type = lib.types.str;
+        default = "Self-hosted photo and video management solution";
+      };
+      icon = lib.mkOption {
+        type = lib.types.str;
+        default = "immich.svg";
+      };
+      category = lib.mkOption {
+        type = lib.types.str;
+        default = "Media";
+      };
+      extraConfig = lib.mkOption {
+        type = lib.types.attrs;
+        default = {
+          photos = true;
+          videos = true;
+          storage = true;
+        };
+      };
+    };
   };
 
   config = lib.mkMerge [
