@@ -66,13 +66,6 @@ in {
       groups.${config.server.systemGroup} = {};
     };
 
-    homelab = {
-      services = {
-        homepagectl.enable = true;
-        cockpitctl.enable = true;
-      };
-    };
-
     services = {
       # User Services
       acmectl.enable = true;
@@ -120,6 +113,13 @@ in {
       # dbus.enable = true; # Для работы с systemd
       # udisks2.enable = true; # Автоматическое монтирование USB
       # geoclue2.enable = true; # Геолокация для часовых поясов
+    };
+
+    homelab = {
+      services = {
+        homepagectl.enable = true;
+        cockpitctl.enable = true;
+      };
     };
   };
 }

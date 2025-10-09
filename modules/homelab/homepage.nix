@@ -72,32 +72,32 @@ in {
           hideVersion = "true";
         };
 
-        bookmarks = [
-          {
-            Developer = [
-              {
-                GitHub = [
-                  {
-                    abbr = "GH";
-                    href = "https://github.com/roman-kvasnikov";
-                  }
-                ];
-              }
-            ];
-          }
-          {
-            Entertainment = [
-              {
-                YouTube = [
-                  {
-                    abbr = "YT";
-                    href = "https://youtube.com/";
-                  }
-                ];
-              }
-            ];
-          }
-        ];
+        # bookmarks = [
+        #   {
+        #     Developer = [
+        #       {
+        #         GitHub = [
+        #           {
+        #             abbr = "GH";
+        #             href = "https://github.com/roman-kvasnikov";
+        #           }
+        #         ];
+        #       }
+        #     ];
+        #   }
+        #   {
+        #     Entertainment = [
+        #       {
+        #         YouTube = [
+        #           {
+        #             abbr = "YT";
+        #             href = "https://youtube.com/";
+        #           }
+        #         ];
+        #       }
+        #     ];
+        #   }
+        # ];
 
         services = let
           homepageCategories = [
@@ -145,7 +145,18 @@ in {
                     widget = {
                       type = "glances";
                       url = "http://localhost:${port}";
-                      metric = "sensor:Package id 0";
+                      metric = "sensor:Package id 1";
+                      chart = false;
+                      version = 4;
+                    };
+                  };
+                }
+                {
+                  Processes = {
+                    widget = {
+                      type = "glances";
+                      url = "http://localhost:${port}";
+                      metric = "fs:/";
                       chart = false;
                       version = 4;
                     };
@@ -167,7 +178,7 @@ in {
                     widget = {
                       type = "glances";
                       url = "http://localhost:${port}";
-                      metric = "network:enp2s0";
+                      metric = "network:enp1s0";
                       chart = false;
                       version = 4;
                     };
@@ -178,37 +189,37 @@ in {
           ];
 
         # https://gethomepage.dev/latest/configs/service-widgets/
-        widgets = [
-          {
-            resources = {
-              cpu = true;
-              disk = "/home";
-              memory = true;
-              cputemp = true;
-              tempmin = 0;
-              tempmax = 100;
-              uptime = true;
-              units = "imperial";
-              refresh = 3000;
-              diskUnits = "bytes";
-              network = true;
-            };
-          }
-          {
-            search = {
-              provider = "google";
-              target = "_blank";
-            };
-          }
-          {
-            datetime = {
-              text_size = "xl";
-              format = {
-                timeStyle = "short";
-              };
-            };
-          }
-        ];
+        # widgets = [
+        #   {
+        #     resources = {
+        #       cpu = true;
+        #       disk = "/home";
+        #       memory = true;
+        #       cputemp = true;
+        #       tempmin = 0;
+        #       tempmax = 100;
+        #       uptime = true;
+        #       units = "imperial";
+        #       refresh = 3000;
+        #       diskUnits = "bytes";
+        #       network = true;
+        #     };
+        #   }
+        #   {
+        #     search = {
+        #       provider = "google";
+        #       target = "_blank";
+        #     };
+        #   }
+        #   {
+        #     datetime = {
+        #       text_size = "xl";
+        #       format = {
+        #         timeStyle = "short";
+        #       };
+        #     };
+        #   }
+        # ];
 
         # https://gethomepage.dev/latest/configs/kubernetes/
         # kubernetes = {};
@@ -218,30 +229,30 @@ in {
 
         # https://gethomepage.dev/latest/configs/custom-css-js/
         # customJS = "";
-        customCSS = ''
-          body, html {
-            font-family: SF Pro Display, Helvetica, Arial, sans-serif !important;
-          }
-          .font-medium {
-            font-weight: 700 !important;
-          }
-          .font-light {
-            font-weight: 500 !important;
-          }
-          .font-thin {
-            font-weight: 400 !important;
-          }
-          #information-widgets {
-            padding-left: 1.5rem;
-            padding-right: 1.5rem;
-          }
-          div#footer {
-            display: none;
-          }
-          .services-group.basis-full.flex-1.px-1.-my-1 {
-            padding-bottom: 3rem;
-          };
-        '';
+        # customCSS = ''
+        #   body, html {
+        #     font-family: SF Pro Display, Helvetica, Arial, sans-serif !important;
+        #   }
+        #   .font-medium {
+        #     font-weight: 700 !important;
+        #   }
+        #   .font-light {
+        #     font-weight: 500 !important;
+        #   }
+        #   .font-thin {
+        #     font-weight: 400 !important;
+        #   }
+        #   #information-widgets {
+        #     padding-left: 1.5rem;
+        #     padding-right: 1.5rem;
+        #   }
+        #   div#footer {
+        #     display: none;
+        #   }
+        #   .services-group.basis-full.flex-1.px-1.-my-1 {
+        #     padding-bottom: 3rem;
+        #   };
+        # '';
       };
     })
 
