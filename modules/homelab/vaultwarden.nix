@@ -40,21 +40,12 @@ in {
 
   config = lib.mkMerge [
     (lib.mkIf cfg.enable {
-      services.fail2ban = lib.mkIf config.services.fail2ban.enable {
-        jails = {
-          vaultwarden = {
-            serviceName = "vaultwarden";
-            failRegex = "^.*Username or password is incorrect. Try again. IP: <HOST>. Username: <F-USER>.*</F-USER>.$";
-          };
-        };
-      };
-
       services.vaultwarden = {
         enable = true;
 
         config = {
           DOMAIN = "https://${cfg.host}";
-          SIGNUPS_ALLOWED = false;
+          SIGNUPS_ALLOWED = true;
           ROCKET_ADDRESS = "127.0.0.1";
           ROCKET_PORT = 8222;
           ROCKET_LOG = "critical";
