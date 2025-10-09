@@ -41,9 +41,11 @@ in {
         type = lib.types.str;
         default = "Media";
       };
-      extraConfig = lib.mkOption {
+      widget = lib.mkOption {
         type = lib.types.attrs;
         default = {
+          type = "immich";
+          url = "https://${cfg.host}";
           key = "v09lvmuyCKJCwfMGmpteradKfono91T70bZcRbsqGgE";
           version = 2;
           photos = true;

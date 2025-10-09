@@ -35,9 +35,13 @@ in {
         type = lib.types.str;
         default = "Downloads";
       };
-      extraConfig = lib.mkOption {
+      widget = lib.mkOption {
         type = lib.types.attrs;
         default = {
+          type = "qbittorrent";
+          url = "https://${cfg.host}";
+          username = "admin";
+          password = "123456";
           enableLeechProgress = true;
         };
       };

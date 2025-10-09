@@ -100,6 +100,7 @@ in {
             "Media"
             "Downloads"
           ];
+
           homepageServices = x: (lib.attrsets.filterAttrs (
               _name: value: value ? homepage && value.homepage.category == x
             )
@@ -117,12 +118,14 @@ in {
                   siteMonitor = "https://${config.homelab.services.${x}.host}";
                 };
 
-                extra =
-                  if lib.hasAttrByPath ["homepage" "extraConfig"] config.homelab.services.${x}
-                  then config.homelab.services.${x}.homepage.extraConfig
+                widgetOptions =
+                  if lib.hasAttrByPath ["homepage" "widget"] config.homelab.services.${x}
+                  then {
+                    widget = config.homelab.services.${x}.homepage.widget;
+                  }
                   else {};
               in {
-                "${config.homelab.services.${x}.homepage.name}" = base // extra;
+                "${config.homelab.services.${x}.homepage.name}" = base // widgetOptions;
               });
           })
           ++ [

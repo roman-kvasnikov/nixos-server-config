@@ -17,6 +17,39 @@ in {
       description = "Host of the Jellyfin module";
       default = "jellyfin.${cfgServer.domain}";
     };
+
+    homepage = {
+      name = lib.mkOption {
+        type = lib.types.str;
+        default = "Jellyfin";
+      };
+      description = lib.mkOption {
+        type = lib.types.str;
+        default = "Media server";
+      };
+      icon = lib.mkOption {
+        type = lib.types.str;
+        default = "jellyfin.svg";
+      };
+      category = lib.mkOption {
+        type = lib.types.str;
+        default = "Media";
+      };
+      widget = lib.mkOption {
+        type = lib.types.attrs;
+        default = {
+          type = "jellyfin";
+          url = "https://${cfg.host}";
+          key = "";
+          enableBlocks = true;
+          enableNowPlaying = true;
+          enableUser = true;
+          enableMediaControl = false;
+          showEpisodeNumber = true;
+          expandOneStreamToTwoRows = false;
+        };
+      };
+    };
   };
 
   config = lib.mkMerge [
