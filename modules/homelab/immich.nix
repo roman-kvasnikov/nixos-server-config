@@ -31,7 +31,7 @@ in {
       };
       description = lib.mkOption {
         type = lib.types.str;
-        default = "Self-hosted photo and video management solution";
+        default = "Photo and video management solution";
       };
       icon = lib.mkOption {
         type = lib.types.str;
@@ -44,6 +44,8 @@ in {
       extraConfig = lib.mkOption {
         type = lib.types.attrs;
         default = {
+          key = "v09lvmuyCKJCwfMGmpteradKfono91T70bZcRbsqGgE";
+          version = 2;
           photos = true;
           videos = true;
           storage = true;

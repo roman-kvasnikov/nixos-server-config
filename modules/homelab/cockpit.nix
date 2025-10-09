@@ -25,7 +25,7 @@ in {
       };
       description = lib.mkOption {
         type = lib.types.str;
-        default = "Self-hosted system management solution";
+        default = "System management solution";
       };
       icon = lib.mkOption {
         type = lib.types.str;

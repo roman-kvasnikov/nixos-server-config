@@ -25,7 +25,7 @@ in {
       };
       description = lib.mkOption {
         type = lib.types.str;
-        default = "Self-hosted torrent client";
+        default = "Torrent client";
       };
       icon = lib.mkOption {
         type = lib.types.str;

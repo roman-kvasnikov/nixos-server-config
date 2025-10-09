@@ -67,7 +67,6 @@ in {
     };
 
     services = {
-      # User Services
       acmectl.enable = true;
       nginxctl.enable = true;
 
