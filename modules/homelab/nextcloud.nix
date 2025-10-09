@@ -76,7 +76,7 @@ in {
           overwriteprotocol = "https";
           default_phone_region = "RU";
 
-          redis = {
+          redis = lib.mkForce {
             host = "127.0.0.1";
             port = 31638;
             dbindex = 0;
