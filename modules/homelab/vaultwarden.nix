@@ -40,6 +40,15 @@ in {
 
   config = lib.mkMerge [
     (lib.mkIf cfg.enable {
+      services.fail2ban = lib.mkIf config.services.fail2ban.enable {
+        jails = {
+          vaultwarden = {
+            serviceName = "vaultwarden";
+            failRegex = "^.*Username or password is incorrect. Try again. IP: <HOST>. Username: <F-USER>.*</F-USER>.$";
+          };
+        };
+      };
+
       services.vaultwarden = {
         enable = true;
 
