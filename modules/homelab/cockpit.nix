@@ -54,9 +54,9 @@ in {
         settings = {
           WebService = {
             AllowUnencrypted = false;
-            Origins = [
-              cfg.host
-            ];
+            # Origins = [
+            #   cfg.host
+            # ];
           };
         };
       };
