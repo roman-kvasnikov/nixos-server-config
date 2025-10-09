@@ -66,13 +66,18 @@ in {
       groups.${config.server.systemGroup} = {};
     };
 
+    homelab = {
+      services = {
+        homepagectl.enable = true;
+        cockpitctl.enable = true;
+      };
+    };
+
     services = {
       # User Services
       acmectl.enable = true;
       nginxctl.enable = true;
 
-      homepagectl.enable = true;
-      cockpitctl.enable = true;
       # delugectl.enable = false;
       # filebrowserctl.enable = true;
       # immichctl.enable = true;
