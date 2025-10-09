@@ -31,6 +31,25 @@ in {
       description = "List of Nextcloud apps to enable";
       default = ["bookmarks" "calendar" "contacts" "tasks" "notes" "mail"];
     };
+
+    homepage = {
+      name = lib.mkOption {
+        type = lib.types.str;
+        default = "Nextcloud";
+      };
+      description = lib.mkOption {
+        type = lib.types.str;
+        default = "Self-hosted file sharing solution";
+      };
+      icon = lib.mkOption {
+        type = lib.types.str;
+        default = "nextcloud.svg";
+      };
+      category = lib.mkOption {
+        type = lib.types.str;
+        default = "Media";
+      };
+    };
   };
 
   config = lib.mkMerge [

@@ -39,7 +39,7 @@ in {
               Glances = {
                 header = false;
                 style = "row";
-                columns = 5;
+                columns = 6;
               };
             }
             {
@@ -152,17 +152,6 @@ in {
                   };
                 }
                 {
-                  "CPU Temp" = {
-                    widget = {
-                      type = "glances";
-                      url = "http://localhost:${port}";
-                      metric = "sensor:Core 0";
-                      chart = false;
-                      version = 4;
-                    };
-                  };
-                }
-                {
                   Disk = {
                     widget = {
                       type = "glances";
@@ -174,11 +163,11 @@ in {
                   };
                 }
                 {
-                  Processes = {
+                  "CPU Temp" = {
                     widget = {
                       type = "glances";
                       url = "http://localhost:${port}";
-                      metric = "process";
+                      metric = "sensor:Core 0";
                       chart = false;
                       version = 4;
                     };
@@ -190,6 +179,17 @@ in {
                       type = "glances";
                       url = "http://localhost:${port}";
                       metric = "network:enp1s0";
+                      chart = false;
+                      version = 4;
+                    };
+                  };
+                }
+                {
+                  Processes = {
+                    widget = {
+                      type = "glances";
+                      url = "http://localhost:${port}";
+                      metric = "process";
                       chart = false;
                       version = 4;
                     };
