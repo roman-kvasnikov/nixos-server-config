@@ -5,7 +5,7 @@
     # ./filebrowser.nix
     ./homepage.nix
     ./immich.nix
-    # ./jellyfin.nix
+    ./jellyfin.nix
     # ./minidlna.nix
     ./nextcloud.nix
     ./qbittorrent.nix

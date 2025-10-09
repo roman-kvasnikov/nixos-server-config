@@ -73,7 +73,6 @@ in {
       # delugectl.enable = false;
       # filebrowserctl.enable = true;
       # immichctl.enable = true;
-      # jellyfinctl.enable = true;
 
       # sambactl = {
       #   enable = true;
@@ -119,6 +118,7 @@ in {
         nextcloudctl.enable = true;
         qbittorrentctl.enable = true;
         immichctl.enable = true;
+        jellyfinctl.enable = true;
       };
     };
   };

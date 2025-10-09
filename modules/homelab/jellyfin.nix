@@ -4,12 +4,12 @@
   pkgs,
   ...
 }: let
-  cfg = config.services.jellyfinctl;
+  cfg = config.homelab.services.jellyfinctl;
   cfgServer = config.server;
   cfgAcme = config.services.acmectl;
   cfgNginx = config.services.nginxctl;
 in {
-  options.services.jellyfinctl = {
+  options.homelab.services.jellyfinctl = {
     enable = lib.mkEnableOption "Enable Jellyfin";
 
     host = lib.mkOption {
