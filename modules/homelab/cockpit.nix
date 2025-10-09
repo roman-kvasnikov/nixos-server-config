@@ -4,12 +4,12 @@
   pkgs,
   ...
 }: let
-  cfg = config.services.cockpitctl;
+  cfg = config.homelab.services.cockpitctl;
   cfgServer = config.server;
   cfgAcme = config.services.acmectl;
   cfgNginx = config.services.nginxctl;
 in {
-  options.services.cockpitctl = {
+  options.homelab.services.cockpitctl = {
     enable = lib.mkEnableOption "Enable Cockpit";
 
     host = lib.mkOption {

@@ -7,6 +7,7 @@
 in {
   imports = [
     ../../modules
+    ../../modules/homelab
   ];
 
   options.server = {

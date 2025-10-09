@@ -7,12 +7,12 @@
   inputs,
   ...
 }: let
-  cfg = config.services.homepagectl;
+  cfg = config.homelab.services.homepagectl;
   cfgServer = config.server;
   cfgAcme = config.services.acmectl;
   cfgNginx = config.services.nginxctl;
 in {
-  options.services.homepagectl = {
+  options.homelab.services.homepagectl = {
     enable = lib.mkEnableOption "Enable Homepage";
 
     host = lib.mkOption {
@@ -110,17 +110,17 @@ in {
           homepageServices = x: (lib.attrsets.filterAttrs (
               _name: value: value ? homepage && value.homepage.category == x
             )
-            config.services);
+            config.homelab.services);
         in
           lib.lists.forEach homepageCategories (cat: {
             "${cat}" =
               lib.lists.forEach (lib.attrsets.mapAttrsToList (name: _value: name) (homepageServices "${cat}"))
               (x: {
-                "${config.services.${x}.homepage.name}" = {
-                  icon = config.services.${x}.homepage.icon;
-                  description = config.services.${x}.homepage.description;
-                  href = "https://${config.services.${x}.host}";
-                  siteMonitor = "https://${config.services.${x}.host}";
+                "${config.homelab.services.${x}.homepage.name}" = {
+                  icon = config.homelab.services.${x}.homepage.icon;
+                  description = config.homelab.services.${x}.homepage.description;
+                  href = "https://${config.homelab.services.${x}.host}";
+                  siteMonitor = "https://${config.homelab.services.${x}.host}";
                 };
               });
           })
