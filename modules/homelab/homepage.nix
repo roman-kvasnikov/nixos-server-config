@@ -96,11 +96,9 @@ in {
 
         services = let
           homepageCategories = [
-            "Arr"
+            "System"
             "Media"
             "Downloads"
-            "System"
-            "Smart Home"
           ];
           homepageServices = x: (lib.attrsets.filterAttrs (
               _name: value: value ? homepage && value.homepage.category == x
@@ -109,16 +107,22 @@ in {
         in
           lib.lists.forEach homepageCategories (cat: {
             "${cat}" =
-              lib.lists.forEach (lib.attrsets.mapAttrsToList (name: _value: name) (homepageServices "${cat}"))
-              (x: {
-                "${config.homelab.services.${x}.homepage.name}" =
-                  {
-                    icon = config.homelab.services.${x}.homepage.icon;
-                    description = config.homelab.services.${x}.homepage.description;
-                    href = "https://${config.homelab.services.${x}.host}";
-                    siteMonitor = "https://${config.homelab.services.${x}.host}";
-                  }
-                  // config.homelab.services.${x}.homepage.extraConfig;
+              lib.lists.forEach
+              (lib.attrsets.mapAttrsToList (name: _value: name) (homepageServices "${cat}"))
+              (x: let
+                base = {
+                  icon = config.homelab.services.${x}.homepage.icon;
+                  description = config.homelab.services.${x}.homepage.description;
+                  href = "https://${config.homelab.services.${x}.host}";
+                  siteMonitor = "https://${config.homelab.services.${x}.host}";
+                };
+
+                extra =
+                  if lib.hasAttrByPath ["homepage" "extraConfig"] config.homelab.services.${x}
+                  then config.homelab.services.${x}.homepage.extraConfig
+                  else {};
+              in {
+                "${config.homelab.services.${x}.homepage.name}" = base // extra;
               });
           })
           ++ [
