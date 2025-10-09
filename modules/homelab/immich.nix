@@ -4,12 +4,12 @@
   pkgs,
   ...
 }: let
-  cfg = config.services.immichctl;
+  cfg = config.homelab.services.immichctl;
   cfgServer = config.server;
   cfgAcme = config.services.acmectl;
   cfgNginx = config.services.nginxctl;
 in {
-  options.services.immichctl = {
+  options.homelab.services.immichctl = {
     enable = lib.mkEnableOption "Enable Immich";
 
     host = lib.mkOption {
