@@ -71,7 +71,6 @@ in {
       nginxctl.enable = true;
 
       # delugectl.enable = false;
-      # filebrowserctl.enable = true;
       # immichctl.enable = true;
 
       # sambactl = {
@@ -119,6 +118,8 @@ in {
         qbittorrentctl.enable = true;
         immichctl.enable = true;
         jellyfinctl.enable = true;
+        filebrowserctl.enable = true;
+        vaultwardenctl.enable = true;
       };
     };
   };

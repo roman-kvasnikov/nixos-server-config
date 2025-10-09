@@ -2,7 +2,7 @@
   description = "Roman-Kvasnikov's NixOS Homelab Configuration";
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-25.05";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
 
     # wallpapers = {
     #   url = "github:roman-kvasnikov/wallpapers";

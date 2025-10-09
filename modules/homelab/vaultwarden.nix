@@ -4,61 +4,51 @@
   pkgs,
   ...
 }: let
-  cfg = config.homelab.services.filebrowserctl;
+  cfg = config.homelab.services.vaultwardenctl;
   cfgServer = config.server;
   cfgAcme = config.services.acmectl;
   cfgNginx = config.services.nginxctl;
 in {
-  options.homelab.services.filebrowserctl = {
-    enable = lib.mkEnableOption "Enable Filebrowser";
+  options.homelab.services.vaultwardenctl = {
+    enable = lib.mkEnableOption "Enable Vaultwarden";
 
     host = lib.mkOption {
       type = lib.types.str;
-      description = "Host of the Filebrowser module";
-      default = "files.${cfgServer.domain}";
+      description = "Host of the Vaultwarden module";
+      default = "passwords.${cfgServer.domain}";
     };
 
     homepage = {
       name = lib.mkOption {
         type = lib.types.str;
-        default = "Filebrowser";
+        default = "Vaultwarden";
       };
       description = lib.mkOption {
         type = lib.types.str;
-        default = "File browser";
+        default = "Password manager";
       };
       icon = lib.mkOption {
         type = lib.types.str;
-        default = "filebrowser.svg";
+        default = "bitwarden.svg";
       };
       category = lib.mkOption {
         type = lib.types.str;
-        default = "Downloads";
-      };
-      widget = lib.mkOption {
-        type = lib.types.attrs;
-        default = {
-          type = "filebrowser";
-          url = "https://${cfg.host}";
-        };
+        default = "Services";
       };
     };
   };
 
   config = lib.mkMerge [
     (lib.mkIf cfg.enable {
-      environment.systemPackages = with pkgs; [
-        filebrowser
-      ];
-
-      services.filebrowser = {
+      services.vaultwarden = {
         enable = true;
 
-        user = cfgServer.systemUser;
-        group = cfgServer.systemGroup;
-
-        settings = {
-          port = 8081;
+        config = {
+          DOMAIN = "https://${cfg.host}";
+          SIGNUPS_ALLOWED = false;
+          ROCKET_ADDRESS = "127.0.0.1";
+          ROCKET_PORT = 8222;
+          ROCKET_LOG = "critical";
         };
       };
     })
@@ -74,7 +64,7 @@ in {
             enableACME = cfgAcme.enable;
             forceSSL = cfgAcme.enable;
             locations."/" = {
-              proxyPass = "http://127.0.0.1:8081";
+              proxyPass = "http://127.0.0.1:8222";
             };
           };
         };

@@ -2,7 +2,7 @@
   imports = [
     ./cockpit.nix
     # ./deluge.nix
-    # ./filebrowser.nix
+    ./filebrowser.nix
     ./homepage.nix
     ./immich.nix
     ./jellyfin.nix
@@ -12,5 +12,6 @@
     # ./samba.nix
     # ./unifi.nix
     # ./uptime-kuma.nix
+    ./vaultwarden.nix
   ];
 }

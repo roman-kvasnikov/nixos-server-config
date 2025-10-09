@@ -61,6 +61,12 @@ in {
                 style = "column";
               };
             }
+            {
+              Services = {
+                header = true;
+                style = "column";
+              };
+            }
           ];
           headerStyle = "clean";
           statusStyle = "dot";
@@ -99,6 +105,7 @@ in {
             "System"
             "Media"
             "Downloads"
+            "Services"
           ];
 
           homepageServices = x: (lib.attrsets.filterAttrs (
@@ -151,6 +158,17 @@ in {
                   };
                 }
                 {
+                  "CPU Temp" = {
+                    widget =
+                      commonOptions
+                      // {
+                        metric = "sensor:Core 0";
+                        chart = true;
+                      };
+                  };
+                }
+
+                {
                   Memory = {
                     widget =
                       commonOptions
@@ -166,16 +184,6 @@ in {
                       commonOptions
                       // {
                         metric = "fs:/";
-                        chart = true;
-                      };
-                  };
-                }
-                {
-                  "CPU Temp" = {
-                    widget =
-                      commonOptions
-                      // {
-                        metric = "sensor:Core 0";
                         chart = true;
                       };
                   };
