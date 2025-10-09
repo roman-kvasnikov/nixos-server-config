@@ -88,7 +88,7 @@ in {
 
         extraAppsEnable = true;
         autoUpdateApps.enable = true;
-        extraApps = lib.genAttrs cfg.apps (app: config.homelab.services.nextcloud.package.packages.apps.${app});
+        extraApps = lib.genAttrs cfg.apps (app: config.services.nextcloud.package.packages.apps.${app});
       };
 
       services = {
