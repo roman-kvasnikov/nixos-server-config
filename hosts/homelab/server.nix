@@ -70,6 +70,7 @@ in {
       acmectl.enable = true;
       nginxctl.enable = true;
 
+      homepagectl.enable = true;
       cockpitctl.enable = true;
       # delugectl.enable = false;
       # filebrowserctl.enable = true;

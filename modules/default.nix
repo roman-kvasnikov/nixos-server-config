@@ -7,7 +7,7 @@
     # ./filebrowser.nix
     ./fish.nix
     ./git.nix
-    # ./homepage.nix
+    ./homepage.nix
     # ./immich.nix
     # ./jellyfin.nix
     # ./minidlna.nix

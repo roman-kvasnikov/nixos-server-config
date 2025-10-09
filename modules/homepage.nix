@@ -1,172 +1,268 @@
+# https://gethomepage.dev/
+# https://pictogrammers.com/library/mdi/
 {
   config,
   lib,
   pkgs,
   inputs,
   ...
-}: {
-  # environment.systemVariables = {
-  #   HOMEPAGE_ALLOWED_HOSTS = config.server.domain;
-  # };
+}: let
+  cfg = config.services.homepagectl;
+  cfgServer = config.server;
+  cfgAcme = config.services.acmectl;
+  cfgNginx = config.services.nginxctl;
+in {
+  options.services.homepagectl = {
+    enable = lib.mkEnableOption "Enable Homepage";
 
-  # https://gethomepage.dev/
-  services.homepage-dashboard = {
-    enable = true;
-
-    allowedHosts = "${config.server.domain}";
-
-    settings = {
-      title = "Kvasnikov's Home Server";
-
-      # background = "${inputs.wallpapers}/landscape_monicore_instagram.jpg";
-
-      # background = {
-      #   image = "${inputs.wallpapers}/landscape_monicore_instagram.jpg";
-      #   blur = "sm";
-      #   saturate = "50";
-      #   brightness = "50";
-      #   opacity = "50";
-      # };
-
-      headerStyle = "boxedWidgets";
+    host = lib.mkOption {
+      type = lib.types.str;
+      description = "Host of the Homepage module";
+      default = "${cfgServer.domain}";
     };
+  };
 
-    bookmarks = [
-      {
-        Developer = [
+  config = lib.mkMerge [
+    (lib.mkIf cfg.enable {
+      services.glances.enable = true;
+
+      services.homepage-dashboard = {
+        enable = true;
+
+        allowedHosts = "${cfg.host}";
+
+        settings = {
+          title = "Kvasnikov's Home Server";
+
+          layout = [
+            {
+              Glances = {
+                header = false;
+                style = "row";
+                columns = 4;
+              };
+            }
+            {
+              Arr = {
+                header = true;
+                style = "column";
+              };
+            }
+            {
+              Downloads = {
+                header = true;
+                style = "column";
+              };
+            }
+            {
+              Media = {
+                header = true;
+                style = "column";
+              };
+            }
+            {
+              System = {
+                header = true;
+                style = "column";
+              };
+            }
+          ];
+          headerStyle = "clean";
+          statusStyle = "dot";
+          hideVersion = "true";
+        };
+
+        bookmarks = [
           {
-            GitHub = [
+            Developer = [
               {
-                abbr = "GH";
-                href = "https://github.com/roman-kvasnikov";
+                GitHub = [
+                  {
+                    abbr = "GH";
+                    href = "https://github.com/roman-kvasnikov";
+                  }
+                ];
+              }
+            ];
+          }
+          {
+            Entertainment = [
+              {
+                YouTube = [
+                  {
+                    abbr = "YT";
+                    href = "https://youtube.com/";
+                  }
+                ];
               }
             ];
           }
         ];
-      }
-      {
-        Entertainment = [
-          {
-            YouTube = [
-              {
-                abbr = "YT";
-                href = "https://youtube.com/";
-              }
-            ];
-          }
-        ];
-      }
-    ];
 
-    # https://gethomepage.dev/latest/configs/services/
-    # https://pictogrammers.com/library/mdi/
-    services = [
-      {
-        "Self-hosted services" = [
-          {
-            "Cockpit" = {
-              description = "Cockpit";
-              href = "https://cockpit.${config.server.domain}/";
-              siteMonitor = "https://cockpit.${config.server.domain}/";
-            };
-          }
-          {
-            "Immich" = {
-              description = "Immich";
-              href = "https://immich.${config.server.domain}/";
-              siteMonitor = "https://immich.${config.server.domain}/";
-            };
-          }
-          {
-            "Jellyfin" = {
-              description = "Jellyfin";
-              href = "https://jellyfin.${config.server.domain}/";
-              siteMonitor = "https://jellyfin.${config.server.domain}/";
-            };
-          }
-          {
-            "Torrent" = {
-              description = "Torrent";
-              href = "https://torrent.${config.server.domain}/";
-              siteMonitor = "https://torrent.${config.server.domain}/";
-            };
-          }
-          {
-            "Nextcloud" = {
-              description = "Nextcloud";
-              href = "https://nextcloud.${config.server.domain}/";
-              siteMonitor = "https://nextcloud.${config.server.domain}/";
-            };
-          }
-        ];
-      }
-      {
-        "My Second Group" = [
-          {
-            "My Second Service" = {
-              description = "Homepage is the best";
-              href = "https://${config.server.domain}/";
-            };
-          }
-        ];
-      }
-    ];
+        services = let
+          homepageCategories = [
+            "Arr"
+            "Media"
+            "Downloads"
+            "System"
+            "Smart Home"
+          ];
+          homepageServices = x: (lib.attrsets.filterAttrs (
+              _name: value: value ? homepage && value.homepage.category == x
+            )
+            config.services);
+        in
+          lib.lists.forEach homepageCategories (cat: {
+            "${cat}" =
+              lib.lists.forEach (lib.attrsets.mapAttrsToList (name: _value: name) (homepageServices "${cat}"))
+              (x: {
+                "${config.services.${x}.homepage.name}" = {
+                  icon = config.services.${x}.homepage.icon;
+                  description = config.services.${x}.homepage.description;
+                  href = "https://${config.services.${x}.host}";
+                  siteMonitor = "https://${config.services.${x}.host}";
+                };
+              });
+          })
+          ++ [
+            {
+              Glances = let
+                port = toString config.services.glances.port;
+              in [
+                {
+                  Info = {
+                    widget = {
+                      type = "glances";
+                      url = "http://localhost:${port}";
+                      metric = "info";
+                      chart = false;
+                      version = 4;
+                    };
+                  };
+                }
+                {
+                  "CPU Temp" = {
+                    widget = {
+                      type = "glances";
+                      url = "http://localhost:${port}";
+                      metric = "sensor:Package id 0";
+                      chart = false;
+                      version = 4;
+                    };
+                  };
+                }
+                {
+                  Processes = {
+                    widget = {
+                      type = "glances";
+                      url = "http://localhost:${port}";
+                      metric = "process";
+                      chart = false;
+                      version = 4;
+                    };
+                  };
+                }
+                {
+                  Network = {
+                    widget = {
+                      type = "glances";
+                      url = "http://localhost:${port}";
+                      metric = "network:enp2s0";
+                      chart = false;
+                      version = 4;
+                    };
+                  };
+                }
+              ];
+            }
+          ];
 
-    # https://gethomepage.dev/latest/configs/service-widgets/
-    widgets = [
-      {
-        resources = {
-          cpu = true;
-          disk = "/home";
-          memory = true;
-          cputemp = true;
-          tempmin = 0;
-          tempmax = 100;
-          uptime = true;
-          units = "imperial";
-          refresh = 3000;
-          diskUnits = "bytes";
-          network = true;
-        };
-      }
-      {
-        search = {
-          provider = "google";
-          target = "_blank";
-        };
-      }
-      {
-        datetime = {
-          text_size = "xl";
-          format = {
-            timeStyle = "short";
+        # https://gethomepage.dev/latest/configs/service-widgets/
+        widgets = [
+          {
+            resources = {
+              cpu = true;
+              disk = "/home";
+              memory = true;
+              cputemp = true;
+              tempmin = 0;
+              tempmax = 100;
+              uptime = true;
+              units = "imperial";
+              refresh = 3000;
+              diskUnits = "bytes";
+              network = true;
+            };
+          }
+          {
+            search = {
+              provider = "google";
+              target = "_blank";
+            };
+          }
+          {
+            datetime = {
+              text_size = "xl";
+              format = {
+                timeStyle = "short";
+              };
+            };
+          }
+        ];
+
+        # https://gethomepage.dev/latest/configs/kubernetes/
+        # kubernetes = {};
+
+        # https://gethomepage.dev/latest/configs/docker/
+        # docker = {};
+
+        # https://gethomepage.dev/latest/configs/custom-css-js/
+        # customJS = "";
+        customCSS = ''
+          body, html {
+            font-family: SF Pro Display, Helvetica, Arial, sans-serif !important;
+          }
+          .font-medium {
+            font-weight: 700 !important;
+          }
+          .font-light {
+            font-weight: 500 !important;
+          }
+          .font-thin {
+            font-weight: 400 !important;
+          }
+          #information-widgets {
+            padding-left: 1.5rem;
+            padding-right: 1.5rem;
+          }
+          div#footer {
+            display: none;
+          }
+          .services-group.basis-full.flex-1.px-1.-my-1 {
+            padding-bottom: 3rem;
+          };
+        '';
+      };
+    })
+
+    (lib.mkIf (cfg.enable && cfgAcme.enable) {
+      security.acme.certs."${cfg.host}" = cfgAcme.commonCertOptions;
+    })
+
+    (lib.mkIf (cfg.enable && cfgNginx.enable) {
+      services.nginx = {
+        virtualHosts = {
+          "${cfg.host}" = {
+            enableACME = true;
+            forceSSL = true;
+            locations."/" = {
+              proxyPass = "http://127.0.0.1:8082";
+              proxyWebsockets = true;
+              recommendedProxySettings = true;
+            };
           };
         };
-      }
-    ];
-
-    # https://gethomepage.dev/latest/configs/kubernetes/
-    # kubernetes = {};
-
-    # https://gethomepage.dev/latest/configs/docker/
-    # docker = {};
-
-    # https://gethomepage.dev/latest/configs/custom-css-js/
-    # customJS = "";
-    # customCSS = "";
-  };
-
-  services.nginx = {
-    virtualHosts = {
-      "${config.server.domain}" = {
-        enableACME = true;
-        forceSSL = true;
-        locations."/" = {
-          proxyPass = "http://127.0.0.1:8082";
-          proxyWebsockets = true;
-          recommendedProxySettings = true;
-        };
       };
-    };
-  };
+    })
+  ];
 }

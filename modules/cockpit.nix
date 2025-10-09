@@ -17,6 +17,25 @@ in {
       description = "Host of the Cockpit module";
       default = "cockpit.${cfgServer.domain}";
     };
+
+    homepage = {
+      name = lib.mkOption {
+        type = lib.types.str;
+        default = "Cockpit";
+      };
+      description = lib.mkOption {
+        type = lib.types.str;
+        default = "Self-hosted system management solution";
+      };
+      icon = lib.mkOption {
+        type = lib.types.str;
+        default = "cockpit.svg";
+      };
+      category = lib.mkOption {
+        type = lib.types.str;
+        default = "System";
+      };
+    };
   };
 
   config = lib.mkMerge [
