@@ -40,6 +40,8 @@ in {
         default = {
           type = "filebrowser";
           url = "https://${cfg.host}";
+          username = "admin";
+          password = "generator163";
         };
       };
     };
