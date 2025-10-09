@@ -44,13 +44,7 @@ in {
               };
             }
             {
-              Arr = {
-                header = true;
-                style = "column";
-              };
-            }
-            {
-              Downloads = {
+              System = {
                 header = true;
                 style = "column";
               };
@@ -62,7 +56,7 @@ in {
               };
             }
             {
-              System = {
+              Downloads = {
                 header = true;
                 style = "column";
               };
@@ -117,12 +111,14 @@ in {
             "${cat}" =
               lib.lists.forEach (lib.attrsets.mapAttrsToList (name: _value: name) (homepageServices "${cat}"))
               (x: {
-                "${config.homelab.services.${x}.homepage.name}" = {
-                  icon = config.homelab.services.${x}.homepage.icon;
-                  description = config.homelab.services.${x}.homepage.description;
-                  href = "https://${config.homelab.services.${x}.host}";
-                  siteMonitor = "https://${config.homelab.services.${x}.host}";
-                };
+                "${config.homelab.services.${x}.homepage.name}" =
+                  {
+                    icon = config.homelab.services.${x}.homepage.icon;
+                    description = config.homelab.services.${x}.homepage.description;
+                    href = "https://${config.homelab.services.${x}.host}";
+                    siteMonitor = "https://${config.homelab.services.${x}.host}";
+                  }
+                  // config.homelab.services.${x}.homepage.extraConfig;
               });
           })
           ++ [

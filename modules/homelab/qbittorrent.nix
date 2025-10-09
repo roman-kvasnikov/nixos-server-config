@@ -4,18 +4,43 @@
   pkgs,
   ...
 }: let
-  cfg = config.services.qbittorrentctl;
+  cfg = config.homelab.services.qbittorrentctl;
   cfgServer = config.server;
   cfgAcme = config.services.acmectl;
   cfgNginx = config.services.nginxctl;
 in {
-  options.services.qbittorrentctl = {
+  options.homelab.services.qbittorrentctl = {
     enable = lib.mkEnableOption "Enable qBittorrent";
 
     host = lib.mkOption {
       type = lib.types.str;
       description = "Host of the qBittorrent module";
       default = "torrent.${cfgServer.domain}";
+    };
+
+    homepage = {
+      name = lib.mkOption {
+        type = lib.types.str;
+        default = "qBittorrent";
+      };
+      description = lib.mkOption {
+        type = lib.types.str;
+        default = "Self-hosted torrent client";
+      };
+      icon = lib.mkOption {
+        type = lib.types.str;
+        default = "qbittorrent.svg";
+      };
+      category = lib.mkOption {
+        type = lib.types.str;
+        default = "Downloads";
+      };
+      extraConfig = lib.mkOption {
+        type = lib.types.attrs;
+        default = {
+          enableLeechProgress = true;
+        };
+      };
     };
   };
 
