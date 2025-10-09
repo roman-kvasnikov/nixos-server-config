@@ -39,7 +39,7 @@ in {
               Glances = {
                 header = false;
                 style = "row";
-                columns = 4;
+                columns = 5;
               };
             }
             {
@@ -130,11 +130,22 @@ in {
                 port = toString config.services.glances.port;
               in [
                 {
-                  Info = {
+                  CPU = {
                     widget = {
                       type = "glances";
                       url = "http://localhost:${port}";
-                      metric = "info";
+                      metric = "cpu";
+                      chart = false;
+                      version = 4;
+                    };
+                  };
+                }
+                {
+                  Memory = {
+                    widget = {
+                      type = "glances";
+                      url = "http://localhost:${port}";
+                      metric = "memory";
                       chart = false;
                       version = 4;
                     };
@@ -145,14 +156,14 @@ in {
                     widget = {
                       type = "glances";
                       url = "http://localhost:${port}";
-                      metric = "sensor:Package id 1";
+                      metric = "sensor:Core 0";
                       chart = false;
                       version = 4;
                     };
                   };
                 }
                 {
-                  Processes = {
+                  Disk = {
                     widget = {
                       type = "glances";
                       url = "http://localhost:${port}";
