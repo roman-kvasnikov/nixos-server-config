@@ -62,15 +62,16 @@ in {
         hostName = cfg.host;
         https = true;
 
-        datadir = "/var/lib/nextcloud";
-        home = "/var/lib/nextcloud";
+        datadir = "/var/lib/nextcloud/data";
 
+        # Настройка кэширования
         caching.redis = true;
+        configureRedis = true; # Автоматическая настройка Redis
+
+        # Настройка базы данных
+        database.createLocally = true; # Автоматически создать БД
         config = {
           dbtype = "pgsql";
-          dbname = "nextcloud";
-          dbuser = "nextcloud";
-          dbhost = "/run/postgresql";
           adminuser = "admin";
           adminpassFile = cfg.adminpassFile;
         };
@@ -79,12 +80,11 @@ in {
           overwriteprotocol = "https";
           default_phone_region = "RU";
 
-          redis = lib.mkForce {
-            host = "127.0.0.1";
-            port = 31638;
-            dbindex = 0;
-            timeout = 1.5;
-          };
+          # Настройки trusted domains
+          trusted_domains = [
+            cfg.host
+            "localhost"
+          ];
         };
 
         maxUploadSize = "16G";
@@ -94,45 +94,18 @@ in {
         extraApps = lib.genAttrs cfg.apps (app: config.services.nextcloud.package.packages.apps.${app});
       };
 
-      services = {
-        postgresql = {
-          enable = true;
-          ensureDatabases = ["nextcloud"];
-          ensureUsers = [
-            {
-              name = "nextcloud";
-              ensureDBOwnership = true;
-            }
-          ];
-        };
-        # optional backup for postgresql db
-        postgresqlBackup = {
-          enable = true;
-          location = "/data/backup/nextclouddb";
-          databases = ["nextcloud"];
-          # time to start backup in systemd.time format
-          startAt = "*-*-* 23:15:00";
-        };
+      # Redis сервер
+      services.redis.servers.nextcloud = {
+        enable = true;
+        port = 31638;
+        bind = "127.0.0.1";
       };
 
-      # ensure postgresql db is started with nextcloud
+      # Системные сервисы
       systemd = {
         services."nextcloud-setup" = {
           requires = ["postgresql.service" "redis-nextcloud.service"];
-          after = ["postgresql.service" "redis-nextcloud.service" "network.target"];
-
-          # Добавьте задержку перед запуском
-          serviceConfig = {
-            ExecStartPre = "${pkgs.coreutils}/bin/sleep 5";
-          };
-        };
-      };
-
-      services = {
-        redis.servers.nextcloud = {
-          enable = true;
-          port = 31638;
-          bind = "127.0.0.1";
+          after = ["postgresql.service" "redis-nextcloud.service"];
         };
       };
     })
