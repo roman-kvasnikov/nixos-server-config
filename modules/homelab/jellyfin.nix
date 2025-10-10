@@ -80,10 +80,15 @@ in {
         jellyfin-ffmpeg
       ];
 
+      users.users.jellyfin = {
+        isSystemUser = true;
+        group = cfgServer.systemGroup;
+      };
+
       services.jellyfin = {
         enable = true;
 
-        user = cfgServer.systemUser;
+        user = "jellyfin";
         group = cfgServer.systemGroup;
       };
     })

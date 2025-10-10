@@ -8,6 +8,8 @@ in {
   imports = [
     ../../modules
     ../../modules/homelab
+    ../../modules/programs
+    ../../modules/services
   ];
 
   options.server = {
