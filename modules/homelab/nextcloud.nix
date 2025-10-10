@@ -118,8 +118,13 @@ in {
       # ensure postgresql db is started with nextcloud
       systemd = {
         services."nextcloud-setup" = {
-          requires = ["postgresql.service"];
-          after = ["postgresql.service"];
+          requires = ["postgresql.service" "redis-nextcloud.service"];
+          after = ["postgresql.service" "redis-nextcloud.service" "network.target"];
+
+          # Добавьте задержку перед запуском
+          serviceConfig = {
+            ExecStartPre = "${pkgs.coreutils}/bin/sleep 5";
+          };
         };
       };
 
