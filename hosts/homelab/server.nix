@@ -115,7 +115,7 @@ in {
       services = {
         homepagectl.enable = true;
         cockpitctl.enable = true;
-        nextcloudctl.enable = true;
+        nextcloudctl.enable = false;
         qbittorrentctl.enable = true;
         immichctl.enable = true;
         jellyfinctl.enable = true;
