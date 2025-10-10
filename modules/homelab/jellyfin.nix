@@ -40,7 +40,7 @@ in {
         default = {
           type = "jellyfin";
           url = "https://${cfg.host}";
-          key = "";
+          key = "f4342ca21fec4d50a9a29e106b8a11fc";
           enableBlocks = true;
           enableNowPlaying = true;
           enableUser = true;
