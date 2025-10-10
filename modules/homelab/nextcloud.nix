@@ -62,6 +62,9 @@ in {
         hostName = cfg.host;
         https = true;
 
+        datadir = "/var/lib/nextcloud";
+        home = "/var/lib/nextcloud";
+
         caching.redis = true;
         config = {
           dbtype = "pgsql";
