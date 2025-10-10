@@ -6,7 +6,6 @@
   cfg = config.server;
 in {
   imports = [
-    ../../modules
     ../../modules/homelab
     ../../modules/programs
     ../../modules/services
