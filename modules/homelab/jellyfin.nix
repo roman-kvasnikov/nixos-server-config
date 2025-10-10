@@ -98,6 +98,8 @@ in {
     })
 
     (lib.mkIf (cfg.enable && cfgNginx.enable) {
+      networking.firewall.allowedTCPPorts = [8096]; # Для доступа из внешней сети
+
       services.nginx = {
         virtualHosts = {
           "${cfg.host}" = {
