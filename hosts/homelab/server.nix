@@ -70,6 +70,7 @@ in {
     services = {
       acmectl.enable = true;
       nginxctl.enable = true;
+      hddfancontrolctl.enable = true;
 
       # delugectl.enable = false;
       # immichctl.enable = true;
@@ -121,7 +122,6 @@ in {
         jellyfinctl.enable = true;
         filebrowserctl.enable = true;
         vaultwardenctl.enable = true;
-        hddfancontrolctl.enable = true;
       };
     };
   };
