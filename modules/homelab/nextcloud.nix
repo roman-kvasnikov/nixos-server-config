@@ -29,7 +29,7 @@ in {
     apps = lib.mkOption {
       type = lib.types.listOf lib.types.str;
       description = "List of Nextcloud apps to enable";
-      default = ["bookmarks" "calendar" "contacts" "tasks" "notes" "mail" "onlyoffice" "maps" "groupfolders"];
+      default = ["bookmarks" "calendar" "contacts" "tasks" "notes" "mail" "onlyoffice" "groupfolders"];
     };
 
     homepage = {
