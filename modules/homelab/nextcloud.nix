@@ -49,6 +49,15 @@ in {
         type = lib.types.str;
         default = "Services";
       };
+      widget = lib.mkOption {
+        type = lib.types.attrs;
+        default = {
+          type = "nextcloud";
+          url = "https://${cfg.host}";
+          username = "root";
+          password = "123";
+        };
+      };
     };
   };
 
