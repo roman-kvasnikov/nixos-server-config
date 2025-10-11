@@ -15,11 +15,15 @@ in {
       enable = true;
 
       settings = {
-        hdd = [
-          {
-            path = "/dev/sda";
-          }
-        ];
+        harddrives = {
+          disks = [
+            "/dev/sda"
+          ];
+          pwmPaths = [
+            "/sys/class/hwmon/hwmon1/pwm1:25:10"
+          ];
+          logVerbosity = "DEBUG";
+        };
       };
     };
   };
