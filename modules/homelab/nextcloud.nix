@@ -62,8 +62,6 @@ in {
         hostName = cfg.host;
         https = true;
 
-        datadir = "/var/lib/nextcloud/data";
-
         # Настройка кэширования
         caching.redis = true;
         configureRedis = true; # Автоматическая настройка Redis
@@ -72,19 +70,12 @@ in {
         database.createLocally = true; # Автоматически создать БД
         config = {
           dbtype = "pgsql";
-          adminuser = "admin";
-          adminpassFile = cfg.adminpassFile;
+          dbpassFile = cfg.adminpassFile;
         };
 
         settings = {
           overwriteprotocol = "https";
           default_phone_region = "RU";
-
-          # Настройки trusted domains
-          trusted_domains = [
-            cfg.host
-            "localhost"
-          ];
         };
 
         maxUploadSize = "16G";
@@ -92,21 +83,6 @@ in {
         extraAppsEnable = true;
         autoUpdateApps.enable = true;
         extraApps = lib.genAttrs cfg.apps (app: config.services.nextcloud.package.packages.apps.${app});
-      };
-
-      # Redis сервер
-      services.redis.servers.nextcloud = {
-        enable = true;
-        port = 31638;
-        bind = "127.0.0.1";
-      };
-
-      # Системные сервисы
-      systemd = {
-        services."nextcloud-setup" = {
-          requires = ["postgresql.service" "redis-nextcloud.service"];
-          after = ["postgresql.service" "redis-nextcloud.service"];
-        };
       };
     })
 

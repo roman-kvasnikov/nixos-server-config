@@ -57,7 +57,7 @@ in {
       services.qbittorrent = {
         enable = true;
 
-        user = cfgServer.systemUser;
+        user = "qbittorrent";
         group = cfgServer.systemGroup;
       };
     })

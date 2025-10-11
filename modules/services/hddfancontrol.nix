@@ -13,6 +13,14 @@ in {
   config = lib.mkIf cfg.enable {
     services.hddfancontrol = {
       enable = true;
+
+      settings = {
+        hdd = [
+          {
+            path = "/dev/sda";
+          }
+        ];
+      };
     };
   };
 }

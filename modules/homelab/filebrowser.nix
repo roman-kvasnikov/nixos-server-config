@@ -56,7 +56,7 @@ in {
       services.filebrowser = {
         enable = true;
 
-        user = cfgServer.systemUser;
+        user = "filebrowser";
         group = cfgServer.systemGroup;
 
         settings = {

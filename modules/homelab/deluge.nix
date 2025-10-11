@@ -28,8 +28,9 @@ in {
       services.deluge = {
         enable = true;
 
-        user = cfgServer.systemUser;
+        user = "deluge";
         group = cfgServer.systemGroup;
+
         web = {
           enable = true;
         };
