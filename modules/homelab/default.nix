@@ -3,6 +3,7 @@
     ./cockpit.nix
     # ./deluge.nix
     ./filebrowser.nix
+    ./hddfancontrol.nix
     ./homepage.nix
     ./immich.nix
     ./jellyfin.nix

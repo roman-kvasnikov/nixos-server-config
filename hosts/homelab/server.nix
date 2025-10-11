@@ -121,6 +121,7 @@ in {
         jellyfinctl.enable = true;
         filebrowserctl.enable = true;
         vaultwardenctl.enable = true;
+        hddfancontrolctl.enable = true;
       };
     };
   };
