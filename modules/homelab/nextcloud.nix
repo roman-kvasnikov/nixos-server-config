@@ -69,7 +69,7 @@ in {
         # Настройка базы данных
         database.createLocally = true; # Автоматически создать БД
         config = {
-          dbtype = "pgsql";
+          # dbtype = "pgsql";
           adminpassFile = cfg.adminpassFile;
           # dbpassFile = cfg.adminpassFile;
         };
