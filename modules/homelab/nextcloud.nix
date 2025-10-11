@@ -70,6 +70,7 @@ in {
         database.createLocally = true; # Автоматически создать БД
         config = {
           dbtype = "pgsql";
+          adminpassFile = cfg.adminpassFile;
           # dbpassFile = cfg.adminpassFile;
         };
 
