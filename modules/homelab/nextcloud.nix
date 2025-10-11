@@ -77,6 +77,11 @@ in {
         settings = {
           overwriteprotocol = "https";
           default_phone_region = "RU";
+
+          trusted_domains = [
+            cfg.host
+            "localhost"
+          ];
         };
 
         maxUploadSize = "16G";
