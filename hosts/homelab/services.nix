@@ -1,4 +1,8 @@
-{lib, ...}: {
+{
+  lib,
+  config,
+  ...
+}: {
   imports = [
     ../../modules/homelab
     ../../modules/programs
