@@ -10,6 +10,7 @@
     ./nextcloud.nix
     ./qbittorrent.nix
     # ./samba.nix
+    ./tdarr.nix
     # ./unifi.nix
     ./uptime-kuma.nix
     ./vaultwarden.nix
