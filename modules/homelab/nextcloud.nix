@@ -54,7 +54,7 @@ in {
         default = {
           type = "nextcloud";
           url = "https://${cfg.host}";
-          username = "root";
+          username = "romank";
           password = "123";
         };
       };

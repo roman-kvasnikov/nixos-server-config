@@ -36,14 +36,14 @@ in {
         type = lib.types.str;
         default = "Media";
       };
-      widget = lib.mkOption {
-        type = lib.types.attrs;
-        default = {
-          type = "tdarr";
-          url = "https://${cfg.host}";
-          key = "123456";
-        };
-      };
+      # widget = lib.mkOption {
+      #   type = lib.types.attrs;
+      #   default = {
+      #     type = "tdarr";
+      #     url = "https://${cfg.host}";
+      #     key = "123456";
+      #   };
+      # };
     };
   };
 
