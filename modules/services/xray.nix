@@ -50,5 +50,12 @@ in {
           source ${cfg.proxyEnvFishFile}
       end
     '';
+
+    systemd.services = lib.mkIf config.services.jellyfin.enable {
+      jellyfin.environment = {
+        http_proxy = "http://127.0.0.1:10809";
+        https_proxy = "http://127.0.0.1:10809";
+      };
+    };
   };
 }
