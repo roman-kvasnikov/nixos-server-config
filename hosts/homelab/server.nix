@@ -114,13 +114,14 @@ in {
 
     homelab = {
       services = {
-        homepagectl.enable = true;
         cockpitctl.enable = true;
-        nextcloudctl.enable = true;
-        qbittorrentctl.enable = true;
+        filebrowserctl.enable = true;
+        homepagectl.enable = true;
         immichctl.enable = true;
         jellyfinctl.enable = true;
-        filebrowserctl.enable = true;
+        nextcloudctl.enable = true;
+        qbittorrentctl.enable = true;
+        uptime-kumactl.enable = true;
         vaultwardenctl.enable = true;
       };
     };

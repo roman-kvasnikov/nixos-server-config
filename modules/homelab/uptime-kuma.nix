@@ -4,18 +4,45 @@
   pkgs,
   ...
 }: let
-  cfg = config.services.uptime-kumactl;
+  cfg = config.homelab.services.uptime-kumactl;
   cfgServer = config.server;
   cfgAcme = config.services.acmectl;
   cfgNginx = config.services.nginxctl;
 in {
-  options.services.uptime-kumactl = {
+  options.homelab.services.uptime-kumactl = {
     enable = lib.mkEnableOption "Enable Uptime Kuma";
 
     host = lib.mkOption {
       type = lib.types.str;
       description = "Host of the Uptime Kuma module";
       default = "uptime.${cfgServer.domain}";
+    };
+
+    homepage = {
+      name = lib.mkOption {
+        type = lib.types.str;
+        default = "Uptime Kuma";
+      };
+      description = lib.mkOption {
+        type = lib.types.str;
+        default = "Uptime monitoring";
+      };
+      icon = lib.mkOption {
+        type = lib.types.str;
+        default = "uptime-kuma.svg";
+      };
+      category = lib.mkOption {
+        type = lib.types.str;
+        default = "System";
+      };
+      # widget = lib.mkOption {
+      #   type = lib.types.attrs;
+      #   default = {
+      #     type = "uptimekuma";
+      #     url = "https://${cfg.host}";
+      #     slug = "statuspageslug";
+      #   };
+      # };
     };
   };
 
