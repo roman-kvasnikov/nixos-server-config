@@ -35,16 +35,16 @@ in {
         type = lib.types.str;
         default = "Services";
       };
-      widget = lib.mkOption {
-        type = lib.types.attrs;
-        default = {
-          type = "qbittorrent";
-          url = "https://${cfg.host}";
-          username = "admin";
-          password = "123456";
-          enableLeechProgress = true;
-        };
-      };
+      # widget = lib.mkOption {
+      #   type = lib.types.attrs;
+      #   default = {
+      #     type = "qbittorrent";
+      #     url = "https://${cfg.host}";
+      #     username = "admin";
+      #     password = "123456";
+      #     enableLeechProgress = true;
+      #   };
+      # };
     };
   };
 
