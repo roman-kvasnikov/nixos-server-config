@@ -84,7 +84,6 @@ in {
           maxLogSizeMB = "10";
           cronPluginUpdate = "";
         };
-        restartPolicy = "unless-stopped";
       };
 
       users.users.tdarr = {
