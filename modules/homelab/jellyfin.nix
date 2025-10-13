@@ -35,20 +35,20 @@ in {
         type = lib.types.str;
         default = "Media";
       };
-      # widget = lib.mkOption {
-      #   type = lib.types.attrs;
-      #   default = {
-      #     type = "jellyfin";
-      #     url = "https://${cfg.host}";
-      #     key = "f4342ca21fec4d50a9a29e106b8a11fc";
-      #     enableBlocks = true;
-      #     enableNowPlaying = true;
-      #     enableUser = true;
-      #     enableMediaControl = false;
-      #     showEpisodeNumber = true;
-      #     expandOneStreamToTwoRows = false;
-      #   };
-      # };
+      widget = lib.mkOption {
+        type = lib.types.attrs;
+        default = {
+          type = "jellyfin";
+          url = "https://${cfg.host}";
+          key = "3a417e965c3b4b19a273b469269ff7dd";
+          enableBlocks = true;
+          enableNowPlaying = true;
+          enableUser = true;
+          enableMediaControl = false;
+          showEpisodeNumber = true;
+          expandOneStreamToTwoRows = false;
+        };
+      };
     };
   };
 
