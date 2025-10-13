@@ -55,16 +55,16 @@
       # geoclue2.enable = true; # Геолокация для часовых поясов
     };
 
-    homelab = {
-      systemd.tmpfiles.rules = [
-        "d /media 0755 root root - -"
-        "d /media/.torrents 0770 ${config.server.systemUser} ${config.server.systemGroup} - -"
-        "d /media/Downloads 0770 ${config.server.systemUser} ${config.server.systemGroup} - -"
-        "d /media/Movies 0770 ${config.server.systemUser} ${config.server.systemGroup} - -"
-        "d /media/TV\ Shows 0770 ${config.server.systemUser} ${config.server.systemGroup} - -"
-        "d /media/Cartoons 0770 ${config.server.systemUser} ${config.server.systemGroup} - -"
-      ];
+    systemd.tmpfiles.rules = [
+      "d /media 0755 root root - -"
+      "d /media/.torrents 0770 ${config.server.systemUser} ${config.server.systemGroup} - -"
+      "d /media/Downloads 0770 ${config.server.systemUser} ${config.server.systemGroup} - -"
+      "d /media/Movies 0770 ${config.server.systemUser} ${config.server.systemGroup} - -"
+      "d /media/TV\ Shows 0770 ${config.server.systemUser} ${config.server.systemGroup} - -"
+      "d /media/Cartoons 0770 ${config.server.systemUser} ${config.server.systemGroup} - -"
+    ];
 
+    homelab = {
       services = {
         cockpitctl.enable = true;
         filebrowserctl.enable = true;
