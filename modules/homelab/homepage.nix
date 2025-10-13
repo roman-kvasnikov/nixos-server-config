@@ -33,7 +33,7 @@ in {
         allowedHosts = "${cfg.host}";
 
         settings = {
-          title = "Kvasnikov's Home Server";
+          title = "Kvasnikov's Home Lab";
 
           layout = [
             {
@@ -51,12 +51,6 @@ in {
             }
             {
               Media = {
-                header = true;
-                style = "column";
-              };
-            }
-            {
-              Downloads = {
                 header = true;
                 style = "column";
               };
@@ -104,7 +98,6 @@ in {
           homepageCategories = [
             "System"
             "Media"
-            "Downloads"
             "Services"
           ];
 
@@ -113,10 +106,10 @@ in {
             )
             config.homelab.services);
         in
-          lib.lists.forEach homepageCategories (cat: {
-            "${cat}" =
+          lib.lists.forEach homepageCategories (category: {
+            "${category}" =
               lib.lists.forEach
-              (lib.attrsets.mapAttrsToList (name: _value: name) (homepageServices "${cat}"))
+              (lib.attrsets.mapAttrsToList (name: _value: name) (homepageServices "${category}"))
               (x: let
                 base = {
                   icon = config.homelab.services.${x}.homepage.icon;
