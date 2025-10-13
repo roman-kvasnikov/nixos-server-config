@@ -40,11 +40,8 @@ in {
         default = {
           type = "immich";
           url = "https://${cfg.host}";
-          key = "v09lvmuyCKJCwfMGmpteradKfono91T70bZcRbsqGgE";
+          key = "KnbSIMaSGErVbdgdx7xSf5aH1y01qAbf6Rj4YwWj0";
           version = 2;
-          photos = true;
-          videos = true;
-          storage = true;
         };
       };
     };
