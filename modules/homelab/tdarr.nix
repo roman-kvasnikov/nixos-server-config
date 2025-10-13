@@ -91,10 +91,6 @@ in {
         isSystemUser = true;
         group = cfgServer.systemGroup;
       };
-
-      environment.persistence."/persist".directories = [
-        "/var/lib/tdarr"
-      ];
     })
 
     (lib.mkIf (cfg.enable && cfgAcme.enable) {
