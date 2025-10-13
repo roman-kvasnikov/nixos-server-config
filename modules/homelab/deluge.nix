@@ -31,6 +31,8 @@ in {
         user = "deluge";
         group = cfgServer.systemGroup;
 
+        openFirewall = !cfgNginx.enable;
+
         web = {
           enable = true;
         };

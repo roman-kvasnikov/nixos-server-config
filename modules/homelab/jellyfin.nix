@@ -90,6 +90,8 @@ in {
 
         user = "jellyfin";
         group = cfgServer.systemGroup;
+
+        openFirewall = !cfgNginx.enable;
       };
     })
 

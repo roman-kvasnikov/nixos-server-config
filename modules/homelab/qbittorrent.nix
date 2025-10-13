@@ -59,6 +59,8 @@ in {
 
         user = "qbittorrent";
         group = cfgServer.systemGroup;
+
+        openFirewall = !cfgNginx.enable;
       };
     })
 

@@ -59,6 +59,8 @@ in {
         user = "filebrowser";
         group = cfgServer.systemGroup;
 
+        openFirewall = !cfgNginx.enable;
+
         settings = {
           port = 8081;
         };

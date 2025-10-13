@@ -51,6 +51,8 @@ in {
           cfg.host
         ];
 
+        openFirewall = !cfgNginx.enable;
+
         settings = {
           WebService = {
             AllowUnencrypted = false;

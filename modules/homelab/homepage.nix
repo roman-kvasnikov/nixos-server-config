@@ -32,6 +32,8 @@ in {
 
         allowedHosts = "${cfg.host}";
 
+        openFirewall = !cfgNginx.enable;
+
         settings = {
           title = "Kvasnikov's Home Lab";
 

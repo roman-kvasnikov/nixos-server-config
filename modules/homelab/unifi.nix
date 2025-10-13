@@ -27,6 +27,8 @@ in {
 
       services.unifi = {
         enable = true;
+
+        openFirewall = !cfgNginx.enable;
       };
     })
 

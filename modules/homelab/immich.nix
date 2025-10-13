@@ -18,12 +18,6 @@ in {
       default = "immich.${cfgServer.domain}";
     };
 
-    # mediaDir = lib.mkOption {
-    #   type = lib.types.path;
-    #   description = "Media directory for Immich";
-    #   default = "/mnt/Media/Photos";
-    # };
-
     homepage = {
       name = lib.mkOption {
         type = lib.types.str;
@@ -77,7 +71,7 @@ in {
         user = "immich";
         group = cfgServer.systemGroup;
 
-        # mediaLocation = "/home/Media/Photos";
+        openFirewall = !cfgNginx.enable;
       };
     })
 
