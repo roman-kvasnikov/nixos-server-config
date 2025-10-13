@@ -188,7 +188,7 @@ in {
                     widget =
                       commonOptions
                       // {
-                        metric = "network:enp1s0";
+                        metric = "network:enp0s20f0u3";
                         chart = true;
                       };
                   };
