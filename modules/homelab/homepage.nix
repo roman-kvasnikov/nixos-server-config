@@ -207,38 +207,38 @@ in {
             }
           ];
 
-        # https://gethomepage.dev/latest/configs/service-widgets/
-        # widgets = [
-        #   {
-        #     resources = {
-        #       cpu = true;
-        #       disk = "/home";
-        #       memory = true;
-        #       cputemp = true;
-        #       tempmin = 0;
-        #       tempmax = 100;
-        #       uptime = true;
-        #       units = "imperial";
-        #       refresh = 3000;
-        #       diskUnits = "bytes";
-        #       network = true;
-        #     };
-        #   }
-        #   {
-        #     search = {
-        #       provider = "google";
-        #       target = "_blank";
-        #     };
-        #   }
-        #   {
-        #     datetime = {
-        #       text_size = "xl";
-        #       format = {
-        #         timeStyle = "short";
-        #       };
-        #     };
-        #   }
-        # ];
+        # https://gethomepage.dev/widgets/
+        widgets = [
+          {
+            resources = {
+              cpu = true;
+              disk = "/home";
+              memory = true;
+              cputemp = true;
+              tempmin = 0;
+              tempmax = 100;
+              uptime = true;
+              units = "imperial";
+              refresh = 3000;
+              diskUnits = "bytes";
+              network = true;
+            };
+          }
+          {
+            search = {
+              provider = "google";
+              target = "_blank";
+            };
+          }
+          {
+            datetime = {
+              text_size = "xl";
+              format = {
+                timeStyle = "short";
+              };
+            };
+          }
+        ];
 
         # https://gethomepage.dev/latest/configs/kubernetes/
         # kubernetes = {};
