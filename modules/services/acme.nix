@@ -16,6 +16,9 @@ in {
         dnsProvider = "namecheap";
         credentialsFile = "/etc/secrets/acme/namecheap.env";
         webroot = null;
+        postRun = ''
+          systemctl reload nginx
+        '';
       };
     };
   };
