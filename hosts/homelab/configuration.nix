@@ -11,6 +11,7 @@
     ./packages.nix
     ./security.nix
     ./server.nix
+    ./services.nix
     ./users.nix
     ./zram.nix
   ];

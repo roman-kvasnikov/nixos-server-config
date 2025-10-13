@@ -1,16 +1,4 @@
-{
-  config,
-  lib,
-  ...
-}: let
-  cfg = config.server;
-in {
-  imports = [
-    ../../modules/homelab
-    ../../modules/programs
-    ../../modules/services
-  ];
-
+{lib, ...}: {
   options.server = {
     email = lib.mkOption {
       type = lib.types.str;
@@ -52,79 +40,6 @@ in {
       type = lib.types.str;
       description = "Admin user for the server";
       default = "romank";
-    };
-  };
-
-  config = {
-    users = {
-      users = {
-        ${config.server.systemUser} = {
-          isSystemUser = true;
-          group = config.server.systemGroup;
-        };
-      };
-
-      groups.${config.server.systemGroup} = {};
-    };
-
-    services = {
-      acmectl.enable = true;
-      nginxctl.enable = true;
-      hddfancontrolctl.enable = true;
-
-      # delugectl.enable = false;
-      # immichctl.enable = true;
-
-      # sambactl = {
-      #   enable = true;
-
-      #   users = ["romank"];
-
-      #   shares = {
-      #     public = {
-      #       "path" = "/home/public";
-      #     };
-
-      #     movies = {
-      #       "path" = "/home/movies";
-      #     };
-
-      #     romank = {
-      #       "path" = "/home/romank";
-      #       "public" = "no";
-      #       "guest ok" = "no";
-      #       "create mask" = "0770";
-      #       "directory mask" = "0770";
-      #       "force user" = "romank";
-      #       "force group" = "romank";
-      #       "valid users" = ["romank"];
-      #     };
-      #   };
-      # };
-
-      # unifictl.enable = false;
-      # uptime-kumactl.enable = true;
-      # xrayctl.enable = true;
-
-      # Additional services
-      # dbus.enable = true; # Для работы с systemd
-      # udisks2.enable = true; # Автоматическое монтирование USB
-      # geoclue2.enable = true; # Геолокация для часовых поясов
-    };
-
-    homelab = {
-      services = {
-        cockpitctl.enable = true;
-        filebrowserctl.enable = true;
-        homepagectl.enable = true;
-        immichctl.enable = true;
-        jellyfinctl.enable = true;
-        nextcloudctl.enable = true;
-        qbittorrentctl.enable = true;
-        tdarrctl.enable = false;
-        uptime-kumactl.enable = true;
-        vaultwardenctl.enable = true;
-      };
     };
   };
 }
