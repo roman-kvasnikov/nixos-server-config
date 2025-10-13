@@ -71,8 +71,6 @@ in {
         hostName = cfg.host;
         https = true;
 
-        openFirewall = !cfgNginx.enable;
-
         # Настройка кэширования
         caching.redis = true;
         configureRedis = true; # Автоматическая настройка Redis
