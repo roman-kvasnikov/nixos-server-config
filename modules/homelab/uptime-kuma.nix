@@ -15,7 +15,7 @@ in {
     host = lib.mkOption {
       type = lib.types.str;
       description = "Host of the Uptime Kuma module";
-      default = "uptime.${cfgServer.domain}";
+      default = "uptime-kuma.${cfgServer.domain}";
     };
 
     homepage = {
