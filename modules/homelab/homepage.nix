@@ -212,13 +212,13 @@ in {
           {
             resources = {
               cpu = true;
-              disk = "/home";
+              disk = "/";
               memory = true;
               cputemp = true;
               tempmin = 0;
               tempmax = 100;
               uptime = true;
-              units = "imperial";
+              units = "metric";
               refresh = 3000;
               diskUnits = "bytes";
               network = true;
@@ -233,8 +233,10 @@ in {
           {
             datetime = {
               text_size = "xl";
+              locale = "ru_RU";
               format = {
-                timeStyle = "short";
+                dateStyle = "long";
+                timeStyle = "long";
               };
             };
           }
