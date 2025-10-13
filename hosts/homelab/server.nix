@@ -121,7 +121,7 @@ in {
         jellyfinctl.enable = true;
         nextcloudctl.enable = true;
         qbittorrentctl.enable = true;
-        tdarrctl.enable = true;
+        tdarrctl.enable = false;
         uptime-kumactl.enable = true;
         vaultwardenctl.enable = true;
       };
