@@ -11,7 +11,7 @@
     ./qbittorrent.nix
     # ./samba.nix
     # ./unifi.nix
-    # ./uptime-kuma.nix
+    ./uptime-kuma.nix
     ./vaultwarden.nix
   ];
 }
