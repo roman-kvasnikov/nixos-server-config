@@ -1,3 +1,4 @@
+# Пока что не работает. Вроде как нужно создать необходимые каталоги. Еще не пробовал но вроде бы возможно в этом дело.
 {
   config,
   lib,
@@ -29,7 +30,7 @@ in {
       };
       icon = lib.mkOption {
         type = lib.types.str;
-        default = "tdarr.svg";
+        default = "tdarr.png";
       };
       category = lib.mkOption {
         type = lib.types.str;
