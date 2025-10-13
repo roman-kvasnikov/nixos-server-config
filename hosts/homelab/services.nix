@@ -71,7 +71,7 @@
         homepagectl.enable = true;
         immichctl.enable = true;
         jellyfinctl.enable = true;
-        nextcloudctl.enable = true;
+        nextcloudctl.enable = false;
         qbittorrentctl.enable = true;
         tdarrctl.enable = false;
         uptime-kumactl.enable = true;
