@@ -233,7 +233,7 @@ in {
           {
             datetime = {
               text_size = "xl";
-              locale = "ru_RU";
+              locale = "ru";
               format = {
                 dateStyle = "long";
                 timeStyle = "long";
