@@ -32,6 +32,12 @@ in {
       default = ["bookmarks" "calendar" "contacts" "notes" "mail" "onlyoffice" "groupfolders"];
     };
 
+    logFile = lib.mkOption {
+      type = lib.types.str;
+      description = "Log file for Nextcloud";
+      default = "/var/lib/nextcloud/data/nextcloud.log";
+    };
+
     homepage = {
       name = lib.mkOption {
         type = lib.types.str;
@@ -92,7 +98,7 @@ in {
 
             loglevel = 2; # WARNING — покажет ошибки входа
             log_type = "file";
-            logfile = "/var/lib/nextcloud/data/nextcloud.log";
+            logfile = cfg.logFile;
             logtimezone = "Europe/Moscow";
           };
 
@@ -115,7 +121,7 @@ in {
             maxretry = 5
             bantime = 3600
             findtime = 600
-            logpath = /var/lib/nextcloud/data/nextcloud.log
+            logpath = ${cfg.logFile}
           '';
         };
       };
