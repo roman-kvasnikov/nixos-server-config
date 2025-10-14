@@ -94,9 +94,14 @@ in {
             overwriteprotocol = "https";
             default_phone_region = "RU";
 
-            trusted_domains = [cfg.host];
+            trusted_domains = [
+              cfg.host
+              "localhost"
+              "127.0.0.1"
+              "172.20.0.0/16"
+            ];
 
-            loglevel = 2; # WARNING — покажет ошибки входа
+            loglevel = 2;
             log_type = "file";
             logfile = cfg.logFile;
             logtimezone = "Europe/Moscow";
