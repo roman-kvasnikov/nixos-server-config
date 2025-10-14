@@ -107,26 +107,24 @@ in {
           enable = true;
 
           jails.nextcloud = ''
-            enabled = true
             backend = auto
+            enabled = true
             port = 80,443
             protocol = tcp
             filter = nextcloud
-            logpath = /var/lib/nextcloud/data/nextcloud.log
             maxretry = 5
             bantime = 3600
             findtime = 600
+            logpath = /var/lib/nextcloud/data/nextcloud.log
           '';
         };
       };
 
       environment.etc."fail2ban/filter.d/nextcloud.conf".text = ''
-        [INCLUDES]
-        before = common.conf
-
         [Definition]
         _groupsre = (?:(?:,?\s*"\w+":(?:"[^"]+"|\w+))*)
         failregex = ^\{%(_groupsre)s,?\s*"remoteAddr":"<HOST>"%(_groupsre)s,?\s*"message":"Login failed:
+                    ^\{%(_groupsre)s,?\s*"remoteAddr":"<HOST>"%(_groupsre)s,?\s*"message":"Trusted domain error.
         datepattern = ,?\s*"time"\s*:\s*"%%Y-%%m-%%d[T ]%%H:%%M:%%S(%%z)?"
       '';
     })
