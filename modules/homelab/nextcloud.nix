@@ -91,8 +91,7 @@ in {
             trusted_domains = [cfg.host];
 
             loglevel = 2; # WARNING — покажет ошибки входа
-            log_type = "file";
-            logfile = "/var/lib/nextcloud/data/nextcloud.log";
+            log_type = "syslog";
             logtimezone = "UTC";
           };
 
@@ -108,9 +107,9 @@ in {
 
           jails.nextcloud = ''
             enabled = true
-            filter = nextcloud
-            action = iptables[name=nextcloud, port=http, protocol=tcp]
-            logpath = /var/lib/nextcloud/data/nextcloud.log
+            filter = nextcloud-auth
+            backend = systemd
+            journalmatch = _SYSTEMD_UNIT=phpfpm-nextcloud.service
             maxretry = 5
             bantime = 3600
             findtime = 600
@@ -120,7 +119,7 @@ in {
 
       environment.etc."fail2ban/filter.d/nextcloud-auth.conf".text = ''
         [Definition]
-        failregex = "remoteAddr":"<HOST>",.*"message":"Login failed
+        failregex = Login failed:.*Remote IP: '<HOST>'
         ignoreregex =
       '';
     })
