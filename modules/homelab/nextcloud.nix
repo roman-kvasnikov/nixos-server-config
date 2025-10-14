@@ -118,11 +118,11 @@ in {
         };
       };
 
-      environment.etc."fail2ban/filter.d/nextcloud.conf".text = ''
-        [Definition]
-        failregex = {"reqId":".*","remoteAddr":"<HOST>","app":"core","message":"Login failed: '.*' \ (Remote IP: '<HOST>'\)"
-        ignoreregex =
-      '';
+      # environment.etc."fail2ban/filter.d/nextcloud.conf".text = ''
+      #   [Definition]
+      #   failregex = {"reqId":".*","remoteAddr":"<HOST>","app":"core","message":"Login failed: '.*' \ (Remote IP: '<HOST>'\)"
+      #   ignoreregex =
+      # '';
     })
 
     (lib.mkIf (cfg.enable && cfgAcme.enable) {
