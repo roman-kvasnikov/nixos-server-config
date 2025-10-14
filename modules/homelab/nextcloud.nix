@@ -112,17 +112,17 @@ in {
         fail2ban = {
           enable = true;
 
-          jails.nextcloud = ''
-            backend = auto
-            enabled = true
-            port = 80,443
-            protocol = tcp
-            filter = nextcloud
-            maxretry = 3
-            bantime = 300
-            findtime = 300
-            logpath = ${cfg.logFile}
-          '';
+          jails.nextcloud.settings = {
+            backend = "auto";
+            enabled = true;
+            port = "80,443";
+            protocol = "tcp";
+            filter = "nextcloud";
+            maxretry = 3;
+            bantime = 300;
+            findtime = 300;
+            logpath = cfg.logFile;
+          };
         };
       };
 
