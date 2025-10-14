@@ -108,7 +108,9 @@ in {
 
           jails.nextcloud = ''
             enabled = true
+            backend = auto
             port = 80,443
+            protocol = tcp
             filter = nextcloud
             logpath = /var/lib/nextcloud/data/nextcloud.log
             maxretry = 5
@@ -118,11 +120,13 @@ in {
         };
       };
 
-      # environment.etc."fail2ban/filter.d/nextcloud.conf".text = ''
-      #   [Definition]
-      #   failregex = {"reqId":".*","remoteAddr":"<HOST>","app":"core","message":"Login failed: '.*' \ (Remote IP: '<HOST>'\)"
-      #   ignoreregex =
-      # '';
+      environment.etc."fail2ban/filter.d/nextcloud.conf".text = ''
+        [Definition]
+        _groupsre = (?:(?:,?\s*"\w+":(?:"[^"]+"|\w+))*)
+        failregex = ^\{%(_groupsre)s,?\s*"remoteAddr":"<HOST>"%(_groupsre)s,?\s*"message":"Login failed:
+                    ^\{%(_groupsre)s,?\s*"remoteAddr":"<HOST>"%(_groupsre)s,?\s*"message":"Trusted domain error.
+        datepattern = ,?\s*"time"\s*:\s*"%%Y-%%m-%%d[T ]%%H:%%M:%%S(%%z)?"
+      '';
     })
 
     (lib.mkIf (cfg.enable && cfgAcme.enable) {
