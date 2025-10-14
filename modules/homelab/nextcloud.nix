@@ -121,9 +121,11 @@ in {
       };
 
       environment.etc."fail2ban/filter.d/nextcloud.conf".text = ''
-        [Definition]
-        failregex = "remoteAddr":"<HOST>",.*"message":"Login failed:
-        ignoreregex =
+        before = common.conf
+
+        _groupsre = (?:(?:,?\s*"\w+":(?:"+"|\w+))*)
+        failregex = ^\{%(_groupsre)s,?\s*"remoteAddr":"<HOST>"%(_groupsre)s,?\s*"message":"Login failed:
+        datepattern = ,?\s*"time"\s*:\s*"%%Y-%%m-%%d%%H:%%M:%%S(%%z)?"
       '';
     })
 
