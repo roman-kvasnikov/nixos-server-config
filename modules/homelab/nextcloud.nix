@@ -118,9 +118,9 @@ in {
             port = 80,443
             protocol = tcp
             filter = nextcloud
-            maxretry = 5
-            bantime = 3600
-            findtime = 600
+            maxretry = 3
+            bantime = 300
+            findtime = 300
             logpath = ${cfg.logFile}
           '';
         };
