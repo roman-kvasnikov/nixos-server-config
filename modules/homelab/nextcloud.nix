@@ -122,10 +122,8 @@ in {
 
       environment.etc."fail2ban/filter.d/nextcloud.conf".text = ''
         [Definition]
-        _groupsre = (?:(?:,?\s*"\w+":(?:"[^"]+"|\w+))*)
-        failregex = ^\{%(_groupsre)s,?\s*"remoteAddr":"<HOST>"%(_groupsre)s,?\s*"message":"Login failed:
-                    ^\{%(_groupsre)s,?\s*"remoteAddr":"<HOST>"%(_groupsre)s,?\s*"message":"Trusted domain error.
-        datepattern = ,?\s*"time"\s*:\s*"%%Y-%%m-%%d[T ]%%H:%%M:%%S(%%z)?"
+        failregex = "remoteAddr":"<HOST>",.*"message":"Login failed:
+        ignoreregex =
       '';
     })
 
