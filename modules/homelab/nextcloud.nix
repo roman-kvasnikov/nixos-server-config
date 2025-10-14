@@ -120,7 +120,7 @@ in {
 
       environment.etc."fail2ban/filter.d/nextcloud-auth.conf".text = ''
         [Definition]
-        failregex = ^.*"remoteAddr":"<HOST>".*"Login failed:
+        failregex = "remoteAddr":"<HOST>",.*"message":"Login failed
         ignoreregex =
       '';
     })
