@@ -124,8 +124,8 @@ in {
             protocol = "tcp";
             filter = "nextcloud";
             maxretry = 3;
-            bantime = 300;
-            findtime = 300;
+            bantime = 3600; # 1 hour
+            findtime = 600; # 10 minutes
             logpath = cfg.logFile;
           };
         };
@@ -150,6 +150,12 @@ in {
           "${cfg.host}" = {
             enableACME = cfgAcme.enable;
             forceSSL = cfgAcme.enable;
+
+            extraConfig = ''
+              add_header X-Robots-Tag "noindex, nofollow" always;
+              add_header X-Permitted-Cross-Domain-Policies "none" always;
+              add_header Strict-Transport-Security "max-age=15552000; includeSubDomains; preload" always;
+            '';
           };
         };
       };
