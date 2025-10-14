@@ -63,42 +63,66 @@ in {
 
   config = lib.mkMerge [
     (lib.mkIf cfg.enable {
-      services.nextcloud = {
-        enable = true;
+      services = {
+        nextcloud = {
+          enable = true;
 
-        package = pkgs.nextcloud32;
+          package = pkgs.nextcloud32;
 
-        hostName = cfg.host;
-        https = true;
+          hostName = cfg.host;
+          https = true;
 
-        # Настройка кэширования
-        caching.redis = true;
-        configureRedis = true; # Автоматическая настройка Redis
+          # Настройка кэширования
+          caching.redis = true;
+          configureRedis = true; # Автоматическая настройка Redis
 
-        # Настройка базы данных
-        database.createLocally = true; # Автоматически создать БД
-        config = {
-          dbtype = "sqlite";
-          adminpassFile = cfg.adminpassFile;
-          # dbpassFile = cfg.adminpassFile;
+          # Настройка базы данных
+          database.createLocally = true; # Автоматически создать БД
+          config = {
+            dbtype = "sqlite";
+            adminpassFile = cfg.adminpassFile;
+            # dbpassFile = cfg.adminpassFile;
+          };
+
+          settings = {
+            overwriteprotocol = "https";
+            default_phone_region = "RU";
+
+            trusted_domains = [cfg.host];
+
+            loglevel = 2; # WARNING — покажет ошибки входа
+            log_type = "file";
+            logfile = "/var/lib/nextcloud/data/nextcloud.log";
+            logtimezone = "UTC";
+          };
+
+          maxUploadSize = "16G";
+
+          extraAppsEnable = true;
+          autoUpdateApps.enable = true;
+          extraApps = lib.genAttrs cfg.apps (app: config.services.nextcloud.package.packages.apps.${app});
         };
 
-        settings = {
-          overwriteprotocol = "https";
-          default_phone_region = "RU";
+        fail2ban = {
+          enable = true;
 
-          trusted_domains = [
-            cfg.host
-            "localhost"
-          ];
+          jails.nextcloud = ''
+            enabled = true
+            filter = nextcloud
+            action = iptables[name=nextcloud, port=http, protocol=tcp]
+            logpath = /var/lib/nextcloud/data/nextcloud.log
+            maxretry = 5
+            bantime = 3600
+            findtime = 600
+          '';
         };
-
-        maxUploadSize = "16G";
-
-        extraAppsEnable = true;
-        autoUpdateApps.enable = true;
-        extraApps = lib.genAttrs cfg.apps (app: config.services.nextcloud.package.packages.apps.${app});
       };
+
+      environment.etc."fail2ban/filter.d/nextcloud-auth.conf".text = ''
+        [Definition]
+        failregex = Login failed:.*remoteAddr":"<HOST>"
+        ignoreregex =
+      '';
     })
 
     (lib.mkIf (cfg.enable && cfgAcme.enable) {

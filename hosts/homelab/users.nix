@@ -3,7 +3,7 @@
     users = {
       ${config.server.adminUser} = {
         isNormalUser = true;
-        extraGroups = ["wheel" "users" "docker" config.server.systemGroup];
+        extraGroups = ["wheel" "users" "docker" "nextcloud" config.server.systemGroup];
       };
 
       ${config.server.systemUser} = {
