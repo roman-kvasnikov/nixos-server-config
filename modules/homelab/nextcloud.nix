@@ -20,7 +20,19 @@ in {
       default = "nextcloud.${cfgServer.domain}";
     };
 
-    adminpassFile = lib.mkOption {
+    homeDir = lib.mkOption {
+      type = lib.types.path;
+      description = "Home directory for Nextcloud";
+      default = "/var/lib/nextcloud";
+    };
+
+    adminUser = lib.mkOption {
+      type = lib.types.str;
+      description = "Admin user for Nextcloud";
+      default = cfgServer.adminUser;
+    };
+
+    adminPassFile = lib.mkOption {
       type = lib.types.path;
       description = "Admin password file for Nextcloud";
       default = "/etc/secrets/nextcloud/nextcloud-admin-pass";
@@ -33,7 +45,7 @@ in {
     };
 
     logFile = lib.mkOption {
-      type = lib.types.str;
+      type = lib.types.path;
       description = "Log file for Nextcloud";
       default = "/var/lib/nextcloud/data/nextcloud.log";
     };
@@ -73,10 +85,15 @@ in {
         nextcloud = {
           enable = true;
 
-          package = pkgs.nextcloud32;
-
           hostName = cfg.host;
+          home = cfg.homeDir;
           https = true;
+
+          extraApps = lib.genAttrs cfg.apps (app: config.services.nextcloud.package.packages.apps.${app});
+          extraAppsEnable = true;
+          autoUpdateApps.enable = true;
+
+          maxUploadSize = "16G";
 
           # Настройка кэширования
           caching.redis = true;
@@ -84,20 +101,18 @@ in {
 
           # Настройка базы данных
           database.createLocally = true; # Автоматически создать БД
+
           config = {
-            adminuser = cfgServer.adminUser;
-            adminpassFile = cfg.adminpassFile;
+            adminuser = cfg.adminUser;
+            adminpassFile = cfg.adminPassFile;
             dbtype = "sqlite";
             # dbname = "nextcloud";
             # dbuser = "nextcloud";
-            # dbpassFile = cfg.adminpassFile;
+            # dbpassFile = cfg.adminPassFile;
             # dbhost = "/run/postgresql";
           };
 
           settings = {
-            overwriteprotocol = "https";
-            default_phone_region = "RU";
-
             trusted_domains = [
               "localhost"
               "127.0.0.1"
@@ -105,21 +120,18 @@ in {
               "192.168.1.0/24"
             ];
 
+            overwriteprotocol = "https";
+            default_phone_region = "RU";
+            "profile.enabled" = true;
+
             loglevel = 2;
             log_type = "file";
             logfile = cfg.logFile;
-            logtimezone = "Europe/Moscow";
           };
 
           nginx = {
             enableFastcgiRequestBuffering = true;
           };
-
-          maxUploadSize = "16G";
-
-          extraAppsEnable = true;
-          autoUpdateApps.enable = true;
-          extraApps = lib.genAttrs cfg.apps (app: config.services.nextcloud.package.packages.apps.${app});
         };
 
         fail2ban = {
@@ -159,14 +171,14 @@ in {
             enableACME = cfgAcme.enable;
             forceSSL = cfgAcme.enable;
 
-            # extraConfig = ''
-            #   add_header Referrer-Policy                   "no-referrer"                                  always;
-            #   add_header X-Content-Type-Options            "nosniff"                                      always;
-            #   add_header X-Frame-Options                   "SAMEORIGIN"                                   always;
-            #   add_header X-Permitted-Cross-Domain-Policies "none"                                         always;
-            #   add_header X-Robots-Tag                      "noindex, nofollow"                            always;
-            #   add_header Strict-Transport-Security         "max-age=15552000; includeSubDomains; preload" always;
-            # '';
+            extraConfig = ''
+              add_header Referrer-Policy                   "no-referrer"                                  always;
+              add_header X-Content-Type-Options            "nosniff"                                      always;
+              add_header X-Frame-Options                   "SAMEORIGIN"                                   always;
+              add_header X-Permitted-Cross-Domain-Policies "none"                                         always;
+              add_header X-Robots-Tag                      "noindex, nofollow"                            always;
+              add_header Strict-Transport-Security         "max-age=15552000; includeSubDomains; preload" always;
+            '';
           };
         };
       };
