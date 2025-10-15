@@ -112,7 +112,6 @@ in {
           };
 
           nginx = {
-            recommendedHttpHeaders = true;
             enableFastcgiRequestBuffering = true;
           };
 
