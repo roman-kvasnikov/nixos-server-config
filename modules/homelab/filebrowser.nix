@@ -63,6 +63,7 @@ in {
 
         settings = {
           port = 8081;
+          root = "/";
         };
       };
     })
