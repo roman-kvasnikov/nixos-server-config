@@ -85,6 +85,8 @@ in {
         nextcloud = {
           enable = true;
 
+          package = pkgs.nextcloud32;
+
           hostName = cfg.host;
           home = cfg.homeDir;
           https = true;
