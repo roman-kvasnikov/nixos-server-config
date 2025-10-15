@@ -85,9 +85,13 @@ in {
           # Настройка базы данных
           database.createLocally = true; # Автоматически создать БД
           config = {
-            dbtype = "sqlite";
+            adminuser = cfgServer.adminUser;
             adminpassFile = cfg.adminpassFile;
+            dbtype = "sqlite";
+            # dbname = "nextcloud";
+            # dbuser = "nextcloud";
             # dbpassFile = cfg.adminpassFile;
+            # dbhost = "/run/postgresql";
           };
 
           settings = {
@@ -95,16 +99,21 @@ in {
             default_phone_region = "RU";
 
             trusted_domains = [
-              cfg.host
               "localhost"
               "127.0.0.1"
               "172.20.0.0/16"
+              "192.168.1.0/24"
             ];
 
             loglevel = 2;
             log_type = "file";
             logfile = cfg.logFile;
             logtimezone = "Europe/Moscow";
+          };
+
+          nginx = {
+            recommendedHttpHeaders = true;
+            enableFastcgiRequestBuffering = true;
           };
 
           maxUploadSize = "16G";
@@ -151,14 +160,14 @@ in {
             enableACME = cfgAcme.enable;
             forceSSL = cfgAcme.enable;
 
-            extraConfig = ''
-              add_header Referrer-Policy                   "no-referrer"       always;
-              add_header X-Content-Type-Options            "nosniff"           always;
-              add_header X-Frame-Options                   "SAMEORIGIN"        always;
-              add_header X-Permitted-Cross-Domain-Policies "none"              always;
-              add_header X-Robots-Tag                      "noindex, nofollow" always;
-              add_header Strict-Transport-Security         "max-age=15552000; includeSubDomains; preload" always;
-            '';
+            # extraConfig = ''
+            #   add_header Referrer-Policy                   "no-referrer"                                  always;
+            #   add_header X-Content-Type-Options            "nosniff"                                      always;
+            #   add_header X-Frame-Options                   "SAMEORIGIN"                                   always;
+            #   add_header X-Permitted-Cross-Domain-Policies "none"                                         always;
+            #   add_header X-Robots-Tag                      "noindex, nofollow"                            always;
+            #   add_header Strict-Transport-Security         "max-age=15552000; includeSubDomains; preload" always;
+            # '';
           };
         };
       };
