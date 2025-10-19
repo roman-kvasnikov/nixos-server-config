@@ -8,10 +8,13 @@
 
       ${config.server.systemUser} = {
         isSystemUser = true;
+        uid = 989;
         group = config.server.systemGroup;
       };
     };
 
-    groups.${config.server.systemGroup} = {};
+    groups.${config.server.systemGroup} = {
+      gid = 989;
+    };
   };
 }

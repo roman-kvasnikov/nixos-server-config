@@ -51,6 +51,32 @@ in {
     (lib.mkIf cfg.enable {
       virtualisation.docker.enable = true;
 
+      users = {
+        users.tdarr = {
+          isSystemUser = true;
+          uid = 991;
+          group = "tdarr";
+          description = "Tdarr media transcoding service";
+        };
+        groups.tdarr = {
+          gid = 991;
+        };
+      };
+
+      systemd.tmpfiles.rules = [
+        # Каталоги для Tdarr
+        "d /var/lib/tdarr 0755 tdarr tdarr -"
+        "d /var/lib/tdarr/server 0755 tdarr tdarr -"
+        "d /var/lib/tdarr/configs 0755 tdarr tdarr -"
+        "d /var/lib/tdarr/logs 0755 tdarr tdarr -"
+
+        # Каталог для кэша транскодирования
+        "d /transcode_cache 0755 tdarr tdarr -"
+
+        # Каталог для медиа (если не монтируешь снаружи)
+        "d /tdarr 0755 tdarr tdarr -"
+      ];
+
       virtualisation.oci-containers.containers.tdarr = {
         image = "ghcr.io/haveagitgat/tdarr:latest";
         autoStart = true;
@@ -62,16 +88,16 @@ in {
           "/var/lib/tdarr/server:/app/server"
           "/var/lib/tdarr/configs:/app/configs"
           "/var/lib/tdarr/logs:/app/logs"
-          "/media:/media"
           "/transcode_cache:/temp"
+          "/tdarr:/media"
         ];
         devices = [
           "/dev/dri:/dev/dri"
         ];
         environment = {
           TZ = "Europe/Moscow";
-          PUID = "1000";
-          PGID = "1000";
+          PUID = "991";
+          PGID = "991";
           UMASK_SET = "002";
           serverIP = "0.0.0.0";
           serverPort = "8266";
@@ -79,17 +105,14 @@ in {
           internalNode = "true";
           inContainer = "true";
           ffmpegVersion = "7";
-          nodeName = "InternalNode";
+          nodeName = "InternalTdarrNode";
           auth = "false";
           openBrowser = "true";
           maxLogSizeMB = "10";
           cronPluginUpdate = "";
+          # NVIDIA_DRIVER_CAPABILITIES = "all";
+          # NVIDIA_VISIBLE_DEVICES = "all";
         };
-      };
-
-      users.users.tdarr = {
-        isSystemUser = true;
-        group = cfgServer.systemGroup;
       };
     })
 
