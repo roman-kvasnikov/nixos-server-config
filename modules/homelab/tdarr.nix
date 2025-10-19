@@ -55,8 +55,8 @@ in {
         image = "ghcr.io/haveagitgat/tdarr:latest";
         autoStart = true;
         ports = [
+          "8265:8265" # Web UI port
           "8266:8266" # Tdarr server port
-          "8265:8265" # Web UI port (you can change external 10000 if needed)
         ];
         volumes = [
           "/var/lib/tdarr/server:/app/server"
