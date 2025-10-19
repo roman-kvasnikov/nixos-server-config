@@ -144,7 +144,7 @@ in {
       };
       icon = lib.mkOption {
         type = lib.types.str;
-        default = "tdarr.svg";
+        default = "tdarr.png";
       };
       category = lib.mkOption {
         type = lib.types.str;
@@ -162,12 +162,12 @@ in {
 
   config = lib.mkMerge [
     (lib.mkIf cfg.enable {
-      # Create necessary directories
+      # Create necessary directories with proper permissions
       systemd.tmpfiles.rules = [
-        "d '${cfg.serverDataPath}' 0755 tdarr ${cfgServer.systemGroup} -"
-        "d '${cfg.configsPath}' 0755 tdarr ${cfgServer.systemGroup} -"
-        "d '${cfg.logsPath}' 0755 tdarr ${cfgServer.systemGroup} -"
-        "d '${cfg.transcodeCachePath}' 0755 tdarr ${cfgServer.systemGroup} -"
+        "d '${cfg.serverDataPath}' 0775 tdarr ${cfgServer.systemGroup} -"
+        "d '${cfg.configsPath}' 0775 tdarr ${cfgServer.systemGroup} -"
+        "d '${cfg.logsPath}' 0775 tdarr ${cfgServer.systemGroup} -"
+        "d '${cfg.transcodeCachePath}' 0775 tdarr ${cfgServer.systemGroup} -"
       ];
 
       # Create tdarr user
@@ -177,6 +177,7 @@ in {
         home = cfg.serverDataPath;
         createHome = false;
         description = "Tdarr service user";
+        uid = 1000; # Fixed UID to match container user
         extraGroups =
           lib.optional cfg.enableIntelGPU "video"
           ++ lib.optional cfg.enableIntelGPU "render";
@@ -195,7 +196,7 @@ in {
         environment =
           {
             TZ = config.time.timeZone or "UTC";
-            PUID = toString config.users.users.tdarr.uid;
+            PUID = "1000"; # Using fixed UID
             PGID = toString config.users.groups.${cfgServer.systemGroup}.gid;
             UMASK_SET = "002";
 
@@ -223,15 +224,17 @@ in {
           };
 
         volumes = [
-          "${cfg.serverDataPath}:/app/server"
-          "${cfg.configsPath}:/app/configs"
-          "${cfg.logsPath}:/app/logs"
-          "${cfg.mediaPath}:/media"
-          "${cfg.transcodeCachePath}:/temp"
+          "${cfg.serverDataPath}:/app/server:rw"
+          "${cfg.configsPath}:/app/configs:rw"
+          "${cfg.logsPath}:/app/logs:rw"
+          "${cfg.mediaPath}:/media:rw"
+          "${cfg.transcodeCachePath}:/temp:rw"
         ];
 
         extraOptions =
-          []
+          [
+            "--init"
+          ]
           ++ lib.optionals cfg.enableIntelGPU [
             "--device=/dev/dri:/dev/dri"
           ]
@@ -242,6 +245,22 @@ in {
             "--log-opt=max-size=10m"
             "--log-opt=max-file=5"
           ];
+      };
+
+      # Ensure directories are created before container starts
+      systemd.services."podman-tdarr" = {
+        preStart = ''
+          # Ensure directories exist and have correct permissions
+          mkdir -p ${cfg.serverDataPath} ${cfg.configsPath} ${cfg.logsPath} ${cfg.transcodeCachePath}
+          chown -R 1000:${toString config.users.groups.${cfgServer.systemGroup}.gid} ${cfg.serverDataPath}
+          chown -R 1000:${toString config.users.groups.${cfgServer.systemGroup}.gid} ${cfg.configsPath}
+          chown -R 1000:${toString config.users.groups.${cfgServer.systemGroup}.gid} ${cfg.logsPath}
+          chown -R 1000:${toString config.users.groups.${cfgServer.systemGroup}.gid} ${cfg.transcodeCachePath}
+          chmod -R 775 ${cfg.serverDataPath}
+          chmod -R 775 ${cfg.configsPath}
+          chmod -R 775 ${cfg.logsPath}
+          chmod -R 775 ${cfg.transcodeCachePath}
+        '';
       };
 
       # Open firewall ports if nginx is not used
@@ -264,7 +283,7 @@ in {
         environment =
           {
             TZ = config.time.timeZone or "UTC";
-            PUID = toString config.users.users.tdarr.uid;
+            PUID = "1000"; # Using fixed UID
             PGID = toString config.users.groups.${cfgServer.systemGroup}.gid;
             UMASK_SET = "002";
 
@@ -293,14 +312,16 @@ in {
           };
 
         volumes = [
-          "${cfg.configsPath}:/app/configs"
-          "${cfg.logsPath}:/app/logs"
-          "${cfg.mediaPath}:/media"
-          "${cfg.transcodeCachePath}:/temp"
+          "${cfg.configsPath}:/app/configs:rw"
+          "${cfg.logsPath}:/app/logs:rw"
+          "${cfg.mediaPath}:/media:rw"
+          "${cfg.transcodeCachePath}:/temp:rw"
         ];
 
         extraOptions =
-          []
+          [
+            "--init"
+          ]
           ++ lib.optionals cfg.enableIntelGPU [
             "--device=/dev/dri:/dev/dri"
           ]
