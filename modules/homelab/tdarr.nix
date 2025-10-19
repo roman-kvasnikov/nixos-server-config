@@ -66,7 +66,6 @@ in {
       virtualisation.oci-containers.containers.hello-test = {
         image = "hello-world";
         autoStart = false; # т.к. он завершится сразу
-        restartPolicy = "no";
       };
 
       # systemd.tmpfiles.rules = [
