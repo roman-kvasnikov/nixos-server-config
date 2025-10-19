@@ -73,9 +73,28 @@
         jellyfinctl.enable = true;
         nextcloudctl.enable = true;
         qbittorrentctl.enable = true;
-        tdarrctl.enable = true;
+        # tdarrctl.enable = true;
         uptime-kumactl.enable = true;
         vaultwardenctl.enable = true;
+
+        tdarrctl = {
+          enable = true;
+
+          # Основные настройки
+          auth = true;
+
+          # Пути к медиа
+          mediaPath = "/mnt/media";
+          transcodeCachePath = "/mnt/cache/tdarr";
+
+          # GPU поддержка (опционально)
+          enableIntelGPU = true; # Для Intel QuickSync
+          # enableNvidiaGPU = true;  # Для NVIDIA
+
+          # Настройка воркеров
+          transcodecpuWorkers = 4;
+          transcodegpuWorkers = 2;
+        };
       };
     };
   };

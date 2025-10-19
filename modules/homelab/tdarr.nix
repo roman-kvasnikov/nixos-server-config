@@ -1,4 +1,3 @@
-# Пока что не работает. Вроде как нужно создать необходимые каталоги. Еще не пробовал но вроде бы возможно в этом дело.
 {
   config,
   lib,
@@ -15,8 +14,123 @@ in {
 
     host = lib.mkOption {
       type = lib.types.str;
-      description = "Host for the Tdarr service";
+      description = "Host of the Tdarr module";
       default = "tdarr.${cfgServer.domain}";
+    };
+
+    # Tdarr-specific configuration
+    serverPort = lib.mkOption {
+      type = lib.types.int;
+      description = "Server port for Tdarr";
+      default = 8266;
+    };
+
+    webUIPort = lib.mkOption {
+      type = lib.types.int;
+      description = "Web UI port for Tdarr";
+      default = 8265;
+    };
+
+    internalNode = lib.mkOption {
+      type = lib.types.bool;
+      description = "Enable internal node in the server container";
+      default = true;
+    };
+
+    ffmpegVersion = lib.mkOption {
+      type = lib.types.int;
+      description = "FFmpeg version to use";
+      default = 7;
+    };
+
+    nodeName = lib.mkOption {
+      type = lib.types.str;
+      description = "Name of the internal node";
+      default = "InternalNode";
+    };
+
+    auth = lib.mkOption {
+      type = lib.types.bool;
+      description = "Enable authentication";
+      default = false;
+    };
+
+    mediaPath = lib.mkOption {
+      type = lib.types.str;
+      description = "Path to media files";
+      default = "/media";
+    };
+
+    transcodeCachePath = lib.mkOption {
+      type = lib.types.str;
+      description = "Path for transcode cache";
+      default = "/var/lib/tdarr/transcode_cache";
+    };
+
+    serverDataPath = lib.mkOption {
+      type = lib.types.str;
+      description = "Path for server data";
+      default = "/var/lib/tdarr/server";
+    };
+
+    configsPath = lib.mkOption {
+      type = lib.types.str;
+      description = "Path for configs";
+      default = "/var/lib/tdarr/configs";
+    };
+
+    logsPath = lib.mkOption {
+      type = lib.types.str;
+      description = "Path for logs";
+      default = "/var/lib/tdarr/logs";
+    };
+
+    enableGPU = lib.mkOption {
+      type = lib.types.bool;
+      description = "Enable GPU support for transcoding";
+      default = false;
+    };
+
+    enableIntelGPU = lib.mkOption {
+      type = lib.types.bool;
+      description = "Enable Intel GPU support (QuickSync)";
+      default = false;
+    };
+
+    enableNvidiaGPU = lib.mkOption {
+      type = lib.types.bool;
+      description = "Enable NVIDIA GPU support";
+      default = false;
+    };
+
+    transcodecpuWorkers = lib.mkOption {
+      type = lib.types.int;
+      description = "Number of CPU transcode workers";
+      default = 2;
+    };
+
+    transcodegpuWorkers = lib.mkOption {
+      type = lib.types.int;
+      description = "Number of GPU transcode workers";
+      default = 1;
+    };
+
+    healthcheckcpuWorkers = lib.mkOption {
+      type = lib.types.int;
+      description = "Number of CPU healthcheck workers";
+      default = 1;
+    };
+
+    healthcheckgpuWorkers = lib.mkOption {
+      type = lib.types.int;
+      description = "Number of GPU healthcheck workers";
+      default = 1;
+    };
+
+    maxLogSizeMB = lib.mkOption {
+      type = lib.types.int;
+      description = "Maximum log size in MB";
+      default = 10;
     };
 
     homepage = {
@@ -26,123 +140,254 @@ in {
       };
       description = lib.mkOption {
         type = lib.types.str;
-        default = "Media transcoding manager";
+        default = "Distributed transcoding system";
       };
       icon = lib.mkOption {
         type = lib.types.str;
-        default = "tdarr.png";
+        default = "tdarr.svg";
       };
       category = lib.mkOption {
         type = lib.types.str;
         default = "Media";
       };
-      # widget = lib.mkOption {
-      #   type = lib.types.attrs;
-      #   default = {
-      #     type = "tdarr";
-      #     url = "https://${cfg.host}";
-      #     key = "123456";
-      #   };
-      # };
+      widget = lib.mkOption {
+        type = lib.types.attrs;
+        default = {
+          type = "tdarr";
+          url = "https://${cfg.host}";
+        };
+      };
     };
   };
 
   config = lib.mkMerge [
     (lib.mkIf cfg.enable {
-      virtualisation.docker.enable = true;
+      # Create necessary directories
+      systemd.tmpfiles.rules = [
+        "d '${cfg.serverDataPath}' 0755 tdarr ${cfgServer.systemGroup} -"
+        "d '${cfg.configsPath}' 0755 tdarr ${cfgServer.systemGroup} -"
+        "d '${cfg.logsPath}' 0755 tdarr ${cfgServer.systemGroup} -"
+        "d '${cfg.transcodeCachePath}' 0755 tdarr ${cfgServer.systemGroup} -"
+      ];
 
-      users = {
-        users.tdarr = {
-          isSystemUser = true;
-          uid = 991;
-          group = "tdarr";
-          description = "Tdarr media transcoding service";
-        };
-        groups.tdarr = {
-          gid = 991;
-        };
+      # Create tdarr user
+      users.users.tdarr = {
+        isSystemUser = true;
+        group = cfgServer.systemGroup;
+        home = cfg.serverDataPath;
+        createHome = false;
+        description = "Tdarr service user";
+        extraGroups =
+          lib.optional cfg.enableIntelGPU "video"
+          ++ lib.optional cfg.enableIntelGPU "render";
       };
 
-      virtualisation.oci-containers.containers.hello-test = {
-        image = "hello-world";
-        autoStart = false; # т.к. он завершится сразу
+      # Docker container for Tdarr
+      virtualisation.oci-containers.containers.tdarr = {
+        image = "ghcr.io/haveagitgat/tdarr:latest";
+        autoStart = true;
+
+        ports = [
+          "${toString cfg.webUIPort}:8265"
+          "${toString cfg.serverPort}:8266"
+        ];
+
+        environment =
+          {
+            TZ = config.time.timeZone or "UTC";
+            PUID = toString config.users.users.tdarr.uid;
+            PGID = toString config.users.groups.${cfgServer.systemGroup}.gid;
+            UMASK_SET = "002";
+
+            serverIP = "0.0.0.0";
+            serverPort = toString cfg.serverPort;
+            webUIPort = toString cfg.webUIPort;
+            internalNode = toString cfg.internalNode;
+            inContainer = "true";
+            ffmpegVersion = toString cfg.ffmpegVersion;
+            nodeName = cfg.nodeName;
+            auth = toString cfg.auth;
+            openBrowser = "false";
+            maxLogSizeMB = toString cfg.maxLogSizeMB;
+            cronPluginUpdate = "";
+
+            # Workers configuration
+            transcodecpuWorkers = toString cfg.transcodecpuWorkers;
+            transcodegpuWorkers = toString cfg.transcodegpuWorkers;
+            healthcheckcpuWorkers = toString cfg.healthcheckcpuWorkers;
+            healthcheckgpuWorkers = toString cfg.healthcheckgpuWorkers;
+          }
+          // lib.optionalAttrs cfg.enableNvidiaGPU {
+            NVIDIA_DRIVER_CAPABILITIES = "all";
+            NVIDIA_VISIBLE_DEVICES = "all";
+          };
+
+        volumes = [
+          "${cfg.serverDataPath}:/app/server"
+          "${cfg.configsPath}:/app/configs"
+          "${cfg.logsPath}:/app/logs"
+          "${cfg.mediaPath}:/media"
+          "${cfg.transcodeCachePath}:/temp"
+        ];
+
+        extraOptions =
+          []
+          ++ lib.optionals cfg.enableIntelGPU [
+            "--device=/dev/dri:/dev/dri"
+          ]
+          ++ lib.optionals cfg.enableNvidiaGPU [
+            "--gpus=all"
+          ]
+          ++ [
+            "--log-opt=max-size=10m"
+            "--log-opt=max-file=5"
+          ];
       };
 
-      # systemd.tmpfiles.rules = [
-      #   # Каталоги для Tdarr
-      #   "d /var/lib/tdarr 0755 tdarr tdarr -"
-      #   "d /var/lib/tdarr/server 0755 tdarr tdarr -"
-      #   "d /var/lib/tdarr/configs 0755 tdarr tdarr -"
-      #   "d /var/lib/tdarr/logs 0755 tdarr tdarr -"
-
-      #   # Каталог для кэша транскодирования
-      #   "d /transcode_cache 0755 tdarr tdarr -"
-
-      #   # Каталог для медиа (если не монтируешь снаружи)
-      #   "d /tdarr 0755 tdarr tdarr -"
-      # ];
-
-      # virtualisation.oci-containers.containers.tdarr = {
-      #   image = "ghcr.io/haveagitgat/tdarr:latest";
-      #   autoStart = true;
-      #   ports = [
-      #     "8265:8265" # Web UI port
-      #     "8266:8266" # Tdarr server port
-      #   ];
-      #   volumes = [
-      #     "/var/lib/tdarr/server:/app/server"
-      #     "/var/lib/tdarr/configs:/app/configs"
-      #     "/var/lib/tdarr/logs:/app/logs"
-      #     "/transcode_cache:/temp"
-      #     "/tdarr:/media"
-      #   ];
-      #   devices = [
-      #     "/dev/dri:/dev/dri"
-      #   ];
-      #   environment = {
-      #     TZ = "Europe/Moscow";
-      #     PUID = "991";
-      #     PGID = "991";
-      #     UMASK_SET = "002";
-      #     serverIP = "0.0.0.0";
-      #     serverPort = "8266";
-      #     webUIPort = "8265";
-      #     internalNode = "true";
-      #     inContainer = "true";
-      #     ffmpegVersion = "7";
-      #     nodeName = "InternalTdarrNode";
-      #     auth = "false";
-      #     openBrowser = "true";
-      #     maxLogSizeMB = "10";
-      #     cronPluginUpdate = "";
-      #     # NVIDIA_DRIVER_CAPABILITIES = "all";
-      #     # NVIDIA_VISIBLE_DEVICES = "all";
-      #   };
-      # };
+      # Open firewall ports if nginx is not used
+      networking.firewall.allowedTCPPorts = lib.mkIf (!cfgNginx.enable) [
+        cfg.webUIPort
+        cfg.serverPort
+      ];
     })
 
-    # (lib.mkIf (cfg.enable && cfgAcme.enable) {
-    #   security.acme.certs."${cfg.host}" = cfgAcme.commonCertOptions;
-    # })
+    # Optional: Tdarr Node container (separate from server)
+    (lib.mkIf (cfg.enable && config.homelab.services.tdarrctl.enableNode or false) {
+      virtualisation.oci-containers.containers.tdarr-node = {
+        image = "ghcr.io/haveagitgat/tdarr_node:latest";
+        autoStart = true;
 
-    # (lib.mkIf (cfg.enable && cfgNginx.enable) {
-    #   services.nginx.virtualHosts.${cfg.host} = {
-    #     enableACME = cfgAcme.enable;
-    #     forceSSL = cfgAcme.enable;
-    #     locations."/" = {
-    #       proxyPass = "http://127.0.0.1:8265";
-    #       proxyWebsockets = true;
-    #       recommendedProxySettings = true;
-    #       extraConfig = ''
-    #         client_max_body_size 100M;
-    #         proxy_http_version 1.1;
-    #         proxy_buffering off;
-    #         proxy_read_timeout   300s;
-    #         proxy_send_timeout   300s;
-    #         send_timeout         300s;
-    #       '';
-    #     };
-    #   };
-    # })
+        ports = [
+          "8268:8268"
+        ];
+
+        environment =
+          {
+            TZ = config.time.timeZone or "UTC";
+            PUID = toString config.users.users.tdarr.uid;
+            PGID = toString config.users.groups.${cfgServer.systemGroup}.gid;
+            UMASK_SET = "002";
+
+            nodeName = "ExternalNode";
+            serverIP = "127.0.0.1"; # Assuming node runs on same host
+            serverPort = toString cfg.serverPort;
+            inContainer = "true";
+            ffmpegVersion = toString cfg.ffmpegVersion;
+            nodeType = "mapped";
+            priority = "-1";
+            cronPluginUpdate = "";
+            apiKey = "";
+            maxLogSizeMB = toString cfg.maxLogSizeMB;
+            pollInterval = "2000";
+            startPaused = "false";
+
+            # Workers configuration for node
+            transcodecpuWorkers = toString cfg.transcodecpuWorkers;
+            transcodegpuWorkers = toString cfg.transcodegpuWorkers;
+            healthcheckcpuWorkers = toString cfg.healthcheckcpuWorkers;
+            healthcheckgpuWorkers = toString cfg.healthcheckgpuWorkers;
+          }
+          // lib.optionalAttrs cfg.enableNvidiaGPU {
+            NVIDIA_DRIVER_CAPABILITIES = "all";
+            NVIDIA_VISIBLE_DEVICES = "all";
+          };
+
+        volumes = [
+          "${cfg.configsPath}:/app/configs"
+          "${cfg.logsPath}:/app/logs"
+          "${cfg.mediaPath}:/media"
+          "${cfg.transcodeCachePath}:/temp"
+        ];
+
+        extraOptions =
+          []
+          ++ lib.optionals cfg.enableIntelGPU [
+            "--device=/dev/dri:/dev/dri"
+          ]
+          ++ lib.optionals cfg.enableNvidiaGPU [
+            "--gpus=all"
+          ]
+          ++ [
+            "--log-opt=max-size=10m"
+            "--log-opt=max-file=5"
+          ];
+      };
+    })
+
+    # ACME certificate configuration
+    (lib.mkIf (cfg.enable && cfgAcme.enable) {
+      security.acme.certs."${cfg.host}" = cfgAcme.commonCertOptions;
+    })
+
+    # Nginx reverse proxy configuration
+    (lib.mkIf (cfg.enable && cfgNginx.enable) {
+      services.nginx = {
+        virtualHosts = {
+          "${cfg.host}" = {
+            enableACME = cfgAcme.enable;
+            forceSSL = cfgAcme.enable;
+            locations."/" = {
+              proxyPass = "http://127.0.0.1:${toString cfg.webUIPort}";
+              proxyWebsockets = true;
+              recommendedProxySettings = true;
+              extraConfig = ''
+                client_max_body_size 0;
+                proxy_buffering off;
+                proxy_request_buffering off;
+                proxy_read_timeout 600s;
+                proxy_send_timeout 600s;
+                send_timeout 600s;
+
+                # Additional headers for Tdarr
+                proxy_set_header X-Real-IP $remote_addr;
+                proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+                proxy_set_header X-Forwarded-Proto $scheme;
+                proxy_set_header X-Forwarded-Host $host;
+                proxy_set_header X-Forwarded-Server $host;
+              '';
+            };
+
+            # Server API endpoint
+            locations."/api" = {
+              proxyPass = "http://127.0.0.1:${toString cfg.serverPort}";
+              proxyWebsockets = true;
+              recommendedProxySettings = true;
+              extraConfig = ''
+                client_max_body_size 0;
+                proxy_buffering off;
+                proxy_request_buffering off;
+              '';
+            };
+          };
+        };
+      };
+    })
+
+    # Enable NVIDIA Docker support if GPU is enabled
+    (lib.mkIf (cfg.enable && cfg.enableNvidiaGPU) {
+      virtualisation.docker = {
+        enableNvidia = true;
+      };
+
+      hardware.opengl = {
+        enable = true;
+        driSupport = true;
+        driSupport32Bit = true;
+      };
+    })
+
+    # Enable Intel GPU support
+    (lib.mkIf (cfg.enable && cfg.enableIntelGPU) {
+      hardware.opengl = {
+        enable = true;
+        extraPackages = with pkgs; [
+          intel-media-driver
+          intel-compute-runtime
+          vaapiIntel
+          vaapiVdpau
+          libvdpau-va-gl
+        ];
+      };
+    })
   ];
 }
