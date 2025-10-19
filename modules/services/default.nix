@@ -4,6 +4,6 @@
     ./hddfancontrol.nix
     ./nginx.nix
     ./openssh.nix
-    ./xray.nix
+    # ./xray.nix
   ];
 }

@@ -47,7 +47,7 @@
 
       # unifictl.enable = false;
       # uptime-kumactl.enable = true;
-      xrayctl.enable = false;
+      # xrayctl.enable = false;
 
       # Additional services
       # dbus.enable = true; # Для работы с systemd
