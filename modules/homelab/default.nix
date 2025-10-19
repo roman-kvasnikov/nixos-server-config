@@ -7,7 +7,7 @@
     ./jellyfin.nix
     ./nextcloud.nix
     ./qbittorrent.nix
-    ./tdarr.nix
+    # ./tdarr.nix
     ./uptime-kuma.nix
     ./vaultwarden.nix
   ];
