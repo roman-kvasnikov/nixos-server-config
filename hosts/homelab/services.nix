@@ -44,10 +44,10 @@
           adminUser = config.server.adminUser;
           adminPasswordFile = config.age.secrets.server-admin-password.path;
 
-          homepage.widget = {
-            username = config.server.adminUser;
-            password = config.age.secrets.nextcloud-admin-password.text;
-          };
+          # homepage.widget = {
+          #   username = config.server.adminUser;
+          #   password = config.age.secrets.nextcloud-admin-password.text;
+          # };
         };
 
         qbittorrentctl.enable = true;
