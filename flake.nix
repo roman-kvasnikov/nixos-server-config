@@ -33,7 +33,6 @@
 
       modules = [
         ./hosts/${hostname}/configuration.nix
-        inputs.agenix.nixosModules.default
       ];
     };
   };
