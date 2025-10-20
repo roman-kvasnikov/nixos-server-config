@@ -132,6 +132,37 @@ in {
     environment.systemPackages = with pkgs; [
       samba
       cifs-utils
+      # Ручная установки паролей Samba
+      (pkgs.writeScriptBin "samba-set-password" ''
+        #!${pkgs.bash}/bin/bash
+        set -e
+
+        if [ $# -ne 1 ]; then
+          echo "Usage: samba-set-password <username>"
+          exit 1
+        fi
+
+        USERNAME="$1"
+
+        # Проверяем существует ли пользователь в системе
+        if ! id "$USERNAME" &>/dev/null; then
+          echo "Error: User $USERNAME does not exist in the system"
+          exit 1
+        fi
+
+        echo "Setting Samba password for user: $USERNAME"
+
+        # Удаляем старую запись если существует
+        ${pkgs.samba}/bin/pdbedit -x -u "$USERNAME" 2>/dev/null || true
+
+        # Устанавливаем новый пароль
+        ${pkgs.samba}/bin/smbpasswd -a "$USERNAME"
+
+        # Включаем пользователя
+        ${pkgs.samba}/bin/smbpasswd -e "$USERNAME"
+
+        echo "Password set successfully for $USERNAME"
+      '')
     ];
 
     # Создаем директории для шар с правильными правами
@@ -167,7 +198,12 @@ in {
         Type = "oneshot";
         RemainAfterExit = true;
         User = "root";
+        # Добавляем переменную окружения для отладки
+        Environment = "PATH=${pkgs.coreutils}/bin:${pkgs.samba}/bin:${pkgs.glibc.bin}/bin";
       };
+
+      # Добавляем путь к интерпретатору
+      path = with pkgs; [coreutils samba glibc.bin];
 
       script = ''
         # Создаем пользователей Samba с паролями из файлов
@@ -175,24 +211,38 @@ in {
           lib.mapAttrsToList (username: userCfg: ''
             if [ -f "${userCfg.passwordFile}" ]; then
               echo "Setting up Samba user: ${username}"
+
+              # Читаем пароль из файла (убираем лишние переносы строк)
+              PASSWORD=$(cat "${userCfg.passwordFile}" | tr -d '\n')
+
               # Удаляем пользователя если существует
               ${pkgs.samba}/bin/pdbedit -x -u ${username} 2>/dev/null || true
-              # Добавляем пользователя с паролем
-              (cat "${userCfg.passwordFile}"; echo; cat "${userCfg.passwordFile}") | \
+
+              # Добавляем пользователя с паролем используя printf для точного форматирования
+              printf "%s\n%s\n" "$PASSWORD" "$PASSWORD" | \
                 ${pkgs.samba}/bin/smbpasswd -a -s ${username}
+
+              # Включаем пользователя
               ${pkgs.samba}/bin/smbpasswd -e ${username}
+
+              echo "User ${username} configured successfully"
             else
-              echo "Warning: Password file not found for user ${username}"
+              echo "Warning: Password file not found for user ${username} at ${userCfg.passwordFile}"
             fi
           '')
           cfg.users
         )}
 
-        # Также создаем системного пользователя для публичных шар (с простым паролем)
-        echo "Setting up system Samba user: ${cfgServer.systemUser}"
-        ${pkgs.samba}/bin/pdbedit -x -u ${cfgServer.systemUser} 2>/dev/null || true
-        echo -e "guest\nguest" | ${pkgs.samba}/bin/smbpasswd -a -s ${cfgServer.systemUser}
-        ${pkgs.samba}/bin/smbpasswd -e ${cfgServer.systemUser}
+        # Также создаем системного пользователя для публичных шар
+        if id "${cfg.systemUser}" &>/dev/null; then
+          echo "Setting up system Samba user: ${cfg.systemUser}"
+          ${pkgs.samba}/bin/pdbedit -x -u ${cfg.systemUser} 2>/dev/null || true
+          printf "guest\nguest\n" | ${pkgs.samba}/bin/smbpasswd -a -s ${cfg.systemUser}
+          ${pkgs.samba}/bin/smbpasswd -e ${cfg.systemUser}
+          echo "System user ${cfg.systemUser} configured successfully"
+        else
+          echo "System user ${cfg.systemUser} does not exist, skipping Samba setup for this user"
+        fi
       '';
     };
 
