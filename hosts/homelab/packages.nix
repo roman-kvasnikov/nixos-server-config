@@ -6,8 +6,6 @@
   nixpkgs.config.allowUnfree = true;
 
   environment.systemPackages = with pkgs; [
-    inputs.agenix.nixosModules.default
-
     # CLI утилиты
     curl
     git
