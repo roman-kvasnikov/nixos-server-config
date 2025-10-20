@@ -1,11 +1,10 @@
 {
   version,
   config,
-  inputs,
   ...
 }: {
   imports = [
-    inputs.agenix.nixosModules.default
+    ./agenix.nix
     ./boot.nix
     ./hardware-configuration.nix
     ./networking.nix
@@ -23,8 +22,4 @@
   time.timeZone = "Europe/Moscow";
 
   system.stateVersion = version;
-
-  age.identityPaths = [
-    "/etc/ssh/ssh_host_ed25519_key"
-  ];
 }

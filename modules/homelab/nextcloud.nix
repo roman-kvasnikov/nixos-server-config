@@ -29,7 +29,6 @@ in {
     adminUser = lib.mkOption {
       type = lib.types.str;
       description = "Admin user for Nextcloud";
-      default = "root";
     };
 
     adminPasswordFile = lib.mkOption {

@@ -41,5 +41,11 @@
       description = "Admin user for the server";
       default = "romank";
     };
+
+    adminPasswordFile = lib.mkOption {
+      type = lib.types.path;
+      description = "Admin password file for the server";
+      default = config.age.secrets.server-admin-password.path;
+    };
   };
 }

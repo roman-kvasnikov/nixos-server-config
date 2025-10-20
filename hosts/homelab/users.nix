@@ -4,6 +4,7 @@
       ${config.server.adminUser} = {
         isNormalUser = true;
         extraGroups = ["wheel" "users" "docker" "nextcloud" config.server.systemGroup];
+        hashedPasswordFile = config.server.adminPasswordFile;
       };
 
       ${config.server.systemUser} = {

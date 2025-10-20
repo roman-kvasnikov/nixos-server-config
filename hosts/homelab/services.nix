@@ -1,7 +1,6 @@
 {
   config,
   lib,
-  inputs,
   ...
 }: {
   imports = [
@@ -11,14 +10,6 @@
   ];
 
   config = {
-    age.secrets = {
-      acme-namecheap-env = {
-        file = ../../secrets/acme/namecheap.env.age;
-        owner = "root";
-        mode = "0600";
-      };
-    };
-
     services = {
       acmectl = {
         enable = true;
@@ -39,25 +30,6 @@
       # geoclue2.enable = true; # Геолокация для часовых поясов
     };
 
-    age.secrets = {
-      nextcloud-admin-password = {
-        file = ../../secrets/nextcloud/admin-password.age;
-        owner = "root";
-        mode = "0600";
-      };
-
-      samba-romank-password = {
-        file = ../../secrets/samba/romank-password.age;
-        owner = "root";
-        mode = "0600";
-      };
-      samba-dssmargo-password = {
-        file = ../../secrets/samba/dssmargo-password.age;
-        owner = "root";
-        mode = "0600";
-      };
-    };
-
     homelab = {
       services = {
         cockpitctl.enable = true;
@@ -70,7 +42,7 @@
           enable = true;
 
           adminUser = config.server.adminUser;
-          adminPasswordFile = config.age.secrets.nextcloud-admin-password.path;
+          adminPasswordFile = config.age.secrets.server-admin-password.path;
 
           homepage.widget = {
             username = config.server.adminUser;
