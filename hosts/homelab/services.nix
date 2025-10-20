@@ -5,7 +5,6 @@
   ...
 }: {
   imports = [
-    inputs.agenix.nixosModules.age
     ../../modules/homelab
     ../../modules/programs
     ../../modules/services
