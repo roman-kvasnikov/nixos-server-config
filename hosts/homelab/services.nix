@@ -11,8 +11,24 @@
   ];
 
   config = {
+    age.secrets = {
+      acme-namecheap-env = {
+        file = ../../secrets/acme/namecheap.env.age;
+        owner = "root";
+        mode = "0600";
+      };
+    };
+
     services = {
-      acmectl.enable = true;
+      acmectl = {
+        enable = true;
+
+        commonCertOptions = {
+          dnsProvider = "namecheap";
+          credentialsFile = config.age.secrets.acme-namecheap-env.path;
+        };
+      };
+
       nginxctl.enable = true;
       hddfancontrolctl.enable = true;
       xrayctl.enable = true;
