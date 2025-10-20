@@ -16,33 +16,6 @@
       hddfancontrolctl.enable = true;
       xrayctl.enable = true;
 
-      # sambactl = {
-      #   enable = true;
-
-      #   users = ["romank"];
-
-      #   shares = {
-      #     public = {
-      #       "path" = "/home/public";
-      #     };
-
-      #     movies = {
-      #       "path" = "/home/movies";
-      #     };
-
-      #     romank = {
-      #       "path" = "/home/romank";
-      #       "public" = "no";
-      #       "guest ok" = "no";
-      #       "create mask" = "0770";
-      #       "directory mask" = "0770";
-      #       "force user" = "romank";
-      #       "force group" = "romank";
-      #       "valid users" = ["romank"];
-      #     };
-      #   };
-      # };
-
       # Additional services
       # dbus.enable = true; # Для работы с systemd
       # udisks2.enable = true; # Автоматическое монтирование USB
@@ -58,9 +31,41 @@
         jellyfinctl.enable = true;
         nextcloudctl.enable = true;
         qbittorrentctl.enable = true;
+
+        sambactl = {
+          enable = true;
+
+          users = {
+            romank = {
+              passwordFile = "/etc/secrets/samba/romank-password";
+            };
+          };
+
+          shares = {
+            Public = {
+              path = "/mnt/Shares/Public";
+              comment = "Public Share for Everyone";
+              public = true;
+              browseable = true;
+              writeable = true;
+            };
+
+            RomanKPrivate = {
+              path = "/mnt/Shares/RomanK";
+              comment = "RomanK's Private Share";
+              public = false;
+              browseable = true;
+              writeable = true;
+              validUsers = ["romank"];
+              forceUser = "romank";
+              forceGroup = "users";
+            };
+          };
+        };
+
         # tdarrctl.enable = true;
-        uptime-kumactl.enable = true;
         # unifictl.enable = false;
+        uptime-kumactl.enable = true;
         vaultwardenctl.enable = true;
       };
     };

@@ -33,7 +33,7 @@ in {
       };
       category = lib.mkOption {
         type = lib.types.str;
-        default = "System";
+        default = "Services";
       };
       # widget = lib.mkOption {
       #   type = lib.types.attrs;
