@@ -58,8 +58,6 @@ in {
         group = cfgServer.systemGroup;
       };
 
-      # systemd.tmpfiles.rules = ["d ${cfg.mediaDir} 0770 immich ${cfgServer.systemGroup} - -"];
-
       services.immich = {
         enable = true;
 

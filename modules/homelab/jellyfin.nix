@@ -54,30 +54,37 @@ in {
 
   config = lib.mkMerge [
     (lib.mkIf cfg.enable {
-      # nixpkgs.overlays = [
-      #   (_final: prev: {
-      #     jellyfin-web = prev.jellyfin-web.overrideAttrs (
-      #       _finalAttrs: _previousAttrs: {
-      #         installPhase = ''
-      #           runHook preInstall
+      nixpkgs.overlays = [
+        (_final: prev: {
+          jellyfin-web = prev.jellyfin-web.overrideAttrs (
+            _finalAttrs: _previousAttrs: {
+              installPhase = ''
+                runHook preInstall
 
-      #           # this is the important line
-      #           sed -i "s#</head>#<script src=\"configurationpage?name=skip-intro-button.js\"></script></head>#" dist/index.html
+                # this is the important line
+                sed -i "s#</head>#<script src=\"configurationpage?name=skip-intro-button.js\"></script></head>#" dist/index.html
 
-      #           mkdir -p $out/share
-      #           cp -a dist $out/share/jellyfin-web
+                mkdir -p $out/share
+                cp -a dist $out/share/jellyfin-web
 
-      #           runHook postInstall
-      #         '';
-      #       }
-      #     );
-      #   })
-      # ];
+                runHook postInstall
+              '';
+            }
+          );
+        })
+      ];
 
       environment.systemPackages = with pkgs; [
         jellyfin
         jellyfin-web
         jellyfin-ffmpeg
+      ];
+
+      systemd.tmpfiles.rules = [
+        "d /media 0755 root root - -"
+        "d /media/Movies 0770 ${cfgServer.systemUser} ${cfgServer.systemGroup} - -"
+        "d /media/TV\ Shows 0770 ${cfgServer.systemUser} ${cfgServer.systemGroup} - -"
+        "d /media/Cartoons 0770 ${cfgServer.systemUser} ${cfgServer.systemGroup} - -"
       ];
 
       users.users.jellyfin = {

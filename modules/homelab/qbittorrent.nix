@@ -54,6 +54,15 @@ in {
         qbittorrent
       ];
 
+      systemd.tmpfiles.rules = [
+        "d /media 0755 root root - -"
+        "d /media/.torrents 0770 ${cfgServer.systemUser} ${cfgServer.systemGroup} - -"
+        "d /media/Downloads 0770 ${cfgServer.systemUser} ${cfgServer.systemGroup} - -"
+        "d /media/Movies 0770 ${cfgServer.systemUser} ${cfgServer.systemGroup} - -"
+        "d /media/TV\ Shows 0770 ${cfgServer.systemUser} ${cfgServer.systemGroup} - -"
+        "d /media/Cartoons 0770 ${cfgServer.systemUser} ${cfgServer.systemGroup} - -"
+      ];
+
       services.qbittorrent = {
         enable = true;
 

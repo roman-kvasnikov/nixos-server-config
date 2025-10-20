@@ -14,9 +14,7 @@
       acmectl.enable = true;
       nginxctl.enable = true;
       hddfancontrolctl.enable = true;
-
-      # delugectl.enable = false;
-      # immichctl.enable = true;
+      xrayctl.enable = true;
 
       # sambactl = {
       #   enable = true;
@@ -45,24 +43,11 @@
       #   };
       # };
 
-      # unifictl.enable = false;
-      # uptime-kumactl.enable = true;
-      # xrayctl.enable = false;
-
       # Additional services
       # dbus.enable = true; # Для работы с systemd
       # udisks2.enable = true; # Автоматическое монтирование USB
       # geoclue2.enable = true; # Геолокация для часовых поясов
     };
-
-    systemd.tmpfiles.rules = [
-      "d /media 0755 root root - -"
-      "d /media/.torrents 0770 ${config.server.systemUser} ${config.server.systemGroup} - -"
-      "d /media/Downloads 0770 ${config.server.systemUser} ${config.server.systemGroup} - -"
-      "d /media/Movies 0770 ${config.server.systemUser} ${config.server.systemGroup} - -"
-      "d /media/TV\ Shows 0770 ${config.server.systemUser} ${config.server.systemGroup} - -"
-      "d /media/Cartoons 0770 ${config.server.systemUser} ${config.server.systemGroup} - -"
-    ];
 
     homelab = {
       services = {
@@ -75,6 +60,7 @@
         qbittorrentctl.enable = true;
         # tdarrctl.enable = true;
         uptime-kumactl.enable = true;
+        # unifictl.enable = false;
         vaultwardenctl.enable = true;
       };
     };
