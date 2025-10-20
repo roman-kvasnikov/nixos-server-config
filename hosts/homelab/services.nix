@@ -1,9 +1,11 @@
 {
   config,
   lib,
+  inputs,
   ...
 }: {
   imports = [
+    inputs.agenix.nixosModules.age
     ../../modules/homelab
     ../../modules/programs
     ../../modules/services
@@ -22,6 +24,19 @@
       # geoclue2.enable = true; # Геолокация для часовых поясов
     };
 
+    age.secrets = {
+      romank-samba-password = {
+        file = ./secrets/samba/romank-password.age;
+        owner = "root";
+        mode = "0600";
+      };
+      dssmargo-samba-password = {
+        file = ./secrets/samba/dssmargo-password.age;
+        owner = "root";
+        mode = "0600";
+      };
+    };
+
     homelab = {
       services = {
         cockpitctl.enable = true;
@@ -37,7 +52,10 @@
 
           users = {
             romank = {
-              passwordFile = "/etc/secrets/samba/romank-password";
+              passwordFile = config.age.secrets.romank-samba-password.path;
+            };
+            dssmargo = {
+              passwordFile = config.age.secrets.dssmargo-samba-password.path;
             };
           };
 
@@ -50,7 +68,7 @@
               writeable = true;
             };
 
-            RomanKPrivate = {
+            RomanK = {
               path = "/mnt/Shares/RomanK";
               comment = "RomanK's Private Share";
               public = false;
@@ -58,6 +76,17 @@
               writeable = true;
               validUsers = ["romank"];
               forceUser = "romank";
+              forceGroup = "users";
+            };
+
+            DssMargo = {
+              path = "/mnt/Shares/DssMargo";
+              comment = "DssMargo's Private Share";
+              public = false;
+              browseable = true;
+              writeable = true;
+              validUsers = ["dssmargo"];
+              forceUser = "dssmargo";
               forceGroup = "users";
             };
           };

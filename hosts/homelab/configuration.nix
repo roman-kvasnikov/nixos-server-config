@@ -9,6 +9,7 @@
     ./networking.nix
     ./nix.nix
     ./packages.nix
+    ./secrets.nix
     ./security.nix
     ./server.nix
     ./services.nix
