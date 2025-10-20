@@ -11,15 +11,7 @@
 
   config = {
     services = {
-      acmectl = {
-        enable = true;
-
-        # commonCertOptions = {
-        #   dnsProvider = "namecheap";
-        #   credentialsFile = config.age.secrets.acme-namecheap-env.path;
-        # };
-      };
-
+      acmectl.enable = true;
       nginxctl.enable = true;
       hddfancontrolctl.enable = true;
       xrayctl.enable = true;
@@ -42,7 +34,7 @@
           enable = true;
 
           adminUser = config.server.adminUser;
-          adminPasswordFile = config.age.secrets.server-admin-password.path;
+          adminPasswordFile = config.server.adminPasswordFile;
 
           # homepage.widget = {
           #   username = config.server.adminUser;

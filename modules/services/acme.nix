@@ -14,7 +14,7 @@ in {
       description = "Common options for ACME certificates";
       default = {
         dnsProvider = "namecheap";
-        credentialsFile = "/etc/secrets/acme/namecheap.env";
+        credentialsFile = config.age.secrets.acme-namecheap-env.path;
         webroot = null;
         postRun = ''
           systemctl reload nginx
