@@ -14,10 +14,10 @@
       acmectl = {
         enable = true;
 
-        commonCertOptions = {
-          dnsProvider = "namecheap";
-          credentialsFile = config.age.secrets.acme-namecheap-env.path;
-        };
+        # commonCertOptions = {
+        #   dnsProvider = "namecheap";
+        #   credentialsFile = config.age.secrets.acme-namecheap-env.path;
+        # };
       };
 
       nginxctl.enable = true;
