@@ -44,7 +44,12 @@ in {
 
     globalSettings = lib.mkOption {
       description = "Global Samba (SMB/CIFS) parameters";
-      type = lib.types.attrsOf lib.types.str;
+      type = lib.types.attrsOf (lib.types.oneOf [
+        lib.types.str
+        (lib.types.listOf lib.types.str)
+        lib.types.bool
+        lib.types.int
+      ]);
       default = {};
     };
 
@@ -101,7 +106,12 @@ in {
 
           extraConfig = lib.mkOption {
             description = "Extra parameters for this share";
-            type = lib.types.attrsOf lib.types.str;
+            type = lib.types.attrsOf (lib.types.oneOf [
+              lib.types.str
+              (lib.types.listOf lib.types.str)
+              lib.types.bool
+              lib.types.int
+            ]);
             default = {};
           };
         };
@@ -162,17 +172,17 @@ in {
       script = ''
         # Создаем пользователей Samba с паролями из файлов
         ${lib.concatStringsSep "\n" (
-          lib.mapAttrsToList (name: userCfg: ''
+          lib.mapAttrsToList (username: userCfg: ''
             if [ -f "${userCfg.passwordFile}" ]; then
-              echo "Setting up Samba user: ${name}"
+              echo "Setting up Samba user: ${username}"
               # Удаляем пользователя если существует
-              ${pkgs.samba}/bin/pdbedit -x -u ${name} 2>/dev/null || true
+              ${pkgs.samba}/bin/pdbedit -x -u ${username} 2>/dev/null || true
               # Добавляем пользователя с паролем
               (cat "${userCfg.passwordFile}"; echo; cat "${userCfg.passwordFile}") | \
-                ${pkgs.samba}/bin/smbpasswd -a -s ${name}
-              ${pkgs.samba}/bin/smbpasswd -e ${name}
+                ${pkgs.samba}/bin/smbpasswd -a -s ${username}
+              ${pkgs.samba}/bin/smbpasswd -e ${username}
             else
-              echo "Warning: Password file not found for user ${name}"
+              echo "Warning: Password file not found for user ${username}"
             fi
           '')
           cfg.users
@@ -188,7 +198,6 @@ in {
 
     services.samba = {
       enable = true;
-
       openFirewall = true;
 
       settings =
@@ -199,9 +208,9 @@ in {
               "server string" = "${config.networking.hostName} Samba Server";
               "netbios name" = config.networking.hostName;
               "security" = "user";
-              "invalid users" = "root";
-              "hosts allow" = "192.168.0.0/16 10.0.0.0/8 127.0.0.1 localhost";
-              "hosts deny" = "0.0.0.0/0";
+              "invalid users" = ["root"]; # Исправлено: теперь это список
+              "hosts allow" = ["192.168.0.0/16" "10.0.0.0/8" "127.0.0.1" "localhost"]; # Исправлено: теперь это список
+              "hosts deny" = ["0.0.0.0/0"]; # Исправлено: теперь это список
               "guest account" = cfgServer.systemUser;
               "map to guest" = "bad user";
               "passdb backend" = "tdbsam";
@@ -258,7 +267,7 @@ in {
                   {
                     "public" = "no";
                     "guest ok" = "no";
-                    "valid users" = lib.concatStringsSep " " share.validUsers;
+                    "valid users" = lib.concatStringsSep " " share.validUsers; # Для valid users нужна строка с пробелами
                   }
                   // lib.optionalAttrs (share.forceUser != null) {
                     "force user" = share.forceUser;
@@ -280,9 +289,7 @@ in {
     # Samba Web Service Discovery для Windows 10/11
     services.samba-wsdd = {
       enable = true;
-
       openFirewall = true;
-
       workgroup = "WORKGROUP";
       hostname = config.networking.hostName;
     };
@@ -290,9 +297,7 @@ in {
     # Avahi для обнаружения в сети
     services.avahi = {
       enable = true;
-
       openFirewall = true;
-
       publish = {
         enable = true;
         addresses = true;
@@ -301,7 +306,6 @@ in {
         userServices = true;
         workstation = true;
       };
-
       nssmdns4 = true;
 
       extraServiceFiles = {
