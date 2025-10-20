@@ -2,7 +2,11 @@
   programs.git = {
     enable = true;
 
-    # userName = "Roman Kvasnikov";
-    # userEmail = "roman.kvasnikov@gmail.com";
+    settings = {
+      user = {
+        name = "Roman Kvasnikov";
+        email = "roman.kvasnikov@gmail.com";
+      };
+    };
   };
 }
