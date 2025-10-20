@@ -1,6 +1,7 @@
 {
   version,
   config,
+  inputs,
   ...
 }: {
   imports = [
