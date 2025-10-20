@@ -1,4 +1,8 @@
-{lib, ...}: {
+{
+  lib,
+  config,
+  ...
+}: {
   options.server = {
     email = lib.mkOption {
       type = lib.types.str;
