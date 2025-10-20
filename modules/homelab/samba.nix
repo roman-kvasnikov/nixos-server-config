@@ -234,14 +234,14 @@ in {
         )}
 
         # Также создаем системного пользователя для публичных шар
-        if id "${cfg.systemUser}" &>/dev/null; then
-          echo "Setting up system Samba user: ${cfg.systemUser}"
-          ${pkgs.samba}/bin/pdbedit -x -u ${cfg.systemUser} 2>/dev/null || true
-          printf "guest\nguest\n" | ${pkgs.samba}/bin/smbpasswd -a -s ${cfg.systemUser}
-          ${pkgs.samba}/bin/smbpasswd -e ${cfg.systemUser}
-          echo "System user ${cfg.systemUser} configured successfully"
+        if id "${cfgServer.systemUser}" &>/dev/null; then
+          echo "Setting up system Samba user: ${cfgServer.systemUser}"
+          ${pkgs.samba}/bin/pdbedit -x -u ${cfgServer.systemUser} 2>/dev/null || true
+          printf "guest\nguest\n" | ${pkgs.samba}/bin/smbpasswd -a -s ${cfgServer.systemUser}
+          ${pkgs.samba}/bin/smbpasswd -e ${cfgServer.systemUser}
+          echo "System user ${cfgServer.systemUser} configured successfully"
         else
-          echo "System user ${cfg.systemUser} does not exist, skipping Samba setup for this user"
+          echo "System user ${cfgServer.systemUser} does not exist, skipping Samba setup for this user"
         fi
       '';
     };
