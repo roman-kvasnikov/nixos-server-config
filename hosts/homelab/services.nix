@@ -24,12 +24,18 @@
     };
 
     age.secrets = {
-      romank-samba-password = {
+      nextcloud-admin-password = {
+        file = ../../secrets/nextcloud/admin-password.age;
+        owner = "root";
+        mode = "0600";
+      };
+
+      samba-romank-password = {
         file = ../../secrets/samba/romank-password.age;
         owner = "root";
         mode = "0600";
       };
-      dssmargo-samba-password = {
+      samba-dssmargo-password = {
         file = ../../secrets/samba/dssmargo-password.age;
         owner = "root";
         mode = "0600";
@@ -43,7 +49,19 @@
         homepagectl.enable = true;
         immichctl.enable = true;
         jellyfinctl.enable = true;
-        nextcloudctl.enable = true;
+
+        nextcloudctl = {
+          enable = true;
+
+          adminUser = config.server.adminUser;
+          adminPasswordFile = config.age.secrets.nextcloud-admin-password.path;
+
+          homepage.widget = {
+            username = config.server.adminUser;
+            password = config.age.secrets.nextcloud-admin-password.text;
+          };
+        };
+
         qbittorrentctl.enable = true;
 
         sambactl = {
@@ -51,10 +69,10 @@
 
           users = {
             romank = {
-              passwordFile = config.age.secrets.romank-samba-password.path;
+              passwordFile = config.age.secrets.samba-romank-password.path;
             };
             dssmargo = {
-              passwordFile = config.age.secrets.dssmargo-samba-password.path;
+              passwordFile = config.age.secrets.samba-dssmargo-password.path;
             };
           };
 
@@ -91,8 +109,6 @@
           };
         };
 
-        # tdarrctl.enable = true;
-        # unifictl.enable = false;
         uptime-kumactl.enable = true;
         vaultwardenctl.enable = true;
       };

@@ -29,13 +29,12 @@ in {
     adminUser = lib.mkOption {
       type = lib.types.str;
       description = "Admin user for Nextcloud";
-      default = cfgServer.adminUser;
+      default = "root";
     };
 
-    adminPassFile = lib.mkOption {
+    adminPasswordFile = lib.mkOption {
       type = lib.types.path;
       description = "Admin password file for Nextcloud";
-      default = "/etc/secrets/nextcloud/nextcloud-admin-pass";
     };
 
     apps = lib.mkOption {
@@ -72,8 +71,6 @@ in {
         default = {
           type = "nextcloud";
           url = "https://${cfg.host}";
-          username = "root";
-          password = "123";
         };
       };
     };
@@ -106,11 +103,11 @@ in {
 
           config = {
             adminuser = cfg.adminUser;
-            adminpassFile = cfg.adminPassFile;
+            adminpassFile = cfg.adminPasswordFile;
             dbtype = "sqlite";
             # dbname = "nextcloud";
             # dbuser = "nextcloud";
-            # dbpassFile = cfg.adminPassFile;
+            # dbpassFile = cfg.adminPasswordFile;
             # dbhost = "/run/postgresql";
           };
 
