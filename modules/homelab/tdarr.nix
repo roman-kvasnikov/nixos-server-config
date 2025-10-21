@@ -289,9 +289,12 @@ in {
             "--cap-add=SETGID"
             "--cap-add=DAC_OVERRIDE"
             "--health-cmd=curl -f http://localhost:${toString cfg.webUIPort}/api/v2/status || exit 1"
-            "--health-interval=30s"
             "--health-timeout=10s"
-            "--health-retries=3"
+
+            "--health-start-period=30s"
+            "--health-interval=60s"
+            "--health-retries=5"
+
             "--log-driver=journald"
             "--log-opt=tag=tdarr"
           ]
