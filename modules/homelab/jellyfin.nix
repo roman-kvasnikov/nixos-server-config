@@ -90,6 +90,7 @@ in {
       users.users.jellyfin = {
         isSystemUser = true;
         group = cfgServer.systemGroup;
+        extraGroups = ["video"];
       };
 
       services.jellyfin = {
@@ -99,6 +100,12 @@ in {
         group = cfgServer.systemGroup;
 
         openFirewall = !cfgNginx.enable;
+      };
+
+      systemd.services.jellyfin = {
+        serviceConfig = {
+          SupplementaryGroups = ["video"]; # доступ к /dev/dri
+        };
       };
 
       hardware = {
@@ -114,6 +121,8 @@ in {
 
         nvidia = {
           package = config.boot.kernelPackages.nvidiaPackages.stable;
+          modesetting.enable = true;
+          open = false; # ❌ Оставляем проприетарные (закрытые) драйверы для GTX 10XX и выше
         };
       };
 
