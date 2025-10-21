@@ -63,9 +63,9 @@ in {
       description = "Samba shares configuration";
       type = lib.types.attrsOf (lib.types.submodule {
         options = {
-          path = lib.mkOption {
-            description = "Path to the shared directory";
-            type = lib.types.path;
+          directory = lib.mkOption {
+            description = "Name of the shared directory";
+            type = lib.types.str;
           };
 
           comment = lib.mkOption {

@@ -32,7 +32,7 @@
         jellyfinctl = {
           enable = true;
 
-          # initialDirectory = "/mnt";
+          initialDirectory = "/mnt";
         };
 
         nextcloudctl = {
@@ -50,13 +50,13 @@
         qbittorrentctl = {
           enable = true;
 
-          # initialDirectory = "/mnt";
+          initialDirectory = "/mnt";
         };
 
         sambactl = {
           enable = true;
 
-          # initialDirectory = "/mnt";
+          initialDirectory = "/mnt";
 
           users = {
             romank = {
