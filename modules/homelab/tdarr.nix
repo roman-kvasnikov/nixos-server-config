@@ -282,7 +282,6 @@ in {
 
         extraOptions =
           [
-            "--init"
             "--security-opt=no-new-privileges"
             "--cap-drop=ALL"
             "--cap-add=CHOWN"
@@ -385,7 +384,6 @@ in {
 
         extraOptions =
           [
-            "--init"
             "--network=host"
             "--security-opt=no-new-privileges"
             "--cap-drop=ALL"
