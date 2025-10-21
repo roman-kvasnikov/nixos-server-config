@@ -35,14 +35,14 @@ in {
         type = lib.types.str;
         default = "Services";
       };
-      # widget = lib.mkOption {
-      #   type = lib.types.attrs;
-      #   default = {
-      #     type = "uptimekuma";
-      #     url = "https://${cfg.host}";
-      #     slug = "izolda-rally";
-      #   };
-      # };
+      widget = lib.mkOption {
+        type = lib.types.attrs;
+        default = {
+          type = "uptimekuma";
+          url = "https://${cfg.host}";
+          slug = "izolda-rally";
+        };
+      };
     };
   };
 
