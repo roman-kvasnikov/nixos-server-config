@@ -17,9 +17,9 @@
       xrayctl.enable = true;
 
       # Additional services
-      # dbus.enable = true; # Для работы с systemd
-      # udisks2.enable = true; # Автоматическое монтирование USB
-      # geoclue2.enable = true; # Геолокация для часовых поясов
+      dbus.enable = true; # Для работы с systemd
+      udisks2.enable = true; # Автоматическое монтирование USB
+      geoclue2.enable = true; # Геолокация для часовых поясов
     };
 
     homelab = {
@@ -28,7 +28,12 @@
         filebrowserctl.enable = true;
         homepagectl.enable = true;
         immichctl.enable = true;
-        jellyfinctl.enable = true;
+
+        jellyfinctl = {
+          enable = true;
+
+          initialDirectory = "/mnt";
+        };
 
         nextcloudctl = {
           enable = true;
@@ -42,10 +47,16 @@
           # };
         };
 
-        qbittorrentctl.enable = true;
+        qbittorrentctl = {
+          enable = true;
+
+          initialDirectory = "/mnt";
+        };
 
         sambactl = {
           enable = true;
+
+          initialDirectory = "/mnt";
 
           users = {
             romank = {
@@ -58,7 +69,7 @@
 
           shares = {
             Public = {
-              path = "/mnt/Shares/Public";
+              directory = "Public";
               comment = "Public Share for Everyone";
               public = true;
               browseable = true;
@@ -66,7 +77,7 @@
             };
 
             RomanK = {
-              path = "/mnt/Shares/RomanK";
+              directory = "RomanK";
               comment = "RomanK's Private Share";
               public = false;
               browseable = true;
@@ -77,7 +88,7 @@
             };
 
             DssMargo = {
-              path = "/mnt/Shares/DssMargo";
+              directory = "DssMargo";
               comment = "DssMargo's Private Share";
               public = false;
               browseable = true;

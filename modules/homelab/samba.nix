@@ -10,6 +10,12 @@ in {
   options.homelab.services.sambactl = {
     enable = lib.mkEnableOption "Enable Samba (SMB/CIFS) file sharing";
 
+    initialDirectory = lib.mkOption {
+      type = lib.types.path;
+      description = "Initial directory for Samba sharing paths";
+      default = "/";
+    };
+
     users = lib.mkOption {
       description = "Samba users with their passwords";
       type = lib.types.attrsOf (lib.types.submodule {
@@ -135,26 +141,28 @@ in {
       cfg.users;
 
     # Создаем директории для шар с правильными правами
-    systemd.tmpfiles.rules = lib.flatten (
-      lib.mapAttrsToList (
-        name: share: let
-          user =
-            if share.forceUser != null
-            then share.forceUser
-            else cfgServer.systemUser;
-          group =
-            if share.forceGroup != null
-            then share.forceGroup
-            else cfgServer.systemGroup;
-          # Для приватных шар используем более строгие права
-          mode =
-            if share.public
-            then "0775"
-            else "0770";
-        in "d ${share.path} ${mode} ${user} ${group} - -"
-      )
-      cfg.shares
-    );
+    systemd.tmpfiles.rules =
+      ["d ${cfg.initialDirectory}/shares 0755 root root - -"]
+      ++ lib.flatten (
+        lib.mapAttrsToList (
+          name: share: let
+            user =
+              if share.forceUser != null
+              then share.forceUser
+              else cfgServer.systemUser;
+            group =
+              if share.forceGroup != null
+              then share.forceGroup
+              else cfgServer.systemGroup;
+            # Для приватных шар используем более строгие права
+            mode =
+              if share.public
+              then "0775"
+              else "0770";
+          in "d ${cfg.initialDirectory}/shares/${share.directory} ${mode} ${user} ${group} - -"
+        )
+        cfg.shares
+      );
 
     # Скрипт для создания паролей пользователей Samba
     systemd.services."samba-users-setup" = {
@@ -268,7 +276,7 @@ in {
           lib.mapAttrs (
             name: share: let
               baseConfig = {
-                "path" = share.path;
+                "path" = "${cfg.initialDirectory}/shares/${share.directory}";
                 "browseable" =
                   if share.browseable
                   then "yes"

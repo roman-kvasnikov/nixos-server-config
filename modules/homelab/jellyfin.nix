@@ -18,6 +18,12 @@ in {
       default = "jellyfin.${cfgServer.domain}";
     };
 
+    initialDirectory = lib.mkOption {
+      type = lib.types.path;
+      description = "Initial directory for Jellyfin";
+      default = "/";
+    };
+
     homepage = {
       name = lib.mkOption {
         type = lib.types.str;
@@ -25,7 +31,7 @@ in {
       };
       description = lib.mkOption {
         type = lib.types.str;
-        default = "Media server";
+        default = "Free Software Media System";
       };
       icon = lib.mkOption {
         type = lib.types.str;
@@ -81,10 +87,10 @@ in {
       ];
 
       systemd.tmpfiles.rules = [
-        "d /media 0755 root root - -"
-        "d /media/Movies 0770 ${cfgServer.systemUser} ${cfgServer.systemGroup} - -"
-        "d /media/TV\ Shows 0770 ${cfgServer.systemUser} ${cfgServer.systemGroup} - -"
-        "d /media/Cartoons 0770 ${cfgServer.systemUser} ${cfgServer.systemGroup} - -"
+        "d ${cfg.initialDirectory}/media 0755 root root - -"
+        "d ${cfg.initialDirectory}/media/Movies 0770 ${cfgServer.systemUser} ${cfgServer.systemGroup} - -"
+        "d ${cfg.initialDirectory}/media/TV\ Shows 0770 ${cfgServer.systemUser} ${cfgServer.systemGroup} - -"
+        "d ${cfg.initialDirectory}/media/Cartoons 0770 ${cfgServer.systemUser} ${cfgServer.systemGroup} - -"
       ];
 
       users.users.jellyfin = {
@@ -111,6 +117,7 @@ in {
       hardware = {
         graphics = {
           enable = true;
+
           extraPackages = with pkgs; [
             intel-media-driver # для Intel (новые GPU)
             vaapiIntel # для старых Intel
@@ -135,8 +142,6 @@ in {
     })
 
     (lib.mkIf (cfg.enable && cfgNginx.enable) {
-      networking.firewall.allowedTCPPorts = [8096]; # Для доступа из внешней сети
-
       services.nginx = {
         virtualHosts = {
           "${cfg.host}" = {
