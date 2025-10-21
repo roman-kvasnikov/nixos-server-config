@@ -8,7 +8,7 @@
     ./nextcloud.nix
     ./qbittorrent.nix
     ./samba.nix
-    # ./tdarr.nix
+    ./tdarr.nix
     ./uptime-kuma.nix
     ./vaultwarden.nix
   ];

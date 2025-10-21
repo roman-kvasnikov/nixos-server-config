@@ -68,9 +68,9 @@
           };
 
           shares = {
-            Public = {
-              directory = "Public";
-              comment = "Public Share for Everyone";
+            Shared = {
+              directory = "Shared";
+              comment = "Shared files for everyone";
               public = true;
               browseable = true;
               writeable = true;
@@ -98,6 +98,10 @@
               forceGroup = "users";
             };
           };
+        };
+
+        tdarrctl = {
+          enable = true;
         };
 
         uptime-kumactl.enable = true;

@@ -96,7 +96,7 @@ in {
       users.users.jellyfin = {
         isSystemUser = true;
         group = cfgServer.systemGroup;
-        extraGroups = ["video"];
+        extraGroups = ["video" "render"];
       };
 
       services.jellyfin = {
@@ -110,7 +110,7 @@ in {
 
       systemd.services.jellyfin = {
         serviceConfig = {
-          SupplementaryGroups = ["video"]; # доступ к /dev/dri
+          SupplementaryGroups = ["video" "render"]; # доступ к /dev/dri
         };
       };
 

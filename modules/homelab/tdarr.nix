@@ -18,6 +18,13 @@ in {
       default = "tdarr.${cfgServer.domain}";
     };
 
+    # User configuration
+    uid = lib.mkOption {
+      type = lib.types.int;
+      description = "User ID for tdarr service";
+      default = 1000;
+    };
+
     # Tdarr-specific configuration
     serverPort = lib.mkOption {
       type = lib.types.int;
@@ -35,6 +42,12 @@ in {
       type = lib.types.bool;
       description = "Enable internal node in the server container";
       default = true;
+    };
+
+    enableNode = lib.mkOption {
+      type = lib.types.bool;
+      description = "Enable separate Tdarr node container";
+      default = false;
     };
 
     ffmpegVersion = lib.mkOption {
@@ -55,10 +68,10 @@ in {
       default = false;
     };
 
-    mediaPath = lib.mkOption {
-      type = lib.types.str;
-      description = "Path to media files";
-      default = "/media";
+    mediaPaths = lib.mkOption {
+      type = lib.types.listOf lib.types.str;
+      description = "List of media paths to mount";
+      default = ["/media"];
     };
 
     transcodeCachePath = lib.mkOption {
@@ -133,6 +146,21 @@ in {
       default = 10;
     };
 
+    # Resource limits
+    cpuLimit = lib.mkOption {
+      type = lib.types.nullOr lib.types.str;
+      description = "CPU limit for container";
+      default = null;
+      example = "2.0";
+    };
+
+    memoryLimit = lib.mkOption {
+      type = lib.types.nullOr lib.types.str;
+      description = "Memory limit for container";
+      default = null;
+      example = "4G";
+    };
+
     homepage = {
       name = lib.mkOption {
         type = lib.types.str;
@@ -155,20 +183,40 @@ in {
         default = {
           type = "tdarr";
           url = "https://${cfg.host}";
+          enableQueue = true;
+          enableWorkers = true;
         };
       };
     };
   };
 
   config = lib.mkMerge [
-    (lib.mkIf cfg.enable {
-      # Create necessary directories with proper permissions
-      systemd.tmpfiles.rules = [
-        "d '${cfg.serverDataPath}' 0775 tdarr ${cfgServer.systemGroup} -"
-        "d '${cfg.configsPath}' 0775 tdarr ${cfgServer.systemGroup} -"
-        "d '${cfg.logsPath}' 0775 tdarr ${cfgServer.systemGroup} -"
-        "d '${cfg.transcodeCachePath}' 0775 tdarr ${cfgServer.systemGroup} -"
+    {
+      assertions = [
+        {
+          assertion = !(cfg.enableIntelGPU && cfg.enableNvidiaGPU);
+          message = "Cannot enable both Intel and NVIDIA GPU simultaneously";
+        }
+        {
+          assertion = cfg.enableGPU -> (cfg.enableIntelGPU || cfg.enableNvidiaGPU);
+          message = "When GPU is enabled, either Intel or NVIDIA GPU must be selected";
+        }
       ];
+    }
+
+    (lib.mkIf cfg.enable {
+      # Set OCI containers backend
+      virtualisation.oci-containers.backend = lib.mkDefault "podman";
+
+      # Create necessary directories with proper permissions
+      systemd.tmpfiles.rules =
+        [
+          "d '${cfg.serverDataPath}' 0775 tdarr ${cfgServer.systemGroup} -"
+          "d '${cfg.configsPath}' 0775 tdarr ${cfgServer.systemGroup} -"
+          "d '${cfg.logsPath}' 0775 tdarr ${cfgServer.systemGroup} -"
+          "d '${cfg.transcodeCachePath}' 0775 tdarr ${cfgServer.systemGroup} -"
+        ]
+        ++ (map (path: "d '${path}' 0775 tdarr ${cfgServer.systemGroup} -") cfg.mediaPaths);
 
       # Create tdarr user
       users.users.tdarr = {
@@ -177,7 +225,7 @@ in {
         home = cfg.serverDataPath;
         createHome = false;
         description = "Tdarr service user";
-        uid = 1000; # Fixed UID to match container user
+        uid = cfg.uid;
         extraGroups =
           lib.optional cfg.enableIntelGPU "video"
           ++ lib.optional cfg.enableIntelGPU "render";
@@ -196,7 +244,7 @@ in {
         environment =
           {
             TZ = config.time.timeZone or "UTC";
-            PUID = "1000"; # Using fixed UID
+            PUID = toString cfg.uid;
             PGID = toString config.users.groups.${cfgServer.systemGroup}.gid;
             UMASK_SET = "002";
 
@@ -223,17 +271,30 @@ in {
             NVIDIA_VISIBLE_DEVICES = "all";
           };
 
-        volumes = [
-          "${cfg.serverDataPath}:/app/server:rw"
-          "${cfg.configsPath}:/app/configs:rw"
-          "${cfg.logsPath}:/app/logs:rw"
-          "${cfg.mediaPath}:/media:rw"
-          "${cfg.transcodeCachePath}:/temp:rw"
-        ];
+        volumes =
+          [
+            "${cfg.serverDataPath}:/app/server:rw"
+            "${cfg.configsPath}:/app/configs:rw"
+            "${cfg.logsPath}:/app/logs:rw"
+            "${cfg.transcodeCachePath}:/temp:rw"
+          ]
+          ++ (map (path: "${path}:${path}:rw") cfg.mediaPaths);
 
         extraOptions =
           [
             "--init"
+            "--security-opt=no-new-privileges"
+            "--cap-drop=ALL"
+            "--cap-add=CHOWN"
+            "--cap-add=SETUID"
+            "--cap-add=SETGID"
+            "--cap-add=DAC_OVERRIDE"
+            "--health-cmd=curl -f http://localhost:${toString cfg.webUIPort}/api/v2/status || exit 1"
+            "--health-interval=30s"
+            "--health-timeout=10s"
+            "--health-retries=3"
+            "--log-driver=journald"
+            "--log-opt=tag=tdarr"
           ]
           ++ lib.optionals cfg.enableIntelGPU [
             "--device=/dev/dri:/dev/dri"
@@ -241,9 +302,11 @@ in {
           ++ lib.optionals cfg.enableNvidiaGPU [
             "--gpus=all"
           ]
-          ++ [
-            "--log-opt=max-size=10m"
-            "--log-opt=max-file=5"
+          ++ lib.optionals (cfg.cpuLimit != null) [
+            "--cpus=${cfg.cpuLimit}"
+          ]
+          ++ lib.optionals (cfg.memoryLimit != null) [
+            "--memory=${cfg.memoryLimit}"
           ];
       };
 
@@ -252,14 +315,15 @@ in {
         preStart = ''
           # Ensure directories exist and have correct permissions
           mkdir -p ${cfg.serverDataPath} ${cfg.configsPath} ${cfg.logsPath} ${cfg.transcodeCachePath}
-          chown -R 1000:${toString config.users.groups.${cfgServer.systemGroup}.gid} ${cfg.serverDataPath}
-          chown -R 1000:${toString config.users.groups.${cfgServer.systemGroup}.gid} ${cfg.configsPath}
-          chown -R 1000:${toString config.users.groups.${cfgServer.systemGroup}.gid} ${cfg.logsPath}
-          chown -R 1000:${toString config.users.groups.${cfgServer.systemGroup}.gid} ${cfg.transcodeCachePath}
-          chmod -R 775 ${cfg.serverDataPath}
-          chmod -R 775 ${cfg.configsPath}
-          chmod -R 775 ${cfg.logsPath}
-          chmod -R 775 ${cfg.transcodeCachePath}
+          ${lib.concatMapStrings (path: "mkdir -p ${path}\n") cfg.mediaPaths}
+
+          chown -R ${toString cfg.uid}:${toString config.users.groups.${cfgServer.systemGroup}.gid} \
+            ${cfg.serverDataPath} \
+            ${cfg.configsPath} \
+            ${cfg.logsPath} \
+            ${cfg.transcodeCachePath}
+
+          chmod -R 775 ${cfg.serverDataPath} ${cfg.configsPath} ${cfg.logsPath} ${cfg.transcodeCachePath}
         '';
       };
 
@@ -271,7 +335,7 @@ in {
     })
 
     # Optional: Tdarr Node container (separate from server)
-    (lib.mkIf (cfg.enable && config.homelab.services.tdarrctl.enableNode or false) {
+    (lib.mkIf (cfg.enable && cfg.enableNode) {
       virtualisation.oci-containers.containers.tdarr-node = {
         image = "ghcr.io/haveagitgat/tdarr_node:latest";
         autoStart = true;
@@ -283,7 +347,7 @@ in {
         environment =
           {
             TZ = config.time.timeZone or "UTC";
-            PUID = "1000"; # Using fixed UID
+            PUID = toString cfg.uid;
             PGID = toString config.users.groups.${cfgServer.systemGroup}.gid;
             UMASK_SET = "002";
 
@@ -311,16 +375,26 @@ in {
             NVIDIA_VISIBLE_DEVICES = "all";
           };
 
-        volumes = [
-          "${cfg.configsPath}:/app/configs:rw"
-          "${cfg.logsPath}:/app/logs:rw"
-          "${cfg.mediaPath}:/media:rw"
-          "${cfg.transcodeCachePath}:/temp:rw"
-        ];
+        volumes =
+          [
+            "${cfg.configsPath}:/app/configs:rw"
+            "${cfg.logsPath}:/app/logs:rw"
+            "${cfg.transcodeCachePath}:/temp:rw"
+          ]
+          ++ (map (path: "${path}:${path}:rw") cfg.mediaPaths);
 
         extraOptions =
           [
             "--init"
+            "--network=host"
+            "--security-opt=no-new-privileges"
+            "--cap-drop=ALL"
+            "--cap-add=CHOWN"
+            "--cap-add=SETUID"
+            "--cap-add=SETGID"
+            "--cap-add=DAC_OVERRIDE"
+            "--log-driver=journald"
+            "--log-opt=tag=tdarr-node"
           ]
           ++ lib.optionals cfg.enableIntelGPU [
             "--device=/dev/dri:/dev/dri"
@@ -328,11 +402,18 @@ in {
           ++ lib.optionals cfg.enableNvidiaGPU [
             "--gpus=all"
           ]
-          ++ [
-            "--log-opt=max-size=10m"
-            "--log-opt=max-file=5"
+          ++ lib.optionals (cfg.cpuLimit != null) [
+            "--cpus=${cfg.cpuLimit}"
+          ]
+          ++ lib.optionals (cfg.memoryLimit != null) [
+            "--memory=${cfg.memoryLimit}"
           ];
       };
+
+      # Open firewall port for node
+      networking.firewall.allowedTCPPorts = lib.mkIf (!cfgNginx.enable) [
+        8268
+      ];
     })
 
     # ACME certificate configuration
@@ -379,6 +460,18 @@ in {
                 proxy_request_buffering off;
               '';
             };
+
+            # Socket.io endpoint for real-time updates
+            locations."/socket.io" = {
+              proxyPass = "http://127.0.0.1:${toString cfg.webUIPort}";
+              proxyWebsockets = true;
+              recommendedProxySettings = true;
+              extraConfig = ''
+                proxy_http_version 1.1;
+                proxy_set_header Upgrade $http_upgrade;
+                proxy_set_header Connection "upgrade";
+              '';
+            };
           };
         };
       };
@@ -386,11 +479,9 @@ in {
 
     # Enable NVIDIA Docker support if GPU is enabled
     (lib.mkIf (cfg.enable && cfg.enableNvidiaGPU) {
-      virtualisation.docker = {
-        enableNvidia = true;
-      };
+      hardware.nvidia-container-toolkit.enable = true;
 
-      hardware.opengl = {
+      hardware.graphics = {
         enable = true;
         driSupport = true;
         driSupport32Bit = true;
@@ -399,7 +490,7 @@ in {
 
     # Enable Intel GPU support
     (lib.mkIf (cfg.enable && cfg.enableIntelGPU) {
-      hardware.opengl = {
+      hardware.graphics = {
         enable = true;
         extraPackages = with pkgs; [
           intel-media-driver
