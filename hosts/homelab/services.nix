@@ -14,7 +14,7 @@
       acmectl.enable = true;
       nginxctl.enable = true;
       hddfancontrolctl.enable = true;
-      xrayctl.enable = true;
+      xrayctl.enable = false;
 
       # Additional services
       dbus.enable = true; # Для работы с systemd
