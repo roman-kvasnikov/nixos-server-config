@@ -100,6 +100,24 @@ in {
 
         openFirewall = !cfgNginx.enable;
       };
+
+      hardware = {
+        opengl = {
+          enable = true;
+          extraPackages = with pkgs; [
+            intel-media-driver # для Intel (новые GPU)
+            vaapiIntel # для старых Intel
+            vaapiVdpau
+            libvdpau-va-gl
+          ];
+        };
+
+        nvidia = {
+          package = config.boot.kernelPackages.nvidiaPackages.stable;
+        };
+      };
+
+      services.xserver.videoDrivers = ["nvidia"];
     })
 
     (lib.mkIf (cfg.enable && cfgAcme.enable) {
