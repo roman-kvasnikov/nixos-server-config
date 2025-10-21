@@ -176,15 +176,14 @@ in {
       };
       category = lib.mkOption {
         type = lib.types.str;
-        default = "Media";
+        default = "Services";
       };
       widget = lib.mkOption {
         type = lib.types.attrs;
         default = {
           type = "tdarr";
           url = "https://${cfg.host}";
-          enableQueue = true;
-          enableWorkers = true;
+          # key = "";
         };
       };
     };
@@ -289,12 +288,10 @@ in {
             "--cap-add=SETGID"
             "--cap-add=DAC_OVERRIDE"
             "--health-cmd=curl -f http://localhost:${toString cfg.webUIPort}/api/v2/status || exit 1"
-            "--health-timeout=10s"
-
             "--health-start-period=30s"
             "--health-interval=60s"
+            "--health-timeout=10s"
             "--health-retries=5"
-
             "--log-driver=journald"
             "--log-opt=tag=tdarr"
           ]
@@ -467,11 +464,10 @@ in {
               proxyPass = "http://127.0.0.1:${toString cfg.webUIPort}";
               proxyWebsockets = true;
               recommendedProxySettings = true;
-              # extraConfig = ''
-              #   proxy_http_version 1.1;
-              #   proxy_set_header Upgrade $http_upgrade;
-              #   proxy_set_header Connection "upgrade";
-              # '';
+              extraConfig = ''
+                proxy_set_header Upgrade $http_upgrade;
+                proxy_set_header Connection "upgrade";
+              '';
             };
           };
         };
@@ -484,8 +480,6 @@ in {
 
       hardware.graphics = {
         enable = true;
-        # driSupport = true;
-        # driSupport32Bit = true;
       };
     })
 
