@@ -333,14 +333,6 @@ in {
               days = cfg.recording.retainDays;
               mode = "all";
             };
-            events = {
-              retain = {
-                default = cfg.recording.events.retainDays;
-                mode = "active_objects";
-              };
-              pre_capture = cfg.recording.events.preCapture;
-              post_capture = cfg.recording.events.postCapture;
-            };
           };
 
           # Snapshots configuration
@@ -422,11 +414,6 @@ in {
             })
           ];
 
-          # Frigate+ configuration
-          plus = {
-            enabled = false;
-          };
-
           # UI configuration
           ui = {
             timezone = "Europe/Vienna";
@@ -470,13 +457,6 @@ in {
 
           # Environment vars
           environment_vars = {};
-
-          # Storage configuration
-          storage = {
-            recordings = "${cfg.dataDir}/recordings";
-            snapshots = "${cfg.dataDir}/snapshots";
-            exports = "${cfg.dataDir}/exports";
-          };
         };
       };
 
