@@ -334,13 +334,13 @@ in {
               days = cfg.recording.retainDays;
               mode = "all";
             };
-            pre_capture = cfg.recording.events.preCapture;
-            post_capture = cfg.recording.events.postCapture;
-            events = {
-              retain = {
-                days = cfg.recording.events.retainDays;
-              };
-            };
+            # pre_capture = cfg.recording.events.preCapture;
+            # post_capture = cfg.recording.events.postCapture;
+            # events = {
+            #   retain = {
+            #     days = cfg.recording.events.retainDays;
+            #   };
+            # };
           };
 
           # Snapshots configuration
