@@ -262,11 +262,11 @@ in {
         python3Packages.frigate
       ];
 
-      users.users.frigate = {
-        isSystemUser = true;
-        group = cfgServer.systemGroup;
-        extraGroups = ["video"];
-      };
+      # users.users.frigate = {
+      #   isSystemUser = true;
+      #   group = cfgServer.systemGroup;
+      #   extraGroups = ["video"];
+      # };
 
       systemd.tmpfiles.rules = [
         "d ${cfg.dataDir} 0750 frigate ${cfgServer.systemGroup} - -"
