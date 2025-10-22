@@ -304,14 +304,29 @@ in {
             quality = 8;
           };
 
-          go2rtc.streams =
-            lib.mapAttrs'
-            (name: cfgCamera:
-              lib.mkIf cfgCamera.enable {
-                inherit name;
-                value = [cfgCamera.streamUrl];
-              })
-            cfg.cameras;
+          # go2rtc.streams =
+          #   lib.mapAttrs'
+          #   (name: cfgCamera:
+          #     lib.mkIf cfgCamera.enable {
+          #       inherit name;
+          #       value = [cfgCamera.streamUrl];
+          #     })
+          #   cfg.cameras;
+
+          go2rtc.streams = builtins.listToAttrs (
+            builtins.filter (x: x.value != null)
+            (lib.attrValues (lib.mapAttrs
+              (
+                name: cfgCamera: {
+                  name = name;
+                  value =
+                    if cfgCamera.enable
+                    then [cfgCamera.streamUrl]
+                    else null;
+                }
+              )
+              cfg.cameras))
+          );
 
           birdseye = {
             enabled = true;
