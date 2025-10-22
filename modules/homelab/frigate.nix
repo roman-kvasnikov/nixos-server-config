@@ -280,8 +280,8 @@ in {
       services.frigate = {
         enable = true;
 
-        hostname = "127.0.0.1";
-        port = 5000;
+        # hostname = "127.0.0.1";
+        # port = 5000;
 
         settings = {
           # MQTT configuration
