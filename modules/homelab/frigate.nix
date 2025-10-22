@@ -486,8 +486,8 @@ in {
         wants = ["network-online.target"];
 
         serviceConfig = {
-          User = "frigate";
-          Group = cfgServer.systemGroup;
+          # User = "frigate";
+          # Group = cfgServer.systemGroup;
           Restart = "on-failure";
           RestartSec = "10s";
 
