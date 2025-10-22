@@ -217,32 +217,37 @@ in {
         hostname = "127.0.0.1";
 
         settings = {
-          cameras = lib.filterAttrs (name: cam: cam.enable) (
-            lib.mapAttrs (name: cfgCamera: {
-              ffmpeg.inputs = [
-                {
-                  path = cfgCamera.streamUrl;
-                  roles = ["detect"] ++ (lib.optional cfgCamera.recordEnabled "record");
-                }
-              ];
-
-              detect = {
-                enabled = cfg.detection.enable;
-                width = cfgCamera.detectResolution.width;
-                height = cfgCamera.detectResolution.height;
-                fps = cfg.detection.fps;
-              };
-
-              record.enabled = cfgCamera.recordEnabled;
-              snapshots.enabled = cfgCamera.snapshotsEnabled;
-
-              motion =
-                if cfgCamera.motionMask != null
+          cameras = lib.filterAttrs (_: cam: cam != null) (
+            lib.mapAttrs (
+              name: cfgCamera:
+                if cfgCamera.enable
                 then {
-                  mask = cfgCamera.motionMask;
+                  ffmpeg.inputs = [
+                    {
+                      path = cfgCamera.streamUrl;
+                      roles = ["detect"] ++ (lib.optional cfgCamera.recordEnabled "record");
+                    }
+                  ];
+
+                  detect = {
+                    enabled = cfg.detection.enable;
+                    width = cfgCamera.detectResolution.width or 1920; # если не указан, ставим дефолт
+                    height = cfgCamera.detectResolution.height or 1080;
+                    fps = cfg.detection.fps;
+                  };
+
+                  record.enabled = cfgCamera.recordEnabled;
+                  snapshots.enabled = cfgCamera.snapshotsEnabled;
+
+                  motion =
+                    if cfgCamera.motionMask != null
+                    then {
+                      mask = cfgCamera.motionMask;
+                    }
+                    else null;
                 }
-                else null;
-            })
+                else null
+            )
             cfg.cameras
           );
 
@@ -342,20 +347,15 @@ in {
           #     })
           #   cfg.cameras;
 
-          go2rtc.streams = builtins.listToAttrs (
-            builtins.filter (x: x.value != null)
-            (lib.attrValues (lib.mapAttrs
-              (
-                name: cfgCamera: {
-                  name = name;
-                  value =
-                    if cfgCamera.enable
-                    then [cfgCamera.streamUrl]
-                    else null;
+          go2rtc.streams =
+            lib.mapAttrs' (
+              name: cfgCamera:
+                lib.mkIf cfgCamera.enable {
+                  inherit name;
+                  value = [cfgCamera.streamUrl];
                 }
-              )
-              cfg.cameras))
-          );
+            )
+            cfg.cameras;
 
           birdseye = {
             enabled = true;
