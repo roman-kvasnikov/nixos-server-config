@@ -231,7 +231,7 @@ in {
 
                   detect = {
                     enabled = cfg.detection.enable;
-                    width = cfgCamera.detectResolution.width or 1920; # если не указан, ставим дефолт
+                    width = cfgCamera.detectResolution.width or 1920;
                     height = cfgCamera.detectResolution.height or 1080;
                     fps = cfg.detection.fps;
                   };
@@ -348,12 +348,14 @@ in {
           #   cfg.cameras;
 
           go2rtc.streams =
-            lib.mapAttrs' (
+            lib.mapAttrs (
               name: cfgCamera:
-                lib.mkIf cfgCamera.enable {
+                if cfgCamera.enable
+                then {
                   inherit name;
                   value = [cfgCamera.streamUrl];
                 }
+                else null
             )
             cfg.cameras;
 
