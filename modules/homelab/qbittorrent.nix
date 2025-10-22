@@ -5,7 +5,7 @@
   ...
 }: let
   cfg = config.homelab.services.qbittorrentctl;
-  cfgServer = config.server;
+  cfgHomelab = config.homelab;
   cfgAcme = config.services.acmectl;
   cfgNginx = config.services.nginxctl;
 in {
@@ -15,7 +15,7 @@ in {
     host = lib.mkOption {
       type = lib.types.str;
       description = "Host of the qBittorrent module";
-      default = "torrent.${cfgServer.domain}";
+      default = "torrent.${cfgHomelab.domain}";
     };
 
     initialDirectory = lib.mkOption {
@@ -62,18 +62,18 @@ in {
 
       systemd.tmpfiles.rules = [
         "d ${cfg.initialDirectory}/media 0755 root root - -"
-        "d ${cfg.initialDirectory}/media/.torrents 0770 ${cfgServer.systemUser} ${cfgServer.systemGroup} - -"
-        "d ${cfg.initialDirectory}/media/Downloads 0770 ${cfgServer.systemUser} ${cfgServer.systemGroup} - -"
-        "d ${cfg.initialDirectory}/media/Movies 0770 ${cfgServer.systemUser} ${cfgServer.systemGroup} - -"
-        "d ${cfg.initialDirectory}/media/TV\ Shows 0770 ${cfgServer.systemUser} ${cfgServer.systemGroup} - -"
-        "d ${cfg.initialDirectory}/media/Cartoons 0770 ${cfgServer.systemUser} ${cfgServer.systemGroup} - -"
+        "d ${cfg.initialDirectory}/media/.torrents 0770 ${cfgHomelab.systemUser} ${cfgHomelab.systemGroup} - -"
+        "d ${cfg.initialDirectory}/media/Downloads 0770 ${cfgHomelab.systemUser} ${cfgHomelab.systemGroup} - -"
+        "d ${cfg.initialDirectory}/media/Movies 0770 ${cfgHomelab.systemUser} ${cfgHomelab.systemGroup} - -"
+        "d ${cfg.initialDirectory}/media/TV\ Shows 0770 ${cfgHomelab.systemUser} ${cfgHomelab.systemGroup} - -"
+        "d ${cfg.initialDirectory}/media/Cartoons 0770 ${cfgHomelab.systemUser} ${cfgHomelab.systemGroup} - -"
       ];
 
       services.qbittorrent = {
         enable = true;
 
         user = "qbittorrent";
-        group = cfgServer.systemGroup;
+        group = cfgHomelab.systemGroup;
 
         openFirewall = !cfgNginx.enable;
       };

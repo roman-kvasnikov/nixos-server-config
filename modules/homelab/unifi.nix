@@ -5,7 +5,7 @@
   ...
 }: let
   cfg = config.services.unifictl;
-  cfgServer = config.server;
+  cfgHomelab = config.homelab;
   cfgAcme = config.services.acmectl;
   cfgNginx = config.services.nginxctl;
 in {
@@ -15,7 +15,7 @@ in {
     host = lib.mkOption {
       type = lib.types.str;
       description = "Host of the UniFi module";
-      default = "unifi.${cfgServer.domain}";
+      default = "unifi.${cfgHomelab.domain}";
     };
   };
 

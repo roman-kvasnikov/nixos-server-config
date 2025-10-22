@@ -5,7 +5,7 @@
   ...
 }: let
   cfg = config.homelab.services.frigatectl;
-  cfgServer = config.server;
+  cfgHomelab = config.homelab;
   cfgAcme = config.services.acmectl;
   cfgNginx = config.services.nginxctl;
 in {
@@ -15,7 +15,7 @@ in {
     host = lib.mkOption {
       type = lib.types.str;
       description = "Host of the Frigate module";
-      default = "frigate.${cfgServer.domain}";
+      default = "frigate.${cfgHomelab.domain}";
     };
 
     dataDir = lib.mkOption {
@@ -265,7 +265,7 @@ in {
 
       # users.users.frigate = {
       #   isSystemUser = true;
-      #   group = cfgServer.systemGroup;
+      #   group = cfgHomelab.systemGroup;
       #   extraGroups = ["video"];
       # };
 
@@ -475,7 +475,7 @@ in {
 
         serviceConfig = {
           # User = "frigate";
-          # Group = cfgServer.systemGroup;
+          # Group = cfgHomelab.systemGroup;
           Restart = "on-failure";
           RestartSec = "10s";
 

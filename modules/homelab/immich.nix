@@ -5,7 +5,7 @@
   ...
 }: let
   cfg = config.homelab.services.immichctl;
-  cfgServer = config.server;
+  cfgHomelab = config.homelab;
   cfgAcme = config.services.acmectl;
   cfgNginx = config.services.nginxctl;
 in {
@@ -15,7 +15,7 @@ in {
     host = lib.mkOption {
       type = lib.types.str;
       description = "Host of the Immich module";
-      default = "immich.${cfgServer.domain}";
+      default = "immich.${cfgHomelab.domain}";
     };
 
     homepage = {
@@ -55,7 +55,7 @@ in {
 
       users.users.immich = {
         isSystemUser = true;
-        group = cfgServer.systemGroup;
+        group = cfgHomelab.systemGroup;
       };
 
       services.immich = {
@@ -64,7 +64,7 @@ in {
         host = "127.0.0.1";
 
         user = "immich";
-        group = cfgServer.systemGroup;
+        group = cfgHomelab.systemGroup;
 
         openFirewall = !cfgNginx.enable;
       };

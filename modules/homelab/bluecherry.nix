@@ -5,7 +5,7 @@
   ...
 }: let
   cfg = config.homelab.services.bluecherryctl;
-  cfgServer = config.server;
+  cfgHomelab = config.homelab;
   cfgAcme = config.services.acmectl;
   cfgNginx = config.services.nginxctl;
 in {
@@ -15,7 +15,7 @@ in {
     host = lib.mkOption {
       type = lib.types.str;
       description = "Host of the Bluecherry module";
-      default = "cameras.${cfgServer.domain}";
+      default = "cameras.${cfgHomelab.domain}";
     };
 
     dataDir = lib.mkOption {

@@ -5,7 +5,7 @@
   ...
 }: let
   cfg = config.homelab.services.sambactl;
-  cfgServer = config.server;
+  cfgHomelab = config.homelab;
 in {
   options.homelab.services.sambactl = {
     enable = lib.mkEnableOption "Enable Samba (SMB/CIFS) file sharing";
@@ -136,7 +136,7 @@ in {
     users.users =
       lib.mapAttrs (username: userCfg: {
         isNormalUser = true;
-        extraGroups = [cfgServer.systemGroup] ++ userCfg.groups;
+        extraGroups = [cfgHomelab.systemGroup] ++ userCfg.groups;
       })
       cfg.users;
 
@@ -149,11 +149,11 @@ in {
             user =
               if share.forceUser != null
               then share.forceUser
-              else cfgServer.systemUser;
+              else cfgHomelab.systemUser;
             group =
               if share.forceGroup != null
               then share.forceGroup
-              else cfgServer.systemGroup;
+              else cfgHomelab.systemGroup;
             # Для приватных шар используем более строгие права
             mode =
               if share.public
@@ -223,14 +223,14 @@ in {
         )}
 
         # Также создаем системного пользователя для публичных шар
-        if id "${cfgServer.systemUser}" &>/dev/null; then
-          echo "Setting up system Samba user: ${cfgServer.systemUser}"
-          ${pkgs.samba}/bin/pdbedit -x -u ${cfgServer.systemUser} 2>/dev/null || true
-          printf "guest\nguest\n" | ${pkgs.samba}/bin/smbpasswd -a -s ${cfgServer.systemUser}
-          ${pkgs.samba}/bin/smbpasswd -e ${cfgServer.systemUser}
-          echo "System user ${cfgServer.systemUser} configured successfully"
+        if id "${cfgHomelab.systemUser}" &>/dev/null; then
+          echo "Setting up system Samba user: ${cfgHomelab.systemUser}"
+          ${pkgs.samba}/bin/pdbedit -x -u ${cfgHomelab.systemUser} 2>/dev/null || true
+          printf "guest\nguest\n" | ${pkgs.samba}/bin/smbpasswd -a -s ${cfgHomelab.systemUser}
+          ${pkgs.samba}/bin/smbpasswd -e ${cfgHomelab.systemUser}
+          echo "System user ${cfgHomelab.systemUser} configured successfully"
         else
-          echo "System user ${cfgServer.systemUser} does not exist, skipping Samba setup for this user"
+          echo "System user ${cfgHomelab.systemUser} does not exist, skipping Samba setup for this user"
         fi
       '';
     };
@@ -251,7 +251,7 @@ in {
               "invalid users" = ["root"];
               "hosts allow" = ["192.168.0.0/16" "10.0.0.0/8" "127.0.0.1" "localhost"];
               "hosts deny" = ["0.0.0.0/0"];
-              "guest account" = cfgServer.systemUser;
+              "guest account" = cfgHomelab.systemUser;
               "map to guest" = "bad user";
               "passdb backend" = "tdbsam";
               "printing" = "bsd";
@@ -300,8 +300,8 @@ in {
                 then {
                   "public" = "yes";
                   "guest ok" = "yes";
-                  "force user" = cfgServer.systemUser;
-                  "force group" = cfgServer.systemGroup;
+                  "force user" = cfgHomelab.systemUser;
+                  "force group" = cfgHomelab.systemGroup;
                 }
                 else
                   {

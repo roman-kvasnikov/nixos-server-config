@@ -9,9 +9,9 @@
     ./hardware-configuration.nix
     ./networking.nix
     ./nix.nix
+    ./options.nix
     ./packages.nix
     ./security.nix
-    ./server.nix
     ./services.nix
     ./users.nix
     ./zram.nix

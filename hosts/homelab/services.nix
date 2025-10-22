@@ -2,7 +2,9 @@
   config,
   lib,
   ...
-}: {
+}: let
+  cfgHomelab = config.homelab;
+in {
   imports = [
     ../../modules/homelab
     ../../modules/programs
@@ -24,7 +26,6 @@
 
     homelab = {
       services = {
-        cockpitctl.enable = true;
         filebrowserctl.enable = true;
         homepagectl.enable = true;
         immichctl.enable = true;
@@ -38,11 +39,11 @@
         nextcloudctl = {
           enable = true;
 
-          adminUser = config.server.adminUser;
-          adminPasswordFile = config.server.adminPasswordFile;
+          adminUser = cfgHomelab.adminUser;
+          adminPasswordFile = cfgHomelab.adminPasswordFile;
 
           # homepage.widget = {
-          #   username = config.server.adminUser;
+          #   username = cfgHomelab.adminUser;
           #   password = config.age.secrets.nextcloud-admin-password.text;
           # };
         };

@@ -5,7 +5,7 @@
   ...
 }: let
   cfg = config.homelab.services.tdarrctl;
-  cfgServer = config.server;
+  cfgHomelab = config.homelab;
   cfgAcme = config.services.acmectl;
   cfgNginx = config.services.nginxctl;
 in {
@@ -15,7 +15,7 @@ in {
     host = lib.mkOption {
       type = lib.types.str;
       description = "Host of the Tdarr module";
-      default = "tdarr.${cfgServer.domain}";
+      default = "tdarr.${cfgHomelab.domain}";
     };
 
     # User configuration
@@ -210,17 +210,17 @@ in {
       # Create necessary directories with proper permissions
       systemd.tmpfiles.rules =
         [
-          "d '${cfg.serverDataPath}' 0775 tdarr ${cfgServer.systemGroup} -"
-          "d '${cfg.configsPath}' 0775 tdarr ${cfgServer.systemGroup} -"
-          "d '${cfg.logsPath}' 0775 tdarr ${cfgServer.systemGroup} -"
-          "d '${cfg.transcodeCachePath}' 0775 tdarr ${cfgServer.systemGroup} -"
+          "d '${cfg.serverDataPath}' 0775 tdarr ${cfgHomelab.systemGroup} -"
+          "d '${cfg.configsPath}' 0775 tdarr ${cfgHomelab.systemGroup} -"
+          "d '${cfg.logsPath}' 0775 tdarr ${cfgHomelab.systemGroup} -"
+          "d '${cfg.transcodeCachePath}' 0775 tdarr ${cfgHomelab.systemGroup} -"
         ]
-        ++ (map (path: "d '${path}' 0775 tdarr ${cfgServer.systemGroup} -") cfg.mediaPaths);
+        ++ (map (path: "d '${path}' 0775 tdarr ${cfgHomelab.systemGroup} -") cfg.mediaPaths);
 
       # Create tdarr user
       users.users.tdarr = {
         isSystemUser = true;
-        group = cfgServer.systemGroup;
+        group = cfgHomelab.systemGroup;
         home = cfg.serverDataPath;
         createHome = false;
         description = "Tdarr service user";
@@ -244,7 +244,7 @@ in {
           {
             TZ = config.time.timeZone or "UTC";
             PUID = toString cfg.uid;
-            PGID = toString config.users.groups.${cfgServer.systemGroup}.gid;
+            PGID = toString config.users.groups.${cfgHomelab.systemGroup}.gid;
             UMASK_SET = "002";
 
             serverIP = "0.0.0.0";
@@ -316,7 +316,7 @@ in {
           mkdir -p ${cfg.serverDataPath} ${cfg.configsPath} ${cfg.logsPath} ${cfg.transcodeCachePath}
           ${lib.concatMapStrings (path: "mkdir -p ${path}\n") cfg.mediaPaths}
 
-          chown -R ${toString cfg.uid}:${toString config.users.groups.${cfgServer.systemGroup}.gid} \
+          chown -R ${toString cfg.uid}:${toString config.users.groups.${cfgHomelab.systemGroup}.gid} \
             ${cfg.serverDataPath} \
             ${cfg.configsPath} \
             ${cfg.logsPath} \
@@ -347,7 +347,7 @@ in {
           {
             TZ = config.time.timeZone or "UTC";
             PUID = toString cfg.uid;
-            PGID = toString config.users.groups.${cfgServer.systemGroup}.gid;
+            PGID = toString config.users.groups.${cfgHomelab.systemGroup}.gid;
             UMASK_SET = "002";
 
             nodeName = "ExternalNode";

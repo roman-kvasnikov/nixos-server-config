@@ -1,20 +1,22 @@
-{config, ...}: {
+{config, ...}: let
+  cfgHomelab = config.homelab;
+in {
   users = {
     users = {
-      ${config.server.adminUser} = {
+      ${cfgHomelab.adminUser} = {
         isNormalUser = true;
-        extraGroups = ["wheel" "users" "docker" "nextcloud" config.server.systemGroup];
-        hashedPasswordFile = config.server.adminPasswordFile;
+        extraGroups = ["wheel" "users" "docker" "nextcloud" cfgHomelab.systemGroup];
+        hashedPasswordFile = cfgHomelab.adminPasswordFile;
       };
 
-      ${config.server.systemUser} = {
+      ${cfgHomelab.systemUser} = {
         isSystemUser = true;
         uid = 989;
-        group = config.server.systemGroup;
+        group = cfgHomelab.systemGroup;
       };
     };
 
-    groups.${config.server.systemGroup} = {
+    groups.${cfgHomelab.systemGroup} = {
       gid = 989;
     };
   };

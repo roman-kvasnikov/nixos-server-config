@@ -5,7 +5,7 @@
   ...
 }: let
   cfg = config.homelab.services.cockpitctl;
-  cfgServer = config.server;
+  cfgHomelab = config.homelab;
   cfgAcme = config.services.acmectl;
   cfgNginx = config.services.nginxctl;
 in {
@@ -15,7 +15,7 @@ in {
     host = lib.mkOption {
       type = lib.types.str;
       description = "Host of the Cockpit module";
-      default = "cockpit.${cfgServer.domain}";
+      default = "cockpit.${cfgHomelab.domain}";
     };
 
     homepage = {

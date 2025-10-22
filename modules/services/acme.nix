@@ -4,7 +4,7 @@
   ...
 }: let
   cfg = config.services.acmectl;
-  cfgServer = config.server;
+  cfgHomelab = config.homelab;
 in {
   options.services.acmectl = {
     enable = lib.mkEnableOption "Enable ACME";
@@ -27,7 +27,7 @@ in {
     security = {
       acme = {
         acceptTerms = true;
-        defaults.email = cfgServer.email;
+        defaults.email = cfgHomelab.email;
       };
     };
   };

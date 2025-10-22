@@ -3,52 +3,52 @@
   config,
   ...
 }: {
-  options.server = {
-    email = lib.mkOption {
-      type = lib.types.str;
-      description = "Email for ACME registration";
-      default = "roman.kvasok@gmail.com";
-    };
-
+  options.homelab = {
     domain = lib.mkOption {
       type = lib.types.str;
-      description = "Domain name for the server";
+      description = "Domain name for the homelab server";
       default = "kvasok.xyz";
     };
 
     ip = lib.mkOption {
       type = lib.types.str;
-      description = "IP address for the server";
+      description = "IP address for the homelab server";
       default = "192.168.1.11";
     };
 
     subnet = lib.mkOption {
       type = lib.types.str;
-      description = "Subnet for the server";
+      description = "Subnet for the homelab server";
       default = "192.168.1.0/24";
+    };
+
+    email = lib.mkOption {
+      type = lib.types.str;
+      description = "Email for ACME SSL certificate registration for the homelab server";
+      default = "roman.kvasok@gmail.com";
     };
 
     systemUser = lib.mkOption {
       type = lib.types.str;
-      description = "System user to run the server services as";
+      description = "System user to run the homelab server services as";
       default = "share";
     };
 
     systemGroup = lib.mkOption {
       type = lib.types.str;
-      description = "System group to run the server services as";
+      description = "System group to run the homelab server services as";
       default = "share";
     };
 
     adminUser = lib.mkOption {
       type = lib.types.str;
-      description = "Admin user for the server";
+      description = "Admin user for the homelab server";
       default = "romank";
     };
 
     adminPasswordFile = lib.mkOption {
       type = lib.types.path;
-      description = "Admin password file for the server";
+      description = "Admin password file for the homelab server";
       default = config.age.secrets.server-admin-password.path;
     };
   };

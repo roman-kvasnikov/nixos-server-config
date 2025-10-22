@@ -5,7 +5,7 @@
   ...
 }: let
   cfg = config.homelab.services.filebrowserctl;
-  cfgServer = config.server;
+  cfgHomelab = config.homelab;
   cfgAcme = config.services.acmectl;
   cfgNginx = config.services.nginxctl;
 in {
@@ -15,7 +15,7 @@ in {
     host = lib.mkOption {
       type = lib.types.str;
       description = "Host of the Filebrowser module";
-      default = "files.${cfgServer.domain}";
+      default = "files.${cfgHomelab.domain}";
     };
 
     homepage = {
@@ -57,7 +57,7 @@ in {
         enable = true;
 
         user = "filebrowser";
-        group = cfgServer.systemGroup;
+        group = cfgHomelab.systemGroup;
 
         openFirewall = !cfgNginx.enable;
 

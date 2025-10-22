@@ -1,5 +1,5 @@
 {config, ...}: let
-  cfgServer = config.server;
+  cfgHomelab = config.homelab;
 in {
   services.openssh = {
     enable = true;
@@ -7,7 +7,7 @@ in {
     openFirewall = true;
 
     settings = {
-      AllowUsers = [cfgServer.adminUser];
+      AllowUsers = [cfgHomelab.adminUser];
       # PasswordAuthentication = false;
       # PermitRootLogin = "no";
       # X11Forwarding = false;
