@@ -25,18 +25,9 @@ in {
     };
 
     cameras = lib.mkOption {
-      type = lib.types.listOf (lib.types.submodule {
+      type = lib.types.attrsOf (lib.types.submodule {
         options = {
-          enable = lib.mkOption {
-            type = lib.types.bool;
-            default = false;
-            description = "Enable camera";
-          };
-
-          name = lib.mkOption {
-            type = lib.types.str;
-            description = "Camera name (must be unique)";
-          };
+          enable = lib.mkEnableOption "Enable camera";
 
           streamUrl = lib.mkOption {
             type = lib.types.str;
@@ -44,19 +35,28 @@ in {
             description = "RTSP stream URL for the camera";
           };
 
-          detectResolution = lib.mkOption {
-            type = lib.types.attrs;
-            default = {
-              width = 1920;
-              height = 1080;
-            };
-            description = "Detection resolution for the camera";
-          };
-
           recordEnabled = lib.mkOption {
             type = lib.types.bool;
             default = true;
             description = "Enable recording";
+          };
+
+          detectResolution = lib.mkOption {
+            type = lib.types.submodule {
+              options = {
+                width = lib.mkOption {
+                  type = lib.types.int;
+                  default = 1920;
+                  description = "Detection resolution width";
+                };
+                height = lib.mkOption {
+                  type = lib.types.int;
+                  default = 1080;
+                  description = "Detection resolution height";
+                };
+              };
+            };
+            description = "Detection resolution for the camera";
           };
 
           snapshotsEnabled = lib.mkOption {
@@ -73,40 +73,13 @@ in {
         };
       });
 
-      default = [];
-      description = "List of camera configurations";
+      default = {};
+      description = "Set of camera configurations by name";
     };
 
-    # Detection settings
-    detection = {
-      enabled = lib.mkOption {
-        type = lib.types.bool;
-        default = false;
-        description = "Enable object detection";
-      };
-
-      fps = lib.mkOption {
-        type = lib.types.int;
-        default = 5;
-        description = "Detection FPS";
-      };
-
-      objects = lib.mkOption {
-        type = lib.types.listOf lib.types.str;
-        default = ["person" "car" "cat" "dog"];
-        description = "Objects to detect";
-      };
-
-      coralDevice = lib.mkOption {
-        type = lib.types.nullOr lib.types.str;
-        default = null;
-        example = "usb";
-        description = "Coral TPU device (usb, pci, cpu)";
-      };
-    };
-
-    # Recording settings
     recording = {
+      enable = lib.mkEnableOption "Enable recording";
+
       retainDays = lib.mkOption {
         type = lib.types.int;
         default = 7;
@@ -128,19 +101,36 @@ in {
 
         postCapture = lib.mkOption {
           type = lib.types.int;
-          default = 10;
+          default = 5;
           description = "Seconds to record after event";
         };
       };
     };
 
-    # Snapshots settings
-    snapshots = {
-      enabled = lib.mkOption {
-        type = lib.types.bool;
-        default = false;
-        description = "Enable snapshots";
+    detection = {
+      enable = lib.mkEnableOption "Enable object detection";
+
+      fps = lib.mkOption {
+        type = lib.types.int;
+        default = 5;
+        description = "Detection FPS";
       };
+
+      objects = lib.mkOption {
+        type = lib.types.listOf lib.types.str;
+        default = ["person" "cat" "dog"];
+        description = "Objects to detect";
+      };
+
+      coralDevice = lib.mkOption {
+        type = lib.types.nullOr lib.types.str;
+        default = null;
+        description = "Coral TPU device (usb, pci, cpu)";
+      };
+    };
+
+    snapshots = {
+      enable = lib.mkEnableOption "Enable snapshots";
 
       retainDays = lib.mkOption {
         type = lib.types.int;
@@ -149,13 +139,8 @@ in {
       };
     };
 
-    # MQTT settings
     mqtt = {
-      enabled = lib.mkOption {
-        type = lib.types.bool;
-        default = false;
-        description = "Enable MQTT integration";
-      };
+      enable = lib.mkEnableOption "Enable MQTT integration";
 
       host = lib.mkOption {
         type = lib.types.str;
@@ -182,7 +167,6 @@ in {
       };
     };
 
-    # Homepage integration
     homepage = {
       name = lib.mkOption {
         type = lib.types.str;
@@ -233,132 +217,132 @@ in {
         hostname = "127.0.0.1";
 
         settings = {
-          cameras = builtins.listToAttrs (
-            builtins.map (cam: {
-              name = cam.name;
-              value = {
-                ffmpeg.inputs = [
-                  {
-                    path = cam.streamUrl;
-                    roles = ["detect"] ++ (lib.optional cam.recordEnabled "record");
-                  }
-                ];
+          cameras =
+            lib.mapAttrs'
+            (
+              name: cfgCamera:
+                lib.mkIf cfgCamera.enable {
+                  inherit name;
+                  value = {
+                    ffmpeg.inputs = [
+                      {
+                        path = cfgCamera.streamUrl;
+                        roles = ["detect"] ++ (lib.optional cfgCamera.recordEnabled "record");
+                      }
+                    ];
 
-                detect = {
-                  enabled = cfg.detection.enabled;
-                  width = cam.detectResolution.width;
-                  height = cam.detectResolution.height;
-                  fps = cfg.detection.fps;
-                };
+                    detect = {
+                      enabled = cfg.detection.enable;
+                      width = cfgCamera.detectResolution.width;
+                      height = cfgCamera.detectResolution.height;
+                      fps = cfg.detection.fps;
+                    };
 
-                record.enabled = cam.recordEnabled;
-                snapshots.enabled = cam.snapshotsEnabled;
+                    record.enabled = cfgCamera.recordEnabled;
+                    snapshots.enabled = cfgCamera.snapshotsEnabled;
 
-                motion = lib.mkIf (cam.motionMask != null) {
-                  mask = cam.motionMask;
-                };
-              };
-            }) (lib.filter (cam: cam.enable) cfg.cameras)
-          );
+                    motion = lib.mkIf (cfgCamera.motionMask != null) {
+                      mask = cfgCamera.motionMask;
+                    };
+                  };
+                }
+            )
+            cfg.cameras;
 
-          # MQTT configuration
-          mqtt = lib.mkIf cfg.mqtt.enabled {
-            enabled = true;
-            host = cfg.mqtt.host;
-            port = cfg.mqtt.port;
-            user = cfg.mqtt.user;
-            password = cfg.mqtt.password;
-          };
-
-          # Database configuration
-          database = {
-            path = "${cfg.homeDir}/db/frigate.db";
-          };
-
-          # Detector configuration
-          detectors =
-            if cfg.detection.coralDevice != null
-            then {
-              coral = {
-                type = "edgetpu";
-                device = cfg.detection.coralDevice;
-              };
-            }
-            else {
-              cpu = {
-                type = "cpu";
-              };
-            };
-
-          # Model configuration
-          model = {
-            width = 320;
-            height = 320;
-            labelmap_path = null;
-          };
-
-          # Objects configuration
-          objects = {
-            track = cfg.detection.objects;
-            filters = {};
-          };
-
-          # Recording configuration
           record = {
             enabled = true;
+
             retain = {
               days = cfg.recording.retainDays;
               mode = "all";
             };
           };
 
-          # Snapshots configuration
+          detectors = lib.mkMerge [
+            (lib.mkIf (cfg.detection.coralDevice != null) {
+              coral = {
+                type = "edgetpu";
+                device = cfg.detection.coralDevice;
+              };
+            })
+            (lib.mkIf (cfg.detection.coralDevice == null) {
+              cpu = {
+                type = "cpu";
+              };
+            })
+          ];
+
+          model = {
+            width = 320;
+            height = 320;
+            labelmap_path = null;
+          };
+
+          objects = {
+            track = cfg.detection.objects;
+            filters = {};
+          };
+
           snapshots = {
-            enabled = cfg.snapshots.enabled;
+            enabled = cfg.snapshots.enable;
+
             retain = {
               default = cfg.snapshots.retainDays;
             };
           };
 
-          # UI configuration
-          ui = {
-            timezone = "Europe/Moscow";
+          database = {
+            path = "${cfg.homeDir}/db/frigate.db";
           };
 
-          # Live configuration
+          ui = {
+            timezone = config.time.timeZone;
+          };
+
           live = {
             height = 720;
             quality = 8;
           };
 
-          # Go2RTC configuration for WebRTC streaming
-          go2rtc.streams = builtins.listToAttrs (
-            builtins.map (cam: {
-              name = cam.name;
-              value = [cam.streamUrl];
-            }) (lib.filter (cam: cam.enable) cfg.cameras)
-          );
+          go2rtc.streams =
+            lib.mapAttrs'
+            (name: cfgCamera:
+              lib.mkIf cfgCamera.enable {
+                inherit name;
+                value = [cfgCamera.streamUrl];
+              })
+            cfg.cameras;
 
-          # Birdseye view configuration
           birdseye = {
             enabled = true;
+
             width = 1920;
             height = 1080;
             quality = 8;
-            mode = "objects";
+            mode = "continuous";
+            # "objects"	Только если найден объект (по умолчанию — лучшее сочетание нагрузки и пользы)
+            # "motion"	Показывает камеры при движении
+            # "continuous"	Показывает всегда все камеры (может нагружать систему)
+            # "off"	Полностью отключает Birdseye
           };
 
-          # Logger configuration
+          mqtt = lib.mkIf cfg.mqtt.enable {
+            enabled = true;
+
+            host = cfg.mqtt.host;
+            port = cfg.mqtt.port;
+            user = cfg.mqtt.user;
+            password = cfg.mqtt.password;
+          };
+
           logger = {
             default = "info";
           };
 
-          # Environment vars
           environment_vars = {};
         };
       };
 
-      # Systemd service overrides
       systemd.services.frigate = {
         after = ["network-online.target"];
         wants = ["network-online.target"];

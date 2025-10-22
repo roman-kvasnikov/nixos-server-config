@@ -111,48 +111,26 @@ in {
         frigatectl = {
           enable = true;
 
-          cameras = [
-            {
-              name = "hall";
+          cameras = {
+            hall = {
               enable = true;
 
               streamUrl = "rtsp://RomanK:Um9tYW4Um@192.168.1.31:554/stream1";
+
+              recordEnabled = true;
+
               detectResolution = {
                 width = 1280;
                 height = 720;
               };
-              recordEnabled = true;
+
               snapshotsEnabled = true;
-            }
-          ];
-
-          # Detection settings
-          detection = {
-            enabled = true;
-
-            fps = 5;
-            objects = ["person"];
-
-            # Optional: Enable Coral TPU for better performance
-            # coralDevice = "usb";  # or "pci" for M.2 Coral
-          };
-
-          # Recording retention
-          recording = {
-            retainDays = 7; # Keep recordings for 7 days
-            events = {
-              retainDays = 14; # Keep event recordings for 14 days
-              preCapture = 5; # Record 5 seconds before event
-              postCapture = 10; # Record 10 seconds after event
             };
           };
 
-          # Snapshots retention
-          snapshots = {
-            enabled = true;
-
-            retainDays = 30; # Keep snapshots for 30 days
-          };
+          recording.enable = true;
+          detection.enable = true;
+          snapshots.enable = true;
         };
       };
     };
