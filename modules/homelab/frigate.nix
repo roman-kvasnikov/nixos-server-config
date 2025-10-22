@@ -234,34 +234,31 @@ in {
 
         settings = {
           cameras = builtins.listToAttrs (
-            builtins.filter (c: c.value.enable) (
-              builtins.map (cam: {
-                name = cam.name;
-                value = {
-                  ffmpeg.inputs = [
-                    {
-                      path = cam.streamUrl;
-                      roles = ["detect"] ++ (lib.optional cam.recordEnabled "record");
-                    }
-                  ];
+            builtins.map (cam: {
+              name = cam.name;
+              value = {
+                ffmpeg.inputs = [
+                  {
+                    path = cam.streamUrl;
+                    roles = ["detect"] ++ (lib.optional cam.recordEnabled "record");
+                  }
+                ];
 
-                  detect = {
-                    enabled = cfg.detection.enabled;
-                    width = cam.detectResolution.width;
-                    height = cam.detectResolution.height;
-                    fps = cfg.detection.fps;
-                  };
-
-                  record.enabled = cam.recordEnabled;
-                  snapshots.enabled = cam.snapshotsEnabled;
-
-                  motion = lib.mkIf (cam.motionMask != null) {
-                    mask = cam.motionMask;
-                  };
+                detect = {
+                  enabled = cfg.detection.enabled;
+                  width = cam.detectResolution.width;
+                  height = cam.detectResolution.height;
+                  fps = cfg.detection.fps;
                 };
-              })
-              cfg.cameras
-            )
+
+                record.enabled = cam.recordEnabled;
+                snapshots.enabled = cam.snapshotsEnabled;
+
+                motion = lib.mkIf (cam.motionMask != null) {
+                  mask = cam.motionMask;
+                };
+              };
+            }) (lib.filter (cam: cam.enable) cfg.cameras)
           );
 
           # MQTT configuration
@@ -336,14 +333,10 @@ in {
 
           # Go2RTC configuration for WebRTC streaming
           go2rtc.streams = builtins.listToAttrs (
-            builtins.filter (c: c.value != null) (
-              builtins.map (cam:
-                lib.mkIf cam.enable {
-                  name = cam.name;
-                  value = [cam.streamUrl];
-                })
-              cfg.cameras
-            )
+            builtins.map (cam: {
+              name = cam.name;
+              value = [cam.streamUrl];
+            }) (lib.filter (cam: cam.enable) cfg.cameras)
           );
 
           # Birdseye view configuration
