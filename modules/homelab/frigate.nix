@@ -217,37 +217,66 @@ in {
         hostname = "127.0.0.1";
 
         settings = {
-          cameras =
-            lib.mapAttrs'
-            (
-              name: cfgCamera:
-                lib.mkIf cfgCamera.enable {
-                  inherit name;
-                  value = {
-                    ffmpeg.inputs = [
-                      {
-                        path = cfgCamera.streamUrl;
-                        roles = ["detect"] ++ (lib.optional cfgCamera.recordEnabled "record");
-                      }
-                    ];
-
-                    detect = {
-                      enabled = cfg.detection.enable;
-                      width = cfgCamera.detectResolution.width;
-                      height = cfgCamera.detectResolution.height;
-                      fps = cfg.detection.fps;
-                    };
-
-                    record.enabled = cfgCamera.recordEnabled;
-                    snapshots.enabled = cfgCamera.snapshotsEnabled;
-
-                    motion = lib.mkIf (cfgCamera.motionMask != null) {
-                      mask = cfgCamera.motionMask;
-                    };
-                  };
+          cameras = lib.filterAttrs (name: cam: cam.enable) (
+            lib.mapAttrs (name: cfgCamera: {
+              ffmpeg.inputs = [
+                {
+                  path = cfgCamera.streamUrl;
+                  roles = ["detect"] ++ (lib.optional cfgCamera.recordEnabled "record");
                 }
-            )
-            cfg.cameras;
+              ];
+
+              detect = {
+                enabled = cfg.detection.enable;
+                width = cfgCamera.detectResolution.width;
+                height = cfgCamera.detectResolution.height;
+                fps = cfg.detection.fps;
+              };
+
+              record.enabled = cfgCamera.recordEnabled;
+              snapshots.enabled = cfgCamera.snapshotsEnabled;
+
+              motion =
+                if cfgCamera.motionMask != null
+                then {
+                  mask = cfgCamera.motionMask;
+                }
+                else null;
+            })
+            cfg.cameras
+          );
+
+          # cameras =
+          #   lib.mapAttrs'
+          #   (
+          #     name: cfgCamera:
+          #       lib.mkIf cfgCamera.enable {
+          #         inherit name;
+          #         value = {
+          #           ffmpeg.inputs = [
+          #             {
+          #               path = cfgCamera.streamUrl;
+          #               roles = ["detect"] ++ (lib.optional cfgCamera.recordEnabled "record");
+          #             }
+          #           ];
+
+          #           detect = {
+          #             enabled = cfg.detection.enable;
+          #             width = cfgCamera.detectResolution.width;
+          #             height = cfgCamera.detectResolution.height;
+          #             fps = cfg.detection.fps;
+          #           };
+
+          #           record.enabled = cfgCamera.recordEnabled;
+          #           snapshots.enabled = cfgCamera.snapshotsEnabled;
+
+          #           motion = lib.mkIf (cfgCamera.motionMask != null) {
+          #             mask = cfgCamera.motionMask;
+          #           };
+          #         };
+          #       }
+          #   )
+          #   cfg.cameras;
 
           record = {
             enabled = true;
