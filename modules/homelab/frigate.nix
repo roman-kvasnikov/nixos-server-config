@@ -268,14 +268,14 @@ in {
       #   extraGroups = ["video"];
       # };
 
-      # systemd.tmpfiles.rules = [
-      #   "d ${cfg.dataDir} 0750 frigate frigate - -"
-      #   "d ${cfg.dataDir}/recordings 0750 frigate frigate - -"
-      #   "d ${cfg.dataDir}/clips 0750 frigate frigate - -"
-      #   "d ${cfg.dataDir}/snapshots 0750 frigate frigate - -"
-      #   "d ${cfg.dataDir}/exports 0750 frigate frigate - -"
-      #   "d ${cfg.dataDir}/db 0750 frigate frigate - -"
-      # ];
+      systemd.tmpfiles.rules = [
+        "d ${cfg.dataDir} 0750 frigate frigate - -"
+        "d ${cfg.dataDir}/recordings 0750 frigate frigate - -"
+        "d ${cfg.dataDir}/clips 0750 frigate frigate - -"
+        "d ${cfg.dataDir}/snapshots 0750 frigate frigate - -"
+        "d ${cfg.dataDir}/exports 0750 frigate frigate - -"
+        "d ${cfg.dataDir}/db 0750 frigate frigate - -"
+      ];
 
       services.frigate = {
         enable = true;
