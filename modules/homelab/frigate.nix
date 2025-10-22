@@ -220,8 +220,7 @@ in {
           cameras = lib.filterAttrs (_: cam: cam != null) (
             lib.mapAttrs (
               name: cfgCamera:
-                if cfgCamera.enable
-                then {
+                lib.mkIf cfgCamera.enable {
                   ffmpeg.inputs = [
                     {
                       path = cfgCamera.streamUrl;
@@ -229,59 +228,25 @@ in {
                     }
                   ];
 
+                  record.enabled = cfgCamera.recordEnabled;
+
                   detect = {
                     enabled = cfg.detection.enable;
+
                     width = cfgCamera.detectResolution.width or 1920;
                     height = cfgCamera.detectResolution.height or 1080;
                     fps = cfg.detection.fps;
                   };
 
-                  record.enabled = cfgCamera.recordEnabled;
                   snapshots.enabled = cfgCamera.snapshotsEnabled;
 
-                  motion =
-                    if cfgCamera.motionMask != null
-                    then {
-                      mask = cfgCamera.motionMask;
-                    }
-                    else null;
+                  motion = lib.mkIf (cfgCamera.motionMask != null) {
+                    mask = cfgCamera.motionMask;
+                  };
                 }
-                else null
             )
             cfg.cameras
           );
-
-          # cameras =
-          #   lib.mapAttrs'
-          #   (
-          #     name: cfgCamera:
-          #       lib.mkIf cfgCamera.enable {
-          #         inherit name;
-          #         value = {
-          #           ffmpeg.inputs = [
-          #             {
-          #               path = cfgCamera.streamUrl;
-          #               roles = ["detect"] ++ (lib.optional cfgCamera.recordEnabled "record");
-          #             }
-          #           ];
-
-          #           detect = {
-          #             enabled = cfg.detection.enable;
-          #             width = cfgCamera.detectResolution.width;
-          #             height = cfgCamera.detectResolution.height;
-          #             fps = cfg.detection.fps;
-          #           };
-
-          #           record.enabled = cfgCamera.recordEnabled;
-          #           snapshots.enabled = cfgCamera.snapshotsEnabled;
-
-          #           motion = lib.mkIf (cfgCamera.motionMask != null) {
-          #             mask = cfgCamera.motionMask;
-          #           };
-          #         };
-          #       }
-          #   )
-          #   cfg.cameras;
 
           record = {
             enabled = true;
@@ -338,26 +303,13 @@ in {
             quality = 8;
           };
 
-          # go2rtc.streams =
-          #   lib.mapAttrs'
-          #   (name: cfgCamera:
-          #     lib.mkIf cfgCamera.enable {
-          #       inherit name;
-          #       value = [cfgCamera.streamUrl];
-          #     })
-          #   cfg.cameras;
-
-          go2rtc.streams =
+          go2rtc.streams = lib.filterAttrs (_: stream: stream != null) (
             lib.mapAttrs (
               name: cfgCamera:
-                if cfgCamera.enable
-                then {
-                  inherit name;
-                  value = [cfgCamera.streamUrl];
-                }
-                else null
+                lib.mkIf cfgCamera.enable [cfgCamera.streamUrl]
             )
-            cfg.cameras;
+            cfg.cameras
+          );
 
           birdseye = {
             enabled = true;
