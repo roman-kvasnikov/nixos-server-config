@@ -2,6 +2,7 @@
   imports = [
     ./cockpit.nix
     ./filebrowser.nix
+    ./frigate.nix
     ./homepage.nix
     ./immich.nix
     ./jellyfin.nix
