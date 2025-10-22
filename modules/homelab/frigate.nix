@@ -259,7 +259,7 @@ in {
     (lib.mkIf cfg.enable {
       environment.systemPackages = with pkgs; [
         ffmpeg-full
-        python3Packages.frigate
+        frigate
       ];
 
       # users.users.frigate = {
