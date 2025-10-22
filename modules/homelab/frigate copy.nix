@@ -24,64 +24,109 @@ in {
       default = "/var/lib/frigate";
     };
 
-    cameras = lib.mkOption {
-      type = lib.types.listOf (lib.types.submodule {
-        options = {
-          enable = lib.mkOption {
-            type = lib.types.bool;
-            default = false;
-            description = "Enable camera";
-          };
+    # Camera 1 configuration
+    camera1 = {
+      enable = lib.mkOption {
+        type = lib.types.bool;
+        default = true;
+        description = "Enable first camera";
+      };
 
-          name = lib.mkOption {
-            type = lib.types.str;
-            description = "Camera name (must be unique)";
-          };
+      name = lib.mkOption {
+        type = lib.types.str;
+        default = "camera1";
+        description = "Name of the first camera";
+      };
 
-          streamUrl = lib.mkOption {
-            type = lib.types.str;
-            example = "rtsp://user:pass@192.168.1.100:554/stream1";
-            description = "RTSP stream URL for the camera";
-          };
+      streamUrl = lib.mkOption {
+        type = lib.types.str;
+        example = "rtsp://user:pass@192.168.1.100:554/stream1";
+        description = "RTSP stream URL for the first camera";
+      };
 
-          detectResolution = lib.mkOption {
-            type = lib.types.attrs;
-            default = {
-              width = 1920;
-              height = 1080;
-            };
-            description = "Detection resolution for the camera";
-          };
-
-          recordEnabled = lib.mkOption {
-            type = lib.types.bool;
-            default = true;
-            description = "Enable recording";
-          };
-
-          snapshotsEnabled = lib.mkOption {
-            type = lib.types.bool;
-            default = true;
-            description = "Enable snapshots";
-          };
-
-          motionMask = lib.mkOption {
-            type = lib.types.nullOr (lib.types.listOf lib.types.str);
-            default = null;
-            description = "Motion mask coordinates";
-          };
+      detectResolution = lib.mkOption {
+        type = lib.types.attrs;
+        default = {
+          width = 1920;
+          height = 1080;
         };
-      });
+        description = "Detection resolution for the first camera";
+      };
 
-      default = [];
-      description = "List of camera configurations";
+      recordEnabled = lib.mkOption {
+        type = lib.types.bool;
+        default = true;
+        description = "Enable recording for the first camera";
+      };
+
+      snapshotsEnabled = lib.mkOption {
+        type = lib.types.bool;
+        default = true;
+        description = "Enable snapshots for the first camera";
+      };
+
+      motionMask = lib.mkOption {
+        type = lib.types.nullOr (lib.types.listOf lib.types.str);
+        default = null;
+        example = ["0,0,300,0,300,200,0,200"];
+        description = "Motion mask coordinates for the first camera";
+      };
+    };
+
+    # Camera 2 configuration
+    camera2 = {
+      enable = lib.mkOption {
+        type = lib.types.bool;
+        default = true;
+        description = "Enable second camera";
+      };
+
+      name = lib.mkOption {
+        type = lib.types.str;
+        default = "camera2";
+        description = "Name of the second camera";
+      };
+
+      streamUrl = lib.mkOption {
+        type = lib.types.str;
+        example = "rtsp://user:pass@192.168.1.101:554/stream1";
+        description = "RTSP stream URL for the second camera";
+      };
+
+      detectResolution = lib.mkOption {
+        type = lib.types.attrs;
+        default = {
+          width = 1920;
+          height = 1080;
+        };
+        description = "Detection resolution for the second camera";
+      };
+
+      recordEnabled = lib.mkOption {
+        type = lib.types.bool;
+        default = true;
+        description = "Enable recording for the second camera";
+      };
+
+      snapshotsEnabled = lib.mkOption {
+        type = lib.types.bool;
+        default = true;
+        description = "Enable snapshots for the second camera";
+      };
+
+      motionMask = lib.mkOption {
+        type = lib.types.nullOr (lib.types.listOf lib.types.str);
+        default = null;
+        example = ["0,0,300,0,300,200,0,200"];
+        description = "Motion mask coordinates for the second camera";
+      };
     };
 
     # Detection settings
     detection = {
       enabled = lib.mkOption {
         type = lib.types.bool;
-        default = false;
+        default = true;
         description = "Enable object detection";
       };
 
@@ -138,7 +183,7 @@ in {
     snapshots = {
       enabled = lib.mkOption {
         type = lib.types.bool;
-        default = false;
+        default = true;
         description = "Enable snapshots";
       };
 
@@ -214,56 +259,32 @@ in {
   config = lib.mkMerge [
     (lib.mkIf cfg.enable {
       environment.systemPackages = with pkgs; [
-        frigate
         ffmpeg-full
+        frigate
       ];
 
-      # systemd.tmpfiles.rules = [
-      #   "d ${cfg.dataDir} 0750 frigate frigate - -"
-      #   "d ${cfg.dataDir}/recordings 0750 frigate frigate - -"
-      #   "d ${cfg.dataDir}/clips 0750 frigate frigate - -"
-      #   "d ${cfg.dataDir}/snapshots 0750 frigate frigate - -"
-      #   "d ${cfg.dataDir}/exports 0750 frigate frigate - -"
-      #   "d ${cfg.dataDir}/db 0750 frigate frigate - -"
-      # ];
+      # users.users.frigate = {
+      #   isSystemUser = true;
+      #   group = cfgServer.systemGroup;
+      #   extraGroups = ["video"];
+      # };
+
+      systemd.tmpfiles.rules = [
+        "d ${cfg.dataDir} 0750 frigate frigate - -"
+        "d ${cfg.dataDir}/recordings 0750 frigate frigate - -"
+        "d ${cfg.dataDir}/clips 0750 frigate frigate - -"
+        "d ${cfg.dataDir}/snapshots 0750 frigate frigate - -"
+        "d ${cfg.dataDir}/exports 0750 frigate frigate - -"
+        "d ${cfg.dataDir}/db 0750 frigate frigate - -"
+      ];
 
       services.frigate = {
         enable = true;
 
         hostname = "127.0.0.1";
+        # port = 5000;
 
         settings = {
-          cameras = builtins.listToAttrs (
-            builtins.filter (c: c.value.enable) (
-              builtins.map (cam: {
-                name = cam.name;
-                value = {
-                  ffmpeg.inputs = [
-                    {
-                      path = cam.streamUrl;
-                      roles = ["detect"] ++ (lib.optional cam.recordEnabled "record");
-                    }
-                  ];
-
-                  detect = {
-                    enabled = cfg.detection.enabled;
-                    width = cam.detectResolution.width;
-                    height = cam.detectResolution.height;
-                    fps = cfg.detection.fps;
-                  };
-
-                  record.enabled = cam.recordEnabled;
-                  snapshots.enabled = cam.snapshotsEnabled;
-
-                  motion = lib.mkIf (cam.motionMask != null) {
-                    mask = cam.motionMask;
-                  };
-                };
-              })
-              cfg.cameras
-            )
-          );
-
           # MQTT configuration
           mqtt = lib.mkIf cfg.mqtt.enabled {
             enabled = true;
@@ -313,6 +334,13 @@ in {
               days = cfg.recording.retainDays;
               mode = "all";
             };
+            # pre_capture = cfg.recording.events.preCapture;
+            # post_capture = cfg.recording.events.postCapture;
+            # events = {
+            #   retain = {
+            #     days = cfg.recording.events.retainDays;
+            #   };
+            # };
           };
 
           # Snapshots configuration
@@ -322,6 +350,77 @@ in {
               default = cfg.snapshots.retainDays;
             };
           };
+
+          # Cameras configuration
+          cameras = lib.mkMerge [
+            (lib.mkIf cfg.camera1.enable {
+              "${cfg.camera1.name}" = {
+                ffmpeg = {
+                  inputs = [
+                    {
+                      path = cfg.camera1.streamUrl;
+                      roles =
+                        ["detect"]
+                        ++ (lib.optional cfg.camera1.recordEnabled "record");
+                    }
+                  ];
+                };
+
+                detect = {
+                  enabled = cfg.detection.enabled;
+                  width = cfg.camera1.detectResolution.width;
+                  height = cfg.camera1.detectResolution.height;
+                  fps = cfg.detection.fps;
+                };
+
+                record = {
+                  enabled = cfg.camera1.recordEnabled;
+                };
+
+                snapshots = {
+                  enabled = cfg.camera1.snapshotsEnabled;
+                };
+
+                motion = lib.mkIf (cfg.camera1.motionMask != null) {
+                  mask = cfg.camera1.motionMask;
+                };
+              };
+            })
+
+            (lib.mkIf cfg.camera2.enable {
+              "${cfg.camera2.name}" = {
+                ffmpeg = {
+                  inputs = [
+                    {
+                      path = cfg.camera2.streamUrl;
+                      roles =
+                        ["detect"]
+                        ++ (lib.optional cfg.camera2.recordEnabled "record");
+                    }
+                  ];
+                };
+
+                detect = {
+                  enabled = cfg.detection.enabled;
+                  width = cfg.camera2.detectResolution.width;
+                  height = cfg.camera2.detectResolution.height;
+                  fps = cfg.detection.fps;
+                };
+
+                record = {
+                  enabled = cfg.camera2.recordEnabled;
+                };
+
+                snapshots = {
+                  enabled = cfg.camera2.snapshotsEnabled;
+                };
+
+                motion = lib.mkIf (cfg.camera2.motionMask != null) {
+                  mask = cfg.camera2.motionMask;
+                };
+              };
+            })
+          ];
 
           # UI configuration
           ui = {
@@ -335,16 +434,20 @@ in {
           };
 
           # Go2RTC configuration for WebRTC streaming
-          go2rtc.streams = builtins.listToAttrs (
-            builtins.filter (c: c.value != null) (
-              builtins.map (cam:
-                lib.mkIf cam.enable {
-                  name = cam.name;
-                  value = [cam.streamUrl];
-                })
-              cfg.cameras
-            )
-          );
+          go2rtc = {
+            streams = lib.mkMerge [
+              (lib.mkIf cfg.camera1.enable {
+                "${cfg.camera1.name}" = [
+                  cfg.camera1.streamUrl
+                ];
+              })
+              (lib.mkIf cfg.camera2.enable {
+                "${cfg.camera2.name}" = [
+                  cfg.camera2.streamUrl
+                ];
+              })
+            ];
+          };
 
           # Birdseye view configuration
           birdseye = {
@@ -371,6 +474,8 @@ in {
         wants = ["network-online.target"];
 
         serviceConfig = {
+          # User = "frigate";
+          # Group = cfgServer.systemGroup;
           Restart = "on-failure";
           RestartSec = "10s";
 
