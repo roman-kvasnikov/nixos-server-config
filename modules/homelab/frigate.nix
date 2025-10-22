@@ -243,7 +243,7 @@ in {
       };
       category = lib.mkOption {
         type = lib.types.str;
-        default = "Security";
+        default = "Services";
       };
       widget = lib.mkOption {
         type = lib.types.attrs;
