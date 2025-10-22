@@ -130,7 +130,7 @@
             enabled = true;
 
             fps = 5;
-            objects = ["person" "car" "cat" "dog" "bicycle"];
+            objects = ["person"];
 
             # Optional: Enable Coral TPU for better performance
             # coralDevice = "usb";  # or "pci" for M.2 Coral

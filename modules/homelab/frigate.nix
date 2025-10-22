@@ -18,7 +18,7 @@ in {
       default = "frigate.${cfgServer.domain}";
     };
 
-    dataDir = lib.mkOption {
+    homeDir = lib.mkOption {
       type = lib.types.str;
       description = "Directory for Frigate data and recordings";
       default = "/var/lib/frigate";
@@ -219,12 +219,12 @@ in {
       ];
 
       # systemd.tmpfiles.rules = [
-      #   "d ${cfg.dataDir} 0750 frigate frigate - -"
-      #   "d ${cfg.dataDir}/recordings 0750 frigate frigate - -"
-      #   "d ${cfg.dataDir}/clips 0750 frigate frigate - -"
-      #   "d ${cfg.dataDir}/snapshots 0750 frigate frigate - -"
-      #   "d ${cfg.dataDir}/exports 0750 frigate frigate - -"
-      #   "d ${cfg.dataDir}/db 0750 frigate frigate - -"
+      #   "d ${cfg.homeDir} 0750 frigate frigate - -"
+      #   "d ${cfg.homeDir}/recordings 0750 frigate frigate - -"
+      #   "d ${cfg.homeDir}/clips 0750 frigate frigate - -"
+      #   "d ${cfg.homeDir}/snapshots 0750 frigate frigate - -"
+      #   "d ${cfg.homeDir}/exports 0750 frigate frigate - -"
+      #   "d ${cfg.homeDir}/db 0750 frigate frigate - -"
       # ];
 
       services.frigate = {
@@ -272,7 +272,7 @@ in {
 
           # Database configuration
           database = {
-            path = "${cfg.dataDir}/db/frigate.db";
+            path = "${cfg.homeDir}/db/frigate.db";
           };
 
           # Detector configuration
@@ -322,7 +322,7 @@ in {
 
           # UI configuration
           ui = {
-            timezone = "Europe/Vienna";
+            timezone = "Europe/Moscow";
           };
 
           # Live configuration
