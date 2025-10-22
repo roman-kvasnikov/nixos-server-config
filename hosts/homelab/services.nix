@@ -110,7 +110,6 @@
         frigatectl = {
           enable = true;
 
-          # Configure first camera
           camera1 = {
             enable = true;
             name = "entrance"; # Camera name as shown in your screenshot
@@ -177,14 +176,6 @@
           #   user = "frigate";
           #   password = "mqtt_password";
           # };
-
-          # Homepage widget configuration
-          homepage = {
-            name = "Frigate NVR";
-            description = "AI-powered video surveillance";
-            icon = "frigate.svg";
-            category = "Security";
-          };
         };
       };
     };

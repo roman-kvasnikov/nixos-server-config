@@ -250,6 +250,7 @@ in {
         default = {
           type = "frigate";
           url = "https://${cfg.host}";
+          enableRecentEvents = true;
         };
       };
     };
