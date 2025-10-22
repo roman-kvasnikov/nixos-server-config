@@ -113,7 +113,7 @@
           camera1 = {
             enable = true;
             name = "entrance"; # Camera name as shown in your screenshot
-            streamUrl = "rtsp://RomanK:Um9tYW4U@192.168.1.30:554/stream1";
+            streamUrl = "rtsp://RomanK:Um9tYW4Um@192.168.1.31:554/stream1";
 
             detectResolution = {
               width = 1920;
@@ -131,7 +131,7 @@
           camera2 = {
             enable = true;
             name = "backyard"; # Camera name as shown in your screenshot
-            streamUrl = "rtsp://admin:password@192.168.1.31:554/Streaming/Channels/101";
+            streamUrl = "rtsp://admin:password@192.168.1.32:554/Streaming/Channels/101";
 
             detectResolution = {
               width = 1920;
