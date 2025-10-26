@@ -142,6 +142,8 @@ in {
     })
 
     (lib.mkIf (cfg.enable && cfgNginx.enable) {
+      networking.firewall.allowedTCPPorts = [8096]; # Jellyfin Web UI port for access from the internet
+
       services.nginx = {
         virtualHosts = {
           "${cfg.host}" = {

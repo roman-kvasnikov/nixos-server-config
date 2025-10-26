@@ -126,6 +126,13 @@ in {
 
               snapshotsEnabled = true;
             };
+            entrance = {
+              enable = true;
+
+              streamUrl = "rtsp://RomanK:Um9tYW4Um@192.168.1.30:554/stream1";
+
+              recordEnabled = true;
+            };
           };
 
           recording.enable = true;
