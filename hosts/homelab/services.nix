@@ -109,7 +109,7 @@ in {
         vaultwardenctl.enable = true;
 
         frigatectl = {
-          enable = true;
+          enable = false;
 
           cameras = {
             hall = {
