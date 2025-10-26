@@ -15,8 +15,8 @@ in {
     services = {
       acmectl.enable = true;
       nginxctl.enable = true;
-      hddfancontrolctl.enable = true;
-      xrayctl.enable = false;
+      hddfancontrolctl.enable = false;
+      xrayctl.enable = true;
 
       # Additional services
       dbus.enable = true; # Для работы с systemd
@@ -101,9 +101,7 @@ in {
           };
         };
 
-        tdarrctl = {
-          enable = true;
-        };
+        tdarrctl.enable = true;
 
         uptime-kumactl.enable = true;
         vaultwardenctl.enable = true;

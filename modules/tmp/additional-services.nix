@@ -19,7 +19,7 @@
     # PostgreSQL для Nextcloud
     postgresql = {
       enable = true;
-      ensureDatabases = [ "nextcloud" ];
+      ensureDatabases = ["nextcloud"];
       ensureUsers = [
         {
           name = "nextcloud";
@@ -46,36 +46,6 @@
       };
     };
 
-    # Nginx как reverse proxy
-    nginx = {
-      enable = true;
-      recommendedProxySettings = true;
-      recommendedTlsSettings = true;
-      recommendedOptimisation = true;
-      recommendedGzipSettings = true;
-
-      virtualHosts = {
-        "immich.local" = {
-          locations."/" = {
-            proxyPass = "http://127.0.0.1:2283";
-            proxyWebsockets = true;
-          };
-        };
-        "jellyfin.local" = {
-          locations."/" = {
-            proxyPass = "http://127.0.0.1:8096";
-            proxyWebsockets = true;
-          };
-        };
-        "grafana.local" = {
-          locations."/" = {
-            proxyPass = "http://127.0.0.1:3000";
-            proxyWebsockets = true;
-          };
-        };
-      };
-    };
-
     # Pi-hole для блокировки рекламы (альтернатива AdGuard Home)
     adguardhome = {
       enable = true;
@@ -83,14 +53,14 @@
         bind_host = "0.0.0.0";
         bind_port = 3001;
         dns = {
-          bind_hosts = [ "0.0.0.0" ];
+          bind_hosts = ["0.0.0.0"];
           port = 53;
-          upstream_dns = [ "8.8.8.8" "1.1.1.1" ];
+          upstream_dns = ["8.8.8.8" "1.1.1.1"];
         };
       };
     };
   };
 
-  networking.firewall.allowedTCPPorts = [ 80 443 8123 3001 53 ];
-  networking.firewall.allowedUDPPorts = [ 53 ];
+  networking.firewall.allowedTCPPorts = [80 443 8123 3001 53];
+  networking.firewall.allowedUDPPorts = [53];
 }
