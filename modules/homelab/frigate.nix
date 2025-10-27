@@ -247,7 +247,6 @@ in {
       #   "d ${cfg.homeDir}/db 0750 frigate frigate - -"
       # ];
 
-      # Создаём директории для логов в tmpfs
       systemd.tmpfiles.rules = [
         "d /dev/shm/logs 0755 frigate frigate - -"
         "d /dev/shm/logs/frigate 0755 frigate frigate - -"
