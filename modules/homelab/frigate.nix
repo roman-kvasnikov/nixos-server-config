@@ -35,6 +35,36 @@ in {
             description = "RTSP stream URL for the camera";
           };
 
+          onvif = lib.mkOption {
+            type = lib.types.submodule {
+              options = {
+                enable = lib.mkEnableOption "Enable ONVIF camera";
+
+                host = lib.mkOption {
+                  type = lib.types.str;
+                  default = "192.168.0.1";
+                  description = "Host of the ONVIF camera";
+                };
+                port = lib.mkOption {
+                  type = lib.types.int;
+                  default = 2020;
+                  description = "Port of the ONVIF camera";
+                };
+                user = lib.mkOption {
+                  type = lib.types.str;
+                  default = "admin";
+                  description = "User of the ONVIF camera";
+                };
+                password = lib.mkOption {
+                  type = lib.types.str;
+                  default = "admin";
+                  description = "Password of the ONVIF camera";
+                };
+              };
+            };
+            description = "Configuration of the ONVIF camera";
+          };
+
           recordEnabled = lib.mkOption {
             type = lib.types.bool;
             default = true;
@@ -231,6 +261,13 @@ in {
                       roles = ["detect"] ++ (lib.optional cfgCamera.recordEnabled "record");
                     }
                   ];
+
+                  onvif = lib.mkIf cfgCamera.onvif.enable {
+                    host = cfgCamera.onvif.host;
+                    port = cfgCamera.onvif.port;
+                    user = cfgCamera.onvif.user;
+                    password = cfgCamera.onvif.poassword;
+                  };
 
                   record.enabled = cfgCamera.recordEnabled;
 

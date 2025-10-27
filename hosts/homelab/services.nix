@@ -115,6 +115,15 @@ in {
 
               streamUrl = "rtsp://RomanK:Um9tYW4Um@192.168.1.31:554/stream1";
 
+              onvif = {
+                enable = true;
+
+                host = "192.168.1.31";
+                port = 2020;
+                user = "RomanK";
+                password = "Um9tYW4Um";
+              };
+
               recordEnabled = true;
 
               detectResolution = {
