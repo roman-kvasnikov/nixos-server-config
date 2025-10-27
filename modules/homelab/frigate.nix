@@ -343,6 +343,11 @@ in {
 
           ui = {
             timezone = config.time.timeZone;
+            # time_format = "browser";
+            # date_style = "full";
+            # time_style = "medium";
+            # strftime_fmt = "%Y/%m/%d %H:%M";
+            # unit_system = "metric";
           };
 
           live = {
