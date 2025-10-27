@@ -266,7 +266,7 @@ in {
                     host = cfgCamera.onvif.host;
                     port = cfgCamera.onvif.port;
                     user = cfgCamera.onvif.user;
-                    password = cfgCamera.onvif.poassword;
+                    password = cfgCamera.onvif.password;
                   };
 
                   record.enabled = cfgCamera.recordEnabled;
