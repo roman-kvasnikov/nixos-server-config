@@ -131,6 +131,8 @@ in {
                 height = 1440;
               };
 
+              audioEnabled = true;
+
               snapshotsEnabled = true;
             };
           };

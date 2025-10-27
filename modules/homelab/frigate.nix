@@ -52,12 +52,12 @@ in {
                 };
                 user = lib.mkOption {
                   type = lib.types.str;
-                  default = "admin";
+                  default = "null";
                   description = "User of the ONVIF camera";
                 };
                 password = lib.mkOption {
                   type = lib.types.str;
-                  default = "admin";
+                  default = "null";
                   description = "Password of the ONVIF camera";
                 };
               };
@@ -87,6 +87,12 @@ in {
               };
             };
             description = "Detection resolution for the camera";
+          };
+
+          audioEnabled = lib.mkOption {
+            type = lib.types.bool;
+            default = true;
+            description = "Enable audio";
           };
 
           snapshotsEnabled = lib.mkOption {
@@ -244,7 +250,7 @@ in {
       services.frigate = {
         enable = true;
 
-        hostname = "127.0.0.1";
+        hostname = "frigate.kvasok.xyz";
 
         vaapiDriver = "nvidia";
 
@@ -258,7 +264,7 @@ in {
                   ffmpeg.inputs = [
                     {
                       path = cfgCamera.streamUrl;
-                      roles = ["detect"] ++ (lib.optional cfgCamera.recordEnabled "record");
+                      roles = ["detect"] ++ (lib.optional cfgCamera.recordEnabled "record") ++ (lib.optional cfgCamera.audioEnabled "audio");
                     }
                   ];
 
@@ -288,6 +294,10 @@ in {
             )
             cfg.cameras
           );
+
+          database = {
+            path = "${cfg.homeDir}/frigate.db";
+          };
 
           record = {
             enabled = true;
@@ -331,10 +341,6 @@ in {
             };
           };
 
-          database = {
-            path = "${cfg.homeDir}/db/frigate.db";
-          };
-
           ui = {
             timezone = config.time.timeZone;
           };
@@ -342,10 +348,6 @@ in {
           live = {
             height = 720;
             quality = 8;
-          };
-
-          ffmpeg = {
-            hwaccel_args = "preset-rpi-64-h264";
           };
 
           go2rtc.streams = lib.filterAttrs (_: stream: stream != null) (
@@ -403,65 +405,6 @@ in {
 
     (lib.mkIf (cfg.enable && cfgAcme.enable) {
       security.acme.certs."${cfg.host}" = cfgAcme.commonCertOptions;
-    })
-
-    (lib.mkIf (cfg.enable && cfgNginx.enable) {
-      networking.firewall.allowedTCPPorts = [8971 5000];
-
-      services.nginx = {
-        virtualHosts = {
-          "${cfg.host}" = {
-            enableACME = cfgAcme.enable;
-            forceSSL = cfgAcme.enable;
-
-            locations."/" = {
-              proxyPass = "http://127.0.0.1:5000";
-              #proxyPass = "http://127.0.0.1:8971";
-              proxyWebsockets = true;
-              recommendedProxySettings = true;
-              extraConfig = ''
-                proxy_buffering off;
-                proxy_cache off;
-                proxy_read_timeout 600s;
-                proxy_send_timeout 600s;
-                send_timeout 600s;
-
-                # For large video uploads
-                client_max_body_size 5000M;
-
-                # Security headers
-                add_header X-Frame-Options "SAMEORIGIN" always;
-                add_header X-Content-Type-Options "nosniff" always;
-                add_header X-XSS-Protection "1; mode=block" always;
-              '';
-            };
-
-            # WebSocket support for live view
-            # locations."/ws" = {
-            #   proxyPass = "http://127.0.0.1:5000/ws";
-            #   # proxyPass = "http://127.0.0.1:8971/ws";
-            #   proxyWebsockets = true;
-            #   extraConfig = ''
-            #     proxy_buffering off;
-            #     proxy_cache off;
-            #     proxy_set_header Upgrade $http_upgrade;
-            #     proxy_set_header Connection "upgrade";
-            #   '';
-            # };
-
-            # API endpoint
-            # locations."/api" = {
-            #   proxyPass = "http://127.0.0.1:5000/api";
-            #   # proxyPass = "http://127.0.0.1:8971/api";
-            #   recommendedProxySettings = true;
-            #   extraConfig = ''
-            #     proxy_buffering off;
-            #     client_max_body_size 100M;
-            #   '';
-            # };
-          };
-        };
-      };
     })
   ];
 }
