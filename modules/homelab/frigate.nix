@@ -410,9 +410,11 @@ in {
             enableACME = cfgAcme.enable;
             forceSSL = cfgAcme.enable;
 
-            extraConfig = ''
-              add_header Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self'; connect-src 'self' ws: wss:; worker-src 'self' blob:; media-src 'self' blob:;" always;
-            '';
+            locations."/" = {
+              extraConfig = ''
+                add_header Content-Security-Policy $csp_header always;
+              '';
+            };
           };
         };
       };
