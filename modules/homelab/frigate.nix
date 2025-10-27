@@ -357,13 +357,24 @@ in {
             quality = 8;
           };
 
-          go2rtc.streams = lib.filterAttrs (_: stream: stream != null) (
-            lib.mapAttrs (
-              name: cfgCamera:
-                lib.mkIf cfgCamera.enable [cfgCamera.streamUrl]
-            )
-            cfg.cameras
-          );
+          go2rtc = {
+            streams = lib.filterAttrs (_: stream: stream != null) (
+              lib.mapAttrs (
+                name: cfgCamera:
+                  lib.mkIf cfgCamera.enable [
+                    cfgCamera.streamUrl
+                    # Добавьте re-encode для Chrome совместимости
+                    "ffmpeg:${cfgCamera.streamUrl}#video=h264#hardware"
+                  ]
+              )
+              cfg.cameras
+            );
+
+            # Настройки WebRTC для браузеров
+            webrtc = {
+              candidates = ["192.168.1.11:8555"]; # замените на IP вашего сервера
+            };
+          };
 
           birdseye = {
             enabled = true;
@@ -425,12 +436,6 @@ in {
           "${cfg.host}" = {
             enableACME = cfgAcme.enable;
             forceSSL = cfgAcme.enable;
-
-            locations."/" = {
-              extraConfig = ''
-                add_header Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; connect-src 'self' ws: wss:; worker-src 'self' blob:; media-src 'self' blob:;" always;
-              '';
-            };
           };
         };
       };
