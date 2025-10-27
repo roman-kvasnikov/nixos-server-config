@@ -389,7 +389,9 @@ in {
             default = "info";
           };
 
-          environment_vars = {};
+          environment_vars = {
+            FRIGATE_UNSAFE_EVAL = true;
+          };
 
           auth = {
             enabled = false;
