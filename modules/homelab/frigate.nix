@@ -394,6 +394,12 @@ in {
 
           logger = {
             default = "info";
+
+            logs = {
+              frigate = "info";
+              go2rtc = "info";
+              nginx = "warning";
+            };
           };
 
           environment_vars = {};
@@ -402,6 +408,14 @@ in {
             enabled = false;
             reset_admin_password = true;
           };
+        };
+      };
+
+      systemd.services.frigate = {
+        serviceConfig = {
+          # Перенаправляем stdout/stderr в файлы логов
+          StandardOutput = "append:/dev/shm/logs/frigate/current";
+          StandardError = "append:/dev/shm/logs/frigate/current";
         };
       };
     })
