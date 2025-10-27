@@ -61,9 +61,9 @@ in {
       ];
 
       systemd.tmpfiles.rules = [
+        "d ${cfg.initialDirectory}/.torrents 0770 ${cfgHomelab.systemUser} ${cfgHomelab.systemGroup} - -"
+        "d ${cfg.initialDirectory}/Downloads 0770 ${cfgHomelab.systemUser} ${cfgHomelab.systemGroup} - -"
         "d ${cfg.initialDirectory}/media 0755 root root - -"
-        "d ${cfg.initialDirectory}/media/.torrents 0770 ${cfgHomelab.systemUser} ${cfgHomelab.systemGroup} - -"
-        "d ${cfg.initialDirectory}/media/Downloads 0770 ${cfgHomelab.systemUser} ${cfgHomelab.systemGroup} - -"
         "d ${cfg.initialDirectory}/media/Movies 0770 ${cfgHomelab.systemUser} ${cfgHomelab.systemGroup} - -"
         "d ${cfg.initialDirectory}/media/TV\ Shows 0770 ${cfgHomelab.systemUser} ${cfgHomelab.systemGroup} - -"
         "d ${cfg.initialDirectory}/media/Cartoons 0770 ${cfgHomelab.systemUser} ${cfgHomelab.systemGroup} - -"
