@@ -238,20 +238,15 @@ in {
         ffmpeg-full
       ];
 
-      # systemd.tmpfiles.rules = [
-      #   "d ${cfg.homeDir} 0750 frigate frigate - -"
-      #   "d ${cfg.homeDir}/recordings 0750 frigate frigate - -"
-      #   "d ${cfg.homeDir}/clips 0750 frigate frigate - -"
-      #   "d ${cfg.homeDir}/snapshots 0750 frigate frigate - -"
-      #   "d ${cfg.homeDir}/exports 0750 frigate frigate - -"
-      #   "d ${cfg.homeDir}/db 0750 frigate frigate - -"
-      # ];
-
       systemd.tmpfiles.rules = [
         "d /dev/shm/logs 0755 frigate frigate - -"
         "d /dev/shm/logs/frigate 0755 frigate frigate - -"
         "d /dev/shm/logs/go2rtc 0755 frigate frigate - -"
         "d /dev/shm/logs/nginx 0755 frigate frigate - -"
+
+        "z /dev/shm/logs/frigate/current 0644 frigate frigate - -"
+        "z /dev/shm/logs/go2rtc/current 0644 frigate frigate - -"
+        "z /dev/shm/logs/nginx/current 0644 frigate frigate - -"
       ];
 
       services.frigate = {
@@ -411,13 +406,13 @@ in {
         };
       };
 
-      systemd.services.frigate = {
-        serviceConfig = {
-          # Перенаправляем stdout/stderr в файлы логов
-          StandardOutput = "append:/dev/shm/logs/frigate/current";
-          StandardError = "append:/dev/shm/logs/frigate/current";
-        };
-      };
+      # systemd.services.frigate = {
+      #   serviceConfig = {
+      #     # Перенаправляем stdout/stderr в файлы логов
+      #     StandardOutput = "append:/dev/shm/logs/frigate/current";
+      #     StandardError = "append:/dev/shm/logs/frigate/current";
+      #   };
+      # };
     })
 
     (lib.mkIf (cfg.enable && cfgAcme.enable) {
