@@ -412,7 +412,7 @@ in {
 
             locations."/" = {
               extraConfig = ''
-                add_header Content-Security-Policy $csp_header always;
+                add_header Content-Security-Policy "script-src 'self' 'unsafe-eval'; object-src 'none';" always;
               '';
             };
           };
