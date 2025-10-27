@@ -385,6 +385,11 @@ in {
           };
 
           environment_vars = {};
+
+          auth = {
+            enabled = true;
+            reset_admin_password = true;
+          };
         };
       };
     })
