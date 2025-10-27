@@ -387,7 +387,7 @@ in {
           environment_vars = {};
 
           auth = {
-            enabled = true;
+            enabled = false;
             reset_admin_password = true;
           };
         };
