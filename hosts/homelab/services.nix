@@ -118,8 +118,8 @@ in {
               recordEnabled = true;
 
               detectResolution = {
-                width = 1280;
-                height = 720;
+                width = 2560;
+                height = 1440;
               };
 
               snapshotsEnabled = true;

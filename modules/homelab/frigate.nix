@@ -329,7 +329,7 @@ in {
           };
 
           mqtt = lib.mkIf cfg.mqtt.enable {
-            enabled = false;
+            enabled = true;
 
             host = cfg.mqtt.host;
             port = cfg.mqtt.port;
