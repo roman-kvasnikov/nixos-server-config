@@ -250,7 +250,7 @@ in {
       services.frigate = {
         enable = true;
 
-        hostname = "frigate.kvasok.xyz";
+        hostname = cfg.host;
 
         vaapiDriver = "nvidia";
 
@@ -387,24 +387,21 @@ in {
           environment_vars = {};
         };
       };
-
-      systemd.services.frigate = {
-        after = ["network-online.target"];
-        wants = ["network-online.target"];
-
-        serviceConfig = {
-          Restart = "on-failure";
-          RestartSec = "10s";
-
-          # Device access for Coral TPU
-          PrivilegeEscalation = true;
-          SupplementaryGroups = ["video"];
-        };
-      };
     })
 
     (lib.mkIf (cfg.enable && cfgAcme.enable) {
       security.acme.certs."${cfg.host}" = cfgAcme.commonCertOptions;
+    })
+
+    (lib.mkIf (cfg.enable && cfgNginx.enable) {
+      services.nginx = {
+        virtualHosts = {
+          "${cfg.host}" = {
+            enableACME = cfgAcme.enable;
+            forceSSL = cfgAcme.enable;
+          };
+        };
+      };
     })
   ];
 }
