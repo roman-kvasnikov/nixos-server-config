@@ -374,8 +374,8 @@ in {
                 name: cfgCamera:
                   lib.mkIf cfgCamera.enable [
                     cfgCamera.streamUrl
-                    # Добавьте re-encode для Chrome совместимости
-                    "ffmpeg:${cfgCamera.streamUrl}#video=h264#hardware"
+
+                    "ffmpeg:${name}#video=h264#hardware"
                   ]
               )
               cfg.cameras
