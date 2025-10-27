@@ -365,6 +365,8 @@ in {
     })
 
     (lib.mkIf (cfg.enable && cfgNginx.enable) {
+      networking.firewall.allowedTCPPorts = [8971];
+
       services.nginx = {
         virtualHosts = {
           "${cfg.host}" = {
