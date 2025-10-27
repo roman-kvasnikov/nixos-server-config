@@ -372,7 +372,8 @@ in {
             forceSSL = cfgAcme.enable;
 
             locations."/" = {
-              proxyPass = "http://127.0.0.1:5000";
+              # proxyPass = "http://127.0.0.1:5000";
+              proxyPass = "http://127.0.0.1:8971";
               proxyWebsockets = true;
               recommendedProxySettings = true;
               extraConfig = ''
@@ -394,7 +395,8 @@ in {
 
             # WebSocket support for live view
             locations."/ws" = {
-              proxyPass = "http://127.0.0.1:5000/ws";
+              # proxyPass = "http://127.0.0.1:5000/ws";
+              proxyPass = "http://127.0.0.1:8971/ws";
               proxyWebsockets = true;
               extraConfig = ''
                 proxy_buffering off;
@@ -406,7 +408,8 @@ in {
 
             # API endpoint
             locations."/api" = {
-              proxyPass = "http://127.0.0.1:5000/api";
+              # proxyPass = "http://127.0.0.1:5000/api";
+              proxyPass = "http://127.0.0.1:8971/api";
               recommendedProxySettings = true;
               extraConfig = ''
                 proxy_buffering off;
