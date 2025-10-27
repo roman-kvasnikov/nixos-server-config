@@ -267,6 +267,33 @@ in {
                     {
                       path = cfgCamera.streamUrl;
                       roles = ["detect"] ++ (lib.optional cfgCamera.recordEnabled "record") ++ (lib.optional cfgCamera.audioEnabled "audio");
+                      input_args = [
+                        "-avoid_negative_ts"
+                        "make_zero"
+                        "-fflags"
+                        "+genpts+discardcorrupt"
+                        "-use_wallclock_as_timestamps"
+                        "1"
+                      ];
+
+                      # Настройки вывода для Chrome
+                      output_args = {
+                        record = [
+                          "-f"
+                          "segment"
+                          "-segment_time"
+                          "10"
+                          "-segment_format"
+                          "mp4"
+                          "-reset_timestamps"
+                          "1"
+                          "-strftime"
+                          "1"
+                          "-c"
+                          "copy"
+                          "-an"
+                        ];
+                      };
                     }
                   ];
 
