@@ -396,28 +396,28 @@ in {
             };
 
             # WebSocket support for live view
-            locations."/ws" = {
-              proxyPass = "http://127.0.0.1:5000/ws";
-              # proxyPass = "http://127.0.0.1:8971/ws";
-              proxyWebsockets = true;
-              extraConfig = ''
-                proxy_buffering off;
-                proxy_cache off;
-                proxy_set_header Upgrade $http_upgrade;
-                proxy_set_header Connection "upgrade";
-              '';
-            };
+            # locations."/ws" = {
+            #   proxyPass = "http://127.0.0.1:5000/ws";
+            #   # proxyPass = "http://127.0.0.1:8971/ws";
+            #   proxyWebsockets = true;
+            #   extraConfig = ''
+            #     proxy_buffering off;
+            #     proxy_cache off;
+            #     proxy_set_header Upgrade $http_upgrade;
+            #     proxy_set_header Connection "upgrade";
+            #   '';
+            # };
 
             # API endpoint
-            locations."/api" = {
-              proxyPass = "http://127.0.0.1:5000/api";
-              # proxyPass = "http://127.0.0.1:8971/api";
-              recommendedProxySettings = true;
-              extraConfig = ''
-                proxy_buffering off;
-                client_max_body_size 100M;
-              '';
-            };
+            # locations."/api" = {
+            #   proxyPass = "http://127.0.0.1:5000/api";
+            #   # proxyPass = "http://127.0.0.1:8971/api";
+            #   recommendedProxySettings = true;
+            #   extraConfig = ''
+            #     proxy_buffering off;
+            #     client_max_body_size 100M;
+            #   '';
+            # };
           };
         };
       };
