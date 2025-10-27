@@ -412,7 +412,7 @@ in {
 
             locations."/" = {
               extraConfig = ''
-                add_header Content-Security-Policy "script-src 'self' 'unsafe-eval'; object-src 'none';" always;
+                add_header Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; connect-src 'self' ws: wss:; worker-src 'self' blob:; media-src 'self' blob:;" always;
               '';
             };
           };
