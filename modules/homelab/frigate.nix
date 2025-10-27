@@ -410,18 +410,18 @@ in {
             enableACME = cfgAcme.enable;
             forceSSL = cfgAcme.enable;
 
-            locations."/" = {
-              proxyPass = "http://127.0.0.1:5000";
-              extraConfig = ''
-                # Передаём IP и Host
-                proxy_set_header Host $host;
-                proxy_set_header X-Real-IP $remote_addr;
-                proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            # locations."/" = {
+            #   proxyPass = "http://127.0.0.1:5000";
+            #   extraConfig = ''
+            #     # Передаём IP и Host
+            #     proxy_set_header Host $host;
+            #     proxy_set_header X-Real-IP $remote_addr;
+            #     proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
 
-                # Разрешаем Frigate использовать eval (для логов)
-                add_header Content-Security-Policy "script-src 'self' 'unsafe-eval'; object-src 'none';";
-              '';
-            };
+            #     # Разрешаем Frigate использовать eval (для логов)
+            #     add_header Content-Security-Policy "script-src 'self' 'unsafe-eval'; object-src 'none';";
+            #   '';
+            # };
           };
         };
       };
