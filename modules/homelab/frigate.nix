@@ -389,8 +389,7 @@ in {
             default = "info";
           };
 
-          environment_vars = {
-          };
+          environment_vars = {};
 
           auth = {
             enabled = false;
