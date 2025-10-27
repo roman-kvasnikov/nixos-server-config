@@ -307,6 +307,10 @@ in {
             quality = 8;
           };
 
+          ffmpeg = {
+            hwaccel_args = "preset-rpi-64-h264";
+          };
+
           go2rtc.streams = lib.filterAttrs (_: stream: stream != null) (
             lib.mapAttrs (
               name: cfgCamera:
