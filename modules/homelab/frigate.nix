@@ -216,6 +216,10 @@ in {
 
         hostname = "127.0.0.1";
 
+        vaapiDriver = "nvidia";
+
+        checkConfig = true;
+
         settings = {
           cameras = lib.filterAttrs (_: cam: cam != null) (
             lib.mapAttrs (
@@ -325,7 +329,7 @@ in {
           };
 
           mqtt = lib.mkIf cfg.mqtt.enable {
-            enabled = true;
+            enabled = false;
 
             host = cfg.mqtt.host;
             port = cfg.mqtt.port;
