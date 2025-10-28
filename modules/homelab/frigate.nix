@@ -361,14 +361,14 @@ in {
             # "off"	Полностью отключает Birdseye
           };
 
-          mqtt = lib.mkIf cfg.mqtt.enable {
-            enabled = true;
+          # mqtt = lib.mkIf cfg.mqtt.enable {
+          #   enabled = true;
 
-            host = cfg.mqtt.host;
-            port = cfg.mqtt.port;
-            user = cfg.mqtt.user;
-            password = cfg.mqtt.password;
-          };
+          #   host = cfg.mqtt.host;
+          #   port = cfg.mqtt.port;
+          #   user = cfg.mqtt.user;
+          #   password = cfg.mqtt.password;
+          # };
 
           logger = {
             default = "info";
