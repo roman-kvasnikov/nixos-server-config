@@ -175,34 +175,6 @@ in {
       };
     };
 
-    mqtt = {
-      enable = lib.mkEnableOption "Enable MQTT integration";
-
-      host = lib.mkOption {
-        type = lib.types.str;
-        default = "127.0.0.1";
-        description = "MQTT broker host";
-      };
-
-      port = lib.mkOption {
-        type = lib.types.int;
-        default = 1883;
-        description = "MQTT broker port";
-      };
-
-      user = lib.mkOption {
-        type = lib.types.nullOr lib.types.str;
-        default = null;
-        description = "MQTT username";
-      };
-
-      password = lib.mkOption {
-        type = lib.types.nullOr lib.types.str;
-        default = null;
-        description = "MQTT password";
-      };
-    };
-
     homepage = {
       name = lib.mkOption {
         type = lib.types.str;
@@ -416,14 +388,6 @@ in {
           };
         };
       };
-
-      # systemd.services.frigate = {
-      #   serviceConfig = {
-      #     # Перенаправляем stdout/stderr в файлы логов
-      #     StandardOutput = "append:/dev/shm/logs/frigate/current";
-      #     StandardError = "append:/dev/shm/logs/frigate/current";
-      #   };
-      # };
     })
 
     (lib.mkIf (cfg.enable && cfgAcme.enable) {

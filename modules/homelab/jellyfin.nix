@@ -18,10 +18,10 @@ in {
       default = "jellyfin.${cfgHomelab.domain}";
     };
 
-    initialDirectory = lib.mkOption {
+    mediaDir = lib.mkOption {
       type = lib.types.path;
-      description = "Initial directory for Jellyfin";
-      default = "/";
+      description = "Media directory for Jellyfin";
+      default = "/mnt/media";
     };
 
     homepage = {
@@ -87,10 +87,10 @@ in {
       ];
 
       systemd.tmpfiles.rules = [
-        "d ${cfg.initialDirectory}/media 0755 root root - -"
-        "d ${cfg.initialDirectory}/media/Movies 0770 ${cfgHomelab.systemUser} ${cfgHomelab.systemGroup} - -"
-        "d ${cfg.initialDirectory}/media/TV\ Shows 0770 ${cfgHomelab.systemUser} ${cfgHomelab.systemGroup} - -"
-        "d ${cfg.initialDirectory}/media/Cartoons 0770 ${cfgHomelab.systemUser} ${cfgHomelab.systemGroup} - -"
+        "d ${cfg.mediaDir} 0755 root root - -"
+        "d ${cfg.mediaDir}/Movies 0770 ${cfgHomelab.systemUser} ${cfgHomelab.systemGroup} - -"
+        "d ${cfg.mediaDir}/TV\ Shows 0770 ${cfgHomelab.systemUser} ${cfgHomelab.systemGroup} - -"
+        "d ${cfg.mediaDir}/Cartoons 0770 ${cfgHomelab.systemUser} ${cfgHomelab.systemGroup} - -"
       ];
 
       users.users.jellyfin = {
@@ -142,8 +142,6 @@ in {
     })
 
     (lib.mkIf (cfg.enable && cfgNginx.enable) {
-      networking.firewall.allowedTCPPorts = [8096]; # Jellyfin Web UI port for access from the internet
-
       services.nginx = {
         virtualHosts = {
           "${cfg.host}" = {

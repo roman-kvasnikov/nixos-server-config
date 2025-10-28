@@ -29,12 +29,7 @@ in {
         filebrowserctl.enable = true;
         homepagectl.enable = true;
         immichctl.enable = true;
-
-        jellyfinctl = {
-          enable = true;
-
-          initialDirectory = "/mnt";
-        };
+        jellyfinctl.enable = true;
 
         nextcloudctl = {
           enable = true;
@@ -48,16 +43,10 @@ in {
           # };
         };
 
-        qbittorrentctl = {
-          enable = true;
-
-          initialDirectory = "/mnt";
-        };
+        qbittorrentctl.enable = true;
 
         sambactl = {
           enable = true;
-
-          initialDirectory = "/mnt";
 
           users = {
             romank = {
@@ -143,6 +132,7 @@ in {
         };
 
         homeassistantctl.enable = true;
+        vmctl.enable = true;
       };
     };
   };

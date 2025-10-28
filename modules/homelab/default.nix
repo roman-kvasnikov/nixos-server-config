@@ -1,6 +1,6 @@
 {
   imports = [
-    ./cockpit.nix
+    # ./cockpit.nix
     ./filebrowser.nix
     ./frigate.nix
     ./home-assistant.nix
@@ -13,5 +13,6 @@
     ./tdarr.nix
     ./uptime-kuma.nix
     ./vaultwarden.nix
+    ./vm.nix
   ];
 }

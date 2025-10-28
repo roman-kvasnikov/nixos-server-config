@@ -10,10 +10,10 @@ in {
   options.homelab.services.sambactl = {
     enable = lib.mkEnableOption "Enable Samba (SMB/CIFS) file sharing";
 
-    initialDirectory = lib.mkOption {
+    sharesDir = lib.mkOption {
       type = lib.types.path;
-      description = "Initial directory for Samba sharing paths";
-      default = "/";
+      description = "Directory for Samba sharing paths";
+      default = "/mnt/shares";
     };
 
     users = lib.mkOption {
@@ -142,7 +142,7 @@ in {
 
     # Создаем директории для шар с правильными правами
     systemd.tmpfiles.rules =
-      ["d ${cfg.initialDirectory}/shares 0755 root root - -"]
+      ["d ${cfg.sharesDir} 0755 root root - -"]
       ++ lib.flatten (
         lib.mapAttrsToList (
           name: share: let
@@ -159,7 +159,7 @@ in {
               if share.public
               then "0775"
               else "0770";
-          in "d ${cfg.initialDirectory}/shares/${share.directory} ${mode} ${user} ${group} - -"
+          in "d ${cfg.sharesDir}/${share.directory} ${mode} ${user} ${group} - -"
         )
         cfg.shares
       );
@@ -276,7 +276,7 @@ in {
           lib.mapAttrs (
             name: share: let
               baseConfig = {
-                "path" = "${cfg.initialDirectory}/shares/${share.directory}";
+                "path" = "${cfg.sharesDir}/${share.directory}";
                 "browseable" =
                   if share.browseable
                   then "yes"

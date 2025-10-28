@@ -18,10 +18,16 @@ in {
       default = "torrent.${cfgHomelab.domain}";
     };
 
-    initialDirectory = lib.mkOption {
+    torrentsDir = lib.mkOption {
       type = lib.types.path;
-      description = "Initial directory for qBittorrent";
-      default = "/";
+      description = "Torrents directory for qBittorrent";
+      default = "/mnt/.torrents";
+    };
+
+    downloadsDir = lib.mkOption {
+      type = lib.types.path;
+      description = "Downloads directory for qBittorrent";
+      default = "/mnt/Downloads";
     };
 
     homepage = {
@@ -61,12 +67,8 @@ in {
       ];
 
       systemd.tmpfiles.rules = [
-        "d ${cfg.initialDirectory}/.torrents 0770 ${cfgHomelab.systemUser} ${cfgHomelab.systemGroup} - -"
-        "d ${cfg.initialDirectory}/Downloads 0770 ${cfgHomelab.systemUser} ${cfgHomelab.systemGroup} - -"
-        "d ${cfg.initialDirectory}/media 0755 root root - -"
-        "d ${cfg.initialDirectory}/media/Movies 0770 ${cfgHomelab.systemUser} ${cfgHomelab.systemGroup} - -"
-        "d ${cfg.initialDirectory}/media/TV\ Shows 0770 ${cfgHomelab.systemUser} ${cfgHomelab.systemGroup} - -"
-        "d ${cfg.initialDirectory}/media/Cartoons 0770 ${cfgHomelab.systemUser} ${cfgHomelab.systemGroup} - -"
+        "d ${cfg.torrentsDir} 0770 ${cfgHomelab.systemUser} ${cfgHomelab.systemGroup} - -"
+        "d ${cfg.downloadsDir} 0770 ${cfgHomelab.systemUser} ${cfgHomelab.systemGroup} - -"
       ];
 
       services.qbittorrent = {

@@ -50,6 +50,8 @@ in {
       services.home-assistant = {
         enable = true;
 
+        openFirewall = !cfgNginx.enable;
+
         extraComponents = [
           # Components required to complete the onboarding
           "esphome"
