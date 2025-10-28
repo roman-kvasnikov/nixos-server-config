@@ -57,7 +57,7 @@ in {
         };
       };
 
-      users.users.${cfgHomelab.user}.extraGroups = ["libvirtd" "kvm"];
+      users.users.${cfgHomelab.adminUser}.extraGroups = ["libvirtd" "kvm"];
 
       services.cockpit = {
         enable = true;
