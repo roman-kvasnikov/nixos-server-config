@@ -71,7 +71,7 @@ in {
         settings = {
           WebService = {
             AllowUnencrypted = true;
-            Origins = cfg.host;
+            Origins = lib.mkForce cfg.host;
           };
         };
       };
