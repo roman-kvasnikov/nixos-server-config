@@ -8,6 +8,7 @@
     ./immich.nix
     ./jellyfin.nix
     ./nextcloud.nix
+    ./paperless.nix
     ./qbittorrent.nix
     ./samba.nix
     ./tdarr.nix

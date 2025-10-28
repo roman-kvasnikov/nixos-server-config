@@ -132,6 +132,7 @@ in {
         };
 
         homeassistantctl.enable = true;
+        paperlessctl.enable = true;
         vmctl.enable = true;
       };
     };
