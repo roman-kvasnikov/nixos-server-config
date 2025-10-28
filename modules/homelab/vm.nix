@@ -61,8 +61,21 @@ in {
 
       services.cockpit = {
         enable = true;
-        # если нужно, можно указать порт:
-        # port = 9090;
+
+        allowed-origins = [
+          cfg.host
+        ];
+
+        openFirewall = !cfgNginx.enable;
+
+        settings = {
+          WebService = {
+            AllowUnencrypted = false;
+            # Origins = [
+            #   cfg.host
+            # ];
+          };
+        };
       };
 
       networking.firewall.allowedTCPPorts = lib.mkIf (!cfgNginx.enable) [9090];
