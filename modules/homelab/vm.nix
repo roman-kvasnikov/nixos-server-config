@@ -44,6 +44,8 @@ in {
       environment.systemPackages = with pkgs; [
         virt-manager
         qemu_kvm
+        libvirt
+        cockpit
       ];
 
       # Включаем libvirt + KVM
@@ -52,20 +54,17 @@ in {
         qemu = {
           package = pkgs.qemu_kvm;
           runAsRoot = false;
-          swtpm.enable = true; # TPM для Windows VM
         };
       };
 
       users.users.${cfgHomelab.user}.extraGroups = ["libvirtd" "kvm"];
 
-      # Cockpit — веб-интерфейс
       services.cockpit = {
         enable = true;
-        # Включаем модуль управления виртуалками
-        packages = with pkgs.cockpitPackages; [machines];
+        # если нужно, можно указать порт:
+        # port = 9090;
       };
 
-      # Если nginx не включён, открываем порт cockpit
       networking.firewall.allowedTCPPorts = lib.mkIf (!cfgNginx.enable) [9090];
     })
 
