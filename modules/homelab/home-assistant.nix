@@ -75,8 +75,6 @@ in {
           "${cfg.host}" = {
             enableACME = cfgAcme.enable;
             forceSSL = cfgAcme.enable;
-            onlySSL = true;
-
             locations."/" = {
               proxyPass = "http://127.0.0.1:8123";
               proxyWebsockets = true;
