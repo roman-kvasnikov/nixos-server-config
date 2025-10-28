@@ -72,6 +72,7 @@ in {
           WebService = {
             AllowUnencrypted = true;
             Origins = lib.mkForce cfg.host;
+            ProtocolHeader = "X-Forwarded-Proto";
           };
         };
       };
