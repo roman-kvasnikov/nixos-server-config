@@ -62,7 +62,7 @@ in {
       services.cockpit = {
         enable = true;
         # Включаем модуль управления виртуалками
-        packages = with pkgs; [cockpit-machines];
+        packages = with pkgs.cockpitPackages; [machines];
       };
 
       # Если nginx не включён, открываем порт cockpit
