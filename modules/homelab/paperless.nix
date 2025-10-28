@@ -86,6 +86,10 @@ in {
 
         settings = {
           PAPERLESS_URL = "https://${cfg.host}";
+          PAPERLESS_CONSUMER_IGNORE_PATTERN = [
+            ".DS_STORE/*"
+            "desktop.ini"
+          ];
           PAPERLESS_OCR_LANGUAGE = "rus+eng";
           PAPERLESS_OCR_USER_ARGS = {
             optimize = 1;
