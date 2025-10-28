@@ -267,17 +267,6 @@ in {
                     {
                       path = cfgCamera.streamUrl;
                       roles = ["detect"] ++ (lib.optional cfgCamera.recordEnabled "record") ++ (lib.optional cfgCamera.audioEnabled "audio");
-
-                      hwaccel_args = "preset-vaapi";
-
-                      input_args = [
-                        "-avoid_negative_ts"
-                        "make_zero"
-                        "-fflags"
-                        "+genpts+discardcorrupt"
-                        "-use_wallclock_as_timestamps"
-                        "1"
-                      ];
                     }
                   ];
 

@@ -141,6 +141,8 @@ in {
           detection.enable = true;
           snapshots.enable = true;
         };
+
+        homeassistantctl.enable = true;
       };
     };
   };

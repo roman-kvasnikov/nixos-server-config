@@ -3,6 +3,7 @@
     ./cockpit.nix
     ./filebrowser.nix
     ./frigate.nix
+    ./home-assistant.nix
     ./homepage.nix
     ./immich.nix
     ./jellyfin.nix
