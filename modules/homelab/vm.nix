@@ -62,9 +62,9 @@ in {
       services.cockpit = {
         enable = true;
 
-        allowed-origins = [
-          cfg.host
-        ];
+        # allowed-origins = [
+        #   cfg.host
+        # ];
 
         openFirewall = !cfgNginx.enable;
 
