@@ -37,12 +37,6 @@ in {
       interfaces.br0.useDHCP = true; # получаем IP для самого хоста
     };
 
-    virtualisation.libvirtd.networks.br0-net = {
-      forwardMode = "bridge";
-      bridgeName = "br0";
-      autostart = true;
-    };
-
     users.users.${cfgHomelab.adminUser}.extraGroups = ["libvirtd" "kvm"];
   };
 }
