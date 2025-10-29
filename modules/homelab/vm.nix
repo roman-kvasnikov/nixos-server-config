@@ -16,7 +16,7 @@ in {
       virt-manager
       qemu_kvm
       libvirt
-      # virsh
+      virt-top
     ];
 
     virtualisation.libvirtd = {
