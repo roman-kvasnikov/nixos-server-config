@@ -67,7 +67,7 @@ in {
       services.paperless = {
         enable = true;
 
-        user = cfg.user;
+        # user = cfg.user;
         passwordFile = cfg.passwordFile;
 
         mediaDir = cfg.mediaDir;
