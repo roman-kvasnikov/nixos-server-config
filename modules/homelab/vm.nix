@@ -37,7 +37,7 @@ in {
       interfaces.br0.useDHCP = true; # получаем IP для самого хоста
     };
 
-    virtualisation.libvirt.networks.br0-net = {
+    virtualisation.libvirtd.networks.br0-net = {
       forwardMode = "bridge";
       bridgeName = "br0";
       autostart = true;
