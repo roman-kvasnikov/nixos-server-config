@@ -6,95 +6,28 @@
 }: let
   cfg = config.homelab.services.vmctl;
   cfgHomelab = config.homelab;
-  cfgAcme = config.services.acmectl;
-  cfgNginx = config.services.nginxctl;
 in {
   options.homelab.services.vmctl = {
-    enable = lib.mkEnableOption "Enable virtual machine management (libvirt + cockpit)";
-
-    host = lib.mkOption {
-      type = lib.types.str;
-      description = "Hostname for VM Web UI";
-      default = "cockpit.${cfgHomelab.domain}";
-    };
-
-    homepage = {
-      name = lib.mkOption {
-        type = lib.types.str;
-        default = "VM Manager";
-      };
-      description = lib.mkOption {
-        type = lib.types.str;
-        default = "Virtual machine manager with web UI";
-      };
-      icon = lib.mkOption {
-        type = lib.types.str;
-        default = "virtual-machine.svg";
-      };
-      category = lib.mkOption {
-        type = lib.types.str;
-        default = "Infrastructure";
-      };
-    };
+    enable = lib.mkEnableOption "Enable virtual machine management";
   };
 
-  config = lib.mkMerge [
-    (lib.mkIf cfg.enable {
-      # Основные пакеты
-      environment.systemPackages = with pkgs; [
-        virt-manager
-        qemu_kvm
-        libvirt
-        cockpit
-      ];
+  config = lib.mkIf cfg.enable {
+    environment.systemPackages = with pkgs; [
+      virt-manager
+      qemu_kvm
+      libvirt
+      virsh
+    ];
 
-      # Включаем libvirt + KVM
-      virtualisation.libvirtd = {
-        enable = true;
-        qemu = {
-          package = pkgs.qemu_kvm;
-          runAsRoot = false;
-        };
+    virtualisation.libvirtd = {
+      enable = true;
+
+      qemu = {
+        package = pkgs.qemu_kvm;
+        runAsRoot = false;
       };
+    };
 
-      users.users.${cfgHomelab.adminUser}.extraGroups = ["libvirtd" "kvm"];
-
-      services.cockpit = {
-        enable = true;
-
-        # allowed-origins = [
-        #   cfg.host
-        # ];
-
-        openFirewall = !cfgNginx.enable;
-
-        settings = {
-          WebService = {
-            AllowUnencrypted = true;
-            Origins = lib.mkForce cfg.host;
-            ProtocolHeader = "X-Forwarded-Proto";
-          };
-        };
-      };
-
-      networking.firewall.allowedTCPPorts = lib.mkIf (!cfgNginx.enable) [9090];
-    })
-
-    (lib.mkIf (cfg.enable && cfgAcme.enable) {
-      security.acme.certs."${cfg.host}" = cfgAcme.commonCertOptions;
-    })
-
-    # Настройка nginx + acme для веб-доступа
-    (lib.mkIf (cfg.enable && cfgNginx.enable) {
-      services.nginx.virtualHosts."${cfg.host}" = {
-        enableACME = cfgAcme.enable;
-        forceSSL = cfgAcme.enable;
-        locations."/" = {
-          proxyPass = "http://127.0.0.1:9090";
-          proxyWebsockets = true;
-          recommendedProxySettings = true;
-        };
-      };
-    })
-  ];
+    users.users.${cfgHomelab.adminUser}.extraGroups = ["libvirtd" "kvm"];
+  };
 }

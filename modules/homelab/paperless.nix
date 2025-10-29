@@ -21,7 +21,7 @@ in {
     user = lib.mkOption {
       type = lib.types.str;
       description = "User for Paperless";
-      default = cfgHomelab.adminUser;
+      default = "paperless";
     };
 
     passwordFile = lib.mkOption {
@@ -40,16 +40,6 @@ in {
       type = lib.types.path;
       description = "Consumption directory for Paperless";
       default = "/mnt/Documents/Paperless/Import";
-    };
-
-    monitoredServices = lib.mkOption {
-      type = lib.types.listOf lib.types.str;
-      default = [
-        "paperless-consumer"
-        "paperless-scheduler"
-        "paperless-task-queue"
-        "paperless-web"
-      ];
     };
 
     homepage = {
@@ -84,6 +74,9 @@ in {
         consumptionDir = cfg.consumptionDir;
         consumptionDirIsPublic = true;
 
+        configureNginx = cfgNginx.enable;
+        domain = cfg.host;
+
         settings = {
           PAPERLESS_URL = "https://${cfg.host}";
           PAPERLESS_CONSUMER_IGNORE_PATTERN = [
@@ -108,18 +101,6 @@ in {
         virtualHosts = {
           "${cfg.host}" = {
             enableACME = cfgAcme.enable;
-            forceSSL = cfgAcme.enable;
-            locations."/" = {
-              proxyPass = "http://127.0.0.1:${toString config.services.paperless.port}";
-              proxyWebsockets = true;
-              recommendedProxySettings = true;
-              extraConfig = ''
-                client_max_body_size 50000M;
-                proxy_read_timeout   600s;
-                proxy_send_timeout   600s;
-                send_timeout         600s;
-              '';
-            };
           };
         };
       };
