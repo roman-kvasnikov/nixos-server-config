@@ -38,13 +38,13 @@ in {
           title = "Kvasnikov's Home Lab";
 
           layout = [
-            {
-              Glances = {
-                header = false;
-                style = "row";
-                columns = 6;
-              };
-            }
+            # {
+            #   Glances = {
+            #     header = false;
+            #     style = "row";
+            #     columns = 6;
+            #   };
+            # }
             {
               System = {
                 header = true;
