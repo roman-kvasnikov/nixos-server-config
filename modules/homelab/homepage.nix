@@ -46,6 +46,12 @@ in {
             #   };
             # }
             {
+              Clouds = {
+                header = true;
+                style = "column";
+              };
+            }
+            {
               System = {
                 header = true;
                 style = "column";
