@@ -98,6 +98,7 @@ in {
 
         services = let
           homepageCategories = [
+            "Clouds"
             "System"
             "Media"
             "Services"
