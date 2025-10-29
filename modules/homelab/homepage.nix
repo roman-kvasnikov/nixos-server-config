@@ -136,83 +136,83 @@ in {
               in {
                 "${config.homelab.services.${x}.homepage.name}" = base // widgetOptions;
               });
-          })
-          ++ [
-            {
-              Glances = let
-                commonOptions = {
-                  type = "glances";
-                  url = "http://localhost:${toString config.services.glances.port}";
-                  version = 4;
-                };
-              in [
-                {
-                  CPU = {
-                    widget =
-                      commonOptions
-                      // {
-                        metric = "cpu";
-                        chart = true;
-                        diskUnits = "bytes";
-                        refreshInterval = 5000;
-                        pointsLimit = 15;
-                      };
-                  };
-                }
-                {
-                  "CPU Temp" = {
-                    widget =
-                      commonOptions
-                      // {
-                        metric = "sensor:Core 0";
-                        chart = true;
-                      };
-                  };
-                }
+          });
+        # ++ [
+        #   {
+        #     Glances = let
+        #       commonOptions = {
+        #         type = "glances";
+        #         url = "http://localhost:${toString config.services.glances.port}";
+        #         version = 4;
+        #       };
+        #     in [
+        #       {
+        #         CPU = {
+        #           widget =
+        #             commonOptions
+        #             // {
+        #               metric = "cpu";
+        #               chart = true;
+        #               diskUnits = "bytes";
+        #               refreshInterval = 5000;
+        #               pointsLimit = 15;
+        #             };
+        #         };
+        #       }
+        #       {
+        #         "CPU Temp" = {
+        #           widget =
+        #             commonOptions
+        #             // {
+        #               metric = "sensor:Core 0";
+        #               chart = true;
+        #             };
+        #         };
+        #       }
 
-                {
-                  Memory = {
-                    widget =
-                      commonOptions
-                      // {
-                        metric = "memory";
-                        chart = true;
-                      };
-                  };
-                }
-                {
-                  Disk = {
-                    widget =
-                      commonOptions
-                      // {
-                        metric = "fs:/";
-                        chart = true;
-                      };
-                  };
-                }
-                {
-                  "Network Usage" = {
-                    widget =
-                      commonOptions
-                      // {
-                        metric = "network:enp0s20f0u3";
-                        chart = true;
-                      };
-                  };
-                }
-                {
-                  Processes = {
-                    widget =
-                      commonOptions
-                      // {
-                        metric = "process";
-                        chart = true;
-                      };
-                  };
-                }
-              ];
-            }
-          ];
+        #       {
+        #         Memory = {
+        #           widget =
+        #             commonOptions
+        #             // {
+        #               metric = "memory";
+        #               chart = true;
+        #             };
+        #         };
+        #       }
+        #       {
+        #         Disk = {
+        #           widget =
+        #             commonOptions
+        #             // {
+        #               metric = "fs:/";
+        #               chart = true;
+        #             };
+        #         };
+        #       }
+        #       {
+        #         "Network Usage" = {
+        #           widget =
+        #             commonOptions
+        #             // {
+        #               metric = "network:enp0s20f0u3";
+        #               chart = true;
+        #             };
+        #         };
+        #       }
+        #       {
+        #         Processes = {
+        #           widget =
+        #             commonOptions
+        #             // {
+        #               metric = "process";
+        #               chart = true;
+        #             };
+        #         };
+        #       }
+        #     ];
+        #   }
+        # ];
 
         # https://gethomepage.dev/widgets/
         widgets = [
