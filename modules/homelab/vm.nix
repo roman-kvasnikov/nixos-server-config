@@ -28,6 +28,21 @@ in {
       };
     };
 
+    networking = {
+      # выключаем получение IP на физическом интерфейсе напрямую
+      interfaces.wlp3s0.useDHCP = false;
+
+      # создаём мост
+      bridges.br0.interfaces = ["wlp3s0"];
+      interfaces.br0.useDHCP = true; # получаем IP для самого хоста
+    };
+
+    virtualisation.libvirt.networks.br0-net = {
+      forwardMode = "bridge";
+      bridgeName = "br0";
+      autostart = true;
+    };
+
     users.users.${cfgHomelab.adminUser}.extraGroups = ["libvirtd" "kvm"];
   };
 }
