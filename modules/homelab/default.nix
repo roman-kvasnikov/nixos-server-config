@@ -7,6 +7,7 @@
     ./homepage.nix
     ./immich.nix
     ./jellyfin.nix
+    ./microbin.nix
     ./nextcloud.nix
     ./paperless.nix
     ./qbittorrent.nix

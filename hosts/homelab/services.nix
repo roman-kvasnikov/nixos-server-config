@@ -131,6 +131,7 @@ in {
           snapshots.enable = true;
         };
 
+        microbinctl.enable = true;
         homeassistantctl.enable = true;
         paperlessctl.enable = true;
         vmctl.enable = true;
