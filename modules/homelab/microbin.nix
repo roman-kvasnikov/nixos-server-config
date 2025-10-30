@@ -37,7 +37,7 @@ in {
       };
       description = lib.mkOption {
         type = lib.types.str;
-        default = "A minimal pastebin.";
+        default = "Secure text and file sharing web application";
       };
       icon = lib.mkOption {
         type = lib.types.str;

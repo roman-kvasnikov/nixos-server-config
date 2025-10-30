@@ -1,7 +1,7 @@
 {
-  zramSwap = {
-    enable = true;
+  # zramSwap = {
+  #   enable = true;
 
-    memoryPercent = 15;
-  };
+  #   memoryPercent = 15;
+  # };
 }
