@@ -21,7 +21,7 @@ in {
     rootDir = lib.mkOption {
       type = lib.types.path;
       description = "The directory where FileBrowser stores files.";
-      default = "/data";
+      default = "/data/filebrowser";
     };
 
     homepage = {
