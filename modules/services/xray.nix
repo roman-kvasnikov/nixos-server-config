@@ -11,13 +11,13 @@ in {
 
     configFile = lib.mkOption {
       type = lib.types.path;
-      description = "Config file for Xray";
+      description = "Path to the Xray config file";
       default = "/etc/xray/config.json";
     };
 
     proxyEnvFishFile = lib.mkOption {
       type = lib.types.path;
-      description = "Proxy environment file for Fish Shell";
+      description = "Path to the Fish proxy environment file";
       default = "/etc/xray/proxy-env.fish";
     };
   };
@@ -28,12 +28,8 @@ in {
         xray
       ];
 
-      systemd.tmpfiles.rules = [
-        "d /etc/xray 0755 root root - -"
-      ];
-
       environment.etc = {
-        "${builtins.toString cfg.configFile}".source = ../../secrets/xray/config.json;
+        "${lib.makeRelativeTo /etc cfg.configFile}".source = ../../secrets/xray/config.json;
       };
 
       services.xray = {
@@ -45,7 +41,7 @@ in {
 
     (lib.mkIf (cfg.enable && config.programs.fish.enable) {
       environment.etc = {
-        "${builtins.toString cfg.proxyEnvFishFile}".text = ''
+        "${lib.makeRelativeTo /etc cfg.proxyEnvFishFile}".text = ''
           # Xray proxy environment variables (managed by xrayctl)
           set -x http_proxy http://127.0.0.1:10809
           set -x https_proxy http://127.0.0.1:10809
