@@ -41,7 +41,7 @@ in {
 
     (lib.mkIf (cfg.enable && config.programs.fish.enable) {
       environment.etc = {
-        "${builtins.replaceStrings ["/etc"] [""] cfg.proxyEnvFishFile}".text = ''
+        "${builtins.replaceStrings ["/etc/"] [""] cfg.proxyEnvFishFile}".text = ''
           # Xray proxy environment variables (managed by xrayctl)
           set -x http_proxy http://127.0.0.1:10809
           set -x https_proxy http://127.0.0.1:10809
