@@ -18,12 +18,6 @@ in {
       default = "uptime-kuma.${cfgHomelab.domain}";
     };
 
-    dataDir = lib.mkOption {
-      type = lib.types.path;
-      description = "Data directory for Uptime Kuma";
-      default = "/data/uptime-kuma";
-    };
-
     homepage = {
       name = lib.mkOption {
         type = lib.types.str;
@@ -60,10 +54,6 @@ in {
 
       services.uptime-kuma = {
         enable = true;
-
-        settings = {
-          DATA_DIR = lib.mkForce cfg.dataDir;
-        };
       };
     })
 
