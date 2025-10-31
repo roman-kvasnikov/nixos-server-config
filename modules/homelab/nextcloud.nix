@@ -107,7 +107,7 @@ in {
             dbname = "nextcloud";
             dbuser = "nextcloud";
             # dbpassFile = cfg.dbPasswordFile;
-            # dbhost = "/run/postgresql";
+            dbhost = "/run/postgresql";
           };
 
           settings = {
