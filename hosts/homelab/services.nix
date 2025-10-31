@@ -117,8 +117,8 @@ in {
         #   snapshots.enable = true;
         # };
 
-        # microbinctl.enable = true;
-        # paperlessctl.enable = true;
+        microbinctl.enable = true;
+        paperlessctl.enable = true;
       };
     };
   };
