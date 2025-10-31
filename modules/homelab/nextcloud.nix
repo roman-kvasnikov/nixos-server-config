@@ -50,26 +50,6 @@ in {
       default = "/var/lib/nextcloud/data/nextcloud.log";
     };
 
-    performance = {
-      maxUploadSize = lib.mkOption {
-        type = lib.types.str;
-        description = "Maximum upload size";
-        default = "16G";
-      };
-
-      phpMemoryLimit = lib.mkOption {
-        type = lib.types.str;
-        description = "PHP memory limit";
-        default = "512M";
-      };
-
-      opcacheMemory = lib.mkOption {
-        type = lib.types.int;
-        description = "OPcache memory consumption in MB";
-        default = 128;
-      };
-    };
-
     homepage = {
       name = lib.mkOption {
         type = lib.types.str;
@@ -112,7 +92,7 @@ in {
           extraAppsEnable = true;
           autoUpdateApps.enable = true;
 
-          maxUploadSize = cfg.performance.maxUploadSize;
+          maxUploadSize = "16G";
 
           caching.redis = true;
           configureRedis = true;
@@ -128,23 +108,6 @@ in {
             dbuser = "nextcloud";
             # dbpassFile = cfg.dbPasswordFile;
             # dbhost = "/run/postgresql";
-          };
-
-          # PHP OPcache configuration
-          phpOptions = {
-            "opcache.enable" = "1";
-            "opcache.interned_strings_buffer" = "16";
-            "opcache.max_accelerated_files" = "10000";
-            "opcache.memory_consumption" = toString cfg.performance.opcacheMemory;
-            "opcache.save_comments" = "1";
-            "opcache.revalidate_freq" = "60";
-            "opcache.jit" = "1255";
-            "opcache.jit_buffer_size" = "128M";
-            "memory_limit" = cfg.performance.phpMemoryLimit;
-            "upload_max_filesize" = cfg.performance.maxUploadSize;
-            "post_max_size" = cfg.performance.maxUploadSize;
-            "max_execution_time" = "3600";
-            "max_input_time" = "3600";
           };
 
           settings = {
