@@ -78,8 +78,8 @@ in {
           };
         };
 
-        # uptime-kumactl.enable = true;
-        # vaultwardenctl.enable = true;
+        uptime-kumactl.enable = true;
+        vaultwardenctl.enable = true;
 
         # frigatectl = {
         #   enable = true;

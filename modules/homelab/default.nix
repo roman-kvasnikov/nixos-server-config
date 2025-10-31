@@ -10,7 +10,7 @@
     # ./paperless.nix
     ./qbittorrent.nix
     ./samba.nix
-    # ./uptime-kuma.nix
-    # ./vaultwarden.nix
+    ./uptime-kuma.nix
+    ./vaultwarden.nix
   ];
 }
