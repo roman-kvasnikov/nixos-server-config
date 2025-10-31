@@ -9,9 +9,9 @@ in {
   options.services.xrayctl = {
     enable = lib.mkEnableOption "Enable Xray";
 
-    settingsFile = lib.mkOption {
+    configFile = lib.mkOption {
       type = lib.types.path;
-      description = "Settings file for Xray";
+      description = "Config file for Xray";
       default = "/etc/xray/config.json";
     };
 
@@ -28,10 +28,18 @@ in {
         xray
       ];
 
+      systemd.tmpfiles.rules = [
+        "d /etc/xray 0755 root root - -"
+      ];
+
+      environment.etc = {
+        "${builtins.toString cfg.configFile}".source = ../../secrets/xray/config.json;
+      };
+
       services.xray = {
         enable = true;
 
-        settingsFile = cfg.settingsFile;
+        settingsFile = cfg.configFile;
       };
     })
 
