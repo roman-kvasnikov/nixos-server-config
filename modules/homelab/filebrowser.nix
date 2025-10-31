@@ -71,11 +71,7 @@ in {
           database = cfg.databaseFile;
         };
 
-        extraConfig = ''
-          {
-            "auth": { "method": "noauth" }
-          }
-        '';
+        extraFlags = ["--noauth"];
       };
     })
 
