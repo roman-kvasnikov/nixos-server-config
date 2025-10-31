@@ -4,7 +4,7 @@
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
 
-    nixpkgs-25_05.url = "github:NixOS/nixpkgs/nixos-25.05";
+    # nixpkgs-25_05.url = "github:NixOS/nixpkgs/nixos-25.05";
 
     agenix = {
       url = "github:ryantm/agenix";
@@ -20,15 +20,14 @@
   outputs = {
     self,
     nixpkgs,
-    nixpkgs-25_05,
+    # nixpkgs-25_05,
     ...
   } @ inputs: let
     hostname = "homelab";
     system = "x86_64-linux";
     version = "25.05";
-
-    pkgs = import nixpkgs {inherit system;};
-    stablePkgs = import nixpkgs-25_05 {inherit system;};
+    # pkgs = import nixpkgs {inherit system;};
+    # stablePkgs = import nixpkgs-25_05 {inherit system;};
   in {
     nixosConfigurations.${hostname} = nixpkgs.lib.nixosSystem {
       inherit system;
@@ -40,11 +39,11 @@
       modules = [
         ./hosts/${hostname}/configuration.nix
 
-        {
-          environment.systemPackages = [
-            stablePkgs.mdadm
-          ];
-        }
+        # {
+        #   environment.systemPackages = [
+        #     stablePkgs.mdadm
+        #   ];
+        # }
       ];
     };
   };
