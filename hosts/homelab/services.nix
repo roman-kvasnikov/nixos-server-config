@@ -43,7 +43,7 @@ in {
         #   # };
         # };
 
-        # qbittorrentctl.enable = true;
+        qbittorrentctl.enable = true;
 
         sambactl = {
           enable = true;

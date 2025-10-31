@@ -21,7 +21,7 @@ in {
     dataDir = lib.mkOption {
       type = lib.types.path;
       description = "Data directory for qBittorrent";
-      default = "/data/qbittorrent";
+      default = "/data";
     };
 
     torrentsDir = lib.mkOption {
@@ -104,11 +104,6 @@ in {
               proxyWebsockets = true;
               recommendedProxySettings = true;
               extraConfig = ''
-                proxy_set_header   Host               $proxy_host;
-                proxy_set_header   X-Forwarded-For    $proxy_add_x_forwarded_for;
-                proxy_set_header   X-Forwarded-Host   $http_host;
-                proxy_set_header   X-Forwarded-Proto  $scheme;
-
                 client_max_body_size  100M;
               '';
             };
