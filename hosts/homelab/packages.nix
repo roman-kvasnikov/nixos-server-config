@@ -1,15 +1,12 @@
 {
   inputs,
   pkgs,
-  stablePkgs,
   ...
 }: {
   nixpkgs.config.allowUnfree = true;
 
   environment.systemPackages = with pkgs; [
     inputs.agenix.packages.${system}.default
-
-    stablePkgs.mdadm
 
     # CLI утилиты
     curl

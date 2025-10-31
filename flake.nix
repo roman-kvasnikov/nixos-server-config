@@ -40,11 +40,11 @@
       modules = [
         ./hosts/${hostname}/configuration.nix
 
-        # {
-        #   environment.systemPackages = [
-        #     stablePkgs.mdadm
-        #   ];
-        # }
+        {
+          environment.systemPackages = [
+            stablePkgs.mdadm
+          ];
+        }
       ];
     };
   };
