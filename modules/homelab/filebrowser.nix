@@ -47,15 +47,6 @@ in {
         type = lib.types.str;
         default = "Services";
       };
-      # widget = lib.mkOption {
-      #   type = lib.types.attrs;
-      #   default = {
-      #     type = "filebrowser";
-      #     url = "https://${cfg.host}";
-      #     username = "admin";
-      #     password = "generator163";
-      #   };
-      # };
     };
   };
 

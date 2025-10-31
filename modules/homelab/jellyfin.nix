@@ -30,12 +30,6 @@ in {
       default = "/data/jellyfin/config";
     };
 
-    cacheDir = lib.mkOption {
-      type = lib.types.path;
-      description = "Cache directory for Jellyfin";
-      default = "/var/cache/jellyfin";
-    };
-
     logDir = lib.mkOption {
       type = lib.types.path;
       description = "Log directory for Jellyfin";
@@ -131,7 +125,6 @@ in {
 
         dataDir = cfg.dataDir;
         configDir = cfg.configDir;
-        cacheDir = cfg.cacheDir;
         logDir = cfg.logDir;
       };
 
@@ -198,14 +191,9 @@ in {
               recommendedProxySettings = true;
 
               extraConfig = ''
-                proxy_set_header Host $host;
-                proxy_set_header X-Real-IP $remote_addr;
-                proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-                proxy_set_header X-Forwarded-Proto $scheme;
                 proxy_set_header X-Forwarded-Protocol $scheme;
-                proxy_set_header X-Forwarded-Host $http_host;
+                proxy_set_header X-Forwarded-Host     $http_host;
 
-                # Отключаем буферизацию — важно для потокового видео
                 proxy_buffering off;
               '';
             };
@@ -213,17 +201,13 @@ in {
             # WebSocket-соединения (альтернативный location /socket)
             locations."/socket" = {
               proxyPass = "http://127.0.0.1:8096";
+              proxyWebsockets = true;
+              recommendedProxySettings = true;
               extraConfig = ''
-                proxy_http_version 1.1;
-                proxy_set_header Upgrade $http_upgrade;
-                proxy_set_header Connection "upgrade";
-
-                proxy_set_header Host $host;
-                proxy_set_header X-Real-IP $remote_addr;
-                proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-                proxy_set_header X-Forwarded-Proto $scheme;
                 proxy_set_header X-Forwarded-Protocol $scheme;
-                proxy_set_header X-Forwarded-Host $http_host;
+                proxy_set_header X-Forwarded-Host     $http_host;
+
+                proxy_buffering off;
               '';
             };
           };

@@ -63,21 +63,20 @@ in {
 
         dataDir = cfg.dataDir;
 
-        settings =
-          {
-            MICROBIN_WIDE = true;
-            MICROBIN_MAX_FILE_SIZE_UNENCRYPTED_MB = 2048;
-            MICROBIN_PUBLIC_PATH = "https://${cfg.host}/";
-            MICROBIN_BIND = "127.0.0.1";
-            MICROBIN_PORT = 8069;
-            MICROBIN_HIDE_LOGO = true;
-            MICROBIN_HIGHLIGHTSYNTAX = true;
-            MICROBIN_HIDE_HEADER = true;
-            MICROBIN_HIDE_FOOTER = true;
-          }
-          // lib.attrsets.optionalAttrs (cfg.passwordFile != "") {
-            passwordFile = cfg.passwordFile;
-          };
+        passwordFile = lib.mkIf (cfg.passwordFile != "") cfg.passwordFile;
+
+        settings = {
+          MICROBIN_WIDE = true;
+          MICROBIN_MAX_FILE_SIZE_UNENCRYPTED_MB = 2048;
+          MICROBIN_PUBLIC_PATH = "https://${cfg.host}/";
+          MICROBIN_BIND = "127.0.0.1";
+          MICROBIN_PORT = 8069;
+          MICROBIN_DATA_DIR = cfg.dataDir;
+          MICROBIN_HIDE_LOGO = true;
+          MICROBIN_HIDE_HEADER = true;
+          MICROBIN_HIDE_FOOTER = true;
+          MICROBIN_HIGHLIGHTSYNTAX = true;
+        };
       };
     })
 
@@ -96,12 +95,7 @@ in {
               proxyWebsockets = true;
               recommendedProxySettings = true;
               extraConfig = ''
-                proxy_set_header Host $host;
-                proxy_set_header X-Forwarded-Proto $scheme;
-                proxy_set_header X-Real-IP $remote_addr;
-                proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-
-                client_max_body_size  1024M;
+                client_max_body_size 1024M;
               '';
             };
           };
