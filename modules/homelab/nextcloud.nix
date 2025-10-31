@@ -67,13 +67,13 @@ in {
         type = lib.types.str;
         default = "Clouds";
       };
-      widget = lib.mkOption {
-        type = lib.types.attrs;
-        default = {
-          type = "nextcloud";
-          url = "https://${cfg.host}";
-        };
-      };
+      # widget = lib.mkOption {
+      #   type = lib.types.attrs;
+      #   default = {
+      #     type = "nextcloud";
+      #     url = "https://${cfg.host}";
+      #   };
+      # };
     };
   };
 
