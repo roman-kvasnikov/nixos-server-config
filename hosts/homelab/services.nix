@@ -26,9 +26,9 @@ in {
 
     homelab = {
       services = {
-        # filebrowserctl.enable = true;
+        filebrowserctl.enable = true;
         homepagectl.enable = true;
-        # immichctl.enable = true;
+        immichctl.enable = true;
         jellyfinctl.enable = true;
         # nextcloudctl.enable = true;
         qbittorrentctl.enable = true;
