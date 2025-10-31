@@ -1,15 +1,13 @@
-{
-  config,
-  pkgs,
-  ...
-}: {
+{config, ...}: let
+  dataDir = "/data/postgresql/${config.services.postgresql.package.psqlSchema}";
+in {
   systemd.tmpfiles.rules = [
-    "d /data/postgresql/${config.services.postgresql.package.psqlSchema} 0755 postgres postgres - -"
+    "d ${dataDir} 0755 postgres postgres - -"
   ];
 
   services.postgresql = {
     enable = true;
 
-    dataDir = "/data/postgresql/${config.services.postgresql.package.psqlSchema}";
+    dataDir = dataDir;
   };
 }
