@@ -130,7 +130,7 @@ in {
         # };
 
         microbinctl.enable = true;
-        # paperlessctl.enable = true;
+        paperlessctl.enable = true;
       };
     };
   };
