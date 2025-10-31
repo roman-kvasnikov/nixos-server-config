@@ -30,12 +30,6 @@ in {
       default = "/data/filebrowser/database.db";
     };
 
-    cacheDir = lib.mkOption {
-      type = lib.types.path;
-      description = "The directory where FileBrowser stores its cache.";
-      default = "/data/filebrowser/cache";
-    };
-
     homepage = {
       name = lib.mkOption {
         type = lib.types.str;
@@ -84,7 +78,6 @@ in {
           port = 8081;
           root = cfg.rootDir;
           database = cfg.databaseFile;
-          cache-dir = cfg.cacheDir;
           auth.method = "noauth";
         };
       };
