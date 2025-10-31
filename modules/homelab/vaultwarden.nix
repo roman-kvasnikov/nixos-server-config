@@ -1,5 +1,3 @@
-# TODO: проработать dataDir для ваультварден:
-# https://github.com/NixOS/nixpkgs/blob/d916df777523d75f7c5acca79946652f032f633e/nixos/modules/services/security/vaultwarden/default.nix #L282
 {
   config,
   lib,
@@ -17,7 +15,7 @@ in {
     host = lib.mkOption {
       type = lib.types.str;
       description = "Host of the Vaultwarden module";
-      default = "passwords.${cfgHomelab.domain}";
+      default = "vaultwarden.${cfgHomelab.domain}";
     };
 
     homepage = {
@@ -48,19 +46,7 @@ in {
         config = {
           DOMAIN = "https://${cfg.host}";
           SIGNUPS_ALLOWED = true;
-          ROCKET_ADDRESS = "127.0.0.1";
-          ROCKET_PORT = 8222;
           ROCKET_LOG = "critical";
-
-          # This example assumes a mailserver running on localhost,
-          # thus without transport encryption.
-          # If you use an external mail server, follow:
-          #   https://github.com/dani-garcia/vaultwarden/wiki/SMTP-configuration
-          # SMTP_HOST = "127.0.0.1";
-          # SMTP_PORT = 25;
-          # SMTP_SSL = false;
-          # SMTP_FROM = "admin@bitwarden.example.com";
-          # SMTP_FROM_NAME = "example.com Bitwarden server";
         };
       };
     })
