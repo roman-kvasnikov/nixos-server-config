@@ -13,9 +13,18 @@
   ];
 
   boot.initrd.availableKernelModules = ["ahci" "xhci_pci" "usbhid" "usb_storage" "sd_mod"];
-  boot.initrd.kernelModules = [];
+  boot.initrd.kernelModules = ["raid456" "md_mod"];
   boot.kernelModules = ["kvm-intel"];
   boot.extraModulePackages = [];
+
+  # RAID должен собираться в initrd
+  boot.swraid = {
+    enable = true;
+
+    mdadmConf = ''
+      ARRAY /dev/md127 metadata=1.2 name=homelab:0 UUID=236c3ed9:5dcfa9ab:83a07aa6:d228cf5b
+    '';
+  };
 
   fileSystems."/" = {
     device = "/dev/disk/by-uuid/b59b8e3e-799d-4a8a-8bd9-30d8b85913de";
@@ -31,13 +40,14 @@
   fileSystems."/raid" = {
     device = "/dev/disk/by-uuid/90b89241-fc0d-4c82-a33d-66eb7e04942f";
     fsType = "ext4";
+    neededForBoot = true;
   };
 
   # Bind mount для /var/lib
   fileSystems."/var/lib" = {
     device = "/raid/var/lib";
     fsType = "none";
-    options = ["bind"];
+    options = ["bind" "x-systemd.requires=raid.mount"];
     depends = ["/raid"];
   };
 
@@ -45,7 +55,7 @@
   fileSystems."/data" = {
     device = "/raid/data";
     fsType = "none";
-    options = ["bind"];
+    options = ["bind" "x-systemd.requires=raid.mount"];
     depends = ["/raid"];
   };
 
@@ -63,5 +73,4 @@
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
   hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
-  boot.swraid.enable = true;
 }
