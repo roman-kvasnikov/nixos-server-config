@@ -20,20 +20,22 @@ in {
       default = "nextcloud.${cfgHomelab.domain}";
     };
 
-    homeDir = lib.mkOption {
-      type = lib.types.path;
-      description = "Home directory for Nextcloud";
-      default = "/var/lib/nextcloud";
-    };
-
     adminUser = lib.mkOption {
       type = lib.types.str;
       description = "Admin user for Nextcloud";
+      default = cfgHomelab.adminUser;
     };
 
     adminPasswordFile = lib.mkOption {
       type = lib.types.path;
       description = "Admin password file for Nextcloud";
+      default = cfgHomelab.adminPasswordFile;
+    };
+
+    dbPasswordFile = lib.mkOption {
+      type = lib.types.path;
+      description = "Database password file for Nextcloud";
+      default = config.age.secrets.postgresql-nextcloud-password.path;
     };
 
     apps = lib.mkOption {
@@ -46,6 +48,26 @@ in {
       type = lib.types.path;
       description = "Log file for Nextcloud";
       default = "/var/lib/nextcloud/data/nextcloud.log";
+    };
+
+    performance = {
+      maxUploadSize = lib.mkOption {
+        type = lib.types.str;
+        description = "Maximum upload size";
+        default = "16G";
+      };
+
+      phpMemoryLimit = lib.mkOption {
+        type = lib.types.str;
+        description = "PHP memory limit";
+        default = "512M";
+      };
+
+      opcacheMemory = lib.mkOption {
+        type = lib.types.int;
+        description = "OPcache memory consumption in MB";
+        default = 128;
+      };
     };
 
     homepage = {
@@ -84,30 +106,45 @@ in {
           package = pkgs.nextcloud32;
 
           hostName = cfg.host;
-          home = cfg.homeDir;
           https = true;
 
           extraApps = lib.genAttrs cfg.apps (app: config.services.nextcloud.package.packages.apps.${app});
           extraAppsEnable = true;
           autoUpdateApps.enable = true;
 
-          maxUploadSize = "16G";
+          maxUploadSize = cfg.performance.maxUploadSize;
 
-          # Настройка кэширования
           caching.redis = true;
-          configureRedis = true; # Автоматическая настройка Redis
+          configureRedis = true;
 
-          # Настройка базы данных
-          database.createLocally = true; # Автоматически создать БД
+          database.createLocally = true;
 
           config = {
             adminuser = cfg.adminUser;
             adminpassFile = cfg.adminPasswordFile;
-            dbtype = "sqlite";
-            # dbname = "nextcloud";
-            # dbuser = "nextcloud";
-            # dbpassFile = cfg.adminPasswordFile;
-            # dbhost = "/run/postgresql";
+            # dbtype = "sqlite";
+            dbtype = "pgsql";
+            dbname = "nextcloud";
+            dbuser = "nextcloud";
+            dbpassFile = cfg.dbPasswordFile;
+            dbhost = "/run/postgresql";
+          };
+
+          # PHP OPcache configuration
+          phpOptions = {
+            "opcache.enable" = "1";
+            "opcache.interned_strings_buffer" = "16";
+            "opcache.max_accelerated_files" = "10000";
+            "opcache.memory_consumption" = toString cfg.performance.opcacheMemory;
+            "opcache.save_comments" = "1";
+            "opcache.revalidate_freq" = "60";
+            "opcache.jit" = "1255";
+            "opcache.jit_buffer_size" = "128M";
+            "memory_limit" = cfg.performance.phpMemoryLimit;
+            "upload_max_filesize" = cfg.performance.maxUploadSize;
+            "post_max_size" = cfg.performance.maxUploadSize;
+            "max_execution_time" = "3600";
+            "max_input_time" = "3600";
           };
 
           settings = {
@@ -122,6 +159,7 @@ in {
             default_phone_region = "RU";
             "profile.enabled" = true;
 
+            # Logging configuration
             loglevel = 2;
             log_type = "file";
             logfile = cfg.logFile;
@@ -168,15 +206,7 @@ in {
           "${cfg.host}" = {
             enableACME = cfgAcme.enable;
             forceSSL = cfgAcme.enable;
-
-            extraConfig = ''
-              add_header Referrer-Policy                   "no-referrer"                                  always;
-              add_header X-Content-Type-Options            "nosniff"                                      always;
-              add_header X-Frame-Options                   "SAMEORIGIN"                                   always;
-              add_header X-Permitted-Cross-Domain-Policies "none"                                         always;
-              add_header X-Robots-Tag                      "noindex, nofollow"                            always;
-              add_header Strict-Transport-Security         "max-age=15552000; includeSubDomains; preload" always;
-            '';
+            http2 = true;
           };
         };
       };

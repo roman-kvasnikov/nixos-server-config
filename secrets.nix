@@ -3,6 +3,8 @@ let
 in {
   "./secrets/server/admin-password.age".publicKeys = [homelabSshKey];
 
+  "./secrets/postgresql/nextcloud-password.age".publicKeys = [homelabSshKey];
+
   "./secrets/acme/namecheap.env.age".publicKeys = [homelabSshKey];
 
   "./secrets/samba/romank-password.age".publicKeys = [homelabSshKey];

@@ -30,19 +30,7 @@ in {
         homepagectl.enable = true;
         immichctl.enable = true;
         jellyfinctl.enable = true;
-
-        # nextcloudctl = {
-        #   enable = true;
-
-        #   adminUser = cfgHomelab.adminUser;
-        #   adminPasswordFile = cfgHomelab.adminPasswordFile;
-
-        #   # homepage.widget = {
-        #   #   username = cfgHomelab.adminUser;
-        #   #   password = config.age.secrets.nextcloud-admin-password.text;
-        #   # };
-        # };
-
+        nextcloudctl.enable = true;
         qbittorrentctl.enable = true;
 
         sambactl = {
