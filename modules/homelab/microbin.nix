@@ -58,6 +58,15 @@ in {
 
   config = lib.mkMerge [
     (lib.mkIf cfg.enable {
+      users.users.microbin = {
+        isSystemUser = true;
+        group = cfgHomelab.systemGroup;
+      };
+
+      systemd.tmpfiles.rules = [
+        "d ${cfg.dataDir} 0750 microbin ${cfgHomelab.systemGroup} -"
+      ];
+
       services.microbin = {
         enable = true;
 
@@ -77,6 +86,13 @@ in {
           MICROBIN_HIDE_FOOTER = true;
           MICROBIN_HIGHLIGHTSYNTAX = true;
         };
+      };
+
+      # Переопределяем systemd unit, чтобы отключить DynamicUser и задать User/Group
+      systemd.services.microbin.serviceConfig = {
+        DynamicUser = lib.mkForce false;
+        User = "microbin";
+        Group = cfgHomelab.systemGroup;
       };
     })
 
