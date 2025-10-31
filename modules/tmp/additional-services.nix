@@ -1,4 +1,15 @@
 {
+  # В configuration.nix
+  services.smartd.enable = true; # Мониторинг дисков
+
+  # Добавьте алерт на заполнение диска
+  systemd.timers.check-disk-space = {
+    wantedBy = ["timers.target"];
+    timerConfig = {
+      OnCalendar = "hourly";
+    };
+  };
+
   services = {
     # Nextcloud для облачного хранилища
     nextcloud = {
