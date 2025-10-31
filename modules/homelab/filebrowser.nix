@@ -69,8 +69,13 @@ in {
           port = 8081;
           root = cfg.rootDir;
           database = cfg.databaseFile;
-          auth.method = "noauth";
         };
+
+        extraConfig = ''
+          {
+            "auth": { "method": "noauth" }
+          }
+        '';
       };
     })
 
