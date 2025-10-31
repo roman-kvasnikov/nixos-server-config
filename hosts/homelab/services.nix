@@ -91,7 +91,7 @@ in {
         };
 
         uptime-kumactl.enable = true;
-        # vaultwardenctl.enable = true;
+        vaultwardenctl.enable = true;
 
         # frigatectl = {
         #   enable = true;

@@ -20,6 +20,12 @@ in {
       default = "passwords.${cfgHomelab.domain}";
     };
 
+    backupDir = lib.mkOption {
+      type = lib.types.path;
+      description = "Backup directory for Vaultwarden";
+      default = "/data/vaultwarden";
+    };
+
     homepage = {
       name = lib.mkOption {
         type = lib.types.str;
@@ -46,6 +52,8 @@ in {
         enable = true;
 
         dbBackend = "postgresql";
+
+        backupDir = cfg.backupDir;
 
         config = {
           DOMAIN = "https://${cfg.host}";
@@ -81,15 +89,6 @@ in {
               proxyPass = "http://127.0.0.1:${toString config.services.vaultwarden.config.ROCKET_PORT}";
               proxyWebsockets = true;
               recommendedProxySettings = true;
-              extraConfig = ''
-                proxy_set_header Upgrade $http_upgrade;
-                proxy_set_header Connection $connection_upgrade;
-
-                proxy_set_header Host $host;
-                proxy_set_header X-Real-IP $remote_addr;
-                proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-                proxy_set_header X-Forwarded-Proto $scheme;
-              '';
             };
           };
         };
