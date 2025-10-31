@@ -1,9 +1,9 @@
 {
   imports = [
-    # ./filebrowser.nix
+    ./filebrowser.nix
     # ./frigate.nix
     ./homepage.nix
-    # ./immich.nix
+    ./immich.nix
     ./jellyfin.nix
     # ./microbin.nix
     # ./nextcloud.nix
