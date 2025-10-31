@@ -33,7 +33,7 @@ in {
     cacheDir = lib.mkOption {
       type = lib.types.path;
       description = "Cache directory for Jellyfin";
-      default = "/data/jellyfin/cache";
+      default = "/var/cache/jellyfin";
     };
 
     logDir = lib.mkOption {
