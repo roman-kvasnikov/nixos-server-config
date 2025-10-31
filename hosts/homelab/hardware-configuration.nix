@@ -33,6 +33,22 @@
     fsType = "ext4";
   };
 
+  # Bind mount для /var/lib
+  fileSystems."/var/lib" = {
+    device = "/raid/var/lib";
+    fsType = "none";
+    options = ["bind"];
+    depends = ["/raid"]; # Важно: монтируется после /raid
+  };
+
+  # Bind mount для /data
+  fileSystems."/data" = {
+    device = "/raid/data";
+    fsType = "none";
+    options = ["bind"];
+    depends = ["/raid"]; # Важно: монтируется после /raid
+  };
+
   swapDevices = [
     {device = "/dev/disk/by-uuid/029e40de-98df-4eec-8640-c7adc276e904";}
   ];

@@ -102,12 +102,9 @@ in {
           config = {
             adminuser = cfg.adminUser;
             adminpassFile = cfg.adminPasswordFile;
-            # dbtype = "sqlite";
             dbtype = "pgsql";
             dbname = "nextcloud";
             dbuser = "nextcloud";
-            # dbpassFile = cfg.dbPasswordFile;
-            # dbhost = "/run/postgresql";
           };
 
           settings = {
