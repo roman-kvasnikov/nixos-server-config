@@ -32,11 +32,11 @@ in {
       default = cfgHomelab.adminPasswordFile;
     };
 
-    dbPasswordFile = lib.mkOption {
-      type = lib.types.path;
-      description = "Database password file for Nextcloud";
-      default = config.age.secrets.postgresql-nextcloud-password.path;
-    };
+    # dbPasswordFile = lib.mkOption {
+    #   type = lib.types.path;
+    #   description = "Database password file for Nextcloud";
+    #   default = config.age.secrets.postgresql-nextcloud-password.path;
+    # };
 
     apps = lib.mkOption {
       type = lib.types.listOf lib.types.str;

@@ -30,7 +30,7 @@ in {
         homepagectl.enable = true;
         immichctl.enable = true;
         jellyfinctl.enable = true;
-        # nextcloudctl.enable = true;
+        nextcloudctl.enable = true;
         qbittorrentctl.enable = true;
 
         sambactl = {

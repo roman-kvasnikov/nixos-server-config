@@ -6,7 +6,7 @@
     ./immich.nix
     ./jellyfin.nix
     ./microbin.nix
-    # ./nextcloud.nix
+    ./nextcloud.nix
     ./paperless.nix
     ./qbittorrent.nix
     ./samba.nix
