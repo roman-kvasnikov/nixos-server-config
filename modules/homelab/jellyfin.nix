@@ -18,24 +18,6 @@ in {
       default = "jellyfin.${cfgHomelab.domain}";
     };
 
-    dataDir = lib.mkOption {
-      type = lib.types.path;
-      description = "Home directory for Jellyfin";
-      default = "/data/jellyfin";
-    };
-
-    configDir = lib.mkOption {
-      type = lib.types.path;
-      description = "Config directory for Jellyfin";
-      default = "/data/jellyfin/config";
-    };
-
-    logDir = lib.mkOption {
-      type = lib.types.path;
-      description = "Log directory for Jellyfin";
-      default = "/data/jellyfin/log";
-    };
-
     mediaDir = lib.mkOption {
       type = lib.types.path;
       description = "Media directory for Jellyfin";
@@ -122,10 +104,6 @@ in {
         group = cfgHomelab.systemGroup;
 
         openFirewall = !cfgNginx.enable;
-
-        dataDir = cfg.dataDir;
-        configDir = cfg.configDir;
-        logDir = cfg.logDir;
       };
 
       systemd.services.jellyfin = {

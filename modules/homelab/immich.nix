@@ -18,12 +18,6 @@ in {
       default = "immich.${cfgHomelab.domain}";
     };
 
-    dataDir = lib.mkOption {
-      type = lib.types.path;
-      description = "Data directory for Immich";
-      default = "/data/immich";
-    };
-
     homepage = {
       name = lib.mkOption {
         type = lib.types.str;
@@ -68,8 +62,6 @@ in {
         group = cfgHomelab.systemGroup;
 
         openFirewall = !cfgNginx.enable;
-
-        mediaLocation = cfg.dataDir;
       };
     })
 

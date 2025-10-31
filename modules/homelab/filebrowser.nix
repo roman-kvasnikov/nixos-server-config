@@ -21,13 +21,7 @@ in {
     rootDir = lib.mkOption {
       type = lib.types.path;
       description = "The directory where FileBrowser stores files.";
-      default = "/data/filebrowser/data";
-    };
-
-    databaseFile = lib.mkOption {
-      type = lib.types.path;
-      description = "The path to FileBrowser's Bolt database.";
-      default = "/data/filebrowser/database.db";
+      default = "/data";
     };
 
     homepage = {
@@ -68,7 +62,6 @@ in {
           address = "127.0.0.1";
           port = 8081;
           root = cfg.rootDir;
-          database = cfg.databaseFile;
         };
       };
     })

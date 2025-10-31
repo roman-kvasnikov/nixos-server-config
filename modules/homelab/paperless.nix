@@ -30,18 +30,6 @@ in {
       default = config.age.secrets.server-admin-password.path;
     };
 
-    mediaDir = lib.mkOption {
-      type = lib.types.path;
-      description = "Media directory for Paperless";
-      default = "/data/paperless/Documents";
-    };
-
-    consumptionDir = lib.mkOption {
-      type = lib.types.path;
-      description = "Consumption directory for Paperless";
-      default = "/data/paperless/Import";
-    };
-
     homepage = {
       name = lib.mkOption {
         type = lib.types.str;
@@ -70,8 +58,6 @@ in {
         user = cfg.user;
         passwordFile = cfg.passwordFile;
 
-        mediaDir = cfg.mediaDir;
-        consumptionDir = cfg.consumptionDir;
         consumptionDirIsPublic = true;
 
         configureNginx = cfgNginx.enable;

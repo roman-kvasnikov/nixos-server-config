@@ -20,12 +20,6 @@ in {
       default = "passwords.${cfgHomelab.domain}";
     };
 
-    backupDir = lib.mkOption {
-      type = lib.types.path;
-      description = "Backup directory for Vaultwarden";
-      default = "/data/vaultwarden";
-    };
-
     homepage = {
       name = lib.mkOption {
         type = lib.types.str;
@@ -50,8 +44,6 @@ in {
     (lib.mkIf cfg.enable {
       services.vaultwarden = {
         enable = true;
-
-        backupDir = cfg.backupDir;
 
         config = {
           DOMAIN = "https://${cfg.host}";

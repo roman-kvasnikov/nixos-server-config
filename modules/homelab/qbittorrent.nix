@@ -18,12 +18,6 @@ in {
       default = "torrent.${cfgHomelab.domain}";
     };
 
-    dataDir = lib.mkOption {
-      type = lib.types.path;
-      description = "Data directory for qBittorrent";
-      default = "/data";
-    };
-
     torrentsDir = lib.mkOption {
       type = lib.types.path;
       description = "Torrents directory for qBittorrent";
@@ -84,8 +78,6 @@ in {
         group = cfgHomelab.systemGroup;
 
         openFirewall = !cfgNginx.enable;
-
-        profileDir = cfg.dataDir;
       };
     })
 
