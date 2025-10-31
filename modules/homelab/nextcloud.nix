@@ -126,8 +126,8 @@ in {
             dbtype = "pgsql";
             dbname = "nextcloud";
             dbuser = "nextcloud";
-            dbpassFile = cfg.dbPasswordFile;
-            dbhost = "/run/postgresql";
+            # dbpassFile = cfg.dbPasswordFile;
+            # dbhost = "/run/postgresql";
           };
 
           # PHP OPcache configuration
