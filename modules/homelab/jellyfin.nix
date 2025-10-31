@@ -89,7 +89,7 @@ in {
       systemd.tmpfiles.rules = [
         "d ${cfg.mediaDir} 0755 root root - -"
         "d ${cfg.mediaDir}/Movies 0770 ${cfgHomelab.systemUser} ${cfgHomelab.systemGroup} - -"
-        "d ${cfg.mediaDir}/TV\ Shows 0770 ${cfgHomelab.systemUser} ${cfgHomelab.systemGroup} - -"
+        "d ${cfg.mediaDir}/Shows 0770 ${cfgHomelab.systemUser} ${cfgHomelab.systemGroup} - -"
         "d ${cfg.mediaDir}/Cartoons 0770 ${cfgHomelab.systemUser} ${cfgHomelab.systemGroup} - -"
       ];
 
