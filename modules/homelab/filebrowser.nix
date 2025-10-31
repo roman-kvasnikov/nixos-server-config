@@ -70,8 +70,6 @@ in {
           root = cfg.rootDir;
           database = cfg.databaseFile;
         };
-
-        extraFlags = ["--noauth"];
       };
     })
 
