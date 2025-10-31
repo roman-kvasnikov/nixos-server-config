@@ -51,8 +51,6 @@ in {
       services.vaultwarden = {
         enable = true;
 
-        dbBackend = "postgresql";
-
         backupDir = cfg.backupDir;
 
         config = {
