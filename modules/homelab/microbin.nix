@@ -78,7 +78,6 @@ in {
           MICROBIN_WIDE = true;
           MICROBIN_MAX_FILE_SIZE_UNENCRYPTED_MB = 2048;
           MICROBIN_PUBLIC_PATH = "https://${cfg.host}/";
-          MICROBIN_BIND = "127.0.0.1";
           MICROBIN_PORT = 8069;
           MICROBIN_DATA_DIR = cfg.dataDir;
           MICROBIN_HIDE_LOGO = true;

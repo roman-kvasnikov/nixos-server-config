@@ -18,6 +18,12 @@ in {
       default = "uptime-kuma.${cfgHomelab.domain}";
     };
 
+    dataDir = lib.mkOption {
+      type = lib.types.path;
+      description = "Data directory for Uptime Kuma";
+      default = "/data/uptime-kuma";
+    };
+
     homepage = {
       name = lib.mkOption {
         type = lib.types.str;
@@ -54,6 +60,10 @@ in {
 
       services.uptime-kuma = {
         enable = true;
+
+        settings = {
+          DATA_DIR = cfg.dataDir;
+        };
       };
     })
 
@@ -71,13 +81,6 @@ in {
               proxyPass = "http://127.0.0.1:${toString config.services.uptime-kuma.settings.PORT}";
               proxyWebsockets = true;
               recommendedProxySettings = true;
-              extraConfig = ''
-                proxy_set_header   Host             $host;
-                proxy_set_header   X-Forwarded-For  $proxy_add_x_forwarded_for;
-                proxy_set_header   X-Real-IP        $remote_addr;
-                proxy_set_header   Upgrade          $http_upgrade;
-                proxy_set_header   Connection       "upgrade";
-              '';
             };
           };
         };
