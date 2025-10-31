@@ -33,13 +33,13 @@ in {
     mediaDir = lib.mkOption {
       type = lib.types.path;
       description = "Media directory for Paperless";
-      default = "/mnt/Documents/Paperless/Documents";
+      default = "/data/paperless/Documents";
     };
 
     consumptionDir = lib.mkOption {
       type = lib.types.path;
       description = "Consumption directory for Paperless";
-      default = "/mnt/Documents/Paperless/Import";
+      default = "/data/paperless/Import";
     };
 
     homepage = {

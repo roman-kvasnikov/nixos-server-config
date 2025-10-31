@@ -18,6 +18,12 @@ in {
       default = "microbin.${cfgHomelab.domain}";
     };
 
+    dataDir = lib.mkOption {
+      type = lib.types.path;
+      description = "Data directory for Microbin";
+      default = "/data/microbin";
+    };
+
     passwordFile = lib.mkOption {
       type = lib.types.str;
       default = "";
@@ -55,6 +61,8 @@ in {
       services.microbin = {
         enable = true;
 
+        dataDir = cfg.dataDir;
+
         settings =
           {
             MICROBIN_WIDE = true;
@@ -84,14 +92,16 @@ in {
             enableACME = cfgAcme.enable;
             forceSSL = cfgAcme.enable;
             locations."/" = {
-              proxyPass = "http://127.0.0.1:8069";
+              proxyPass = "http://127.0.0.1:${toString config.services.microbin.settings.MICROBIN_PORT}";
               proxyWebsockets = true;
               recommendedProxySettings = true;
               extraConfig = ''
-                client_max_body_size 50000M;
-                proxy_read_timeout   600s;
-                proxy_send_timeout   600s;
-                send_timeout         600s;
+                proxy_set_header Host $host;
+                proxy_set_header X-Forwarded-Proto $scheme;
+                proxy_set_header X-Real-IP $remote_addr;
+                proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+
+                client_max_body_size  1024M;
               '';
             };
           };

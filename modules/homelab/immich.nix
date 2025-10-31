@@ -18,6 +18,12 @@ in {
       default = "immich.${cfgHomelab.domain}";
     };
 
+    dataDir = lib.mkOption {
+      type = lib.types.path;
+      description = "Data directory for Immich";
+      default = "/data/immich";
+    };
+
     homepage = {
       name = lib.mkOption {
         type = lib.types.str;
@@ -53,11 +59,6 @@ in {
         immich
       ];
 
-      users.users.immich = {
-        isSystemUser = true;
-        group = cfgHomelab.systemGroup;
-      };
-
       services.immich = {
         enable = true;
 
@@ -67,6 +68,8 @@ in {
         group = cfgHomelab.systemGroup;
 
         openFirewall = !cfgNginx.enable;
+
+        mediaLocation = cfg.dataDir;
       };
     })
 
@@ -81,14 +84,29 @@ in {
             enableACME = cfgAcme.enable;
             forceSSL = cfgAcme.enable;
             locations."/" = {
-              proxyPass = "http://127.0.0.1:2283";
+              proxyPass = "http://127.0.0.1:${toString config.services.immich.port}";
               proxyWebsockets = true;
               recommendedProxySettings = true;
               extraConfig = ''
+                # allow large file uploads
                 client_max_body_size 50000M;
-                proxy_read_timeout   600s;
-                proxy_send_timeout   600s;
-                send_timeout         600s;
+
+                # Set headers
+                proxy_set_header Host              $host;
+                proxy_set_header X-Real-IP         $remote_addr;
+                proxy_set_header X-Forwarded-For   $proxy_add_x_forwarded_for;
+                proxy_set_header X-Forwarded-Proto $scheme;
+
+                # enable websockets: http://nginx.org/en/docs/http/websocket.html
+                proxy_http_version 1.1;
+                proxy_set_header   Upgrade    $http_upgrade;
+                proxy_set_header   Connection "upgrade";
+                proxy_redirect     off;
+
+                # set timeout
+                proxy_read_timeout 600s;
+                proxy_send_timeout 600s;
+                send_timeout       600s;
               '';
             };
           };

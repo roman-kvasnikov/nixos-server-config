@@ -18,16 +18,22 @@ in {
       default = "torrent.${cfgHomelab.domain}";
     };
 
+    dataDir = lib.mkOption {
+      type = lib.types.path;
+      description = "Data directory for qBittorrent";
+      default = "/data/qbittorrent";
+    };
+
     torrentsDir = lib.mkOption {
       type = lib.types.path;
       description = "Torrents directory for qBittorrent";
-      default = "/mnt/.torrents";
+      default = "/data/.torrents";
     };
 
     downloadsDir = lib.mkOption {
       type = lib.types.path;
       description = "Downloads directory for qBittorrent";
-      default = "/mnt/Downloads";
+      default = "/data/Downloads";
     };
 
     homepage = {
@@ -78,6 +84,8 @@ in {
         group = cfgHomelab.systemGroup;
 
         openFirewall = !cfgNginx.enable;
+
+        profileDir = cfg.dataDir;
       };
     })
 
@@ -92,14 +100,16 @@ in {
             enableACME = cfgAcme.enable;
             forceSSL = cfgAcme.enable;
             locations."/" = {
-              proxyPass = "http://127.0.0.1:8080";
+              proxyPass = "http://127.0.0.1:${toString config.services.qbittorrent.webuiPort}";
               proxyWebsockets = true;
               recommendedProxySettings = true;
               extraConfig = ''
-                client_max_body_size 50000M;
-                proxy_read_timeout   600s;
-                proxy_send_timeout   600s;
-                send_timeout         600s;
+                proxy_set_header   Host               $proxy_host;
+                proxy_set_header   X-Forwarded-For    $proxy_add_x_forwarded_for;
+                proxy_set_header   X-Forwarded-Host   $http_host;
+                proxy_set_header   X-Forwarded-Proto  $scheme;
+
+                client_max_body_size  100M;
               '';
             };
           };

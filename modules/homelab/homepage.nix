@@ -24,8 +24,8 @@ in {
 
   config = lib.mkMerge [
     (lib.mkIf cfg.enable {
-      services.glances.enable = true;
-      networking.firewall.allowedTCPPorts = [61208];
+      # services.glances.enable = true;
+      # networking.firewall.allowedTCPPorts = [61208];
 
       services.homepage-dashboard = {
         enable = true;
@@ -296,7 +296,7 @@ in {
             enableACME = true;
             forceSSL = true;
             locations."/" = {
-              proxyPass = "http://127.0.0.1:8082";
+              proxyPass = "http://127.0.0.1:${toString config.services.homepage-dashboard.listenPort}";
               proxyWebsockets = true;
               recommendedProxySettings = true;
             };

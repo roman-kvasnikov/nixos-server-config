@@ -90,8 +90,6 @@ in {
           };
         };
 
-        tdarrctl.enable = true;
-
         uptime-kumactl.enable = true;
         vaultwardenctl.enable = true;
 
@@ -132,9 +130,7 @@ in {
         };
 
         microbinctl.enable = true;
-        homeassistantctl.enable = true;
         paperlessctl.enable = true;
-        vmctl.enable = true;
       };
     };
   };

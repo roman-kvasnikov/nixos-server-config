@@ -78,7 +78,7 @@ in {
             enableACME = cfgAcme.enable;
             forceSSL = cfgAcme.enable;
             locations."/" = {
-              proxyPass = "http://127.0.0.1:8123";
+              proxyPass = "http://127.0.0.1:${toString config.services.home-assistant.config.http.server_port}";
               proxyWebsockets = true;
               recommendedProxySettings = true;
               extraConfig = ''

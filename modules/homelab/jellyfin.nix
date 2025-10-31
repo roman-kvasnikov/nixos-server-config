@@ -18,10 +18,34 @@ in {
       default = "jellyfin.${cfgHomelab.domain}";
     };
 
+    dataDir = lib.mkOption {
+      type = lib.types.path;
+      description = "Home directory for Jellyfin";
+      default = "/data/jellyfin";
+    };
+
+    configDir = lib.mkOption {
+      type = lib.types.path;
+      description = "Config directory for Jellyfin";
+      default = "/data/jellyfin/config";
+    };
+
+    cacheDir = lib.mkOption {
+      type = lib.types.path;
+      description = "Cache directory for Jellyfin";
+      default = "/data/jellyfin/cache";
+    };
+
+    logDir = lib.mkOption {
+      type = lib.types.path;
+      description = "Log directory for Jellyfin";
+      default = "/data/jellyfin/log";
+    };
+
     mediaDir = lib.mkOption {
       type = lib.types.path;
       description = "Media directory for Jellyfin";
-      default = "/mnt/media";
+      default = "/data/media";
     };
 
     homepage = {
@@ -94,8 +118,6 @@ in {
       ];
 
       users.users.jellyfin = {
-        isSystemUser = true;
-        group = cfgHomelab.systemGroup;
         extraGroups = ["video" "render"];
       };
 
@@ -106,6 +128,11 @@ in {
         group = cfgHomelab.systemGroup;
 
         openFirewall = !cfgNginx.enable;
+
+        dataDir = cfg.dataDir;
+        configDir = cfg.configDir;
+        cacheDir = cfg.cacheDir;
+        logDir = cfg.logDir;
       };
 
       systemd.services.jellyfin = {
@@ -147,17 +174,76 @@ in {
           "${cfg.host}" = {
             enableACME = cfgAcme.enable;
             forceSSL = cfgAcme.enable;
+            http2 = true;
+
+            # Безопасность
+            extraConfig = ''
+              # Максимальный размер тела запроса (например, для постеров и т.п.)
+              client_max_body_size 20M;
+
+              # Безопасность / XSS защита
+              add_header X-Content-Type-Options "nosniff";
+
+              # Permissions Policy — может вызвать проблемы у старых клиентов, но безопаснее
+              add_header Permissions-Policy "accelerometer=(), ambient-light-sensor=(), battery=(), bluetooth=(), camera=(), clipboard-read=(), display-capture=(), document-domain=(), encrypted-media=(), gamepad=(), geolocation=(), gyroscope=(), hid=(), idle-detection=(), interest-cohort=(), keyboard-map=(), local-fonts=(), magnetometer=(), microphone=(), payment=(), publickey-credentials-get=(), serial=(), sync-xhr=(), usb=(), xr-spatial-tracking=()" always;
+
+              # Content Security Policy (CSP)
+              add_header Content-Security-Policy "default-src https: data: blob:; img-src 'self' https://*; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' https://www.gstatic.com https://www.youtube.com blob:; worker-src 'self' blob:; connect-src 'self'; object-src 'none'; font-src 'self'";
+            '';
+
+            # Основной Jellyfin-прокси
             locations."/" = {
               proxyPass = "http://127.0.0.1:8096";
               proxyWebsockets = true;
               recommendedProxySettings = true;
+
               extraConfig = ''
-                client_max_body_size 50000M;
-                proxy_read_timeout   600s;
-                proxy_send_timeout   600s;
-                send_timeout         600s;
+                proxy_set_header Host $host;
+                proxy_set_header X-Real-IP $remote_addr;
+                proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+                proxy_set_header X-Forwarded-Proto $scheme;
+                proxy_set_header X-Forwarded-Protocol $scheme;
+                proxy_set_header X-Forwarded-Host $http_host;
+
+                # Отключаем буферизацию — важно для потокового видео
+                proxy_buffering off;
               '';
             };
+
+            # WebSocket-соединения (альтернативный location /socket)
+            locations."/socket" = {
+              proxyPass = "http://127.0.0.1:8096";
+              extraConfig = ''
+                proxy_http_version 1.1;
+                proxy_set_header Upgrade $http_upgrade;
+                proxy_set_header Connection "upgrade";
+
+                proxy_set_header Host $host;
+                proxy_set_header X-Real-IP $remote_addr;
+                proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+                proxy_set_header X-Forwarded-Proto $scheme;
+                proxy_set_header X-Forwarded-Protocol $scheme;
+                proxy_set_header X-Forwarded-Host $http_host;
+              '';
+            };
+          };
+
+          # HTTP → HTTPS редирект
+          "redirect-${cfg.host}" = {
+            serverName = "${cfg.host}";
+            listen = [
+              {
+                addr = "0.0.0.0";
+                port = 80;
+              }
+              {
+                addr = "[::]";
+                port = 80;
+              }
+            ];
+            extraConfig = ''
+              return 301 https://$host$request_uri;
+            '';
           };
         };
       };

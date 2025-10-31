@@ -18,6 +18,24 @@ in {
       default = "files.${cfgHomelab.domain}";
     };
 
+    rootDir = lib.mkOption {
+      type = lib.types.path;
+      description = "The directory where FileBrowser stores files.";
+      default = "/data/filebrowser/data";
+    };
+
+    databaseFile = lib.mkOption {
+      type = lib.types.path;
+      description = "The path to FileBrowser's Bolt database.";
+      default = "/data/filebrowser/database.db";
+    };
+
+    cacheDir = lib.mkOption {
+      type = lib.types.path;
+      description = "The directory where FileBrowser stores its cache.";
+      default = "/data/filebrowser/cache";
+    };
+
     homepage = {
       name = lib.mkOption {
         type = lib.types.str;
@@ -62,8 +80,12 @@ in {
         openFirewall = !cfgNginx.enable;
 
         settings = {
+          address = "127.0.0.1";
           port = 8081;
-          root = "/";
+          root = cfg.rootDir;
+          database = cfg.databaseFile;
+          cache-dir = cfg.cacheDir;
+          auth.method = "noauth";
         };
       };
     })
@@ -79,7 +101,7 @@ in {
             enableACME = cfgAcme.enable;
             forceSSL = cfgAcme.enable;
             locations."/" = {
-              proxyPass = "http://127.0.0.1:8081";
+              proxyPass = "http://127.0.0.1:${toString config.services.filebrowser.settings.port}";
             };
           };
         };
