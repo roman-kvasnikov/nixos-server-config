@@ -15,7 +15,7 @@ in {
     services = {
       acmectl.enable = true;
       nginxctl.enable = true;
-      hddfancontrolctl.enable = false;
+      # hddfancontrolctl.enable = false;
       xrayctl.enable = true;
 
       # Additional services
@@ -28,70 +28,70 @@ in {
       services = {
         filebrowserctl.enable = true;
         homepagectl.enable = true;
-        immichctl.enable = true;
-        jellyfinctl.enable = true;
+        # immichctl.enable = true;
+        # jellyfinctl.enable = true;
 
-        nextcloudctl = {
-          enable = true;
+        # nextcloudctl = {
+        #   enable = true;
 
-          adminUser = cfgHomelab.adminUser;
-          adminPasswordFile = cfgHomelab.adminPasswordFile;
+        #   adminUser = cfgHomelab.adminUser;
+        #   adminPasswordFile = cfgHomelab.adminPasswordFile;
 
-          # homepage.widget = {
-          #   username = cfgHomelab.adminUser;
-          #   password = config.age.secrets.nextcloud-admin-password.text;
-          # };
-        };
+        #   # homepage.widget = {
+        #   #   username = cfgHomelab.adminUser;
+        #   #   password = config.age.secrets.nextcloud-admin-password.text;
+        #   # };
+        # };
 
-        qbittorrentctl.enable = true;
+        # qbittorrentctl.enable = true;
 
-        sambactl = {
-          enable = true;
+        # sambactl = {
+        #   enable = true;
 
-          users = {
-            romank = {
-              passwordFile = config.age.secrets.samba-romank-password.path;
-            };
-            dssmargo = {
-              passwordFile = config.age.secrets.samba-dssmargo-password.path;
-            };
-          };
+        #   users = {
+        #     romank = {
+        #       passwordFile = config.age.secrets.samba-romank-password.path;
+        #     };
+        #     dssmargo = {
+        #       passwordFile = config.age.secrets.samba-dssmargo-password.path;
+        #     };
+        #   };
 
-          shares = {
-            Shared = {
-              directory = "Shared";
-              comment = "Shared files for everyone";
-              public = true;
-              browseable = true;
-              writeable = true;
-            };
+        #   shares = {
+        #     Shared = {
+        #       directory = "Shared";
+        #       comment = "Shared files for everyone";
+        #       public = true;
+        #       browseable = true;
+        #       writeable = true;
+        #     };
 
-            RomanK = {
-              directory = "RomanK";
-              comment = "RomanK's Private Share";
-              public = false;
-              browseable = true;
-              writeable = true;
-              validUsers = ["romank"];
-              forceUser = "romank";
-              forceGroup = "users";
-            };
+        #     RomanK = {
+        #       directory = "RomanK";
+        #       comment = "RomanK's Private Share";
+        #       public = false;
+        #       browseable = true;
+        #       writeable = true;
+        #       validUsers = ["romank"];
+        #       forceUser = "romank";
+        #       forceGroup = "users";
+        #     };
 
-            DssMargo = {
-              directory = "DssMargo";
-              comment = "DssMargo's Private Share";
-              public = false;
-              browseable = true;
-              writeable = true;
-              validUsers = ["dssmargo"];
-              forceUser = "dssmargo";
-              forceGroup = "users";
-            };
-          };
-        };
+        #     DssMargo = {
+        #       directory = "DssMargo";
+        #       comment = "DssMargo's Private Share";
+        #       public = false;
+        #       browseable = true;
+        #       writeable = true;
+        #       validUsers = ["dssmargo"];
+        #       forceUser = "dssmargo";
+        #       forceGroup = "users";
+        #     };
+        #   };
+        # };
 
-        uptime-kumactl.enable = true;
-        vaultwardenctl.enable = true;
+        # uptime-kumactl.enable = true;
+        # vaultwardenctl.enable = true;
 
         # frigatectl = {
         #   enable = true;
@@ -129,8 +129,8 @@ in {
         #   snapshots.enable = true;
         # };
 
-        microbinctl.enable = true;
-        paperlessctl.enable = true;
+        # microbinctl.enable = true;
+        # paperlessctl.enable = true;
       };
     };
   };
