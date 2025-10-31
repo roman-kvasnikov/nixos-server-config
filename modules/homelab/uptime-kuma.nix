@@ -62,7 +62,7 @@ in {
         enable = true;
 
         settings = {
-          DATA_DIR = cfg.dataDir;
+          DATA_DIR = lib.mkForce cfg.dataDir;
         };
       };
     })
