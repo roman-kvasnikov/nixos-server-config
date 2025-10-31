@@ -95,6 +95,8 @@ in {
             forceSSL = cfgAcme.enable;
             locations."/" = {
               proxyPass = "http://127.0.0.1:${toString config.services.filebrowser.settings.port}";
+              proxyWebsockets = true;
+              recommendedProxySettings = true;
             };
           };
         };
