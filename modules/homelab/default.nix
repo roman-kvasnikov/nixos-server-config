@@ -4,7 +4,7 @@
     # ./frigate.nix
     ./homepage.nix
     # ./immich.nix
-    # ./jellyfin.nix
+    ./jellyfin.nix
     # ./microbin.nix
     # ./nextcloud.nix
     # ./paperless.nix

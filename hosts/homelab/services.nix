@@ -29,7 +29,7 @@ in {
         # filebrowserctl.enable = true;
         homepagectl.enable = true;
         # immichctl.enable = true;
-        # jellyfinctl.enable = true;
+        jellyfinctl.enable = true;
         # nextcloudctl.enable = true;
         qbittorrentctl.enable = true;
 
