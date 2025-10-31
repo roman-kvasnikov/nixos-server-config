@@ -21,12 +21,6 @@
         mode = "0600";
       };
 
-      postgresql-nextcloud-password = {
-        file = ../../secrets/postgresql/nextcloud-password.age;
-        owner = "root";
-        mode = "0600";
-      };
-
       samba-romank-password = {
         file = ../../secrets/samba/romank-password.age;
         owner = "root";

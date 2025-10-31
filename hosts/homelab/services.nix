@@ -26,11 +26,11 @@ in {
 
     homelab = {
       services = {
-        filebrowserctl.enable = true;
+        # filebrowserctl.enable = true;
         homepagectl.enable = true;
-        immichctl.enable = true;
-        jellyfinctl.enable = true;
-        nextcloudctl.enable = true;
+        # immichctl.enable = true;
+        # jellyfinctl.enable = true;
+        # nextcloudctl.enable = true;
         qbittorrentctl.enable = true;
 
         sambactl = {
@@ -78,8 +78,8 @@ in {
           };
         };
 
-        uptime-kumactl.enable = true;
-        vaultwardenctl.enable = true;
+        # uptime-kumactl.enable = true;
+        # vaultwardenctl.enable = true;
 
         # frigatectl = {
         #   enable = true;
@@ -117,8 +117,8 @@ in {
         #   snapshots.enable = true;
         # };
 
-        microbinctl.enable = true;
-        paperlessctl.enable = true;
+        # microbinctl.enable = true;
+        # paperlessctl.enable = true;
       };
     };
   };
