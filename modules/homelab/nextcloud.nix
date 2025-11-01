@@ -167,9 +167,9 @@ in {
       services.nginx = {
         virtualHosts = {
           "${cfg.host}" = {
-            enableACME = cfgAcme.enable;
-            forceSSL = cfgAcme.enable;
-            http2 = true;
+            # enableACME = cfgAcme.enable;
+            # forceSSL = cfgAcme.enable;
+            # http2 = true;
           };
         };
       };
