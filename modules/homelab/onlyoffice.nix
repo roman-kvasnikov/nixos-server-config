@@ -54,7 +54,45 @@ in {
 
         hostname = cfg.host;
 
-        jwtSecretFile = "/home/romank/nixos/secrets/onlyoffice/jwt-secret";
+        # jwtSecretFile = "/home/romank/nixos/secrets/onlyoffice/jwt-secret";
+      };
+
+      systemd.services.onlyoffice-docservice = let
+        createLocalDotJson = pkgs.writeShellScript "onlyoffice-prestart2" ''
+          umask 077
+          mkdir -p /run/onlyoffice/config/
+
+          cat >/run/onlyoffice/config/local.json <<EOL
+          {
+            "services": {
+              "CoAuthoring": {
+                "token": {
+                  "enable": {
+                    "browser": true,
+                    "request": {
+                      "inbox": true,
+                      "outbox": true
+                    }
+                  }
+                },
+                "secret": {
+                  "inbox": {
+                    "string": "123"
+                  },
+                  "outbox": {
+                    "string": "123"
+                  },
+                  "session": {
+                    "string": "123"
+                  }
+                }
+              }
+            }
+          }
+          EOL
+        '';
+      in {
+        serviceConfig.ExecStartPre = [createLocalDotJson];
       };
     })
 
