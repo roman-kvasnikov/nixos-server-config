@@ -30,6 +30,8 @@ in {
       services.homepage-dashboard = {
         enable = true;
 
+        allowedHosts = cfg.host;
+
         openFirewall = !cfgNginx.enable;
 
         settings = {
