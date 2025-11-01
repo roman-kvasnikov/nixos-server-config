@@ -218,25 +218,43 @@ in {
         widgets = [
           {
             resources = {
+              label = "CPU";
               cpu = true;
-              disk = "/data/";
+            };
+          }
+          {
+            resources = {
+              label = "RAM";
               memory = true;
-              cputemp = true;
-              tempmin = 0;
-              tempmax = 100;
-              uptime = true;
-              units = "metric";
-              refresh = 3000;
-              diskUnits = "bytes";
-              network = "enp0s20f0u9";
             };
           }
           {
             resources = {
               label = "Storage";
-              disk = "/data/";
+              disk = "/";
             };
           }
+          # {
+          #   resources = {
+          #     cpu = true;
+          #     disk = "/data/";
+          #     memory = true;
+          #     cputemp = true;
+          #     tempmin = 0;
+          #     tempmax = 100;
+          #     uptime = true;
+          #     units = "metric";
+          #     refresh = 3000;
+          #     diskUnits = "bytes";
+          #     network = "enp0s20f0u9";
+          #   };
+          # }
+          # {
+          #   resources = {
+          #     label = "Storage";
+          #     disk = "/data/";
+          #   };
+          # }
           {
             search = {
               provider = "google";
