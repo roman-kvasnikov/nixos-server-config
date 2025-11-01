@@ -86,7 +86,7 @@ in {
           package = pkgs.nextcloud32;
 
           hostName = cfg.host;
-          # https = true;
+          https = true;
 
           extraApps = lib.genAttrs cfg.apps (app: config.services.nextcloud.package.packages.apps.${app});
           extraAppsEnable = true;
@@ -109,7 +109,6 @@ in {
 
           settings = {
             trusted_domains = [
-              "188.243.2.115"
               "localhost"
               "127.0.0.1"
               "172.20.0.0/16"
@@ -162,14 +161,12 @@ in {
     })
 
     (lib.mkIf (cfg.enable && cfgNginx.enable) {
-      networking.firewall.allowedTCPPorts = [80 443];
-
       services.nginx = {
         virtualHosts = {
           "${cfg.host}" = {
-            # enableACME = cfgAcme.enable;
-            # forceSSL = cfgAcme.enable;
-            # http2 = true;
+            enableACME = cfgAcme.enable;
+            forceSSL = cfgAcme.enable;
+            http2 = true;
           };
         };
       };
