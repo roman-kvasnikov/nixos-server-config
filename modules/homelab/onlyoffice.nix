@@ -58,8 +58,7 @@ in {
       };
 
       systemd.services.onlyoffice-docservice = let
-        jwtSecret = builtins.readFile config.services.onlyoffice.jwtSecretFile;
-
+        # jwtSecret = builtins.readFile config.services.onlyoffice.jwtSecretFile;
         createLocalDotJson = pkgs.writeShellScript "onlyoffice-prestart2" ''
           umask 077
           mkdir -p /run/onlyoffice/config/
