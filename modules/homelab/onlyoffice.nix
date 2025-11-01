@@ -54,7 +54,7 @@ in {
 
         hostname = cfg.host;
 
-        jwtSecretFile = "../../secrets/onlyoffice/jwt-secret";
+        jwtSecretFile = "/home/romank/nixos/secrets/onlyoffice/jwt-secret";
       };
     })
 
