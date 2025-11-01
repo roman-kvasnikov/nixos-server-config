@@ -5,6 +5,8 @@ in {
 
   "./secrets/acme/namecheap.env.age".publicKeys = [homelabSshKey];
 
+  "./secrets/onlyoffice/jwt-secret.age".publicKeys = [homelabSshKey];
+
   "./secrets/samba/romank-password.age".publicKeys = [homelabSshKey];
 
   "./secrets/samba/dssmargo-password.age".publicKeys = [homelabSshKey];
