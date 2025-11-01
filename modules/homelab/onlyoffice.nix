@@ -25,6 +25,8 @@ in {
         enable = true;
 
         hostname = cfg.host;
+
+        jwtSecretFile = config.age.secrets.onlyoffice-jwt-secret.path;
       };
 
       systemd.services.onlyoffice-docservice = let
@@ -32,38 +34,80 @@ in {
           umask 077
           mkdir -p /run/onlyoffice/config/
 
-          cat >/run/onlyoffice/config/local.json <<EOL
-          {
-            "services": {
-              "CoAuthoring": {
-                "token": {
-                  "enable": {
-                    "browser": true,
-                    "request": {
-                      "inbox": true,
-                      "outbox": true
+          # Читаем JWT токен во время выполнения
+          JWT_SECRET=$(cat ${config.services.onlyoffice.jwtSecretFile})
+
+          # Используем jq для создания JSON
+          ${pkgs.jq}/bin/jq -n \
+            --arg secret "''${JWT_SECRET}" \
+            '{
+              services: {
+                CoAuthoring: {
+                  token: {
+                    enable: {
+                      browser: true,
+                      request: {
+                        inbox: true,
+                        outbox: true
+                      }
                     }
-                  }
-                },
-                "secret": {
-                  "inbox": {
-                    "string": "123"
                   },
-                  "outbox": {
-                    "string": "123"
-                  },
-                  "session": {
-                    "string": "123"
+                  secret: {
+                    inbox: {
+                      string: $secret
+                    },
+                    outbox: {
+                      string: $secret
+                    },
+                    session: {
+                      string: $secret
+                    }
                   }
                 }
               }
-            }
-          }
-          EOL
+            }' > /run/onlyoffice/config/local.json
         '';
       in {
         serviceConfig.ExecStartPre = [createLocalDotJson];
       };
+
+      # systemd.services.onlyoffice-docservice = let
+      #   createLocalDotJson = pkgs.writeShellScript "onlyoffice-prestart2" ''
+      #     umask 077
+      #     mkdir -p /run/onlyoffice/config/
+
+      #     cat >/run/onlyoffice/config/local.json <<EOL
+      #     {
+      #       "services": {
+      #         "CoAuthoring": {
+      #           "token": {
+      #             "enable": {
+      #               "browser": true,
+      #               "request": {
+      #                 "inbox": true,
+      #                 "outbox": true
+      #               }
+      #             }
+      #           },
+      #           "secret": {
+      #             "inbox": {
+      #               "string": "123"
+      #             },
+      #             "outbox": {
+      #               "string": "123"
+      #             },
+      #             "session": {
+      #               "string": "123"
+      #             }
+      #           }
+      #         }
+      #       }
+      #     }
+      #     EOL
+      #   '';
+      # in {
+      #   serviceConfig.ExecStartPre = [createLocalDotJson];
+      # };
     })
 
     (lib.mkIf (cfg.enable && cfgAcme.enable) {
