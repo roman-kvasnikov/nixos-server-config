@@ -15,7 +15,9 @@ in {
     services = {
       acmectl.enable = true;
       nginxctl.enable = true;
-      # hddfancontrolctl.enable = false;
+      diskspacealertctl.enable = true;
+      # hddfancontrolctl.enable = true;
+      smartdctl.enable = true;
       xrayctl.enable = true;
 
       # Additional services
@@ -26,8 +28,9 @@ in {
 
     homelab = {
       services = {
-        # filebrowserctl.enable = true;
         homepagectl.enable = true;
+
+        # filebrowserctl.enable = true;
         immichctl.enable = true;
         jellyfinctl.enable = true;
         nextcloudctl.enable = true;

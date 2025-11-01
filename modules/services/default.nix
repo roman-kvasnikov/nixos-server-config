@@ -1,7 +1,7 @@
 {
   imports = [
     ./acme.nix
-    ./disk-space-alert.nix
+    ./diskspacealert.nix
     ./hddfancontrol.nix
     ./nginx.nix
     ./openssh.nix
