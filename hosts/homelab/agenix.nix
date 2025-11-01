@@ -23,8 +23,9 @@
 
       onlyoffice-jwt-secret = {
         file = ../../secrets/onlyoffice/jwt-secret.age;
-        owner = "root";
-        mode = "0600";
+        owner = "onlyoffice";
+        group = "onlyoffice";
+        mode = "0400";
       };
 
       samba-romank-password = {
