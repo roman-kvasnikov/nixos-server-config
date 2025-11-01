@@ -48,9 +48,9 @@ in {
           MICROBIN_PORT = 8069;
           MICROBIN_WIDE = true;
           MICROBIN_MAX_FILE_SIZE_UNENCRYPTED_MB = 2048;
-          # MICROBIN_HIDE_LOGO = true;
-          # MICROBIN_HIDE_HEADER = true;
-          # MICROBIN_HIDE_FOOTER = true;
+          MICROBIN_HIDE_LOGO = true;
+          MICROBIN_HIDE_HEADER = true;
+          MICROBIN_HIDE_FOOTER = true;
           MICROBIN_HIGHLIGHTSYNTAX = true;
         };
       };

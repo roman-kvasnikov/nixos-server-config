@@ -219,7 +219,7 @@ in {
           {
             resources = {
               cpu = true;
-              disk = "/data";
+              disk = "/data/";
               memory = true;
               cputemp = true;
               tempmin = 0;
@@ -228,7 +228,7 @@ in {
               units = "metric";
               refresh = 3000;
               diskUnits = "bytes";
-              network = true;
+              network = "enp0s20f0u9";
             };
           }
           {
