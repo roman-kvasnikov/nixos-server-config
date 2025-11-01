@@ -237,6 +237,12 @@ in {
               disk = "/";
             };
           }
+          {
+            resources = {
+              label = "Network";
+              network = "enp0s20f0u9";
+            };
+          }
           # {
           #   resources = {
           #     cpu = true;
