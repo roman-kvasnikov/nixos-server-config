@@ -18,18 +18,6 @@ in {
       default = "microbin.${cfgHomelab.domain}";
     };
 
-    passwordFile = lib.mkOption {
-      type = lib.types.str;
-      default = "";
-      example = lib.literalExpression ''
-        pkgs.writeText "microbin-secret.txt" '''
-          MICROBIN_ADMIN_USERNAME
-          MICROBIN_ADMIN_PASSWORD
-          MICROBIN_UPLOADER_PASSWORD
-        '''
-      '';
-    };
-
     homepage = {
       name = lib.mkOption {
         type = lib.types.str;
@@ -55,13 +43,11 @@ in {
       services.microbin = {
         enable = true;
 
-        passwordFile = lib.mkIf (cfg.passwordFile != "") cfg.passwordFile;
-
         settings = {
-          MICROBIN_WIDE = true;
-          MICROBIN_MAX_FILE_SIZE_UNENCRYPTED_MB = 2048;
           MICROBIN_PUBLIC_PATH = "https://${cfg.host}/";
           MICROBIN_PORT = 8069;
+          MICROBIN_WIDE = true;
+          MICROBIN_MAX_FILE_SIZE_UNENCRYPTED_MB = 2048;
           MICROBIN_HIDE_LOGO = true;
           MICROBIN_HIDE_HEADER = true;
           MICROBIN_HIDE_FOOTER = true;

@@ -219,7 +219,7 @@ in {
           {
             resources = {
               cpu = true;
-              disk = "/";
+              disk = "/data";
               memory = true;
               cputemp = true;
               tempmin = 0;

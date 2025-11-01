@@ -26,7 +26,7 @@ in {
 
     homelab = {
       services = {
-        filebrowserctl.enable = true;
+        # filebrowserctl.enable = true;
         homepagectl.enable = true;
         immichctl.enable = true;
         jellyfinctl.enable = true;

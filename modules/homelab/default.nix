@@ -1,6 +1,6 @@
 {
   imports = [
-    ./filebrowser.nix
+    # ./filebrowser.nix
     # ./frigate.nix
     ./homepage.nix
     ./immich.nix

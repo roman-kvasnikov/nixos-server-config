@@ -18,9 +18,9 @@ in {
       default = "paperless.${cfgHomelab.domain}";
     };
 
-    user = lib.mkOption {
+    systemUser = lib.mkOption {
       type = lib.types.str;
-      description = "User for Paperless";
+      description = "System user for Paperless";
       default = "paperless";
     };
 
@@ -55,13 +55,16 @@ in {
       services.paperless = {
         enable = true;
 
-        user = cfg.user;
+        user = cfg.systemUser;
+
         passwordFile = cfg.passwordFile;
 
         consumptionDirIsPublic = true;
 
         configureNginx = cfgNginx.enable;
         domain = cfg.host;
+
+        database.createLocally = true;
 
         settings = {
           PAPERLESS_URL = "https://${cfg.host}";
