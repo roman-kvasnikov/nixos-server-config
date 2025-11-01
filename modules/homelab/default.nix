@@ -7,6 +7,7 @@
     ./jellyfin.nix
     ./microbin.nix
     ./nextcloud.nix
+    ./onlyoffice.nix
     ./paperless.nix
     ./qbittorrent.nix
     ./samba.nix
