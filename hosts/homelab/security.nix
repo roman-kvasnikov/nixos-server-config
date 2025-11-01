@@ -1,4 +1,4 @@
-{
+{lib, ...}: {
   security = {
     sudo = {
       enable = true;
@@ -13,7 +13,10 @@
   networking.firewall = {
     enable = true;
 
-    allowPing = true;
+    allowPing = false; # запрещаем ICMP-пинги (опционально)
+    allowedTCPPorts = lib.mkDefault []; # разрешённых TCP портов нет
+    allowedUDPPorts = lib.mkDefault []; # разрешённых UDP портов нет
+
     logRefusedConnections = true;
   };
 
