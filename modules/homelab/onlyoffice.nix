@@ -31,44 +31,82 @@ in {
 
       systemd.services.onlyoffice-docservice = let
         createLocalDotJson = pkgs.writeShellScript "onlyoffice-prestart2" ''
+          set -x  # Включаем отладку
           umask 077
           mkdir -p /run/onlyoffice/config/
 
-          # Читаем JWT токен во время выполнения
-          JWT_SECRET=$(cat ${config.services.onlyoffice.jwtSecretFile})
+          # Проверяем существование и права на файл
+          echo "Secret file path: ${config.age.secrets.onlyoffice-jwt-secret.path}" >&2
 
-          # Используем jq для создания JSON
-          ${pkgs.jq}/bin/jq -n \
-            --arg secret "''${JWT_SECRET}" \
-            '{
-              services: {
-                CoAuthoring: {
-                  token: {
-                    enable: {
-                      browser: true,
-                      request: {
-                        inbox: true,
-                        outbox: true
-                      }
+          if [ ! -e "${config.age.secrets.onlyoffice-jwt-secret.path}" ]; then
+            echo "ERROR: Secret file does not exist!" >&2
+            exit 1
+          fi
+
+          if [ ! -r "${config.age.secrets.onlyoffice-jwt-secret.path}" ]; then
+            echo "ERROR: Cannot read secret file!" >&2
+            ls -la ${config.age.secrets.onlyoffice-jwt-secret.path} >&2
+            exit 1
+          fi
+
+          # Показываем информацию о файле
+          echo "File info:" >&2
+          ls -la ${config.age.secrets.onlyoffice-jwt-secret.path} >&2
+
+          # Читаем секрет
+          JWT_SECRET=$(cat ${config.age.secrets.onlyoffice-jwt-secret.path})
+
+          # Проверяем, что прочитали
+          echo "JWT_SECRET length: ''${#JWT_SECRET}" >&2
+          echo "JWT_SECRET first 5 chars: ''${JWT_SECRET:0:5}..." >&2
+
+          if [ -z "''${JWT_SECRET}" ]; then
+            echo "WARNING: JWT_SECRET is empty after reading!" >&2
+            # Пробуем альтернативный способ чтения
+            JWT_SECRET=$(<${config.age.secrets.onlyoffice-jwt-secret.path})
+            echo "After alternative read, length: ''${#JWT_SECRET}" >&2
+          fi
+
+          # Создаём JSON
+          cat >/run/onlyoffice/config/local.json <<EOF
+          {
+            "services": {
+              "CoAuthoring": {
+                "token": {
+                  "enable": {
+                    "browser": true,
+                    "request": {
+                      "inbox": true,
+                      "outbox": true
                     }
+                  }
+                },
+                "secret": {
+                  "inbox": {
+                    "string": "''${JWT_SECRET}"
                   },
-                  secret: {
-                    inbox: {
-                      string: $secret
-                    },
-                    outbox: {
-                      string: $secret
-                    },
-                    session: {
-                      string: $secret
-                    }
+                  "outbox": {
+                    "string": "''${JWT_SECRET}"
+                  },
+                  "session": {
+                    "string": "''${JWT_SECRET}"
                   }
                 }
               }
-            }' > /run/onlyoffice/config/local.json
+            }
+          }
+          EOF
+
+          # Проверяем результат
+          echo "Created file content:" >&2
+          cat /run/onlyoffice/config/local.json >&2
         '';
       in {
-        serviceConfig.ExecStartPre = [createLocalDotJson];
+        serviceConfig = {
+          ExecStartPre = [createLocalDotJson];
+          # Важно: убедитесь, что у сервиса есть права на чтение секрета
+          SupplementaryGroups = ["keys"];
+        };
       };
 
       # systemd.services.onlyoffice-docservice = let
