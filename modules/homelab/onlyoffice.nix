@@ -54,7 +54,7 @@ in {
 
         hostname = cfg.host;
 
-        jwtSecretFile = builtins.readFile config.age.secrets.onlyoffice-jwt-secret.path;
+        jwtSecretFile = "../../secrets/onlyoffice/jwt-secret";
       };
     })
 
