@@ -242,7 +242,7 @@ in {
           {
             resources = {
               label = "Network";
-              network = "enp0s2";
+              network = true;
             };
           }
           {
