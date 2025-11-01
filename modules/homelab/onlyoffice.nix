@@ -54,6 +54,8 @@ in {
 
         hostname = cfg.host;
 
+        port = 8015;
+
         jwtSecretFile = config.age.secrets.onlyoffice-jwt-secret.path;
       };
     })
