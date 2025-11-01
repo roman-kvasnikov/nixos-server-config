@@ -54,8 +54,6 @@ in {
 
         hostname = cfg.host;
 
-        port = 8015;
-
         jwtSecretFile = config.age.secrets.onlyoffice-jwt-secret.path;
       };
     })
@@ -70,9 +68,6 @@ in {
           "${cfg.host}" = {
             enableACME = cfgAcme.enable;
             forceSSL = cfgAcme.enable;
-            locations."/" = {
-              proxyPass = "http://127.0.0.1:${toString config.services.onlyoffice.port}";
-            };
           };
         };
       };
