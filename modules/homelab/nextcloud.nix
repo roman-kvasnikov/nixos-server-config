@@ -109,6 +109,7 @@ in {
 
           settings = {
             trusted_domains = [
+              "188.243.2.115"
               "localhost"
               "127.0.0.1"
               "172.20.0.0/16"
@@ -161,6 +162,8 @@ in {
     })
 
     (lib.mkIf (cfg.enable && cfgNginx.enable) {
+      networking.firewall.allowedTCPPorts = [80 443];
+
       services.nginx = {
         virtualHosts = {
           "${cfg.host}" = {
