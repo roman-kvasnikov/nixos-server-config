@@ -62,7 +62,7 @@ in {
           umask 077
           mkdir -p /run/onlyoffice/config/
 
-          JWT_SECRET=$(cat "${config.age.secrets.onlyoffice-jwt-secret.path}")
+          JWT_SECRET=$(cat "/home/romank/nixos/secrets/onlyoffice/jwt-secret")
 
           cat >/run/onlyoffice/config/local.json <<EOL
           {
