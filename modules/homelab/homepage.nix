@@ -30,8 +30,6 @@ in {
       services.homepage-dashboard = {
         enable = true;
 
-        allowedHosts = "${cfg.host}";
-
         openFirewall = !cfgNginx.enable;
 
         settings = {
@@ -336,6 +334,7 @@ in {
           "${cfg.host}" = {
             enableACME = true;
             forceSSL = true;
+            http2 = true;
             locations."/" = {
               proxyPass = "http://127.0.0.1:${toString config.services.homepage-dashboard.listenPort}";
               proxyWebsockets = true;
