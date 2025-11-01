@@ -232,6 +232,12 @@ in {
             };
           }
           {
+            resources = {
+              label = "Storage";
+              disk = "/data/";
+            };
+          }
+          {
             search = {
               provider = "google";
               target = "_blank";
