@@ -148,21 +148,21 @@ in {
             http2 = true;
 
             # Безопасность
-            extraConfig = ''
-              client_max_body_size 20M;
+            # extraConfig = ''
+            #   client_max_body_size 20M;
 
-              # Security / XSS Mitigation Headers
-              add_header X-Content-Type-Options "nosniff";
+            #   # Security / XSS Mitigation Headers
+            #   add_header X-Content-Type-Options "nosniff";
 
-              # Permissions policy. May cause issues with some clients
-              add_header Permissions-Policy "accelerometer=(), ambient-light-sensor=(), battery=(), bluetooth=(), camera=(), clipboard-read=(), display-capture=(), document-domain=(), encrypted-media=(), gamepad=(), geolocation=(), gyroscope=(), hid=(), idle-detection=(), interest-cohort=(), keyboard-map=(), local-fonts=(), magnetometer=(), microphone=(), payment=(), publickey-credentials-get=(), serial=(), sync-xhr=(), usb=(), xr-spatial-tracking=()" always;
+            #   # Permissions policy. May cause issues with some clients
+            #   add_header Permissions-Policy "accelerometer=(), ambient-light-sensor=(), battery=(), bluetooth=(), camera=(), clipboard-read=(), display-capture=(), document-domain=(), encrypted-media=(), gamepad=(), geolocation=(), gyroscope=(), hid=(), idle-detection=(), interest-cohort=(), keyboard-map=(), local-fonts=(), magnetometer=(), microphone=(), payment=(), publickey-credentials-get=(), serial=(), sync-xhr=(), usb=(), xr-spatial-tracking=()" always;
 
-              # Content Security Policy
-              # See: https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP
-              # Enforces https content and restricts JS/CSS to origin
-              # External Javascript (such as cast_sender.js for Chromecast) must be whitelisted.
-              add_header Content-Security-Policy "default-src https: data: blob: ; img-src 'self' https://* ; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' https://www.gstatic.com https://www.youtube.com blob:; worker-src 'self' blob:; connect-src 'self'; object-src 'none'; font-src 'self'";
-            '';
+            #   # Content Security Policy
+            #   # See: https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP
+            #   # Enforces https content and restricts JS/CSS to origin
+            #   # External Javascript (such as cast_sender.js for Chromecast) must be whitelisted.
+            #   add_header Content-Security-Policy "default-src https: data: blob: ; img-src 'self' https://* ; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' https://www.gstatic.com https://www.youtube.com blob:; worker-src 'self' blob:; connect-src 'self'; object-src 'none'; font-src 'self'";
+            # '';
 
             locations."/" = {
               proxyPass = "http://127.0.0.1:8096";
@@ -176,35 +176,35 @@ in {
               '';
             };
 
-            locations."/socket" = {
-              proxyPass = "http://127.0.0.1:8096";
-              proxyWebsockets = true;
-              recommendedProxySettings = true;
+            # locations."/socket" = {
+            #   proxyPass = "http://127.0.0.1:8096";
+            #   proxyWebsockets = true;
+            #   recommendedProxySettings = true;
 
-              extraConfig = ''
-                proxy_set_header X-Forwarded-Protocol $scheme;
-                proxy_set_header X-Forwarded-Host     $http_host;
-              '';
-            };
+            #   extraConfig = ''
+            #     proxy_set_header X-Forwarded-Protocol $scheme;
+            #     proxy_set_header X-Forwarded-Host     $http_host;
+            #   '';
+            # };
           };
 
           # HTTP → HTTPS редирект
-          "redirect-${cfg.host}" = {
-            serverName = "${cfg.host}";
-            listen = [
-              {
-                addr = "0.0.0.0";
-                port = 80;
-              }
-              {
-                addr = "[::]";
-                port = 80;
-              }
-            ];
-            extraConfig = ''
-              return 301 https://$host$request_uri;
-            '';
-          };
+          # "redirect-${cfg.host}" = {
+          #   serverName = "${cfg.host}";
+          #   listen = [
+          #     {
+          #       addr = "0.0.0.0";
+          #       port = 80;
+          #     }
+          #     {
+          #       addr = "[::]";
+          #       port = 80;
+          #     }
+          #   ];
+          #   extraConfig = ''
+          #     return 301 https://$host$request_uri;
+          #   '';
+          # };
         };
       };
     })
