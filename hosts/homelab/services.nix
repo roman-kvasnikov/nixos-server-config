@@ -38,7 +38,7 @@ in {
         qbittorrentctl.enable = true;
 
         sambactl = {
-          enable = true;
+          enable = false;
 
           users = {
             romank = {
