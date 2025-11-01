@@ -155,8 +155,6 @@ in {
               add_header Referrer-Policy "no-referrer-when-downgrade";
               add_header X-Frame-Options "SAMEORIGIN";
               add_header X-XSS-Protection "1; mode=block";
-
-              add_header Content-Security-Policy "default-src 'self' https: blob: data:; script-src 'self' 'unsafe-inline' blob:; style-src 'self' 'unsafe-inline'; connect-src 'self' https: wss:; img-src 'self' data: blob: https:; media-src 'self' blob: https:; object-src 'none'; frame-ancestors 'self';";
             '';
 
             locations."/" = {

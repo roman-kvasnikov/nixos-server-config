@@ -13,7 +13,6 @@ in {
 
   config = {
     services = {
-      # mdadm.enable = true; # Raid monitoring
       dbus.enable = true; # Для работы с systemd
       udisks2.enable = true; # Автоматическое монтирование USB
       geoclue2.enable = true; # Геолокация для часовых поясов

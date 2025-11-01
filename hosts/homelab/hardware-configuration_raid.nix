@@ -12,7 +12,6 @@
     (modulesPath + "/installer/scan/not-detected.nix")
   ];
 
-  boot.initrd.kernelModules = ["raid456" "md_mod"];
   boot.initrd.availableKernelModules = ["ahci" "xhci_pci" "usbhid" "usb_storage" "sd_mod"];
   boot.kernelModules = ["kvm-intel"];
   boot.extraModulePackages = [];
