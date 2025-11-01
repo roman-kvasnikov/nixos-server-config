@@ -17,34 +17,6 @@ in {
       description = "Host of the Only Office module";
       default = "onlyoffice.${cfgHomelab.domain}";
     };
-
-    # homepage = {
-    #   name = lib.mkOption {
-    #     type = lib.types.str;
-    #     default = "Only Office";
-    #   };
-    #   description = lib.mkOption {
-    #     type = lib.types.str;
-    #     default = "Photo and video management solution";
-    #   };
-    #   icon = lib.mkOption {
-    #     type = lib.types.str;
-    #     default = "immich.svg";
-    #   };
-    #   category = lib.mkOption {
-    #     type = lib.types.str;
-    #     default = "Clouds";
-    #   };
-    #   widget = lib.mkOption {
-    #     type = lib.types.attrs;
-    #     default = {
-    #       type = "immich";
-    #       url = "https://${cfg.host}";
-    #       key = "OzGTW9auqbtAWBbW8GBmxYMzyxTjKBn9JL728psss";
-    #       version = 2;
-    #     };
-    #   };
-    # };
   };
 
   config = lib.mkMerge [
@@ -66,22 +38,22 @@ in {
               "CoAuthoring": {
                 "token": {
                   "enable": {
-                    "browser": false,
+                    "browser": true,
                     "request": {
-                      "inbox": false,
-                      "outbox": false
+                      "inbox": true,
+                      "outbox": true
                     }
                   }
                 },
                 "secret": {
                   "inbox": {
-                    "string": ""
+                    "string": "123"
                   },
                   "outbox": {
-                    "string": ""
+                    "string": "123"
                   },
                   "session": {
-                    "string": ""
+                    "string": "123"
                   }
                 }
               }
