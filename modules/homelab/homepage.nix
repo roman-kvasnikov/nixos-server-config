@@ -220,6 +220,9 @@ in {
             resources = {
               label = "CPU";
               cpu = true;
+              cputemp = true;
+              tempmin = 0;
+              tempmax = 100;
             };
           }
           {
