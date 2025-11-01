@@ -55,7 +55,7 @@ in {
         hostname = cfg.host;
 
         # jwtSecretFile = config.age.secrets.onlyoffice-jwt-secret.path;
-        jwtSecretFile = "${config.age.secrets.onlyoffice-jwt-secret.file}";
+        jwtSecretFile = "${config.age.secrets.onlyoffice-jwt-secret.path}";
       };
     })
 
