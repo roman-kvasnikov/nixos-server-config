@@ -26,8 +26,15 @@
         owner = "root";
         mode = "0600";
       };
+
       samba-dssmargo-password = {
         file = ../../secrets/samba/dssmargo-password.age;
+        owner = "root";
+        mode = "0600";
+      };
+
+      xray-config-json = {
+        file = ../../secrets/xray/config.json.age;
         owner = "root";
         mode = "0600";
       };
