@@ -58,11 +58,13 @@ in {
       };
 
       systemd.services.onlyoffice-docservice = let
+        jwtSecret = builtins.readFile /home/romank/nixos/secrets/onlyoffice/jwt-secret;
+
         createLocalDotJson = pkgs.writeShellScript "onlyoffice-prestart2" ''
           umask 077
           mkdir -p /run/onlyoffice/config/
 
-          JWT_SECRET=$(cat "/home/romank/nixos/secrets/onlyoffice/jwt-secret")
+          JWT_SECRET="${jwtSecret}"
 
           cat >/run/onlyoffice/config/local.json <<EOL
           {
