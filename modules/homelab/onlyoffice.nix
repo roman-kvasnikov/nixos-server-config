@@ -53,17 +53,12 @@ in {
         enable = true;
 
         hostname = cfg.host;
-
-        jwtSecretFile = config.age.secrets.onlyoffice-jwt-secret.path;
       };
 
       systemd.services.onlyoffice-docservice = let
-        # jwtSecret = builtins.readFile config.services.onlyoffice.jwtSecretFile;
         createLocalDotJson = pkgs.writeShellScript "onlyoffice-prestart2" ''
           umask 077
           mkdir -p /run/onlyoffice/config/
-
-          JWT_SECRET=$(cat ${config.services.onlyoffice.jwtSecretFile})
 
           cat >/run/onlyoffice/config/local.json <<EOL
           {
@@ -71,22 +66,22 @@ in {
               "CoAuthoring": {
                 "token": {
                   "enable": {
-                    "browser": true,
+                    "browser": false,
                     "request": {
-                      "inbox": true,
-                      "outbox": true
+                      "inbox": false,
+                      "outbox": false
                     }
                   }
                 },
                 "secret": {
                   "inbox": {
-                    "string": "$JWT_SECRET"
+                    "string": ""
                   },
                   "outbox": {
-                    "string": "$JWT_SECRET"
+                    "string": ""
                   },
                   "session": {
-                    "string": "$JWT_SECRET"
+                    "string": ""
                   }
                 }
               }
