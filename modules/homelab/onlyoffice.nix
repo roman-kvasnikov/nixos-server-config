@@ -54,7 +54,7 @@ in {
 
         hostname = cfg.host;
 
-        # jwtSecretFile = "/home/romank/nixos/secrets/onlyoffice/jwt-secret";
+        jwtSecretFile = config.age.secrets.onlyoffice-jwt-secret.path;
       };
 
       systemd.services.onlyoffice-docservice = let
@@ -77,7 +77,7 @@ in {
                 },
                 "secret": {
                   "inbox": {
-                    "string": "123"
+                    "string": "'"$(cat ${config.services.onlyoffice.jwtSecretFile})"'"
                   },
                   "outbox": {
                     "string": "123"
