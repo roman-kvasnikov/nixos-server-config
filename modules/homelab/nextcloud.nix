@@ -86,7 +86,7 @@ in {
           package = pkgs.nextcloud32;
 
           hostName = cfg.host;
-          https = true;
+          # https = true;
 
           extraApps = lib.genAttrs cfg.apps (app: config.services.nextcloud.package.packages.apps.${app});
           extraAppsEnable = true;
