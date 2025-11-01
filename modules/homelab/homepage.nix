@@ -223,6 +223,7 @@ in {
               cputemp = true;
               tempmin = 0;
               tempmax = 100;
+              units = "metric";
             };
           }
           {
@@ -234,13 +235,20 @@ in {
           {
             resources = {
               label = "Storage";
+              diskUnits = "bytes";
               disk = "/";
             };
           }
           {
             resources = {
               label = "Network";
-              network = "enp0s20f0u9";
+              network = "enp0s2";
+            };
+          }
+          {
+            resources = {
+              label = "Uptime";
+              uptime = true;
             };
           }
           # {
