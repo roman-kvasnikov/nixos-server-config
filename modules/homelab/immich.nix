@@ -40,7 +40,7 @@ in {
         default = {
           type = "immich";
           url = "https://${cfg.host}";
-          key = "ofZtmxTeSAsH20AaTQAMRZFOOZom3qvYRiHR6OPc";
+          key = "OzGTW9auqbtAWBbW8GBmxYMzyxTjKBn9JL728psss";
           version = 2;
         };
       };

@@ -12,8 +12,8 @@
     (modulesPath + "/installer/scan/not-detected.nix")
   ];
 
-  boot.initrd.availableKernelModules = ["ahci" "xhci_pci" "usbhid" "usb_storage" "sd_mod"];
   boot.initrd.kernelModules = ["raid456" "md_mod"];
+  boot.initrd.availableKernelModules = ["ahci" "xhci_pci" "usbhid" "usb_storage" "sd_mod"];
   boot.kernelModules = ["kvm-intel"];
   boot.extraModulePackages = [];
 
@@ -47,7 +47,7 @@
   fileSystems."/var/lib" = {
     device = "/raid/var/lib";
     fsType = "none";
-    options = ["bind" "x-systemd.requires=raid.mount"];
+    options = ["bind" "x-systemd.after=raid.mount"];
     depends = ["/raid"];
   };
 
@@ -55,7 +55,7 @@
   fileSystems."/data" = {
     device = "/raid/data";
     fsType = "none";
-    options = ["bind" "x-systemd.requires=raid.mount"];
+    options = ["bind" "x-systemd.after=raid.mount"];
     depends = ["/raid"];
   };
 

@@ -13,17 +13,18 @@ in {
 
   config = {
     services = {
+      mdadm.enable = true; # Raid monitoring
+      dbus.enable = true; # Для работы с systemd
+      udisks2.enable = true; # Автоматическое монтирование USB
+      geoclue2.enable = true; # Геолокация для часовых поясов
+
+      # User services
       acmectl.enable = true;
       nginxctl.enable = true;
       diskspacealertctl.enable = true;
       # hddfancontrolctl.enable = true;
       smartdctl.enable = true;
       xrayctl.enable = true;
-
-      # Additional services
-      dbus.enable = true; # Для работы с systemd
-      udisks2.enable = true; # Автоматическое монтирование USB
-      geoclue2.enable = true; # Геолокация для часовых поясов
     };
 
     homelab = {

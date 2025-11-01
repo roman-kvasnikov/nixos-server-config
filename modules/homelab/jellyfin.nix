@@ -149,35 +149,17 @@ in {
 
             # Безопасность
             extraConfig = ''
-              # Максимальный размер тела запроса (например, для постеров и т.п.)
               client_max_body_size 20M;
 
-              # Безопасность / XSS защита
               add_header X-Content-Type-Options "nosniff";
+              add_header Referrer-Policy "no-referrer-when-downgrade";
+              add_header X-Frame-Options "SAMEORIGIN";
+              add_header X-XSS-Protection "1; mode=block";
 
-              # Permissions Policy — может вызвать проблемы у старых клиентов, но безопаснее
-              add_header Permissions-Policy "accelerometer=(), ambient-light-sensor=(), battery=(), bluetooth=(), camera=(), clipboard-read=(), display-capture=(), document-domain=(), encrypted-media=(), gamepad=(), geolocation=(), gyroscope=(), hid=(), idle-detection=(), interest-cohort=(), keyboard-map=(), local-fonts=(), magnetometer=(), microphone=(), payment=(), publickey-credentials-get=(), serial=(), sync-xhr=(), usb=(), xr-spatial-tracking=()" always;
-
-              # Content Security Policy (CSP)
-              add_header Content-Security-Policy "default-src https: data: blob:; img-src 'self' https://*; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' https://www.gstatic.com https://www.youtube.com blob:; worker-src 'self' blob:; connect-src 'self'; object-src 'none'; font-src 'self'";
+              add_header Content-Security-Policy "default-src 'self' https: blob: data:; script-src 'self' 'unsafe-inline' blob:; style-src 'self' 'unsafe-inline'; connect-src 'self' https: wss:; img-src 'self' data: blob: https:; media-src 'self' blob: https:; object-src 'none'; frame-ancestors 'self';";
             '';
 
-            # Основной Jellyfin-прокси
             locations."/" = {
-              proxyPass = "http://127.0.0.1:8096";
-              proxyWebsockets = true;
-              recommendedProxySettings = true;
-
-              extraConfig = ''
-                proxy_set_header X-Forwarded-Protocol $scheme;
-                proxy_set_header X-Forwarded-Host     $http_host;
-
-                proxy_buffering off;
-              '';
-            };
-
-            # WebSocket-соединения (альтернативный location /socket)
-            locations."/socket" = {
               proxyPass = "http://127.0.0.1:8096";
               proxyWebsockets = true;
               recommendedProxySettings = true;
