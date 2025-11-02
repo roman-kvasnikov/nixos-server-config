@@ -98,7 +98,7 @@ in {
                     allow ${cfgHomelab.subnet};
                     deny all;
                   ''
-                };
+                }
               '';
             };
           };
