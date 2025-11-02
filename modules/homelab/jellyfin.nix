@@ -187,24 +187,6 @@ in {
               '';
             };
           };
-
-          # HTTP → HTTPS редирект
-          "redirect-${cfg.host}" = {
-            serverName = "${cfg.host}";
-            listen = [
-              {
-                addr = "0.0.0.0";
-                port = 80;
-              }
-              {
-                addr = "[::]";
-                port = 80;
-              }
-            ];
-            extraConfig = ''
-              return 301 https://$host$request_uri;
-            '';
-          };
         };
       };
     })
