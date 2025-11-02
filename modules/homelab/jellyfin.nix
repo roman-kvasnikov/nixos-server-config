@@ -18,6 +18,12 @@ in {
       default = "jellyfin.${cfgHomelab.domain}";
     };
 
+    allowExternal = lib.mkOption {
+      type = lib.types.bool;
+      description = "Allow external access to Immich.";
+      default = true;
+    };
+
     mediaDir = lib.mkOption {
       type = lib.types.path;
       description = "Media directory for Jellyfin";
@@ -173,6 +179,15 @@ in {
                 proxy_set_header X-Forwarded-Host     $http_host;
 
                 proxy_buffering off;
+
+                ${
+                  if cfg.allowExternal
+                  then ""
+                  else ''
+                    allow ${cfgHomelab.subnet};
+                    deny all;
+                  ''
+                }
               '';
             };
 
@@ -184,6 +199,15 @@ in {
               extraConfig = ''
                 proxy_set_header X-Forwarded-Protocol $scheme;
                 proxy_set_header X-Forwarded-Host     $http_host;
+
+                ${
+                  if cfg.allowExternal
+                  then ""
+                  else ''
+                    allow ${cfgHomelab.subnet};
+                    deny all;
+                  ''
+                }
               '';
             };
           };

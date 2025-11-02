@@ -18,6 +18,12 @@ in {
       default = "torrent.${cfgHomelab.domain}";
     };
 
+    allowExternal = lib.mkOption {
+      type = lib.types.bool;
+      description = "Allow external access to qBittorrent.";
+      default = true;
+    };
+
     torrentsDir = lib.mkOption {
       type = lib.types.path;
       description = "Torrents directory for qBittorrent";
@@ -99,7 +105,16 @@ in {
               recommendedProxySettings = true;
 
               extraConfig = ''
-                client_max_body_size  100M;
+                client_max_body_size 100M;
+
+                ${
+                  if cfg.allowExternal
+                  then ""
+                  else ''
+                    allow ${cfgHomelab.subnet};
+                    deny all;
+                  ''
+                }
               '';
             };
           };

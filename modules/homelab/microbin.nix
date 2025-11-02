@@ -18,6 +18,12 @@ in {
       default = "microbin.${cfgHomelab.domain}";
     };
 
+    allowExternal = lib.mkOption {
+      type = lib.types.bool;
+      description = "Allow external access to Microbin.";
+      default = true;
+    };
+
     homepage = {
       name = lib.mkOption {
         type = lib.types.str;
@@ -75,6 +81,15 @@ in {
 
               extraConfig = ''
                 client_max_body_size 1024M;
+
+                ${
+                  if cfg.allowExternal
+                  then ""
+                  else ''
+                    allow ${cfgHomelab.subnet};
+                    deny all;
+                  ''
+                }
               '';
             };
           };

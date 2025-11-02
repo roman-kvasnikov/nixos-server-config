@@ -20,8 +20,8 @@ in {
 
     allowExternal = lib.mkOption {
       type = lib.types.bool;
-      description = "Allow external access to Immich. If false, only local network is allowed.";
-      default = false;
+      description = "Allow external access to Immich.";
+      default = true;
     };
 
     homepage = {

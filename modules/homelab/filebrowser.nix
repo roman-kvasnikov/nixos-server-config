@@ -18,6 +18,12 @@ in {
       default = "files.${cfgHomelab.domain}";
     };
 
+    allowExternal = lib.mkOption {
+      type = lib.types.bool;
+      description = "Allow external access to Filebrowser.";
+      default = false;
+    };
+
     rootDir = lib.mkOption {
       type = lib.types.path;
       description = "The directory where FileBrowser stores files.";
@@ -82,6 +88,17 @@ in {
               proxyPass = "http://127.0.0.1:${toString config.services.filebrowser.settings.port}";
               proxyWebsockets = true;
               recommendedProxySettings = true;
+
+              extraConfig = ''
+                ${
+                  if cfg.allowExternal
+                  then ""
+                  else ''
+                    allow ${cfgHomelab.subnet};
+                    deny all;
+                  ''
+                }
+              '';
             };
           };
         };
