@@ -35,7 +35,7 @@ in {
         immichctl.enable = true;
         jellyfinctl.enable = true;
         nextcloudctl.enable = true;
-        onlyofficectl.enable = true;
+        onlyofficectl.enable = false;
         qbittorrentctl.enable = true;
 
         sambactl = {
