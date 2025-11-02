@@ -24,16 +24,14 @@
     wireguard = {
       interfaces = {
         wg0 = {
-          ips = ["10.100.0.2/24"];
+          ips = ["10.0.0.2/24"];
           listenPort = 51820;
-          # privateKeyFile = "/root/wireguard-keys/private";
-          privateKey = "yAnz5TF+lXXJte14tji3zlMNq+hd2rYUIgJBgB3fBmk=";
+          privateKey = "qOAgXb4UMZQja0U9mawZmWMDYALiY83q+pxrlnswFVk=";
 
           peers = [
             {
-              allowedIPs = ["10.100.0.1/32"];
-              # endpoint = "demo.wireguard.io:12913";
-              publicKey = "xTIBA5rboUvnH4htodjb6e697QjLERt1NAB4mZqp8Dg=";
+              allowedIPs = ["10.0.0.1/32"];
+              publicKey = "tEeF3aLdO7Oka3didAHSFXdDfSVY1PsqpRW/c++sbVI=";
               persistentKeepalive = 25;
             }
           ];
