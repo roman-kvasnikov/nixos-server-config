@@ -21,7 +21,7 @@ in {
       acmectl.enable = true;
       nginxctl.enable = true;
       diskspacealertctl.enable = true;
-      # dnsmasqctl.enable = false;
+      dnsmasqctl.enable = false;
       # hddfancontrolctl.enable = true;
       smartdctl.enable = true;
       xrayctl.enable = true;
@@ -35,7 +35,7 @@ in {
         immichctl.enable = true;
         jellyfinctl.enable = true;
         nextcloudctl.enable = true;
-        onlyofficectl.enable = false;
+        onlyofficectl.enable = true;
         qbittorrentctl.enable = true;
 
         sambactl = {
