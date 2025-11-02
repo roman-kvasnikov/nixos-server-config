@@ -83,6 +83,11 @@ in {
             forceSSL = cfgAcme.enable;
             http2 = true;
 
+            extraConfig = lib.mkNot cfg.allowExternal ''
+              allow ${cfgHomelab.subnet};
+              deny all;
+            '';
+
             locations."/" = {
               proxyPass = "http://127.0.0.1:${toString config.services.immich.port}";
               proxyWebsockets = true;
@@ -90,15 +95,6 @@ in {
 
               extraConfig = ''
                 client_max_body_size 50000M;
-
-                ${
-                  if cfg.allowExternal
-                  then ""
-                  else ''
-                    allow ${cfgHomelab.subnet};
-                    deny all;
-                  ''
-                }
               '';
             };
           };

@@ -18,6 +18,7 @@ in {
       default = "vaultwarden.${cfgHomelab.domain}";
     };
 
+    # Короче тут нужно разрешать как из локальной подсети, так и из под VPN, тоесть 172.20.0.0 и так далее, иначе через VPN не работает тоже.
     allowExternal = lib.mkOption {
       type = lib.types.bool;
       description = "Allow external access to Vaultwarden.";
