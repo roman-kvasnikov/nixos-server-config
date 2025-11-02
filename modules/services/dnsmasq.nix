@@ -4,9 +4,10 @@
   ...
 }: let
   cfg = config.services.dnsmasqctl;
+  cfgHomelab = config.homelab;
 in {
   options.services.dnsmasqctl = {
-    enable = lib.mkEnableOption "Enable DNSMasq";
+    enable = lib.mkEnableOption "Enable local DNS Server";
   };
 
   config = lib.mkIf cfg.enable {
@@ -30,22 +31,22 @@ in {
 
         # Переопределение для локальной сети
         address = [
-          "/kvasok.xyz/192.168.1.11"
-          "/*.kvasok.xyz/192.168.1.11"
+          "/${cfgHomelab.domain}/${cfgHomelab.ip}"
+          "/*.${cfgHomelab.domain}/${cfgHomelab.ip}"
         ];
 
         # Слушаем интерфейс локальной сети
-        interface = "enp0s20f0u9"; # замени на свой, например enp3s0 или br0
+        interface = cfgHomelab.interface;
         bind-interfaces = true;
 
         # Слушаем на этих адресах
         listen-address = [
           "127.0.0.1" # localhost
-          "192.168.1.11" # LAN IP
+          cfgHomelab.ip # LAN IP
         ];
 
         # Явно отключаем DHCP (роутер делает)
-        no-dhcp-interface = "enp0s20f0u9";
+        no-dhcp-interface = cfgHomelab.interface;
 
         # Логирование для отладки
         log-queries = true;

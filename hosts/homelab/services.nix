@@ -32,14 +32,53 @@ in {
         homepagectl.enable = true;
 
         # filebrowserctl.enable = true;
+
+        # frigatectl = {
+        #   enable = true;
+
+        #   cameras = {
+        #     hall = {
+        #       enable = true;
+
+        #       streamUrl = "rtsp://RomanK:Um9tYW4Um@192.168.1.31:554/stream1";
+
+        #       onvif = {
+        #         enable = true;
+
+        #         host = "192.168.1.31";
+        #         port = 2020;
+        #         user = "RomanK";
+        #         password = "Um9tYW4Um";
+        #       };
+
+        #       recordEnabled = true;
+
+        #       detectResolution = {
+        #         width = 2560;
+        #         height = 1440;
+        #       };
+
+        #       audioEnabled = true;
+
+        #       snapshotsEnabled = true;
+        #     };
+        #   };
+
+        #   recording.enable = true;
+        #   detection.enable = true;
+        #   snapshots.enable = true;
+        # };
+
         immichctl.enable = true;
         jellyfinctl.enable = true;
+        microbinctl.enable = true;
         nextcloudctl.enable = true;
         onlyofficectl.enable = true;
+        paperlessctl.enable = true;
         qbittorrentctl.enable = true;
 
         sambactl = {
-          enable = false;
+          enable = true;
 
           users = {
             romank = {
@@ -85,45 +124,6 @@ in {
 
         uptime-kumactl.enable = true;
         vaultwardenctl.enable = true;
-
-        # frigatectl = {
-        #   enable = true;
-
-        #   cameras = {
-        #     hall = {
-        #       enable = true;
-
-        #       streamUrl = "rtsp://RomanK:Um9tYW4Um@192.168.1.31:554/stream1";
-
-        #       onvif = {
-        #         enable = true;
-
-        #         host = "192.168.1.31";
-        #         port = 2020;
-        #         user = "RomanK";
-        #         password = "Um9tYW4Um";
-        #       };
-
-        #       recordEnabled = true;
-
-        #       detectResolution = {
-        #         width = 2560;
-        #         height = 1440;
-        #       };
-
-        #       audioEnabled = true;
-
-        #       snapshotsEnabled = true;
-        #     };
-        #   };
-
-        #   recording.enable = true;
-        #   detection.enable = true;
-        #   snapshots.enable = true;
-        # };
-
-        microbinctl.enable = true;
-        paperlessctl.enable = true;
       };
     };
   };

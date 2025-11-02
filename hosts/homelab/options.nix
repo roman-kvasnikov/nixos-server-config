@@ -22,6 +22,12 @@
       default = "192.168.1.0/24";
     };
 
+    interface = lib.mkOption {
+      type = lib.types.str;
+      description = "Lan interface for the homelab server";
+      default = "enp0s20f0u9";
+    };
+
     email = lib.mkOption {
       type = lib.types.str;
       description = "Email for ACME SSL certificate registration for the homelab server";
