@@ -18,14 +18,6 @@ in {
       recommendedOptimisation = true;
       recommendedProxySettings = true;
       recommendedTlsSettings = true;
-
-      appendConfig = ''
-        stream {
-          server {
-            listen 443 proxy_protocol;
-          }
-        }
-      '';
     };
 
     users.users.nginx.extraGroups = ["acme"];
