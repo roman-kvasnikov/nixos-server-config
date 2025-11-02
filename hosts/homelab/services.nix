@@ -21,7 +21,7 @@ in {
       acmectl.enable = true;
       nginxctl.enable = true;
       diskspacealertctl.enable = true;
-      dnsmasqctl.enable = false;
+      dnsmasqctl.enable = true;
       # hddfancontrolctl.enable = true;
       smartdctl.enable = true;
       xrayctl.enable = true;
