@@ -14,7 +14,7 @@
     firewall = {
       enable = true;
 
-      allowPing = false; # запрещаем ICMP-пинги (опционально)
+      allowPing = true; # запрещаем ICMP-пинги (опционально)
       allowedTCPPorts = lib.mkDefault []; # разрешённых TCP портов нет
       allowedUDPPorts = lib.mkDefault []; # разрешённых UDP портов нет
 
