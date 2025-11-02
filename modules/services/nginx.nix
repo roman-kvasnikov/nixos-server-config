@@ -18,6 +18,27 @@ in {
       recommendedOptimisation = true;
       recommendedProxySettings = true;
       recommendedTlsSettings = true;
+
+      virtualHosts."_" = {
+        default = true;
+
+        listen = [
+          {
+            addr = "0.0.0.0";
+            port = 80;
+            ssl = false;
+          }
+          {
+            addr = "0.0.0.0";
+            port = 443;
+            ssl = true;
+          }
+        ];
+
+        locations."/" = {
+          return = "404";
+        };
+      };
     };
 
     users.users.nginx.extraGroups = ["acme"];
