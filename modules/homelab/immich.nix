@@ -83,7 +83,7 @@ in {
             forceSSL = cfgAcme.enable;
             http2 = true;
 
-            extraConfig = lib.mkNot cfg.allowExternal ''
+            extraConfig = lib.mkIf (!cfg.allowExternal) ''
               allow ${cfgHomelab.subnet};
               deny all;
             '';
