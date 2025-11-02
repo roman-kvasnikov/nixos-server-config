@@ -28,6 +28,11 @@ in {
             port = 80;
             ssl = false;
           }
+          {
+            addr = "0.0.0.0";
+            port = 443;
+            ssl = false;
+          }
         ];
 
         locations."/" = {
