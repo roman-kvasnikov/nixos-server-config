@@ -72,21 +72,15 @@ in {
             forceSSL = cfgAcme.enable;
             http2 = true;
 
+            extraConfig = lib.mkIf (!cfg.allowExternal) ''
+              allow ${cfgHomelab.subnet};
+              deny all;
+            '';
+
             locations."/" = {
               proxyPass = "http://127.0.0.1:${toString config.services.vaultwarden.config.ROCKET_PORT}";
               proxyWebsockets = true;
               recommendedProxySettings = true;
-
-              extraConfig = ''
-                ${
-                  if cfg.allowExternal
-                  then ""
-                  else ''
-                    allow ${cfgHomelab.subnet};
-                    deny all;
-                  ''
-                }
-              '';
             };
           };
         };
