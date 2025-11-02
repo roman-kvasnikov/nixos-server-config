@@ -340,16 +340,16 @@ in {
             forceSSL = true;
             http2 = true;
 
+            extraConfig = ''
+              if ($host != "${cfg.host}") {
+                return 404;
+              }
+            '';
+
             locations."/" = {
               proxyPass = "http://127.0.0.1:${toString config.services.homepage-dashboard.listenPort}";
               proxyWebsockets = true;
               recommendedProxySettings = true;
-
-              extraConfig = ''
-                if ($host != "${cfg.host}") {
-                  return 404;
-                }
-              '';
             };
           };
         };

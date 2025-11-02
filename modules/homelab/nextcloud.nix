@@ -20,6 +20,12 @@ in {
       default = "nextcloud.${cfgHomelab.domain}";
     };
 
+    allowExternal = lib.mkOption {
+      type = lib.types.bool;
+      description = "Allow external access to Nextcloud.";
+      default = true;
+    };
+
     adminUser = lib.mkOption {
       type = lib.types.str;
       description = "Admin user for Nextcloud";
@@ -167,6 +173,11 @@ in {
             enableACME = cfgAcme.enable;
             forceSSL = cfgAcme.enable;
             http2 = true;
+
+            extraConfig = lib.mkIf (!cfg.allowExternal) ''
+              allow ${cfgHomelab.subnet};
+              deny all;
+            '';
           };
         };
       };

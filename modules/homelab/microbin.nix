@@ -74,6 +74,11 @@ in {
             forceSSL = true;
             http2 = true;
 
+            extraConfig = lib.mkIf (!cfg.allowExternal) ''
+              allow ${cfgHomelab.subnet};
+              deny all;
+            '';
+
             locations."/" = {
               proxyPass = "http://127.0.0.1:${toString config.services.microbin.settings.MICROBIN_PORT}";
               proxyWebsockets = true;
@@ -81,15 +86,6 @@ in {
 
               extraConfig = ''
                 client_max_body_size 1024M;
-
-                ${
-                  if cfg.allowExternal
-                  then ""
-                  else ''
-                    allow ${cfgHomelab.subnet};
-                    deny all;
-                  ''
-                }
               '';
             };
           };

@@ -155,6 +155,15 @@ in {
 
             # Безопасность
             extraConfig = ''
+              ${
+                if cfg.allowExternal
+                then ""
+                else ''
+                  allow ${cfgHomelab.subnet};
+                  deny all;
+                ''
+              }
+
               client_max_body_size 20M;
 
               # Security / XSS Mitigation Headers
@@ -179,15 +188,6 @@ in {
                 proxy_set_header X-Forwarded-Host     $http_host;
 
                 proxy_buffering off;
-
-                ${
-                  if cfg.allowExternal
-                  then ""
-                  else ''
-                    allow ${cfgHomelab.subnet};
-                    deny all;
-                  ''
-                }
               '';
             };
 
@@ -199,15 +199,6 @@ in {
               extraConfig = ''
                 proxy_set_header X-Forwarded-Protocol $scheme;
                 proxy_set_header X-Forwarded-Host     $http_host;
-
-                ${
-                  if cfg.allowExternal
-                  then ""
-                  else ''
-                    allow ${cfgHomelab.subnet};
-                    deny all;
-                  ''
-                }
               '';
             };
           };

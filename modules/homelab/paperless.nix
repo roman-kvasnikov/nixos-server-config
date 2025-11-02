@@ -18,6 +18,12 @@ in {
       default = "paperless.${cfgHomelab.domain}";
     };
 
+    allowExternal = lib.mkOption {
+      type = lib.types.bool;
+      description = "Allow external access to Only Office.";
+      default = true;
+    };
+
     systemUser = lib.mkOption {
       type = lib.types.str;
       description = "System user for Paperless";
@@ -92,6 +98,11 @@ in {
             enableACME = cfgAcme.enable;
             forceSSL = cfgAcme.enable;
             http2 = true;
+
+            extraConfig = lib.mkIf (!cfg.allowExternal) ''
+              allow ${cfgHomelab.subnet};
+              deny all;
+            '';
           };
         };
       };

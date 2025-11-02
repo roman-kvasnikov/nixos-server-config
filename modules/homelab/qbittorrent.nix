@@ -99,6 +99,11 @@ in {
             forceSSL = cfgAcme.enable;
             http2 = true;
 
+            extraConfig = lib.mkIf (!cfg.allowExternal) ''
+              allow ${cfgHomelab.subnet};
+              deny all;
+            '';
+
             locations."/" = {
               proxyPass = "http://127.0.0.1:${toString config.services.qbittorrent.webuiPort}";
               proxyWebsockets = true;
@@ -106,15 +111,6 @@ in {
 
               extraConfig = ''
                 client_max_body_size 100M;
-
-                ${
-                  if cfg.allowExternal
-                  then ""
-                  else ''
-                    allow ${cfgHomelab.subnet};
-                    deny all;
-                  ''
-                }
               '';
             };
           };

@@ -18,6 +18,12 @@ in {
       default = "onlyoffice.${cfgHomelab.domain}";
     };
 
+    allowExternal = lib.mkOption {
+      type = lib.types.bool;
+      description = "Allow external access to Only Office.";
+      default = true;
+    };
+
     jwtSecretFile = lib.mkOption {
       type = lib.types.path;
       description = "JWT Secret file for Only Office";
@@ -47,6 +53,11 @@ in {
             enableACME = cfgAcme.enable;
             forceSSL = cfgAcme.enable;
             http2 = true;
+
+            extraConfig = lib.mkIf (!cfg.allowExternal) ''
+              allow ${cfgHomelab.subnet};
+              deny all;
+            '';
           };
         };
       };
