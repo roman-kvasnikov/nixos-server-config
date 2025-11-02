@@ -18,6 +18,12 @@ in {
       default = "immich.${cfgHomelab.domain}";
     };
 
+    allowExternal = lib.mkOption {
+      type = lib.types.bool;
+      description = "Allow external access to Immich. If false, only local network is allowed.";
+      default = false;
+    };
+
     homepage = {
       name = lib.mkOption {
         type = lib.types.str;
@@ -85,7 +91,14 @@ in {
               extraConfig = ''
                 client_max_body_size 50000M;
 
-                deny all;
+                ${
+                  if cfg.allowExternal
+                  then ""
+                  else ''
+                    allow ${cfgHomelab.subnet};
+                    deny all;
+                  ''
+                };
               '';
             };
           };
