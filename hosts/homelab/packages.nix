@@ -30,5 +30,6 @@
     htop
     btop
     lm_sensors
+    dig
   ];
 }
