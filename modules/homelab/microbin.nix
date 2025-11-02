@@ -64,12 +64,15 @@ in {
       services.nginx = {
         virtualHosts = {
           "${cfg.host}" = {
-            enableACME = cfgAcme.enable;
-            forceSSL = cfgAcme.enable;
+            enableACME = true;
+            forceSSL = true;
+            http2 = true;
+
             locations."/" = {
               proxyPass = "http://127.0.0.1:${toString config.services.microbin.settings.MICROBIN_PORT}";
               proxyWebsockets = true;
               recommendedProxySettings = true;
+
               extraConfig = ''
                 client_max_body_size 1024M;
               '';

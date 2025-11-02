@@ -59,6 +59,8 @@ in {
           "${cfg.host}" = {
             enableACME = cfgAcme.enable;
             forceSSL = cfgAcme.enable;
+            http2 = true;
+
             locations."/" = {
               proxyPass = "http://127.0.0.1:${toString config.services.uptime-kuma.settings.PORT}";
               proxyWebsockets = true;

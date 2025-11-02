@@ -74,8 +74,10 @@ in {
       services.nginx = {
         virtualHosts = {
           "${cfg.host}" = {
-            enableACME = cfgAcme.enable;
-            forceSSL = cfgAcme.enable;
+            enableACME = true;
+            forceSSL = true;
+            http2 = true;
+
             locations."/" = {
               proxyPass = "http://127.0.0.1:${toString config.services.filebrowser.settings.port}";
               proxyWebsockets = true;

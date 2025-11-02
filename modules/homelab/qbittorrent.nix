@@ -91,10 +91,13 @@ in {
           "${cfg.host}" = {
             enableACME = cfgAcme.enable;
             forceSSL = cfgAcme.enable;
+            http2 = true;
+
             locations."/" = {
               proxyPass = "http://127.0.0.1:${toString config.services.qbittorrent.webuiPort}";
               proxyWebsockets = true;
               recommendedProxySettings = true;
+
               extraConfig = ''
                 client_max_body_size  100M;
               '';

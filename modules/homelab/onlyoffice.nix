@@ -46,6 +46,7 @@ in {
           "${cfg.host}" = {
             enableACME = cfgAcme.enable;
             forceSSL = cfgAcme.enable;
+            http2 = true;
           };
         };
       };
