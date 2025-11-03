@@ -15,7 +15,7 @@ in {
     host = lib.mkOption {
       type = lib.types.str;
       description = "Host of the qBittorrent module";
-      default = "torrent.${cfgHomelab.domain}";
+      default = "qbittorrent.${cfgHomelab.domain}";
     };
 
     allowExternal = lib.mkOption {
