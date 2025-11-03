@@ -54,6 +54,56 @@ in {
   };
 
   config = lib.mkIf cfg.enable {
+    systemd.services.prepare-nextcloud-backup = {
+      description = "Prepare and create cold Nextcloud backup for Restic";
+      serviceConfig = {
+        Type = "oneshot";
+        User = "root";
+        ExecStart = pkgs.writeShellScript "prepare-nextcloud-backup" ''
+          #!${pkgs.bash}/bin/bash
+          export PATH=${pkgs.gzip}/bin:${pkgs.gnutar}/bin:${pkgs.util-linux}/bin:$PATH
+
+          set -euo pipefail
+
+          echo "[Nextcloud Backup] Starting..."
+
+          BACKUP_DIR=${cfg.backupDir}
+          DATE=$(date +"%Y-%m-%d_%H-%M-%S")
+          mkdir -p "$BACKUP_DIR"
+
+          echo "[Nextcloud Backup] Stopping Nextcloud services..."
+          systemctl stop phpfpm-nextcloud.service nginx.service redis-nextcloud.service || true
+
+          echo "[Nextcloud Backup] Dumping PostgreSQL..."
+          runuser -u postgres -- ${config.services.postgresql.package}/bin/pg_dump \
+            --username postgres \
+            --no-owner \
+            --clean \
+            ${cfg.pgsqlDbName} | gzip > "$BACKUP_DIR/db-$DATE.sql.gz"
+
+          echo "[Nextcloud Backup] Archiving data..."
+          tar -czf "$BACKUP_DIR/files-$DATE.tar.gz" ${config.services.nextcloud.home}/data ${config.services.nextcloud.home}/config
+
+          echo "[Nextcloud Backup] Starting Nextcloud services..."
+          systemctl start nginx.service phpfpm-nextcloud.service redis-nextcloud.service || true
+
+          echo "[Nextcloud Backup] Cleaning up old local backups..."
+          find "$BACKUP_DIR" -type f -mtime +3 -delete
+
+          echo "[Nextcloud Backup] Done!"
+        '';
+      };
+    };
+
+    systemd.timers.prepare-nextcloud-backup = {
+      description = "Daily Nextcloud data preparation for Restic";
+      wantedBy = ["timers.target"];
+      timerConfig = {
+        OnCalendar = cfg.schedule;
+        Persistent = true;
+      };
+    };
+
     services.restic.backups.nextcloud = {
       repository = cfg.resticRepository;
       passwordFile = cfg.resticPasswordFile;

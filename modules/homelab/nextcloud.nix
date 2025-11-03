@@ -1,5 +1,3 @@
-# https://mich-murphy.com/configure-nextcloud-nixos/
-# https://nixos.wiki/wiki/Nextcloud
 {
   config,
   lib,
@@ -152,8 +150,6 @@ in {
           };
         };
       };
-
-      homelab.services.nextcloud-backup-ctl.enable = cfg.backupEnabled;
 
       environment.etc."fail2ban/filter.d/nextcloud.conf".text = ''
         [Definition]
