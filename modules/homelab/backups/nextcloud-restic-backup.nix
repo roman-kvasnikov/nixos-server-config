@@ -57,7 +57,7 @@ in {
         User = "root";
         ExecStart = pkgs.writeShellScript "prepare-nextcloud-backup" ''
           #!${pkgs.bash}/bin/bash
-          export PATH=${pkgs.gzip}/bin:${pkgs.tar}/bin:${pkgs.util-linux}/bin:$PATH
+          export PATH=${pkgs.gzip}/bin:${pkgs.gnutar}/bin:${pkgs.util-linux}/bin:$PATH
 
           set -euo pipefail
 
