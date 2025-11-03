@@ -79,9 +79,9 @@ in {
           enable = true;
 
           resticRepository = "s3:https://s3.twcstorage.ru/1f382b96-c34b0ea3-eb1f-4476-b009-6e99275d7b19/backups/nextcloud";
-          passwordFile = config.age.secrets.restic-password.path;
-          environmentFile = config.age.secrets.restic-s3-env.path;
-          pgDatabase = "nextcloud";
+          resticPasswordFile = config.age.secrets.restic-password.path;
+          resticEnvironmentFile = config.age.secrets.restic-s3-env.path;
+          pgsqlDbName = "nextcloud";
           schedule = "daily";
         };
 

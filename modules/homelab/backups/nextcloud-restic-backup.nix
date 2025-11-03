@@ -9,50 +9,49 @@ in {
   options.services.nextcloudResticBackup = {
     enable = lib.mkEnableOption "Enable automatic Nextcloud backups via Restic";
 
-    backupDir = lib.mkOption {
-      type = lib.types.path;
-      default = "/var/backup/nextcloud";
-      description = "Directory to store temporary Nextcloud backups before uploading to Restic.";
-    };
-
     resticRepository = lib.mkOption {
       type = lib.types.str;
       description = "Restic repository URL (e.g. s3:https://s3.example.com/nextcloud-backups)";
     };
 
-    passwordFile = lib.mkOption {
+    resticPasswordFile = lib.mkOption {
       type = lib.types.path;
       description = "Path to the Restic password file.";
     };
 
-    environmentFile = lib.mkOption {
+    resticEnvironmentFile = lib.mkOption {
       type = lib.types.path;
-      description = "Path to file containing S3 credentials (AWS_ACCESS_KEY_ID / AWS_SECRET_ACCESS_KEY).";
+      description = "Path to file containing S3 credentials (AWS_ACCESS_KEY_ID / AWS_SECRET_ACCESS_KEY / AWS_REGION).";
     };
 
-    pgDatabase = lib.mkOption {
-      type = lib.types.str;
-      default = "nextcloud";
-      description = "PostgreSQL database name for Nextcloud.";
-    };
-
-    retention = lib.mkOption {
+    resticPruneOpts = lib.mkOption {
       type = lib.types.listOf lib.types.str;
-      default = ["--keep-daily 7" "--keep-weekly 4" "--keep-monthly 6"];
       description = "Restic prune options for retention policy.";
+      default = ["--keep-daily 7" "--keep-weekly 4" "--keep-monthly 6"];
+    };
+
+    backupDir = lib.mkOption {
+      type = lib.types.path;
+      description = "Directory to store temporary Nextcloud backups before uploading to Restic.";
+      default = "/var/backup/nextcloud";
+    };
+
+    pgsqlDbName = lib.mkOption {
+      type = lib.types.str;
+      description = "PostgreSQL database name for Nextcloud.";
+      default = "nextcloud";
     };
 
     schedule = lib.mkOption {
       type = lib.types.str;
-      default = "daily";
       description = "Systemd OnCalendar expression (e.g. daily, hourly, 03:00).";
+      default = "daily";
     };
   };
 
   config = lib.mkIf cfg.enable {
-    # === Сервис: подготовка бэкапа Nextcloud ===
     systemd.services.prepare-nextcloud-backup = {
-      description = "Prepare Nextcloud data and database dump for Restic backup";
+      description = "Prepare and create cold Nextcloud backup for Restic";
       serviceConfig = {
         Type = "oneshot";
         User = "root";
@@ -63,18 +62,18 @@ in {
           mkdir -p "$BACKUP_DIR"
 
           echo "[Nextcloud Backup] Stopping Nextcloud services..."
-          systemctl stop nextcloud-phpfpm.service nginx.service
+          systemctl stop phpfpm-nextcloud.service nginx.service
 
-          echo "[Nextcloud Backup] Dumping PostgreSQL database..."
-          sudo -u postgres pg_dump ${cfg.pgDatabase} > "$BACKUP_DIR/db-$DATE.sql"
+          echo "[Nextcloud Backup] Dumping PostgreSQL..."
+          sudo -u postgres pg_dump --no-owner --clean ${cfg.pgsqlDbName} > "$BACKUP_DIR/db-$DATE.sql"
 
-          echo "[Nextcloud Backup] Archiving data directory..."
-          tar -czf "$BACKUP_DIR/files-$DATE.tar.gz" /var/lib/nextcloud/data /var/lib/nextcloud/config
+          echo "[Nextcloud Backup] Archiving data..."
+          tar -czf "$BACKUP_DIR/files-$DATE.tar.gz" ${config.services.nextcloud.home}/data ${config.services.nextcloud.home}/config
 
-          echo "[Nextcloud Backup] Restarting services..."
-          systemctl start nginx.service nextcloud-phpfpm.service
+          echo "[Nextcloud Backup] Starting Nextcloud services..."
+          systemctl start nginx.service phpfpm-nextcloud.service
 
-          # Clean up local backups older than 3 days
+          echo "[Nextcloud Backup] Cleaning up old local backups..."
           find "$BACKUP_DIR" -type f -mtime +3 -delete
         '';
       };
@@ -89,13 +88,12 @@ in {
       };
     };
 
-    # === Restic backup service ===
     services.restic.backups.nextcloud = {
       repository = cfg.resticRepository;
-      passwordFile = cfg.passwordFile;
-      environmentFile = cfg.environmentFile;
+      passwordFile = cfg.resticPasswordFile;
+      environmentFile = cfg.resticEnvironmentFile;
+      pruneOpts = cfg.resticPruneOpts;
       paths = [cfg.backupDir];
-      pruneOpts = cfg.retention;
       timerConfig = {
         OnCalendar = cfg.schedule;
         Persistent = true;
