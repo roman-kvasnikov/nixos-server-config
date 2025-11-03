@@ -4,9 +4,9 @@
   pkgs,
   ...
 }: let
-  cfg = config.services.nextcloudResticBackup;
+  cfg = config.homelab.services.nextcloudResticBackup;
 in {
-  options.services.nextcloudResticBackup = {
+  options.homelab.services.nextcloudResticBackup = {
     enable = lib.mkEnableOption "Enable automatic Nextcloud backups via Restic";
 
     resticRepository = lib.mkOption {
