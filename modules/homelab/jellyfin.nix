@@ -160,6 +160,7 @@ in {
                 then ""
                 else ''
                   allow ${cfgHomelab.subnet};
+                  allow ${cfgHomelab.vpnSubnet};
                   deny all;
                 ''
               }

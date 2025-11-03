@@ -22,6 +22,12 @@
       default = "192.168.1.0/24";
     };
 
+    vpnSubnet = lib.mkOption {
+      type = lib.types.str;
+      description = "VPN subnet for the homelab server";
+      default = "172.16.0.0/16";
+    };
+
     interface = lib.mkOption {
       type = lib.types.str;
       description = "Lan interface for the homelab server";
