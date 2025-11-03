@@ -14,20 +14,18 @@ in {
     services.dnsmasq = {
       enable = true;
 
+      alwaysKeepRunning = true;
+
       settings = {
         # Основные настройки
         domain-needed = true;
         bogus-priv = true;
         no-resolv = true;
 
-        # Upstream DNS серверы для остальных запросов
-        server = [
-          "1.1.1.1"
-          "8.8.8.8"
+        # Только локальные домены обслуживаем
+        local = [
+          "/${cfgHomelab.domain}/"
         ];
-
-        # Кэширование
-        cache-size = 1000;
 
         # Переопределение для локальной сети
         address = [
@@ -40,10 +38,10 @@ in {
         bind-interfaces = true;
 
         # Слушаем на этих адресах
-        listen-address = [
-          "127.0.0.1" # localhost
-          cfgHomelab.ip # LAN IP
-        ];
+        # listen-address = [
+        #   "127.0.0.1" # localhost
+        #   cfgHomelab.ip # LAN IP
+        # ];
 
         # Явно отключаем DHCP (роутер делает)
         no-dhcp-interface = cfgHomelab.interface;
