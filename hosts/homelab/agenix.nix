@@ -35,8 +35,8 @@
         mode = "0400";
       };
 
-      restic-s3-env = {
-        file = ../../secrets/restic/s3.env.age;
+      s3-env = {
+        file = ../../secrets/s3/env.age;
         owner = "root";
         group = "root";
         mode = "0600";

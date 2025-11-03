@@ -4,24 +4,28 @@
   pkgs,
   ...
 }: let
-  cfg = config.homelab.services.nextcloudResticBackup;
+  cfg = config.homelab.services.nextcloud-backup-ctl;
+  cfgHomelab = config.homelab;
 in {
-  options.homelab.services.nextcloudResticBackup = {
-    enable = lib.mkEnableOption "Enable automatic Nextcloud backups via Restic";
+  options.homelab.services.nextcloud-backup-ctl = {
+    enable = lib.mkEnableOption "Enable automatic Nextcloud backups";
 
     resticRepository = lib.mkOption {
       type = lib.types.str;
       description = "Restic repository URL (e.g. s3:https://s3.example.com/nextcloud-backups)";
+      default = "s3:${config.homelab.s3Backups.s3-url}/${config.homelab.s3Backups.s3-bucket}/${config.homelab.s3Backups.s3-dir}/nextcloud";
     };
 
     resticPasswordFile = lib.mkOption {
       type = lib.types.path;
       description = "Path to the Restic password file.";
+      default = config.age.secrets.restic-password.path;
     };
 
     resticEnvironmentFile = lib.mkOption {
       type = lib.types.path;
       description = "Path to file containing S3 credentials (AWS_ACCESS_KEY_ID / AWS_SECRET_ACCESS_KEY / AWS_REGION).";
+      default = config.homelab.s3Backups.s3-env-file;
     };
 
     resticPruneOpts = lib.mkOption {

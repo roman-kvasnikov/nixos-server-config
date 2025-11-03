@@ -73,18 +73,7 @@ in {
         immichctl.enable = true;
         jellyfinctl.enable = true;
         microbinctl.enable = true;
-
         nextcloudctl.enable = true;
-        nextcloudResticBackup = {
-          enable = true;
-
-          resticRepository = "s3:https://s3.twcstorage.ru/1f382b96-c34b0ea3-eb1f-4476-b009-6e99275d7b19/backups/nextcloud";
-          resticPasswordFile = config.age.secrets.restic-password.path;
-          resticEnvironmentFile = config.age.secrets.restic-s3-env.path;
-          pgsqlDbName = "nextcloud";
-          schedule = "daily";
-        };
-
         onlyofficectl.enable = true;
         paperlessctl.enable = true;
         qbittorrentctl.enable = true;
@@ -134,7 +123,7 @@ in {
           };
         };
 
-        uptime-kumactl.enable = true;
+        uptime-kuma-ctl.enable = true;
         vaultwardenctl.enable = true;
       };
     };

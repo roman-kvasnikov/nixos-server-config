@@ -69,5 +69,16 @@
       description = "Admin password file for the homelab server";
       default = config.age.secrets.server-admin-password.path;
     };
+
+    s3Backups = lib.mkOption {
+      type = lib.types.attrsOf lib.types.str;
+      description = "S3 backup settings for the homelab server";
+      default = {
+        s3-url = "https://s3.twcstorage.ru";
+        s3-bucket = "1f382b96-c34b0ea3-eb1f-4476-b009-6e99275d7b19";
+        s3-dir = "backups";
+        s3-env-file = config.age.secrets.s3-env.path;
+      };
+    };
   };
 }

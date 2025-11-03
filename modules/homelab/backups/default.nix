@@ -1,5 +1,5 @@
 {
   imports = [
-    ./nextcloud-restic-backup.nix
+    ./nextcloud.nix
   ];
 }

@@ -4,12 +4,12 @@
   pkgs,
   ...
 }: let
-  cfg = config.homelab.services.uptime-kumactl;
+  cfg = config.homelab.services.uptime-kuma-ctl;
   cfgHomelab = config.homelab;
   cfgAcme = config.services.acmectl;
   cfgNginx = config.services.nginxctl;
 in {
-  options.homelab.services.uptime-kumactl = {
+  options.homelab.services.uptime-kuma-ctl = {
     enable = lib.mkEnableOption "Enable Uptime Kuma";
 
     host = lib.mkOption {

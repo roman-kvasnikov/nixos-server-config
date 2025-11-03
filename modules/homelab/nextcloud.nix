@@ -38,16 +38,16 @@ in {
       default = cfgHomelab.adminPasswordFile;
     };
 
-    # dbPasswordFile = lib.mkOption {
-    #   type = lib.types.path;
-    #   description = "Database password file for Nextcloud";
-    #   default = config.age.secrets.postgresql-nextcloud-password.path;
-    # };
-
     apps = lib.mkOption {
       type = lib.types.listOf lib.types.str;
       description = "List of Nextcloud apps to enable";
       default = ["bookmarks" "calendar" "contacts" "notes" "mail" "onlyoffice" "groupfolders"];
+    };
+
+    backupEnabled = lib.mkOption {
+      type = lib.types.bool;
+      description = "Enable backup for Nextcloud";
+      default = true;
     };
 
     logFile = lib.mkOption {
@@ -135,6 +135,8 @@ in {
             enableFastcgiRequestBuffering = true;
           };
         };
+
+        nextcloud-backup-ctl.enable = cfg.backupEnabled;
 
         fail2ban = {
           enable = true;

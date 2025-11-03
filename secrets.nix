@@ -8,7 +8,8 @@ in {
   "./secrets/onlyoffice/jwt-secret.age".publicKeys = [homelabSshKey];
 
   "./secrets/restic/password.age".publicKeys = [homelabSshKey];
-  "./secrets/restic/s3.env.age".publicKeys = [homelabSshKey];
+
+  "./secrets/s3/env.age".publicKeys = [homelabSshKey];
 
   "./secrets/samba/romank-password.age".publicKeys = [homelabSshKey];
 
