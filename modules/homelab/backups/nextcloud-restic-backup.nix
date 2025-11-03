@@ -56,6 +56,9 @@ in {
         Type = "oneshot";
         User = "root";
         ExecStart = pkgs.writeShellScript "prepare-nextcloud-backup" ''
+          #!${pkgs.bash}/bin/bash
+          export PATH=${pkgs.gzip}/bin:${pkgs.tar}/bin:${pkgs.util-linux}/bin:$PATH
+
           set -euo pipefail
 
           echo "[Nextcloud Backup] Starting..."
@@ -68,7 +71,7 @@ in {
           systemctl stop phpfpm-nextcloud.service nginx.service redis-nextcloud.service || true
 
           echo "[Nextcloud Backup] Dumping PostgreSQL..."
-          ${config.services.postgresql.package}/bin/pg_dump \
+          runuser -u postgres -- ${config.services.postgresql.package}/bin/pg_dump \
             --username postgres \
             --no-owner \
             --clean \
