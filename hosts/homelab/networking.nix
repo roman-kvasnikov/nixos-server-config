@@ -9,7 +9,7 @@ in {
     hostName = hostname;
     #useDHCP = true;
 
-    useResolved = false;
+    # useResolved = false;
     nameservers = cfgHomelab.nameservers;
 
     networkmanager = {
