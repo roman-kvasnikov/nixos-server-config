@@ -65,7 +65,7 @@ in {
           systemctl stop phpfpm-nextcloud.service nginx.service
 
           echo "[Nextcloud Backup] Dumping PostgreSQL..."
-          sudo -u postgres pg_dump --no-owner --clean ${cfg.pgsqlDbName} > "$BACKUP_DIR/db-$DATE.sql"
+          runuser -u postgres -- pg_dump --no-owner --clean ${cfg.pgsqlDbName} > "$BACKUP_DIR/db-$DATE.sql"
 
           echo "[Nextcloud Backup] Archiving data..."
           tar -czf "$BACKUP_DIR/files-$DATE.tar.gz" ${config.services.nextcloud.home}/data ${config.services.nextcloud.home}/config
