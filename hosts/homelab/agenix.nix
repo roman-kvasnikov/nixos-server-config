@@ -28,6 +28,20 @@
         mode = "0400";
       };
 
+      restic-password = {
+        file = ../../secrets/restic/password.age;
+        owner = "root";
+        group = "root";
+        mode = "0400";
+      };
+
+      restic-s3-env = {
+        file = ../../secrets/restic/s3.env.age;
+        owner = "root";
+        group = "root";
+        mode = "0600";
+      };
+
       samba-romank-password = {
         file = ../../secrets/samba/romank-password.age;
         owner = "root";
