@@ -57,24 +57,33 @@ in {
         User = "root";
         ExecStart = pkgs.writeShellScript "prepare-nextcloud-backup" ''
           set -euo pipefail
+
+          echo "[Nextcloud Backup] Starting..."
+
           BACKUP_DIR=${cfg.backupDir}
           DATE=$(date +"%Y-%m-%d_%H-%M-%S")
           mkdir -p "$BACKUP_DIR"
 
           echo "[Nextcloud Backup] Stopping Nextcloud services..."
-          systemctl stop phpfpm-nextcloud.service nginx.service
+          systemctl stop phpfpm-nextcloud.service nginx.service redis-nextcloud.service || true
 
           echo "[Nextcloud Backup] Dumping PostgreSQL..."
-          runuser -u postgres -- pg_dump --no-owner --clean ${cfg.pgsqlDbName} > "$BACKUP_DIR/db-$DATE.sql"
+          ${config.services.postgresql.package}/bin/pg_dump \
+            --username postgres \
+            --no-owner \
+            --clean \
+            ${cfg.pgsqlDbName} | gzip > "$BACKUP_DIR/db-$DATE.sql.gz"
 
           echo "[Nextcloud Backup] Archiving data..."
           tar -czf "$BACKUP_DIR/files-$DATE.tar.gz" ${config.services.nextcloud.home}/data ${config.services.nextcloud.home}/config
 
           echo "[Nextcloud Backup] Starting Nextcloud services..."
-          systemctl start nginx.service phpfpm-nextcloud.service
+          systemctl start nginx.service phpfpm-nextcloud.service redis-nextcloud.service || true
 
           echo "[Nextcloud Backup] Cleaning up old local backups..."
           find "$BACKUP_DIR" -type f -mtime +3 -delete
+
+          echo "[Nextcloud Backup] Done!"
         '';
       };
     };
