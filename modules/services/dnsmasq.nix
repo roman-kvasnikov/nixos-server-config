@@ -33,6 +33,8 @@ in {
           "/*.${cfgHomelab.domain}/${cfgHomelab.ip}"
         ];
 
+        server = ["192.168.1.1"];
+
         # Слушаем интерфейс локальной сети
         interface = cfgHomelab.interface;
         bind-interfaces = true;
