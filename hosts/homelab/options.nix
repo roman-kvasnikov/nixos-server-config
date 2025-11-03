@@ -30,7 +30,7 @@
 
     nameservers = lib.mkOption {
       type = lib.types.listOf lib.types.str;
-      description = "Nameserver/Router addresses";
+      description = "Nameservers for the homelab server";
       default = ["192.168.1.1"];
     };
 

@@ -20,6 +20,12 @@ in {
       description = "Host of the Homepage module";
       default = "${cfgHomelab.domain}";
     };
+
+    allowExternal = lib.mkOption {
+      type = lib.types.bool;
+      description = "Allow external access to Homepage.";
+      default = false;
+    };
   };
 
   config = lib.mkMerge [
@@ -343,6 +349,16 @@ in {
             extraConfig = ''
               if ($host != "${cfg.host}") {
                 return 404;
+              }
+
+              ${
+                if cfg.allowExternal
+                then ""
+                else ''
+                  allow ${cfgHomelab.subnet};
+                  allow ${cfgHomelab.vpnSubnet};
+                  deny all;
+                ''
               }
             '';
 
