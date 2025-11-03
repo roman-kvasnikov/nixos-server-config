@@ -136,8 +136,6 @@ in {
           };
         };
 
-        nextcloud-backup-ctl.enable = cfg.backupEnabled;
-
         fail2ban = {
           enable = true;
 
@@ -154,6 +152,8 @@ in {
           };
         };
       };
+
+      homelab.services.nextcloud-backup-ctl.enable = cfg.backupEnabled;
 
       environment.etc."fail2ban/filter.d/nextcloud.conf".text = ''
         [Definition]
