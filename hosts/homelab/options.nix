@@ -28,6 +28,12 @@
       default = "172.16.0.0/16";
     };
 
+    nameservers = lib.mkOption {
+      type = lib.types.listOf lib.types.str;
+      description = "Nameserver/Router addresses";
+      default = ["192.168.1.1"];
+    };
+
     interface = lib.mkOption {
       type = lib.types.str;
       description = "Lan interface for the homelab server";

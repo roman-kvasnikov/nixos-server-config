@@ -2,7 +2,7 @@
   imports = [
     ./acme.nix
     ./diskspacealert.nix
-    ./dnsmasq.nix
+    # ./dnsmasq.nix
     ./hddfancontrol.nix
     ./nginx.nix
     ./openssh.nix

@@ -13,6 +13,7 @@ in {
 
   config = {
     services = {
+      resolved.enable = false;
       dbus.enable = true; # Для работы с systemd
       udisks2.enable = true; # Автоматическое монтирование USB
       geoclue2.enable = true; # Геолокация для часовых поясов
@@ -21,7 +22,7 @@ in {
       acmectl.enable = true;
       nginxctl.enable = true;
       diskspacealertctl.enable = true;
-      dnsmasqctl.enable = false;
+      # dnsmasqctl.enable = false;
       # hddfancontrolctl.enable = true;
       smartdctl.enable = true;
       xrayctl.enable = true;
