@@ -112,7 +112,7 @@ in {
           };
 
           settings = {
-            maintenance = false; # Disable maintenance mode
+            maintenance = true; # Disable maintenance mode
 
             trusted_domains = [
               "localhost"
