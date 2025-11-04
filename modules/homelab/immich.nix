@@ -101,8 +101,6 @@ in {
 
       homelab.services.resticctl = {
         jobs.immich = {
-          enable = true;
-
           paths = [config.services.immich.mediaLocation];
         };
       };
