@@ -106,51 +106,17 @@ in {
           };
         };
       };
+    })
 
-      systemd = lib.mkIf cfg.backupEnabled {
-        services.database-backup-paperless = {
-          description = "Daily Paperless database backup";
-          serviceConfig = {
-            Type = "oneshot";
-            User = "root";
-            ExecStart = pkgs.writeShellScript "database-backup-paperless" ''
-              #!${pkgs.bash}/bin/bash
-              export PATH=${pkgs.gzip}/bin:${pkgs.gnutar}/bin:${pkgs.util-linux}/bin:$PATH
+    (lib.mkIf (cfg.enable && cfg.backupEnabled) {
+      services.postgresqlBackup = {
+        enable = true;
 
-              set -euo pipefail
-
-              echo "[Paperless Database Backup] Starting..."
-
-              BACKUP_DIR=${config.services.paperless.dataDir}/backups
-              DATE=$(date +"%Y-%m-%d_%H-%M-%S")
-              mkdir -p "$BACKUP_DIR"
-
-              echo "[Paperless Database Backup] Dumping PostgreSQL..."
-              runuser -u postgres -- ${config.services.postgresql.package}/bin/pg_dump \
-                --username postgres \
-                --no-owner \
-                --clean \
-                ${config.services.paperless.settings.PAPERLESS_DBNAME} | gzip > "$BACKUP_DIR/paperless-db-backup-$DATE.sql.gz"
-
-              echo "[Paperless Database Backup] Cleaning up old local backups..."
-              find "$BACKUP_DIR" -type f -mtime +3 -delete
-
-              echo "[Paperless Database Backup] Done!"
-            '';
-          };
-        };
-
-        timers.database-backup-paperless = {
-          description = "Daily Paperless database backup";
-          wantedBy = ["timers.target"];
-          timerConfig = {
-            OnCalendar = "02:00";
-            Persistent = true;
-          };
-        };
+        databases = [config.services.paperless.settings.PAPERLESS_DBNAME];
+        location = "${config.services.paperless.dataDir}/backups";
       };
 
-      homelab.services.resticctl = lib.mkIf cfg.backupEnabled {
+      homelab.services.resticctl = {
         jobs.paperless = {
           enable = true;
 

@@ -94,8 +94,12 @@ in {
           PUBLIC_IMMICH_SERVER_URL = "http://${cfg.host}:${toString cfg.port}";
         };
       };
+    })
 
-      homelab.services.resticctl = lib.mkIf cfg.backupEnabled {
+    (lib.mkIf (cfg.enable && cfg.backupEnabled) {
+      # Immich сам создает бекапы базы данных в /var/lib/immich/backups
+
+      homelab.services.resticctl = {
         jobs.immich = {
           enable = true;
 

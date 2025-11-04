@@ -91,8 +91,17 @@ in {
           DATABASE_URL = "postgresql:///vaultwarden?host=/run/postgresql";
         };
       };
+    })
 
-      homelab.services.resticctl = lib.mkIf cfg.backupEnabled {
+    (lib.mkIf (cfg.enable && cfg.backupEnabled) {
+      services.postgresqlBackup = {
+        enable = true;
+
+        databases = ["vaultwarden"];
+        location = "/var/lib/vaultwarden/backups";
+      };
+
+      homelab.services.resticctl = {
         jobs.vaultwarden = {
           enable = true;
 

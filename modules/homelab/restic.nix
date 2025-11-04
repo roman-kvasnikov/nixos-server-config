@@ -13,7 +13,7 @@ in {
       type = lib.types.attrsOf lib.types.str;
       description = "Default restic backup settings (prune schedule, etc.)";
       default = {
-        schedule = "daily";
+        schedule = "04:00";
         keepDaily = "7";
         keepWeekly = "4";
         keepMonthly = "6";
