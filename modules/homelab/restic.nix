@@ -28,7 +28,7 @@ in {
           repository = lib.mkOption {
             type = lib.types.str;
             description = "Restic repository (e.g., s3:https://s3.example.com/my-repo)";
-            default = config.homelab.restic.repository;
+            default = "${config.homelab.restic.repository}/${name}";
           };
 
           environmentFile = lib.mkOption {
