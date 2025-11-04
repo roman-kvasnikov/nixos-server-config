@@ -88,8 +88,13 @@ in {
 
           afterDeps =
             if cfg.serialize && prevJobName != null
-            then ["restic-backup-${prevJobName}.service"]
+            then ["After=restic-backup-${prevJobName}.service"]
             else [];
+
+          serviceTuning = [
+            "Nice=10"
+            "IOSchedulingClass=idle"
+          ];
         in {
           name = name;
           value = lib.mkIf job.enable {
@@ -109,13 +114,8 @@ in {
               "--keep-monthly ${job.prune.monthly}"
             ];
 
-            extraOptions = {
-              Unit = lib.mkIf (afterDeps != []) {After = afterDeps;};
-              Service = {
-                Nice = 10;
-                IOSchedulingClass = "idle";
-              };
-            };
+            # Теперь это корректный список строк
+            extraOptions = afterDeps ++ serviceTuning;
           };
         })
         jobNames);
