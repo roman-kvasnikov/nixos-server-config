@@ -85,6 +85,7 @@ in {
             if index > 0
             then builtins.elemAt jobNames (index - 1)
             else null;
+
           afterDeps =
             if cfg.serialize && prevJobName != null
             then ["restic-backup-${prevJobName}.service"]
@@ -108,8 +109,12 @@ in {
               "--keep-monthly ${job.prune.monthly}"
             ];
 
-            unitConfig = lib.mkIf (afterDeps != []) {
-              After = afterDeps;
+            extraOptions = {
+              Unit = lib.mkIf (afterDeps != []) {After = afterDeps;};
+              Service = {
+                Nice = 10;
+                IOSchedulingClass = "idle";
+              };
             };
           };
         })
