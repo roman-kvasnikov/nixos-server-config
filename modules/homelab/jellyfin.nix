@@ -13,32 +13,32 @@ in {
     enable = lib.mkEnableOption "Enable Jellyfin";
 
     domain = lib.mkOption {
-      type = lib.types.str;
       description = "Domain of the Jellyfin module";
+      type = lib.types.str;
       default = "jellyfin.${cfgHomelab.domain}";
     };
 
     host = lib.mkOption {
-      type = lib.types.str;
       description = "Host of the Jellyfin module";
+      type = lib.types.str;
       default = "127.0.0.1";
     };
 
     port = lib.mkOption {
-      type = lib.types.port;
       description = "Port of the Jellyfin module";
+      type = lib.types.port;
       default = 8096;
     };
 
     allowExternal = lib.mkOption {
-      type = lib.types.bool;
       description = "Allow external access to Jellyfin";
+      type = lib.types.bool;
       default = true;
     };
 
     mediaDir = lib.mkOption {
-      type = lib.types.path;
       description = "Media directory for Jellyfin";
+      type = lib.types.path;
       default = "/data/media";
     };
 

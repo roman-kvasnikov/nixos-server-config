@@ -13,32 +13,32 @@ in {
     enable = lib.mkEnableOption "Enable Filebrowser";
 
     domain = lib.mkOption {
-      type = lib.types.str;
       description = "Domain of the Filebrowser module";
+      type = lib.types.str;
       default = "files.${cfgHomelab.domain}";
     };
 
     host = lib.mkOption {
-      type = lib.types.str;
       description = "Host of the Filebrowser module";
+      type = lib.types.str;
       default = "127.0.0.1";
     };
 
     port = lib.mkOption {
-      type = lib.types.port;
       description = "Port of the Filebrowser module";
+      type = lib.types.port;
       default = 8081;
     };
 
     allowExternal = lib.mkOption {
-      type = lib.types.bool;
       description = "Allow external access to Filebrowser";
+      type = lib.types.bool;
       default = false;
     };
 
     rootDir = lib.mkOption {
-      type = lib.types.path;
       description = "The directory where FileBrowser stores files.";
+      type = lib.types.path;
       default = "/data/filebrowser";
     };
 

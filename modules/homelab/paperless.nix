@@ -13,44 +13,44 @@ in {
     enable = lib.mkEnableOption "Enable Paperless";
 
     domain = lib.mkOption {
-      type = lib.types.str;
       description = "Domain of the Paperless module";
+      type = lib.types.str;
       default = "paperless.${cfgHomelab.domain}";
     };
 
     host = lib.mkOption {
-      type = lib.types.str;
       description = "Host of the Paperless module";
+      type = lib.types.str;
       default = "127.0.0.1";
     };
 
     port = lib.mkOption {
-      type = lib.types.port;
       description = "Port of the Paperless module";
+      type = lib.types.port;
       default = 28981;
     };
 
     allowExternal = lib.mkOption {
-      type = lib.types.bool;
       description = "Allow external access to Paperless";
+      type = lib.types.bool;
       default = true;
     };
 
     backupEnabled = lib.mkOption {
-      type = lib.types.bool;
       description = "Enable backup for Paperless";
+      type = lib.types.bool;
       default = true;
     };
 
     systemUser = lib.mkOption {
-      type = lib.types.str;
       description = "System user for Paperless";
+      type = lib.types.str;
       default = "paperless";
     };
 
     passwordFile = lib.mkOption {
-      type = lib.types.path;
       description = "Password file for Paperless";
+      type = lib.types.path;
       default = config.age.secrets.server-admin-password.path;
     };
 
@@ -86,6 +86,7 @@ in {
         consumptionDirIsPublic = true;
 
         configureNginx = cfgNginx.enable;
+
         domain = cfg.domain;
         address = cfg.host;
         port = cfg.port;

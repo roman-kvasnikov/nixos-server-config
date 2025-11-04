@@ -13,26 +13,26 @@ in {
     enable = lib.mkEnableOption "Enable Microbin";
 
     domain = lib.mkOption {
-      type = lib.types.str;
       description = "Domain of the Microbin module";
+      type = lib.types.str;
       default = "microbin.${cfgHomelab.domain}";
     };
 
     host = lib.mkOption {
-      type = lib.types.str;
       description = "Host of the Microbin module";
+      type = lib.types.str;
       default = "127.0.0.1";
     };
 
     port = lib.mkOption {
-      type = lib.types.port;
       description = "Port of the Microbin module";
+      type = lib.types.port;
       default = 8069;
     };
 
     allowExternal = lib.mkOption {
-      type = lib.types.bool;
       description = "Allow external access to Microbin";
+      type = lib.types.bool;
       default = true;
     };
 

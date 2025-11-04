@@ -11,8 +11,8 @@ in {
     enable = lib.mkEnableOption "Enable Samba (SMB/CIFS) file sharing";
 
     sharesDir = lib.mkOption {
-      type = lib.types.path;
       description = "Directory for Samba sharing paths";
+      type = lib.types.path;
       default = "/data/shares";
     };
 

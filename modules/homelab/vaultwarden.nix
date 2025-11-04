@@ -13,32 +13,32 @@ in {
     enable = lib.mkEnableOption "Enable Vaultwarden";
 
     domain = lib.mkOption {
-      type = lib.types.str;
       description = "Domain of the Vaultwarden module";
+      type = lib.types.str;
       default = "vaultwarden.${cfgHomelab.domain}";
     };
 
     host = lib.mkOption {
-      type = lib.types.str;
       description = "Host of the Vaultwarden module";
+      type = lib.types.str;
       default = "127.0.0.1";
     };
 
     port = lib.mkOption {
-      type = lib.types.port;
       description = "Port of the Vaultwarden module";
+      type = lib.types.port;
       default = 8222;
     };
 
     allowExternal = lib.mkOption {
-      type = lib.types.bool;
       description = "Allow external access to Vaultwarden";
+      type = lib.types.bool;
       default = false;
     };
 
     backupEnabled = lib.mkOption {
-      type = lib.types.bool;
       description = "Enable backup for Vaultwarden";
+      type = lib.types.bool;
       default = true;
     };
 

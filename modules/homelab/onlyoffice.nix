@@ -13,32 +13,32 @@ in {
     enable = lib.mkEnableOption "Enable Only Office";
 
     domain = lib.mkOption {
-      type = lib.types.str;
       description = "Domain of the Only Office module";
+      type = lib.types.str;
       default = "onlyoffice.${cfgHomelab.domain}";
     };
 
     host = lib.mkOption {
-      type = lib.types.str;
       description = "Host of the Only Office module";
+      type = lib.types.str;
       default = "127.0.0.1";
     };
 
     port = lib.mkOption {
-      type = lib.types.port;
       description = "Port of the Only Office module";
+      type = lib.types.port;
       default = 8000;
     };
 
     allowExternal = lib.mkOption {
-      type = lib.types.bool;
       description = "Allow external access to Only Office";
+      type = lib.types.bool;
       default = true;
     };
 
     jwtSecretFile = lib.mkOption {
-      type = lib.types.path;
       description = "JWT Secret file for Only Office";
+      type = lib.types.path;
       default = config.age.secrets.onlyoffice-jwt-secret.path;
     };
   };

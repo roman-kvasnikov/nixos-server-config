@@ -13,32 +13,32 @@ in {
     enable = lib.mkEnableOption "Enable Immich";
 
     domain = lib.mkOption {
-      type = lib.types.str;
       description = "Domain of the Immich module";
+      type = lib.types.str;
       default = "immich.${cfgHomelab.domain}";
     };
 
     host = lib.mkOption {
-      type = lib.types.str;
       description = "Host of the Immich module";
+      type = lib.types.str;
       default = "127.0.0.1";
     };
 
     port = lib.mkOption {
-      type = lib.types.port;
       description = "Port of the Immich module";
+      type = lib.types.port;
       default = 2283;
     };
 
     allowExternal = lib.mkOption {
-      type = lib.types.bool;
       description = "Allow external access to Immich";
+      type = lib.types.bool;
       default = true;
     };
 
     backupEnabled = lib.mkOption {
-      type = lib.types.bool;
       description = "Enable backup for Immich";
+      type = lib.types.bool;
       default = true;
     };
 
@@ -97,10 +97,9 @@ in {
     })
 
     (lib.mkIf (cfg.enable && cfg.backupEnabled) {
-      # Immich сам создает бекапы базы данных в /var/lib/immich/backups
-
       homelab.services.resticctl = {
         jobs.immich = {
+          database = config.services.immich.database.name;
           paths = [config.services.immich.mediaLocation];
         };
       };

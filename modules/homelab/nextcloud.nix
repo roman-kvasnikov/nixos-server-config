@@ -13,56 +13,56 @@ in {
     enable = lib.mkEnableOption "Enable Nextcloud";
 
     domain = lib.mkOption {
-      type = lib.types.str;
       description = "Domain of the Nextcloud module";
+      type = lib.types.str;
       default = "nextcloud.${cfgHomelab.domain}";
     };
 
     host = lib.mkOption {
-      type = lib.types.str;
       description = "Host of the Nextcloud module";
+      type = lib.types.str;
       default = "127.0.0.1";
     };
 
     port = lib.mkOption {
-      type = lib.types.port;
       description = "Port of the Nextcloud module";
+      type = lib.types.port;
       default = 8090;
     };
 
     allowExternal = lib.mkOption {
-      type = lib.types.bool;
       description = "Allow external access to Nextcloud";
+      type = lib.types.bool;
       default = true;
     };
 
     adminUser = lib.mkOption {
-      type = lib.types.str;
       description = "Admin user for Nextcloud";
+      type = lib.types.str;
       default = cfgHomelab.adminUser;
     };
 
     adminPasswordFile = lib.mkOption {
-      type = lib.types.path;
       description = "Admin password file for Nextcloud";
+      type = lib.types.path;
       default = cfgHomelab.adminPasswordFile;
     };
 
     apps = lib.mkOption {
-      type = lib.types.listOf lib.types.str;
       description = "List of Nextcloud apps to enable";
+      type = lib.types.listOf lib.types.str;
       default = ["bookmarks" "calendar" "contacts" "notes" "mail" "onlyoffice" "groupfolders"];
     };
 
     backupEnabled = lib.mkOption {
-      type = lib.types.bool;
       description = "Enable backup for Nextcloud";
+      type = lib.types.bool;
       default = true;
     };
 
     logFile = lib.mkOption {
-      type = lib.types.path;
       description = "Log file for Nextcloud";
+      type = lib.types.path;
       default = "/var/lib/nextcloud/data/nextcloud.log";
     };
 

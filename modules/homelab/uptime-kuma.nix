@@ -13,26 +13,26 @@ in {
     enable = lib.mkEnableOption "Enable Uptime Kuma";
 
     domain = lib.mkOption {
-      type = lib.types.str;
       description = "Domain of the Uptime Kuma module";
+      type = lib.types.str;
       default = "uptime-kuma.${cfgHomelab.domain}";
     };
 
     host = lib.mkOption {
-      type = lib.types.str;
       description = "Host of the Uptime Kuma module";
+      type = lib.types.str;
       default = "127.0.0.1";
     };
 
     port = lib.mkOption {
-      type = lib.types.port;
       description = "Port of the Uptime Kuma module";
+      type = lib.types.port;
       default = 4000;
     };
 
     allowExternal = lib.mkOption {
-      type = lib.types.bool;
       description = "Allow external access to Uptime Kuma";
+      type = lib.types.bool;
       default = false;
     };
 

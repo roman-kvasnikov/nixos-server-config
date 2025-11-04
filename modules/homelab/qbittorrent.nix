@@ -13,38 +13,38 @@ in {
     enable = lib.mkEnableOption "Enable qBittorrent";
 
     domain = lib.mkOption {
-      type = lib.types.str;
       description = "Domain of the qBittorrent module";
+      type = lib.types.str;
       default = "qbittorrent.${cfgHomelab.domain}";
     };
 
     host = lib.mkOption {
-      type = lib.types.str;
       description = "Host of the qBittorrent module";
+      type = lib.types.str;
       default = "127.0.0.1";
     };
 
     port = lib.mkOption {
-      type = lib.types.port;
       description = "Port of the qBittorrent module";
+      type = lib.types.port;
       default = 8080;
     };
 
     allowExternal = lib.mkOption {
-      type = lib.types.bool;
       description = "Allow external access to qBittorrent";
+      type = lib.types.bool;
       default = true;
     };
 
     torrentsDir = lib.mkOption {
-      type = lib.types.path;
       description = "Torrents directory for qBittorrent";
+      type = lib.types.path;
       default = "/data/.torrents";
     };
 
     downloadsDir = lib.mkOption {
-      type = lib.types.path;
       description = "Downloads directory for qBittorrent";
+      type = lib.types.path;
       default = "/data/Downloads";
     };
 
