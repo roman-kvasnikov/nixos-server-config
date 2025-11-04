@@ -81,6 +81,10 @@ in {
       lib.listToAttrs (lib.imap0
         (index: name: let
           job = cfg.jobs.${name};
+          prevJobName =
+            if index > 0
+            then builtins.elemAt jobNames (index - 1)
+            else null;
         in {
           name = name;
           value = lib.mkIf job.enable {
@@ -100,9 +104,13 @@ in {
               "--keep-monthly ${job.prune.monthly}"
             ];
 
-            # Добавляем зависимость только если не первый job
-            unitConfig = lib.mkIf (cfg.serialize && index > 0) {
-              After = ["restic-backup-${builtins.elemAt jobNames (index - 1)}.service"];
+            unitConfig = lib.mkIf (cfg.serialize && prevJobName != null) {
+              After = ["restic-backup-${prevJobName}.service"];
+            };
+
+            serviceConfig = {
+              Nice = 10;
+              IOSchedulingClass = "idle";
             };
           };
         })
