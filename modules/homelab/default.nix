@@ -11,6 +11,7 @@
     ./onlyoffice.nix
     ./paperless.nix
     ./qbittorrent.nix
+    ./restic.nix
     ./samba.nix
     ./uptime-kuma.nix
     ./vaultwarden.nix
