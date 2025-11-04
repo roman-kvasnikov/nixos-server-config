@@ -36,6 +36,12 @@ in {
       default = false;
     };
 
+    backupEnabled = lib.mkOption {
+      type = lib.types.bool;
+      description = "Enable backup for Vaultwarden";
+      default = true;
+    };
+
     homepage = {
       name = lib.mkOption {
         type = lib.types.str;
@@ -61,12 +67,22 @@ in {
       services.vaultwarden = {
         enable = true;
 
+        dbBackend = "postgresql";
+
         config = {
           DOMAIN = "https://${cfg.domain}";
           SIGNUPS_ALLOWED = true;
           ROCKET_ADDRESS = cfg.host;
           ROCKET_PORT = cfg.port;
           ROCKET_LOG = "critical";
+        };
+      };
+
+      homelab.services.resticctl = lib.mkIf cfg.backupEnabled {
+        jobs.vaultwarden = {
+          enable = true;
+
+          paths = ["/var/lib/vaultwarden"];
         };
       };
     })
