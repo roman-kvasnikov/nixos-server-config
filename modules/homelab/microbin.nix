@@ -76,13 +76,13 @@ in {
     })
 
     (lib.mkIf (cfg.enable && cfgAcme.enable) {
-      security.acme.certs."${cfg.host}" = cfgAcme.commonCertOptions;
+      security.acme.certs."${cfg.domain}" = cfgAcme.commonCertOptions;
     })
 
     (lib.mkIf (cfg.enable && cfgNginx.enable) {
       services.nginx = {
         virtualHosts = {
-          "${cfg.host}" = {
+          "${cfg.domain}" = {
             enableACME = true;
             forceSSL = true;
             http2 = true;
