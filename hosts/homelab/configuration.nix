@@ -7,6 +7,7 @@
     ./agenix.nix
     ./boot.nix
     ./hardware-configuration.nix
+    ./harware.nix
     ./networking.nix
     ./nix.nix
     ./options.nix

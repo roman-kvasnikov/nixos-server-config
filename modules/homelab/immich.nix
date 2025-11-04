@@ -63,7 +63,7 @@ in {
         type = lib.types.attrs;
         default = {
           type = "immich";
-          url = "https://${cfg.host}";
+          url = "https://${cfg.domain}";
           key = "OzGTW9auqbtAWBbW8GBmxYMzyxTjKBn9JL728psss";
           version = 2;
         };
