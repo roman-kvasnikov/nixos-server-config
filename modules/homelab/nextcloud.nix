@@ -173,50 +173,50 @@ in {
         datepattern = ,?\s*"time"\s*:\s*"%%Y-%%m-%%d[T ]%%H:%%M:%%S(%%z)?"
       '';
 
-      homelab.services.resticctl = lib.mkIf cfg.backupEnabled {
-        systemd = {
-          services.database-backup-nextcloud = {
-            description = "Daily Nextcloud database backup";
-            serviceConfig = {
-              Type = "oneshot";
-              User = "root";
-              ExecStart = pkgs.writeShellScript "database-backup-nextcloud" ''
-                #!${pkgs.bash}/bin/bash
-                export PATH=${pkgs.gzip}/bin:${pkgs.gnutar}/bin:${pkgs.util-linux}/bin:$PATH
+      systemd = lib.mkIf cfg.backupEnabled {
+        services.database-backup-nextcloud = {
+          description = "Daily Nextcloud database backup";
+          serviceConfig = {
+            Type = "oneshot";
+            User = "root";
+            ExecStart = pkgs.writeShellScript "database-backup-nextcloud" ''
+              #!${pkgs.bash}/bin/bash
+              export PATH=${pkgs.gzip}/bin:${pkgs.gnutar}/bin:${pkgs.util-linux}/bin:$PATH
 
-                set -euo pipefail
+              set -euo pipefail
 
-                echo "[Nextcloud Database Backup] Starting..."
+              echo "[Nextcloud Database Backup] Starting..."
 
-                BACKUP_DIR=${config.services.nextcloud.dataDir}/backups
-                DATE=$(date +"%Y-%m-%d_%H-%M-%S")
-                mkdir -p "$BACKUP_DIR"
+              BACKUP_DIR=${config.services.nextcloud.dataDir}/backups
+              DATE=$(date +"%Y-%m-%d_%H-%M-%S")
+              mkdir -p "$BACKUP_DIR"
 
-                echo "[Nextcloud Database Backup] Dumping PostgreSQL..."
-                runuser -u postgres -- ${config.services.postgresql.package}/bin/pg_dump \
-                  --username postgres \
-                  --no-owner \
-                  --clean \
-                  ${config.services.nextcloud.config.dbname} | gzip > "$BACKUP_DIR/nextcloud-db-backup-$DATE.sql.gz"
+              echo "[Nextcloud Database Backup] Dumping PostgreSQL..."
+              runuser -u postgres -- ${config.services.postgresql.package}/bin/pg_dump \
+                --username postgres \
+                --no-owner \
+                --clean \
+                ${config.services.nextcloud.config.dbname} | gzip > "$BACKUP_DIR/nextcloud-db-backup-$DATE.sql.gz"
 
-                echo "[Nextcloud Database Backup] Cleaning up old local backups..."
-                find "$BACKUP_DIR" -type f -mtime +3 -delete
+              echo "[Nextcloud Database Backup] Cleaning up old local backups..."
+              find "$BACKUP_DIR" -type f -mtime +3 -delete
 
-                echo "[Nextcloud Database Backup] Done!"
-              '';
-            };
-          };
-
-          timers.database-backup-nextcloud = {
-            description = "Daily Nextcloud database backup";
-            wantedBy = ["timers.target"];
-            timerConfig = {
-              OnCalendar = "02:00";
-              Persistent = true;
-            };
+              echo "[Nextcloud Database Backup] Done!"
+            '';
           };
         };
 
+        timers.database-backup-nextcloud = {
+          description = "Daily Nextcloud database backup";
+          wantedBy = ["timers.target"];
+          timerConfig = {
+            OnCalendar = "02:00";
+            Persistent = true;
+          };
+        };
+      };
+
+      homelab.services.resticctl = lib.mkIf cfg.backupEnabled {
         jobs.nextcloud = {
           enable = true;
 
