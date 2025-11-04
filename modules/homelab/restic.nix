@@ -81,7 +81,6 @@ in {
       lib.listToAttrs (lib.imap0
         (index: name: let
           job = cfg.jobs.${name};
-          prevJob = lib.optionals (cfg.serialize && index > 0) [(builtins.elemAt jobNames (index - 1))];
         in {
           name = name;
           value = lib.mkIf job.enable {
@@ -101,7 +100,7 @@ in {
               "--keep-monthly ${job.prune.monthly}"
             ];
 
-            # Добавляем зависимость от предыдущего job (если serialize включён)
+            # Добавляем зависимость только если не первый job
             unitConfig = lib.mkIf (cfg.serialize && index > 0) {
               After = ["restic-backup-${builtins.elemAt jobNames (index - 1)}.service"];
             };
