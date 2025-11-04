@@ -64,6 +64,18 @@ in {
 
   config = lib.mkMerge [
     (lib.mkIf cfg.enable {
+      services.postgresql = {
+        enable = true;
+
+        ensureUsers = [
+          {
+            name = "vaultwarden";
+            ensureDBOwnership = true;
+          }
+        ];
+        ensureDatabases = ["vaultwarden"];
+      };
+
       services.vaultwarden = {
         enable = true;
 
@@ -75,6 +87,8 @@ in {
           ROCKET_ADDRESS = cfg.host;
           ROCKET_PORT = cfg.port;
           ROCKET_LOG = "critical";
+
+          DATABASE_URL = "postgresql:///vaultwarden?host=/run/postgresql";
         };
       };
 
