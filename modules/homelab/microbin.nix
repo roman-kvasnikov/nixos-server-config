@@ -12,15 +12,27 @@ in {
   options.homelab.services.microbinctl = {
     enable = lib.mkEnableOption "Enable Microbin";
 
+    domain = lib.mkOption {
+      type = lib.types.str;
+      description = "Domain of the Microbin module";
+      default = "microbin.${cfgHomelab.domain}";
+    };
+
     host = lib.mkOption {
       type = lib.types.str;
       description = "Host of the Microbin module";
-      default = "microbin.${cfgHomelab.domain}";
+      default = "127.0.0.1";
+    };
+
+    port = lib.mkOption {
+      type = lib.types.port;
+      description = "Port of the Microbin module";
+      default = 8069;
     };
 
     allowExternal = lib.mkOption {
       type = lib.types.bool;
-      description = "Allow external access to Microbin.";
+      description = "Allow external access to Microbin";
       default = true;
     };
 
@@ -50,8 +62,9 @@ in {
         enable = true;
 
         settings = {
-          MICROBIN_PUBLIC_PATH = "https://${cfg.host}/";
-          MICROBIN_PORT = 8069;
+          MICROBIN_PUBLIC_PATH = "https://${cfg.domain}/";
+          MICROBIN_BIND = cfg.host;
+          MICROBIN_PORT = cfg.port;
           MICROBIN_WIDE = true;
           MICROBIN_MAX_FILE_SIZE_UNENCRYPTED_MB = 2048;
           MICROBIN_HIDE_LOGO = true;
@@ -81,7 +94,7 @@ in {
             '';
 
             locations."/" = {
-              proxyPass = "http://127.0.0.1:${toString config.services.microbin.settings.MICROBIN_PORT}";
+              proxyPass = "http://${cfg.host}:${toString cfg.port}";
               proxyWebsockets = true;
               recommendedProxySettings = true;
 

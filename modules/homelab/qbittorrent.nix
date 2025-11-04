@@ -12,15 +12,27 @@ in {
   options.homelab.services.qbittorrentctl = {
     enable = lib.mkEnableOption "Enable qBittorrent";
 
+    domain = lib.mkOption {
+      type = lib.types.str;
+      description = "Domain of the qBittorrent module";
+      default = "qbittorrent.${cfgHomelab.domain}";
+    };
+
     host = lib.mkOption {
       type = lib.types.str;
       description = "Host of the qBittorrent module";
-      default = "qbittorrent.${cfgHomelab.domain}";
+      default = "127.0.0.1";
+    };
+
+    port = lib.mkOption {
+      type = lib.types.port;
+      description = "Port of the qBittorrent module";
+      default = 8080;
     };
 
     allowExternal = lib.mkOption {
       type = lib.types.bool;
-      description = "Allow external access to qBittorrent.";
+      description = "Allow external access to qBittorrent";
       default = true;
     };
 
@@ -57,7 +69,7 @@ in {
         type = lib.types.attrs;
         default = {
           type = "qbittorrent";
-          url = "https://${cfg.host}";
+          url = "https://${cfg.domain}";
           username = "admin";
           password = "123456";
           enableLeechProgress = true;
@@ -83,18 +95,20 @@ in {
         user = "qbittorrent";
         group = cfgHomelab.systemGroup;
 
+        webuiPort = cfg.port;
+
         openFirewall = !cfgNginx.enable;
       };
     })
 
     (lib.mkIf (cfg.enable && cfgAcme.enable) {
-      security.acme.certs."${cfg.host}" = cfgAcme.commonCertOptions;
+      security.acme.certs."${cfg.domain}" = cfgAcme.commonCertOptions;
     })
 
     (lib.mkIf (cfg.enable && cfgNginx.enable) {
       services.nginx = {
         virtualHosts = {
-          "${cfg.host}" = {
+          "${cfg.domain}" = {
             enableACME = cfgAcme.enable;
             forceSSL = cfgAcme.enable;
             http2 = true;
@@ -106,7 +120,7 @@ in {
             '';
 
             locations."/" = {
-              proxyPass = "http://127.0.0.1:${toString config.services.qbittorrent.webuiPort}";
+              proxyPass = "http://${cfg.host}:${toString cfg.port}";
               proxyWebsockets = true;
               recommendedProxySettings = true;
 

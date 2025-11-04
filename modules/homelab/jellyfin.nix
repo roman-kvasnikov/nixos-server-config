@@ -12,15 +12,27 @@ in {
   options.homelab.services.jellyfinctl = {
     enable = lib.mkEnableOption "Enable Jellyfin";
 
+    domain = lib.mkOption {
+      type = lib.types.str;
+      description = "Domain of the Jellyfin module";
+      default = "jellyfin.${cfgHomelab.domain}";
+    };
+
     host = lib.mkOption {
       type = lib.types.str;
       description = "Host of the Jellyfin module";
-      default = "jellyfin.${cfgHomelab.domain}";
+      default = "127.0.0.1";
+    };
+
+    port = lib.mkOption {
+      type = lib.types.port;
+      description = "Port of the Jellyfin module";
+      default = 8096;
     };
 
     allowExternal = lib.mkOption {
       type = lib.types.bool;
-      description = "Allow external access to Immich.";
+      description = "Allow external access to Jellyfin";
       default = true;
     };
 
@@ -51,7 +63,7 @@ in {
         type = lib.types.attrs;
         default = {
           type = "jellyfin";
-          url = "https://${cfg.host}";
+          url = "https://${cfg.domain}";
           key = "868d1091409e430f8bbb835849b10149";
           enableBlocks = true;
           enableNowPlaying = true;
@@ -99,9 +111,7 @@ in {
         "d ${cfg.mediaDir}/Cartoons 0770 ${cfgHomelab.systemUser} ${cfgHomelab.systemGroup} - -"
       ];
 
-      users.users.jellyfin = {
-        extraGroups = ["video" "render"];
-      };
+      users.users.jellyfin.extraGroups = ["video" "render"];
 
       services.jellyfin = {
         enable = true;
@@ -120,13 +130,13 @@ in {
     })
 
     (lib.mkIf (cfg.enable && cfgAcme.enable) {
-      security.acme.certs."${cfg.host}" = cfgAcme.commonCertOptions;
+      security.acme.certs."${cfg.domain}" = cfgAcme.commonCertOptions;
     })
 
     (lib.mkIf (cfg.enable && cfgNginx.enable) {
       services.nginx = {
         virtualHosts = {
-          "${cfg.host}" = {
+          "${cfg.domain}" = {
             enableACME = cfgAcme.enable;
             forceSSL = cfgAcme.enable;
             http2 = true;
@@ -159,7 +169,7 @@ in {
             '';
 
             locations."/" = {
-              proxyPass = "http://127.0.0.1:8096";
+              proxyPass = "http://${cfg.host}:${toString cfg.port}";
               recommendedProxySettings = true;
 
               extraConfig = ''
@@ -171,7 +181,7 @@ in {
             };
 
             locations."/socket" = {
-              proxyPass = "http://127.0.0.1:8096";
+              proxyPass = "http://${cfg.host}:${toString cfg.port}";
               proxyWebsockets = true;
               recommendedProxySettings = true;
 

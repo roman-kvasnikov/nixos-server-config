@@ -15,15 +15,27 @@ in {
   options.homelab.services.homepagectl = {
     enable = lib.mkEnableOption "Enable Homepage";
 
+    domain = lib.mkOption {
+      type = lib.types.str;
+      description = "Domain of the Homepage module";
+      default = "${cfgHomelab.domain}";
+    };
+
     host = lib.mkOption {
       type = lib.types.str;
       description = "Host of the Homepage module";
-      default = "${cfgHomelab.domain}";
+      default = "127.0.0.1";
+    };
+
+    port = lib.mkOption {
+      type = lib.types.port;
+      description = "Port of the Homepage module";
+      default = 8082;
     };
 
     allowExternal = lib.mkOption {
       type = lib.types.bool;
-      description = "Allow external access to Homepage.";
+      description = "Allow external access to Homepage";
       default = false;
     };
   };
@@ -36,7 +48,8 @@ in {
       services.homepage-dashboard = {
         enable = true;
 
-        allowedHosts = cfg.host;
+        allowedHosts = "localhost:${toString cfg.port},127.0.0.1:${toString cfg.port},${cfg.domain}";
+        listenPort = cfg.port;
 
         openFirewall = !cfgNginx.enable;
 
@@ -129,8 +142,8 @@ in {
                 base = {
                   icon = config.homelab.services.${x}.homepage.icon;
                   description = config.homelab.services.${x}.homepage.description;
-                  href = "https://${config.homelab.services.${x}.host}";
-                  siteMonitor = "https://${config.homelab.services.${x}.host}";
+                  href = "https://${config.homelab.services.${x}.domain}";
+                  siteMonitor = "https://${config.homelab.services.${x}.domain}";
                 };
 
                 widgetOptions =
@@ -333,13 +346,13 @@ in {
     })
 
     (lib.mkIf (cfg.enable && cfgAcme.enable) {
-      security.acme.certs."${cfg.host}" = cfgAcme.commonCertOptions;
+      security.acme.certs."${cfg.domain}" = cfgAcme.commonCertOptions;
     })
 
     (lib.mkIf (cfg.enable && cfgNginx.enable) {
       services.nginx = {
         virtualHosts = {
-          "${cfg.host}" = {
+          "${cfg.domain}" = {
             default = true;
 
             enableACME = true;
@@ -347,7 +360,7 @@ in {
             http2 = true;
 
             extraConfig = ''
-              if ($host != "${cfg.host}") {
+              if ($host != "${cfg.domain}") {
                 return 404;
               }
 
@@ -363,7 +376,7 @@ in {
             '';
 
             locations."/" = {
-              proxyPass = "http://127.0.0.1:${toString config.services.homepage-dashboard.listenPort}";
+              proxyPass = "http://${cfg.host}:${toString cfg.port}";
               proxyWebsockets = true;
               recommendedProxySettings = true;
             };

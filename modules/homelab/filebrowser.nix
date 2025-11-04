@@ -18,9 +18,21 @@ in {
       default = "files.${cfgHomelab.domain}";
     };
 
+    host = lib.mkOption {
+      type = lib.types.str;
+      description = "Host of the Filebrowser module";
+      default = "127.0.0.1";
+    };
+
+    port = lib.mkOption {
+      type = lib.types.port;
+      description = "Port of the Filebrowser module";
+      default = 8081;
+    };
+
     allowExternal = lib.mkOption {
       type = lib.types.bool;
-      description = "Allow external access to Filebrowser.";
+      description = "Allow external access to Filebrowser";
       default = false;
     };
 
@@ -65,8 +77,8 @@ in {
         openFirewall = !cfgNginx.enable;
 
         settings = {
-          address = "127.0.0.1";
-          port = 8081;
+          address = cfg.host;
+          port = cfg.port;
           root = cfg.rootDir;
         };
       };
@@ -91,7 +103,7 @@ in {
             '';
 
             locations."/" = {
-              proxyPass = "http://127.0.0.1:${toString config.services.filebrowser.settings.port}";
+              proxyPass = "http://${cfg.host}:${toString cfg.port}";
               proxyWebsockets = true;
               recommendedProxySettings = true;
             };

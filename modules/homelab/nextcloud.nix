@@ -12,15 +12,27 @@ in {
   options.homelab.services.nextcloudctl = {
     enable = lib.mkEnableOption "Enable Nextcloud";
 
+    domain = lib.mkOption {
+      type = lib.types.str;
+      description = "Domain of the Nextcloud module";
+      default = "nextcloud.${cfgHomelab.domain}";
+    };
+
     host = lib.mkOption {
       type = lib.types.str;
       description = "Host of the Nextcloud module";
-      default = "nextcloud.${cfgHomelab.domain}";
+      default = "127.0.0.1";
+    };
+
+    port = lib.mkOption {
+      type = lib.types.port;
+      description = "Port of the Nextcloud module";
+      default = 8090;
     };
 
     allowExternal = lib.mkOption {
       type = lib.types.bool;
-      description = "Allow external access to Nextcloud.";
+      description = "Allow external access to Nextcloud";
       default = true;
     };
 
@@ -89,7 +101,7 @@ in {
 
           package = pkgs.nextcloud32;
 
-          hostName = cfg.host;
+          hostName = cfg.domain;
           https = true;
 
           extraApps = lib.genAttrs cfg.apps (app: config.services.nextcloud.package.packages.apps.${app});
@@ -117,8 +129,8 @@ in {
             trusted_domains = [
               "localhost"
               "127.0.0.1"
-              "172.20.0.0/16"
-              "192.168.1.0/24"
+              "${cfgHomelab.subnet}"
+              "${cfgHomelab.vpnSubnet}"
             ];
 
             overwriteprotocol = "https";
@@ -160,16 +172,67 @@ in {
                     ^\{%(_groupsre)s,?\s*"remoteAddr":"<HOST>"%(_groupsre)s,?\s*"message":"Trusted domain error.
         datepattern = ,?\s*"time"\s*:\s*"%%Y-%%m-%%d[T ]%%H:%%M:%%S(%%z)?"
       '';
+
+      homelab.services.resticctl = lib.mkIf cfg.backupEnabled {
+        systemd = {
+          services.database-backup-nextcloud = {
+            description = "Daily Nextcloud database backup";
+            serviceConfig = {
+              Type = "oneshot";
+              User = "root";
+              ExecStart = pkgs.writeShellScript "database-backup-nextcloud" ''
+                #!${pkgs.bash}/bin/bash
+                export PATH=${pkgs.gzip}/bin:${pkgs.gnutar}/bin:${pkgs.util-linux}/bin:$PATH
+
+                set -euo pipefail
+
+                echo "[Nextcloud Database Backup] Starting..."
+
+                BACKUP_DIR=${config.services.nextcloud.dataDir}/backups
+                DATE=$(date +"%Y-%m-%d_%H-%M-%S")
+                mkdir -p "$BACKUP_DIR"
+
+                echo "[Nextcloud Database Backup] Dumping PostgreSQL..."
+                runuser -u postgres -- ${config.services.postgresql.package}/bin/pg_dump \
+                  --username postgres \
+                  --no-owner \
+                  --clean \
+                  ${config.services.nextcloud.config.dbname} | gzip > "$BACKUP_DIR/nextcloud-db-backup-$DATE.sql.gz"
+
+                echo "[Nextcloud Database Backup] Cleaning up old local backups..."
+                find "$BACKUP_DIR" -type f -mtime +3 -delete
+
+                echo "[Nextcloud Database Backup] Done!"
+              '';
+            };
+          };
+
+          timers.database-backup-nextcloud = {
+            description = "Daily Nextcloud database backup";
+            wantedBy = ["timers.target"];
+            timerConfig = {
+              OnCalendar = "02:00";
+              Persistent = true;
+            };
+          };
+        };
+
+        jobs.nextcloud = {
+          enable = true;
+
+          paths = [config.services.nextcloud.dataDir];
+        };
+      };
     })
 
     (lib.mkIf (cfg.enable && cfgAcme.enable) {
-      security.acme.certs."${cfg.host}" = cfgAcme.commonCertOptions;
+      security.acme.certs."${cfg.domain}" = cfgAcme.commonCertOptions;
     })
 
     (lib.mkIf (cfg.enable && cfgNginx.enable) {
       services.nginx = {
         virtualHosts = {
-          "${cfg.host}" = {
+          "${cfg.domain}" = {
             enableACME = cfgAcme.enable;
             forceSSL = cfgAcme.enable;
             http2 = true;

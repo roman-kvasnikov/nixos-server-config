@@ -77,6 +77,8 @@ in {
         immich
       ];
 
+      users.users.immich.extraGroups = ["video" "render"];
+
       services.immich = {
         enable = true;
 
@@ -100,8 +102,6 @@ in {
           paths = [config.services.immich.mediaLocation];
         };
       };
-
-      users.users.immich.extraGroups = ["video" "render"];
     })
 
     (lib.mkIf (cfg.enable && cfgAcme.enable) {

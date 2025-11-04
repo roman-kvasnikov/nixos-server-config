@@ -12,16 +12,27 @@ in {
   options.homelab.services.vaultwardenctl = {
     enable = lib.mkEnableOption "Enable Vaultwarden";
 
-    host = lib.mkOption {
+    domain = lib.mkOption {
       type = lib.types.str;
-      description = "Host of the Vaultwarden module";
+      description = "Domain of the Vaultwarden module";
       default = "vaultwarden.${cfgHomelab.domain}";
     };
 
-    # Короче тут нужно разрешать как из локальной подсети, так и из под VPN, тоесть 172.20.0.0 и так далее, иначе через VPN не работает тоже.
+    host = lib.mkOption {
+      type = lib.types.str;
+      description = "Host of the Vaultwarden module";
+      default = "127.0.0.1";
+    };
+
+    port = lib.mkOption {
+      type = lib.types.port;
+      description = "Port of the Vaultwarden module";
+      default = 8222;
+    };
+
     allowExternal = lib.mkOption {
       type = lib.types.bool;
-      description = "Allow external access to Vaultwarden.";
+      description = "Allow external access to Vaultwarden";
       default = false;
     };
 
@@ -51,23 +62,23 @@ in {
         enable = true;
 
         config = {
-          DOMAIN = "https://${cfg.host}";
+          DOMAIN = "https://${cfg.domain}";
           SIGNUPS_ALLOWED = true;
-          ROCKET_ADDRESS = "127.0.0.1";
-          ROCKET_PORT = 8222;
+          ROCKET_ADDRESS = cfg.host;
+          ROCKET_PORT = cfg.port;
           ROCKET_LOG = "critical";
         };
       };
     })
 
     (lib.mkIf (cfg.enable && cfgAcme.enable) {
-      security.acme.certs."${cfg.host}" = cfgAcme.commonCertOptions;
+      security.acme.certs."${cfg.domain}" = cfgAcme.commonCertOptions;
     })
 
     (lib.mkIf (cfg.enable && cfgNginx.enable) {
       services.nginx = {
         virtualHosts = {
-          "${cfg.host}" = {
+          "${cfg.domain}" = {
             enableACME = cfgAcme.enable;
             forceSSL = cfgAcme.enable;
             http2 = true;
@@ -79,7 +90,7 @@ in {
             '';
 
             locations."/" = {
-              proxyPass = "http://127.0.0.1:${toString config.services.vaultwarden.config.ROCKET_PORT}";
+              proxyPass = "http://${cfg.host}:${toString cfg.port}";
               proxyWebsockets = true;
               recommendedProxySettings = true;
             };

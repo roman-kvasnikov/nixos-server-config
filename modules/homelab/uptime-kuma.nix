@@ -12,15 +12,27 @@ in {
   options.homelab.services.uptime-kuma-ctl = {
     enable = lib.mkEnableOption "Enable Uptime Kuma";
 
+    domain = lib.mkOption {
+      type = lib.types.str;
+      description = "Domain of the Uptime Kuma module";
+      default = "uptime-kuma.${cfgHomelab.domain}";
+    };
+
     host = lib.mkOption {
       type = lib.types.str;
       description = "Host of the Uptime Kuma module";
-      default = "uptime-kuma.${cfgHomelab.domain}";
+      default = "127.0.0.1";
+    };
+
+    port = lib.mkOption {
+      type = lib.types.port;
+      description = "Port of the Uptime Kuma module";
+      default = 4000;
     };
 
     allowExternal = lib.mkOption {
       type = lib.types.bool;
-      description = "Allow external access to Uptime Kuma.";
+      description = "Allow external access to Uptime Kuma";
       default = false;
     };
 
@@ -56,13 +68,13 @@ in {
     })
 
     (lib.mkIf (cfg.enable && cfgAcme.enable) {
-      security.acme.certs."${cfg.host}" = cfgAcme.commonCertOptions;
+      security.acme.certs."${cfg.domain}" = cfgAcme.commonCertOptions;
     })
 
     (lib.mkIf (cfg.enable && cfgNginx.enable) {
       services.nginx = {
         virtualHosts = {
-          "${cfg.host}" = {
+          "${cfg.domain}" = {
             enableACME = cfgAcme.enable;
             forceSSL = cfgAcme.enable;
             http2 = true;
@@ -74,7 +86,7 @@ in {
             '';
 
             locations."/" = {
-              proxyPass = "http://127.0.0.1:${toString config.services.uptime-kuma.settings.PORT}";
+              proxyPass = "http://${cfg.host}:${toString cfg.port}";
               proxyWebsockets = true;
               recommendedProxySettings = true;
             };

@@ -20,6 +20,16 @@ in {
       };
     };
 
+    serialize = lib.mkOption {
+      type = lib.types.bool;
+      description = ''
+        If true, ensures that restic backup jobs run sequentially (not in parallel)
+        by adding After= dependencies between them.
+        This prevents repository lock conflicts when using a shared repo.
+      '';
+      default = true;
+    };
+
     jobs = lib.mkOption {
       type = lib.types.attrsOf (lib.types.submodule ({name, ...}: {
         options = {
@@ -65,24 +75,60 @@ in {
   };
 
   config = lib.mkIf cfg.enable {
-    services.restic.backups =
-      lib.mapAttrs
-      (name: job:
-        lib.mkIf job.enable {
-          initialize = true;
-          repository = job.repository;
-          environmentFile = job.environmentFile;
-          paths = job.paths;
-          timerConfig = {
-            OnCalendar = job.schedule;
-            Persistent = true;
+    services.restic.backups = let
+      jobNames = lib.attrNames cfg.jobs;
+    in
+      lib.listToAttrs (lib.imap0
+        (index: name: let
+          job = cfg.jobs.${name};
+          prevJob = lib.optionals (cfg.serialize && index > 0) [(builtins.elemAt jobNames (index - 1))];
+        in {
+          name = name;
+          value = lib.mkIf job.enable {
+            initialize = true;
+            repository = job.repository;
+            environmentFile = job.environmentFile;
+            paths = job.paths;
+
+            timerConfig = {
+              OnCalendar = job.schedule;
+              Persistent = true;
+            };
+
+            pruneOpts = [
+              "--keep-daily ${job.prune.daily}"
+              "--keep-weekly ${job.prune.weekly}"
+              "--keep-monthly ${job.prune.monthly}"
+            ];
+
+            # Добавляем зависимость от предыдущего job (если serialize включён)
+            unitConfig = lib.mkIf (cfg.serialize && index > 0) {
+              After = ["restic-backup-${builtins.elemAt jobNames (index - 1)}.service"];
+            };
           };
-          pruneOpts = [
-            "--keep-daily ${job.prune.daily}"
-            "--keep-weekly ${job.prune.weekly}"
-            "--keep-monthly ${job.prune.monthly}"
-          ];
         })
-      cfg.jobs;
+        jobNames);
   };
+
+  # config = lib.mkIf cfg.enable {
+  #   services.restic.backups =
+  #     lib.mapAttrs
+  #     (name: job:
+  #       lib.mkIf job.enable {
+  #         initialize = true;
+  #         repository = job.repository;
+  #         environmentFile = job.environmentFile;
+  #         paths = job.paths;
+  #         timerConfig = {
+  #           OnCalendar = job.schedule;
+  #           Persistent = true;
+  #         };
+  #         pruneOpts = [
+  #           "--keep-daily ${job.prune.daily}"
+  #           "--keep-weekly ${job.prune.weekly}"
+  #           "--keep-monthly ${job.prune.monthly}"
+  #         ];
+  #       })
+  #     cfg.jobs;
+  # };
 }

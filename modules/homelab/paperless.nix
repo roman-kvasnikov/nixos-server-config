@@ -94,6 +94,7 @@ in {
 
         settings = {
           PAPERLESS_URL = "https://${cfg.domain}";
+          PAPERLESS_ADMIN_USER = cfgHomelab.adminUser;
           PAPERLESS_CONSUMER_IGNORE_PATTERN = [
             ".DS_STORE/*"
             "desktop.ini"
