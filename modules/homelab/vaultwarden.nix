@@ -94,17 +94,9 @@ in {
     })
 
     (lib.mkIf (cfg.enable && cfg.backupEnabled) {
-      services.postgresqlBackup = {
-        enable = true;
-
-        databases = ["vaultwarden"];
-        location = "/var/lib/vaultwarden/backups";
-      };
-
       homelab.services.resticctl = {
         jobs.vaultwarden = {
-          enable = true;
-
+          database = "vaultwarden";
           paths = ["/var/lib/vaultwarden"];
         };
       };

@@ -33,8 +33,6 @@ in {
     jobs = lib.mkOption {
       type = lib.types.attrsOf (lib.types.submodule ({name, ...}: {
         options = {
-          enable = lib.mkEnableOption "Enable Restic backup job";
-
           repository = lib.mkOption {
             type = lib.types.str;
             description = "Restic repository (e.g., s3:https://s3.example.com/my-repo)";
@@ -45,6 +43,12 @@ in {
             type = lib.types.path;
             description = "File with RESTIC_PASSWORD and optionally S3 credentials.";
             default = config.homelab.restic.environmentFile;
+          };
+
+          database = lib.mkOption {
+            type = lib.types.str;
+            description = "Database name to backup.";
+            default = null;
           };
 
           paths = lib.mkOption {
@@ -75,6 +79,21 @@ in {
   };
 
   config = lib.mkIf cfg.enable {
+    services.postgresqlBackup = let
+      databasesToBackup = lib.filter (database: database != null) (lib.map (job: job.database) (lib.attrValues cfg.jobs));
+    in {
+      enable = true;
+
+      databases = databasesToBackup;
+      location = "/var/lib/postgresql/backups";
+    };
+
+    homelab.services.resticctl = {
+      jobs.postgresql = {
+        paths = ["/var/lib/postgresql/backups"];
+      };
+    };
+
     services.restic.backups = let
       jobNames = lib.attrNames cfg.jobs;
     in
@@ -97,7 +116,7 @@ in {
           ];
         in {
           name = name;
-          value = lib.mkIf job.enable {
+          value = {
             initialize = true;
             repository = job.repository;
             environmentFile = job.environmentFile;
@@ -114,7 +133,6 @@ in {
               "--keep-monthly ${job.prune.monthly}"
             ];
 
-            # Теперь это корректный список строк
             extraOptions = afterDeps ++ serviceTuning;
           };
         })

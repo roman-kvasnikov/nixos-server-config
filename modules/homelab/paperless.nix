@@ -109,17 +109,11 @@ in {
     })
 
     (lib.mkIf (cfg.enable && cfg.backupEnabled) {
-      services.postgresqlBackup = {
-        enable = true;
-
-        databases = [config.services.paperless.settings.PAPERLESS_DBNAME];
-        location = "${config.services.paperless.dataDir}/backups";
-      };
-
       homelab.services.resticctl = {
         jobs.paperless = {
           enable = true;
 
+          database = config.services.paperless.settings.PAPERLESS_DBNAME;
           paths = [config.services.paperless.dataDir];
         };
       };

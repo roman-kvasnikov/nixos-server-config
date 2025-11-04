@@ -175,17 +175,11 @@ in {
     })
 
     (lib.mkIf (cfg.enable && cfg.backupEnabled) {
-      services.postgresqlBackup = {
-        enable = true;
-
-        databases = [config.services.nextcloud.config.dbname];
-        location = "${config.services.nextcloud.home}/backups";
-      };
-
       homelab.services.resticctl = {
         jobs.nextcloud = {
           enable = true;
 
+          database = config.services.nextcloud.config.dbname;
           paths = [config.services.nextcloud.home];
         };
       };
