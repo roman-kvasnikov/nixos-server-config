@@ -27,7 +27,7 @@ in {
     port = lib.mkOption {
       description = "Port of the Uptime Kuma module";
       type = lib.types.port;
-      default = 4000;
+      default = 3001;
     };
 
     allowExternal = lib.mkOption {
@@ -64,6 +64,11 @@ in {
 
       services.uptime-kuma = {
         enable = true;
+
+        settings = {
+          HOST = cfg.host;
+          PORT = cfg.port;
+        };
       };
     })
 
