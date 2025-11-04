@@ -107,11 +107,6 @@ in {
             unitConfig = lib.mkIf (cfg.serialize && prevJobName != null) {
               After = ["restic-backup-${prevJobName}.service"];
             };
-
-            serviceConfig = {
-              Nice = 10;
-              IOSchedulingClass = "idle";
-            };
           };
         })
         jobNames);
