@@ -85,6 +85,10 @@ in {
             if index > 0
             then builtins.elemAt jobNames (index - 1)
             else null;
+          afterDeps =
+            if cfg.serialize && prevJobName != null
+            then ["restic-backup-${prevJobName}.service"]
+            else [];
         in {
           name = name;
           value = lib.mkIf job.enable {
@@ -104,8 +108,8 @@ in {
               "--keep-monthly ${job.prune.monthly}"
             ];
 
-            unitConfig = lib.mkIf (cfg.serialize && prevJobName != null) {
-              After = ["restic-backup-${prevJobName}.service"];
+            unitConfig = lib.mkIf (afterDeps != []) {
+              After = afterDeps;
             };
           };
         })
