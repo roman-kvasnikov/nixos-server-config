@@ -39,7 +39,7 @@ in {
     apps = lib.mkOption {
       type = lib.types.listOf lib.types.str;
       description = "List of Nextcloud apps to enable";
-      default = ["bookmarks" "calendar" "contacts" "notes" "mail" "onlyoffice" "talk" "groupfolders"];
+      default = ["bookmarks" "calendar" "contacts" "notes" "mail" "onlyoffice" "groupfolders"];
     };
 
     backupEnabled = lib.mkOption {
@@ -112,6 +112,8 @@ in {
           };
 
           settings = {
+            maintenance = false; # Disable maintenance mode
+
             trusted_domains = [
               "localhost"
               "127.0.0.1"
