@@ -67,7 +67,7 @@ in {
 
         settings = {
           HOST = cfg.host;
-          PORT = cfg.port;
+          PORT = toString cfg.port;
         };
       };
     })
