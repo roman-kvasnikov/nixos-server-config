@@ -70,14 +70,17 @@
       default = config.age.secrets.server-admin-password.path;
     };
 
-    s3Backups = lib.mkOption {
-      type = lib.types.attrsOf lib.types.str;
-      description = "S3 backup settings for the homelab server";
-      default = {
-        s3-url = "https://s3.twcstorage.ru";
-        s3-bucket = "1f382b96-c34b0ea3-eb1f-4476-b009-6e99275d7b19";
-        s3-dir = "backups";
-        s3-env-file = config.age.secrets.s3-env.path;
+    restic = {
+      repository = lib.mkOption {
+        type = lib.types.str;
+        description = "Restic repository for the homelab server";
+        default = "s3:https://s3.twcstorage.ru/1f382b96-c34b0ea3-eb1f-4476-b009-6e99275d7b19/backups";
+      };
+
+      environmentFile = lib.mkOption {
+        type = lib.types.path;
+        description = "Environment file for Restic";
+        default = config.age.secrets.restic-env.path;
       };
     };
   };

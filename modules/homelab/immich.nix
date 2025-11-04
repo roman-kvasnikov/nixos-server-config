@@ -12,15 +12,33 @@ in {
   options.homelab.services.immichctl = {
     enable = lib.mkEnableOption "Enable Immich";
 
+    domain = lib.mkOption {
+      type = lib.types.str;
+      description = "Domain of the Immich module";
+      default = "immich.${cfgHomelab.domain}";
+    };
+
     host = lib.mkOption {
       type = lib.types.str;
       description = "Host of the Immich module";
-      default = "immich.${cfgHomelab.domain}";
+      default = "127.0.0.1";
+    };
+
+    port = lib.mkOption {
+      type = lib.types.port;
+      description = "Port of the Immich module";
+      default = 2283;
     };
 
     allowExternal = lib.mkOption {
       type = lib.types.bool;
       description = "Allow external access to Immich.";
+      default = true;
+    };
+
+    backupEnabled = lib.mkOption {
+      type = lib.types.bool;
+      description = "Enable backup for Immich.";
       default = true;
     };
 
@@ -59,26 +77,43 @@ in {
         immich
       ];
 
-      services.immich = {
-        enable = true;
+      services = {
+        immich = {
+          enable = true;
 
-        host = "127.0.0.1";
+          host = cfg.host;
+          port = cfg.port;
 
-        user = "immich";
-        group = cfgHomelab.systemGroup;
+          user = "immich";
+          group = cfgHomelab.systemGroup;
 
-        openFirewall = !cfgNginx.enable;
+          openFirewall = !cfgNginx.enable;
+
+          environment = {
+            PUBLIC_IMMICH_SERVER_URL = "http://${cfg.host}:${toString cfg.port}";
+          };
+        };
       };
+
+      homelab.services.resticctl = lib.mkIf cfg.backupEnabled {
+        jobs.immich = {
+          enable = true;
+
+          paths = [config.services.immich.mediaLocation];
+        };
+      };
+
+      users.users.immich.extraGroups = ["video" "render"];
     })
 
     (lib.mkIf (cfg.enable && cfgAcme.enable) {
-      security.acme.certs."${cfg.host}" = cfgAcme.commonCertOptions;
+      security.acme.certs."${cfg.domain}" = cfgAcme.commonCertOptions;
     })
 
     (lib.mkIf (cfg.enable && cfgNginx.enable) {
       services.nginx = {
         virtualHosts = {
-          "${cfg.host}" = {
+          "${cfg.domain}" = {
             enableACME = cfgAcme.enable;
             forceSSL = cfgAcme.enable;
             http2 = true;
@@ -90,12 +125,17 @@ in {
             '';
 
             locations."/" = {
-              proxyPass = "http://127.0.0.1:${toString config.services.immich.port}";
+              proxyPass = "http://${cfg.host}:${toString cfg.port}";
               proxyWebsockets = true;
               recommendedProxySettings = true;
 
               extraConfig = ''
                 client_max_body_size 50000M;
+
+                # set timeout
+                proxy_read_timeout 600s;
+                proxy_send_timeout 600s;
+                send_timeout       600s;
               '';
             };
           };
