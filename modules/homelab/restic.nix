@@ -46,7 +46,7 @@ in {
           };
 
           database = lib.mkOption {
-            type = lib.types.str;
+            type = lib.types.str or null;
             description = "Database name to backup.";
             default = null;
           };
