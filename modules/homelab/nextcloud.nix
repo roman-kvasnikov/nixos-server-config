@@ -75,7 +75,7 @@ in {
       #   type = lib.types.attrs;
       #   default = {
       #     type = "nextcloud";
-      #     url = "https://${cfg.host}";
+      #     url = "https://${cfg.domain}";
       #   };
       # };
     };

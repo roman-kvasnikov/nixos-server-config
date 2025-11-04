@@ -12,15 +12,33 @@ in {
   options.homelab.services.paperlessctl = {
     enable = lib.mkEnableOption "Enable Paperless";
 
+    domain = lib.mkOption {
+      type = lib.types.str;
+      description = "Domain of the Paperless module";
+      default = "paperless.${cfgHomelab.domain}";
+    };
+
     host = lib.mkOption {
       type = lib.types.str;
       description = "Host of the Paperless module";
-      default = "paperless.${cfgHomelab.domain}";
+      default = "127.0.0.1";
+    };
+
+    port = lib.mkOption {
+      type = lib.types.port;
+      description = "Port of the Paperless module";
+      default = 28981;
     };
 
     allowExternal = lib.mkOption {
       type = lib.types.bool;
-      description = "Allow external access to Only Office.";
+      description = "Allow external access to Paperless";
+      default = true;
+    };
+
+    backupEnabled = lib.mkOption {
+      type = lib.types.bool;
+      description = "Enable backup for Paperless";
       default = true;
     };
 
@@ -68,12 +86,14 @@ in {
         consumptionDirIsPublic = true;
 
         configureNginx = cfgNginx.enable;
-        domain = cfg.host;
+        domain = cfg.domain;
+        address = cfg.host;
+        port = cfg.port;
 
         database.createLocally = true;
 
         settings = {
-          PAPERLESS_URL = "https://${cfg.host}";
+          PAPERLESS_URL = "https://${cfg.domain}";
           PAPERLESS_CONSUMER_IGNORE_PATTERN = [
             ".DS_STORE/*"
             "desktop.ini"
@@ -85,16 +105,24 @@ in {
           };
         };
       };
+
+      homelab.services.resticctl = lib.mkIf cfg.backupEnabled {
+        jobs.paperless = {
+          enable = true;
+
+          paths = [config.services.paperless.dataDir];
+        };
+      };
     })
 
     (lib.mkIf (cfg.enable && cfgAcme.enable) {
-      security.acme.certs."${cfg.host}" = cfgAcme.commonCertOptions;
+      security.acme.certs."${cfg.domain}" = cfgAcme.commonCertOptions;
     })
 
     (lib.mkIf (cfg.enable && cfgNginx.enable) {
       services.nginx = {
         virtualHosts = {
-          "${cfg.host}" = {
+          "${cfg.domain}" = {
             enableACME = cfgAcme.enable;
             forceSSL = cfgAcme.enable;
             http2 = true;

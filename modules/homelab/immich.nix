@@ -32,13 +32,13 @@ in {
 
     allowExternal = lib.mkOption {
       type = lib.types.bool;
-      description = "Allow external access to Immich.";
+      description = "Allow external access to Immich";
       default = true;
     };
 
     backupEnabled = lib.mkOption {
       type = lib.types.bool;
-      description = "Enable backup for Immich.";
+      description = "Enable backup for Immich";
       default = true;
     };
 
@@ -77,21 +77,19 @@ in {
         immich
       ];
 
-      services = {
-        immich = {
-          enable = true;
+      services.immich = {
+        enable = true;
 
-          host = cfg.host;
-          port = cfg.port;
+        host = cfg.host;
+        port = cfg.port;
 
-          user = "immich";
-          group = cfgHomelab.systemGroup;
+        user = "immich";
+        group = cfgHomelab.systemGroup;
 
-          openFirewall = !cfgNginx.enable;
+        openFirewall = !cfgNginx.enable;
 
-          environment = {
-            PUBLIC_IMMICH_SERVER_URL = "http://${cfg.host}:${toString cfg.port}";
-          };
+        environment = {
+          PUBLIC_IMMICH_SERVER_URL = "http://${cfg.host}:${toString cfg.port}";
         };
       };
 
