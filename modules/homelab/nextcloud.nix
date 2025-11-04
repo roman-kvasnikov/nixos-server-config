@@ -187,7 +187,7 @@ in {
 
               echo "[Nextcloud Database Backup] Starting..."
 
-              BACKUP_DIR=${config.services.nextcloud.dataDir}/backups
+              BACKUP_DIR=${config.services.nextcloud.home}/backups
               DATE=$(date +"%Y-%m-%d_%H-%M-%S")
               mkdir -p "$BACKUP_DIR"
 
@@ -220,7 +220,7 @@ in {
         jobs.nextcloud = {
           enable = true;
 
-          paths = [config.services.nextcloud.dataDir];
+          paths = [config.services.nextcloud.home];
         };
       };
     })
