@@ -290,8 +290,8 @@ in {
           );
 
           record.enabled = true;
-          audio.enabled = true;
-          detect.enabled = true;
+          audio.enabled = false;
+          detect.enabled = false;
           motion.enabled = false;
           snapshots.enabled = false;
 
