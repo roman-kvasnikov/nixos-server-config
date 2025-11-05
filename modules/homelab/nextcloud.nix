@@ -107,6 +107,7 @@ in {
           extraApps = lib.genAttrs cfg.apps (app: config.services.nextcloud.package.packages.apps.${app});
           extraAppsEnable = true;
           autoUpdateApps.enable = true;
+          appstoreEnable = true;
 
           maxUploadSize = "16G";
 
