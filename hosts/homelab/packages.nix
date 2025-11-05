@@ -18,6 +18,7 @@
 
     yazi # File Manager
     filebot # Rename files based on metadata for movies and TV shows
+    nodejs
 
     # Архиваторы
     gzip
