@@ -45,6 +45,8 @@ in {
 
               roles = ["record"];
 
+              detect.enable = false;
+
               record = {
                 enable = true;
 
