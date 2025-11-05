@@ -65,12 +65,18 @@ in {
           MICROBIN_PUBLIC_PATH = "https://${cfg.domain}/";
           MICROBIN_BIND = cfg.host;
           MICROBIN_PORT = cfg.port;
+
+          MICROBIN_ADMIN_USERNAME = cfg.adminUser;
+          # MICROBIN_ADMIN_PASSWORD = cfg.adminPasswordFile;
+
           MICROBIN_WIDE = true;
           MICROBIN_MAX_FILE_SIZE_UNENCRYPTED_MB = 2048;
           MICROBIN_HIDE_LOGO = true;
           MICROBIN_HIDE_HEADER = true;
           MICROBIN_HIDE_FOOTER = true;
           MICROBIN_HIGHLIGHTSYNTAX = true;
+          MICROBIN_PRIVATE = true;
+          MICROBIN_READONLY = true;
         };
       };
     })
