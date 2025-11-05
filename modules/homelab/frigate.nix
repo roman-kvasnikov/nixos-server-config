@@ -244,6 +244,11 @@ in {
         checkConfig = true;
 
         settings = {
+          auth = {
+            enabled = false;
+            reset_admin_password = true;
+          };
+
           cameras = lib.filterAttrs (_: cam: cam != null) (
             lib.mapAttrs (
               name: cfgCamera:
@@ -394,11 +399,6 @@ in {
           # };
 
           # environment_vars = {};
-
-          # auth = {
-          #   enabled = false;
-          #   reset_admin_password = true;
-          # };
         };
       };
     })
