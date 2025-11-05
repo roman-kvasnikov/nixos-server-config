@@ -287,9 +287,7 @@ in {
             cfg.cameras
           );
 
-          # database = {
-          #   path = "${cfg.homeDir}/frigate.db";
-          # };
+          detect.enabled = false;
 
           # record = {
           #   enabled = cfgCamera.recordEnabled;
@@ -377,15 +375,6 @@ in {
           #   # "motion"	Показывает камеры при движении
           #   # "continuous"	Показывает всегда все камеры (может нагружать систему)
           #   # "off"	Полностью отключает Birdseye
-          # };
-
-          # mqtt = lib.mkIf cfg.mqtt.enable {
-          #   enabled = true;
-
-          #   host = cfg.mqtt.host;
-          #   port = cfg.mqtt.port;
-          #   user = cfg.mqtt.user;
-          #   password = cfg.mqtt.password;
           # };
 
           # logger = {
