@@ -45,6 +45,9 @@ in {
 
               roles = ["record" "audio" "detect"];
 
+              detect.enable = true;
+              record.enable = true;
+
               onvif = {
                 enable = true;
 

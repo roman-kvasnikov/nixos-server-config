@@ -53,57 +53,102 @@ in {
             description = "List of camera roles";
             type = lib.types.listOf lib.types.str;
             default = [];
-            example = ["record" "audio" "detect"];
+            example = ["detect" "record"];
           };
 
-          onvif = lib.mkOption {
-            description = "Configuration of the ONVIF camera";
+          detect = {
+            enable = lib.mkEnableOption "Enable detection";
 
-            type = lib.types.submodule {
-              options = {
-                enable = lib.mkEnableOption "Enable ONVIF camera";
+            width = lib.mkOption {
+              description = "Detection resolution width";
+              type = lib.types.int;
+              default = 1920;
+            };
+            height = lib.mkOption {
+              description = "Detection resolution height";
+              type = lib.types.int;
+              default = 1080;
+            };
+            fps = lib.mkOption {
+              description = "Detection FPS";
+              type = lib.types.int;
+              default = 5;
+            };
+          };
 
-                host = lib.mkOption {
-                  description = "Host of the ONVIF camera";
-                  type = lib.types.str;
-                  default = "";
-                };
-                port = lib.mkOption {
-                  description = "Port of the ONVIF camera";
-                  type = lib.types.port;
-                  default = 0;
-                };
-                user = lib.mkOption {
-                  description = "User of the ONVIF camera";
-                  type = lib.types.str;
-                  default = "";
-                };
-                password = lib.mkOption {
-                  description = "Password of the ONVIF camera";
-                  type = lib.types.str;
-                  default = "";
-                };
+          record = {
+            enable = lib.mkEnableOption "Enable recording";
+
+            retain = {
+              days = lib.mkOption {
+                description = "Days to retain recordings";
+                type = lib.types.int;
+                default = 3;
+              };
+
+              mode = lib.mkOption {
+                description = "Days to retain recordings";
+                type = lib.types.str;
+                default = "motion";
               };
             };
           };
 
-          detectResolution = lib.mkOption {
-            description = "Detection resolution for the camera";
-            type = lib.types.submodule {
-              options = {
-                width = lib.mkOption {
-                  description = "Detection resolution width";
-                  type = lib.types.int;
-                  default = 1920;
-                };
-                height = lib.mkOption {
-                  description = "Detection resolution height";
-                  type = lib.types.int;
-                  default = 1080;
-                };
-              };
+          onvif = {
+            enable = lib.mkEnableOption "Enable ONVIF camera";
+
+            host = lib.mkOption {
+              description = "Host of the ONVIF camera";
+              type = lib.types.str;
+              default = "";
+            };
+            port = lib.mkOption {
+              description = "Port of the ONVIF camera";
+              type = lib.types.port;
+              default = 0;
+            };
+            user = lib.mkOption {
+              description = "User of the ONVIF camera";
+              type = lib.types.str;
+              default = "";
+            };
+            password = lib.mkOption {
+              description = "Password of the ONVIF camera";
+              type = lib.types.str;
+              default = "";
             };
           };
+
+          # onvif = lib.mkOption {
+          #   description = "Configuration of the ONVIF camera";
+
+          #   type = lib.types.submodule {
+          #     options = {
+          #       enable = lib.mkEnableOption "Enable ONVIF camera";
+
+          #       host = lib.mkOption {
+          #         description = "Host of the ONVIF camera";
+          #         type = lib.types.str;
+          #         default = "";
+          #       };
+          #       port = lib.mkOption {
+          #         description = "Port of the ONVIF camera";
+          #         type = lib.types.port;
+          #         default = 0;
+          #       };
+          #       user = lib.mkOption {
+          #         description = "User of the ONVIF camera";
+          #         type = lib.types.str;
+          #         default = "";
+          #       };
+          #       password = lib.mkOption {
+          #         description = "Password of the ONVIF camera";
+          #         type = lib.types.str;
+          #         default = "";
+          #       };
+          #     };
+          #   };
+          # };
 
           audioEnabled = lib.mkOption {
             description = "Enable audio";
@@ -262,15 +307,25 @@ in {
                     }
                   ];
 
+                  detect = lib.mkIf cfgCamera.detect.enable {
+                    width = cfgCamera.detect.width;
+                    height = cfgCamera.detect.height;
+                    fps = cfgCamera.detect.fps;
+                  };
+
+                  record = {
+                    enabled = true;
+                    retain = {
+                      days = cfgCamera.record.retain.days;
+                      mode = cfgCamera.record.retain.mode;
+                    };
+                  };
+
                   onvif = lib.mkIf cfgCamera.onvif.enable {
                     host = cfgCamera.onvif.host;
                     port = cfgCamera.onvif.port;
                     user = cfgCamera.onvif.user;
                     password = cfgCamera.onvif.password;
-                  };
-
-                  record = {
-                    enabled = true;
                   };
 
                   # detect = {
