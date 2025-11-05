@@ -243,7 +243,7 @@ in {
                     enabled = true;
 
                     retain = {
-                      default = cfgCamera.record.retain.default;
+                      default = cfgCamera.snapshots.retain.default;
                     };
                   };
 
