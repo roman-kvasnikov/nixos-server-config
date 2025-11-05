@@ -38,22 +38,22 @@ in {
           enable = true;
 
           cameras = {
-            # outside = {
-            #   enable = true;
+            outside = {
+              enable = true;
 
-            #   streamUrl = "rtsp://RomanK:Um9tYW4Um@192.168.1.31:554/stream1";
+              streamUrl = "rtsp://RomanK:Um9tYW4Um@192.168.1.30:554/stream1";
 
-            #   roles = ["record"];
+              roles = ["record"];
 
-            #   record.enable = true;
-            # };
+              record.enable = true;
+            };
 
             hall = {
               enable = true;
 
               streamUrl = "rtsp://RomanK:Um9tYW4Um@192.168.1.31:554/stream1";
 
-              roles = ["detect" "record"];
+              roles = ["detect" "record" "audio"];
 
               detect.enable = true;
 
@@ -64,6 +64,8 @@ in {
                   mode = "motion";
                 };
               };
+
+              audio.enable = true;
 
               snapshots.enable = true;
 

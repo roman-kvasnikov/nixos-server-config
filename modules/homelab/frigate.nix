@@ -53,7 +53,7 @@ in {
             description = "List of camera roles";
             type = lib.types.listOf lib.types.str;
             default = [];
-            example = ["detect" "audio" "record"];
+            example = ["detect" "record" "audio"];
           };
 
           detect = {
@@ -92,6 +92,10 @@ in {
                 default = "all";
               };
             };
+          };
+
+          audio = {
+            enable = lib.mkEnableOption "Enable snapshots";
           };
 
           snapshots = {
@@ -139,12 +143,6 @@ in {
               type = lib.types.str;
               default = "";
             };
-          };
-
-          motionMask = lib.mkOption {
-            description = "Motion mask coordinates";
-            type = lib.types.nullOr (lib.types.listOf lib.types.str);
-            default = null;
           };
         };
       });
@@ -239,6 +237,10 @@ in {
                     };
                   };
 
+                  audio = lib.mkIf cfgCamera.audio.enable {
+                    enabled = true;
+                  };
+
                   snapshots = lib.mkIf cfgCamera.snapshots.enable {
                     enabled = true;
 
@@ -264,114 +266,17 @@ in {
             cfg.cameras
           );
 
-          detect.enabled = true;
-          record.enabled = true;
-          snapshots.enabled = true;
-          motion.enabled = true;
+          # detect.enabled = true;
+          # record.enabled = true;
+          # audio.enabled = true;
+          # snapshots.enabled = true;
+          # motion.enabled = true;
 
-          audio.enabled = false;
+          birdseye.enabled = true;
 
-          birdseye.enabled = false;
-
-          # record = {
-          #   enabled = cfgCamera.recordEnabled;
-
-          #   retain = {
-          #     days = cfg.recording.retainDays;
-          #     mode = "all";
-          #   };
-          # };
-
-          # detectors = lib.mkMerge [
-          #   (lib.mkIf (cfg.detection.coralDevice != null) {
-          #     coral = {
-          #       type = "edgetpu";
-          #       device = cfg.detection.coralDevice;
-          #     };
-          #   })
-          #   (lib.mkIf (cfg.detection.coralDevice == null) {
-          #     cpu = {
-          #       type = "cpu";
-          #     };
-          #   })
-          # ];
-
-          # model = {
-          #   width = 320;
-          #   height = 320;
-          #   labelmap_path = null;
-          # };
-
-          # objects = {
-          #   track = cfg.detection.objects;
-          #   filters = {};
-          # };
-
-          # snapshots = {
-          #   enabled = cfg.snapshots.enable;
-
-          #   retain = {
-          #     default = cfg.snapshots.retainDays;
-          #   };
-          # };
-
-          # ui = {
-          #   timezone = config.time.timeZone;
-          #   # time_format = "browser";
-          #   # date_style = "full";
-          #   # time_style = "medium";
-          #   # strftime_fmt = "%Y/%m/%d %H:%M";
-          #   # unit_system = "metric";
-          # };
-
-          # live = {
-          #   height = 720;
-          #   quality = 8;
-          # };
-
-          # go2rtc = {
-          #   streams = lib.filterAttrs (_: stream: stream != null) (
-          #     lib.mapAttrs (
-          #       name: cfgCamera:
-          #         lib.mkIf cfgCamera.enable [
-          #           cfgCamera.streamUrl
-
-          #           "ffmpeg:${name}#video=h264#hardware"
-          #         ]
-          #     )
-          #     cfg.cameras
-          #   );
-
-          #   # Настройки WebRTC для браузеров
-          #   webrtc = {
-          #     candidates = ["192.168.1.11:8555"]; # замените на IP вашего сервера
-          #   };
-          # };
-
-          # birdseye = {
-          #   enabled = true;
-
-          #   width = 1920;
-          #   height = 1080;
-          #   quality = 8;
-          #   mode = "continuous";
-          #   # "objects"	Только если найден объект (по умолчанию — лучшее сочетание нагрузки и пользы)
-          #   # "motion"	Показывает камеры при движении
-          #   # "continuous"	Показывает всегда все камеры (может нагружать систему)
-          #   # "off"	Полностью отключает Birdseye
-          # };
-
-          # logger = {
-          #   default = "info";
-
-          #   logs = {
-          #     frigate = "info";
-          #     go2rtc = "info";
-          #     nginx = "warning";
-          #   };
-          # };
-
-          # environment_vars = {};
+          ui = {
+            timezone = config.time.timeZone;
+          };
         };
       };
     })
