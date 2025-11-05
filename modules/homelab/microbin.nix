@@ -66,8 +66,8 @@ in {
           MICROBIN_BIND = cfg.host;
           MICROBIN_PORT = cfg.port;
 
-          MICROBIN_ADMIN_USERNAME = cfg.adminUser;
-          # MICROBIN_ADMIN_PASSWORD = cfg.adminPasswordFile;
+          MICROBIN_ADMIN_USERNAME = cfgHomelab.adminUser;
+          # MICROBIN_ADMIN_PASSWORD = cfgHomelab.adminPasswordFile;
 
           MICROBIN_WIDE = true;
           MICROBIN_MAX_FILE_SIZE_UNENCRYPTED_MB = 2048;
