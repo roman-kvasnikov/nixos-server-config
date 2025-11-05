@@ -51,7 +51,7 @@ in {
     apps = lib.mkOption {
       description = "List of Nextcloud apps to enable";
       type = lib.types.listOf lib.types.str;
-      default = [];
+      default = ["calendar" "contacts" "notes" "onlyoffice"];
     };
 
     backupEnabled = lib.mkOption {
@@ -104,7 +104,7 @@ in {
           hostName = cfg.domain;
           https = true;
 
-          # extraApps = lib.genAttrs cfg.apps (app: config.services.nextcloud.package.packages.apps.${app});
+          extraApps = lib.genAttrs cfg.apps (app: config.services.nextcloud.package.packages.apps.${app});
           appstoreEnable = true;
           extraAppsEnable = true;
           autoUpdateApps.enable = true;
