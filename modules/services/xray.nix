@@ -8,12 +8,6 @@
 in {
   options.services.xrayctl = {
     enable = lib.mkEnableOption "Enable Xray";
-
-    configFile = lib.mkOption {
-      type = lib.types.path;
-      description = "Path to the Xray config file";
-      default = "/etc/xray/config.json";
-    };
   };
 
   config = lib.mkMerge [
@@ -22,14 +16,10 @@ in {
         xray
       ];
 
-      environment.etc = {
-        "${builtins.replaceStrings ["/etc/"] [""] cfg.configFile}".source = config.age.secrets.xray-config-json.path;
-      };
-
       services.xray = {
         enable = true;
 
-        settingsFile = cfg.configFile;
+        settingsFile = config.age.secrets.xray-config-json.path;
       };
 
       networking = {
@@ -48,13 +38,6 @@ in {
           NO_PROXY = "localhost,127.0.0.1,192.168.0.0/16,10.0.0.0/8,172.16.0.0/12";
         };
       };
-
-      # systemd.services = {
-      #   jellyfin.environment = {
-      #     http_proxy = "http://127.0.0.1:10809";
-      #     https_proxy = "http://127.0.0.1:10809";
-      #   };
-      # };
     })
   ];
 }
