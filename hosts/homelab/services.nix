@@ -43,9 +43,9 @@ in {
 
               streamUrl = "rtsp://RomanK:Um9tYW4Um@192.168.1.31:554/stream1";
 
-              roles = ["record"];
+              roles = ["detect" "record"];
 
-              detect.enable = false;
+              detect.enable = true;
               record = {
                 enable = true;
 
