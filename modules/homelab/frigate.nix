@@ -258,117 +258,117 @@ in {
                     password = cfgCamera.onvif.password;
                   };
 
-                  record.enabled = cfgCamera.recordEnabled;
+                  # record.enabled = cfgCamera.recordEnabled;
 
-                  detect = {
-                    enabled = cfg.detection.enable;
+                  # detect = {
+                  #   enabled = cfg.detection.enable;
 
-                    width = cfgCamera.detectResolution.width or 1920;
-                    height = cfgCamera.detectResolution.height or 1080;
-                    fps = cfg.detection.fps;
-                  };
+                  #   width = cfgCamera.detectResolution.width or 1920;
+                  #   height = cfgCamera.detectResolution.height or 1080;
+                  #   fps = cfg.detection.fps;
+                  # };
 
-                  snapshots.enabled = cfgCamera.snapshotsEnabled;
+                  # snapshots.enabled = cfgCamera.snapshotsEnabled;
 
-                  motion = lib.mkIf (cfgCamera.motionMask != null) {
-                    mask = cfgCamera.motionMask;
-                  };
+                  # motion = lib.mkIf (cfgCamera.motionMask != null) {
+                  #   mask = cfgCamera.motionMask;
+                  # };
                 }
             )
             cfg.cameras
           );
 
-          database = {
-            path = "${cfg.homeDir}/frigate.db";
-          };
+          # database = {
+          #   path = "${cfg.homeDir}/frigate.db";
+          # };
 
-          record = {
-            enabled = true;
+          # record = {
+          #   enabled = cfgCamera.recordEnabled;
 
-            retain = {
-              days = cfg.recording.retainDays;
-              mode = "all";
-            };
-          };
+          #   retain = {
+          #     days = cfg.recording.retainDays;
+          #     mode = "all";
+          #   };
+          # };
 
-          detectors = lib.mkMerge [
-            (lib.mkIf (cfg.detection.coralDevice != null) {
-              coral = {
-                type = "edgetpu";
-                device = cfg.detection.coralDevice;
-              };
-            })
-            (lib.mkIf (cfg.detection.coralDevice == null) {
-              cpu = {
-                type = "cpu";
-              };
-            })
-          ];
+          # detectors = lib.mkMerge [
+          #   (lib.mkIf (cfg.detection.coralDevice != null) {
+          #     coral = {
+          #       type = "edgetpu";
+          #       device = cfg.detection.coralDevice;
+          #     };
+          #   })
+          #   (lib.mkIf (cfg.detection.coralDevice == null) {
+          #     cpu = {
+          #       type = "cpu";
+          #     };
+          #   })
+          # ];
 
-          model = {
-            width = 320;
-            height = 320;
-            labelmap_path = null;
-          };
+          # model = {
+          #   width = 320;
+          #   height = 320;
+          #   labelmap_path = null;
+          # };
 
-          objects = {
-            track = cfg.detection.objects;
-            filters = {};
-          };
+          # objects = {
+          #   track = cfg.detection.objects;
+          #   filters = {};
+          # };
 
-          snapshots = {
-            enabled = cfg.snapshots.enable;
+          # snapshots = {
+          #   enabled = cfg.snapshots.enable;
 
-            retain = {
-              default = cfg.snapshots.retainDays;
-            };
-          };
+          #   retain = {
+          #     default = cfg.snapshots.retainDays;
+          #   };
+          # };
 
-          ui = {
-            timezone = config.time.timeZone;
-            # time_format = "browser";
-            # date_style = "full";
-            # time_style = "medium";
-            # strftime_fmt = "%Y/%m/%d %H:%M";
-            # unit_system = "metric";
-          };
+          # ui = {
+          #   timezone = config.time.timeZone;
+          #   # time_format = "browser";
+          #   # date_style = "full";
+          #   # time_style = "medium";
+          #   # strftime_fmt = "%Y/%m/%d %H:%M";
+          #   # unit_system = "metric";
+          # };
 
-          live = {
-            height = 720;
-            quality = 8;
-          };
+          # live = {
+          #   height = 720;
+          #   quality = 8;
+          # };
 
-          go2rtc = {
-            streams = lib.filterAttrs (_: stream: stream != null) (
-              lib.mapAttrs (
-                name: cfgCamera:
-                  lib.mkIf cfgCamera.enable [
-                    cfgCamera.streamUrl
+          # go2rtc = {
+          #   streams = lib.filterAttrs (_: stream: stream != null) (
+          #     lib.mapAttrs (
+          #       name: cfgCamera:
+          #         lib.mkIf cfgCamera.enable [
+          #           cfgCamera.streamUrl
 
-                    "ffmpeg:${name}#video=h264#hardware"
-                  ]
-              )
-              cfg.cameras
-            );
+          #           "ffmpeg:${name}#video=h264#hardware"
+          #         ]
+          #     )
+          #     cfg.cameras
+          #   );
 
-            # Настройки WebRTC для браузеров
-            webrtc = {
-              candidates = ["192.168.1.11:8555"]; # замените на IP вашего сервера
-            };
-          };
+          #   # Настройки WebRTC для браузеров
+          #   webrtc = {
+          #     candidates = ["192.168.1.11:8555"]; # замените на IP вашего сервера
+          #   };
+          # };
 
-          birdseye = {
-            enabled = true;
+          # birdseye = {
+          #   enabled = true;
 
-            width = 1920;
-            height = 1080;
-            quality = 8;
-            mode = "continuous";
-            # "objects"	Только если найден объект (по умолчанию — лучшее сочетание нагрузки и пользы)
-            # "motion"	Показывает камеры при движении
-            # "continuous"	Показывает всегда все камеры (может нагружать систему)
-            # "off"	Полностью отключает Birdseye
-          };
+          #   width = 1920;
+          #   height = 1080;
+          #   quality = 8;
+          #   mode = "continuous";
+          #   # "objects"	Только если найден объект (по умолчанию — лучшее сочетание нагрузки и пользы)
+          #   # "motion"	Показывает камеры при движении
+          #   # "continuous"	Показывает всегда все камеры (может нагружать систему)
+          #   # "off"	Полностью отключает Birdseye
+          # };
 
           # mqtt = lib.mkIf cfg.mqtt.enable {
           #   enabled = true;
@@ -379,22 +379,22 @@ in {
           #   password = cfg.mqtt.password;
           # };
 
-          logger = {
-            default = "info";
+          # logger = {
+          #   default = "info";
 
-            logs = {
-              frigate = "info";
-              go2rtc = "info";
-              nginx = "warning";
-            };
-          };
+          #   logs = {
+          #     frigate = "info";
+          #     go2rtc = "info";
+          #     nginx = "warning";
+          #   };
+          # };
 
-          environment_vars = {};
+          # environment_vars = {};
 
-          auth = {
-            enabled = false;
-            reset_admin_password = true;
-          };
+          # auth = {
+          #   enabled = false;
+          #   reset_admin_password = true;
+          # };
         };
       };
     })

@@ -43,31 +43,31 @@ in {
 
               streamUrl = "rtsp://RomanK:Um9tYW4Um@192.168.1.31:554/stream1";
 
-              onvif = {
-                enable = true;
+              # onvif = {
+              #   enable = true;
 
-                host = "192.168.1.31";
-                port = 2020;
-                user = "RomanK";
-                password = "Um9tYW4Um";
-              };
+              #   host = "192.168.1.31";
+              #   port = 2020;
+              #   user = "RomanK";
+              #   password = "Um9tYW4Um";
+              # };
 
-              recordEnabled = true;
+              # recordEnabled = true;
 
-              detectResolution = {
-                width = 2560;
-                height = 1440;
-              };
+              # detectResolution = {
+              #   width = 2560;
+              #   height = 1440;
+              # };
 
-              audioEnabled = true;
+              # audioEnabled = true;
 
-              snapshotsEnabled = true;
+              # snapshotsEnabled = true;
             };
           };
 
-          recording.enable = true;
-          detection.enable = true;
-          snapshots.enable = true;
+          # recording.enable = true;
+          # detection.enable = true;
+          # snapshots.enable = true;
         };
 
         immichctl.enable = true;
