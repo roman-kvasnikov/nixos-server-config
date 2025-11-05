@@ -1,7 +1,7 @@
 {
   imports = [
     # ./filebrowser.nix
-    # ./frigate.nix
+    ./frigate.nix
     ./homepage.nix
     ./immich.nix
     ./jellyfin.nix

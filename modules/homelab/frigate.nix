@@ -12,10 +12,22 @@ in {
   options.homelab.services.frigatectl = {
     enable = lib.mkEnableOption "Enable Frigate NVR";
 
-    host = lib.mkOption {
+    domain = lib.mkOption {
+      description = "Domain of the Frigate NVR module";
       type = lib.types.str;
-      description = "Host of the Frigate module";
       default = "frigate.${cfgHomelab.domain}";
+    };
+
+    host = lib.mkOption {
+      description = "Host of the Frigate NVR module";
+      type = lib.types.str;
+      default = "127.0.0.1";
+    };
+
+    port = lib.mkOption {
+      description = "Port of the Frigate NVR module";
+      type = lib.types.port;
+      default = 5000;
     };
 
     homeDir = lib.mkOption {
@@ -25,92 +37,89 @@ in {
     };
 
     cameras = lib.mkOption {
+      description = "Set of camera configurations by name";
+
       type = lib.types.attrsOf (lib.types.submodule {
         options = {
           enable = lib.mkEnableOption "Enable camera";
 
           streamUrl = lib.mkOption {
+            description = "RTSP stream URL for the camera";
             type = lib.types.str;
             example = "rtsp://user:pass@192.168.1.100:554/stream1";
-            description = "RTSP stream URL for the camera";
           };
 
           onvif = lib.mkOption {
+            description = "Configuration of the ONVIF camera";
             type = lib.types.submodule {
               options = {
                 enable = lib.mkEnableOption "Enable ONVIF camera";
 
                 host = lib.mkOption {
-                  type = lib.types.str;
-                  default = "192.168.0.1";
                   description = "Host of the ONVIF camera";
+                  type = lib.types.str;
                 };
                 port = lib.mkOption {
-                  type = lib.types.int;
-                  default = 2020;
                   description = "Port of the ONVIF camera";
+                  type = lib.types.int;
                 };
                 user = lib.mkOption {
-                  type = lib.types.str;
-                  default = "null";
                   description = "User of the ONVIF camera";
+                  type = lib.types.str;
                 };
                 password = lib.mkOption {
-                  type = lib.types.str;
-                  default = "null";
                   description = "Password of the ONVIF camera";
+                  type = lib.types.str;
                 };
               };
             };
-            description = "Configuration of the ONVIF camera";
           };
 
           recordEnabled = lib.mkOption {
-            type = lib.types.bool;
-            default = true;
             description = "Enable recording";
+            type = lib.types.bool;
+            default = false;
           };
 
           detectResolution = lib.mkOption {
+            description = "Detection resolution for the camera";
             type = lib.types.submodule {
               options = {
                 width = lib.mkOption {
+                  description = "Detection resolution width";
                   type = lib.types.int;
                   default = 1920;
-                  description = "Detection resolution width";
                 };
                 height = lib.mkOption {
+                  description = "Detection resolution height";
                   type = lib.types.int;
                   default = 1080;
-                  description = "Detection resolution height";
                 };
               };
             };
-            description = "Detection resolution for the camera";
           };
 
           audioEnabled = lib.mkOption {
-            type = lib.types.bool;
-            default = true;
             description = "Enable audio";
+            type = lib.types.bool;
+            default = false;
           };
 
           snapshotsEnabled = lib.mkOption {
-            type = lib.types.bool;
-            default = true;
             description = "Enable snapshots";
+            type = lib.types.bool;
+            default = false;
           };
 
           motionMask = lib.mkOption {
+            description = "Motion mask coordinates";
             type = lib.types.nullOr (lib.types.listOf lib.types.str);
             default = null;
-            description = "Motion mask coordinates";
           };
         };
       });
 
       default = {};
-      description = "Set of camera configurations by name";
     };
 
     recording = {
@@ -196,7 +205,7 @@ in {
         type = lib.types.attrs;
         default = {
           type = "frigate";
-          url = "https://${cfg.host}";
+          url = "https://${cfg.domain}";
           enableRecentEvents = true;
         };
       };
@@ -224,7 +233,7 @@ in {
       services.frigate = {
         enable = true;
 
-        hostname = cfg.host;
+        hostname = cfg.domain;
 
         vaapiDriver = "nvidia";
 
@@ -391,15 +400,16 @@ in {
     })
 
     (lib.mkIf (cfg.enable && cfgAcme.enable) {
-      security.acme.certs."${cfg.host}" = cfgAcme.commonCertOptions;
+      security.acme.certs."${cfg.domain}" = cfgAcme.commonCertOptions;
     })
 
     (lib.mkIf (cfg.enable && cfgNginx.enable) {
       services.nginx = {
         virtualHosts = {
-          "${cfg.host}" = {
+          "${cfg.domain}" = {
             enableACME = cfgAcme.enable;
             forceSSL = cfgAcme.enable;
+            http2 = true;
           };
         };
       };

@@ -92,8 +92,8 @@ in {
       services.nginx = {
         virtualHosts = {
           "${cfg.domain}" = {
-            enableACME = true;
-            forceSSL = true;
+            enableACME = cfgAcme.enable;
+            forceSSL = cfgAcme.enable;
             http2 = true;
 
             extraConfig = lib.mkIf (!cfg.allowExternal) ''
