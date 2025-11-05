@@ -10,7 +10,7 @@
       extraPackages = with pkgs; [
         intel-media-driver # для Intel (новые GPU)
         intel-vaapi-driver # для старых Intel
-        vaapiVdpau
+        libva-vdpau-driver
         libvdpau-va-gl
       ];
     };
