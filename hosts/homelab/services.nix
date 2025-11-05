@@ -38,7 +38,7 @@ in {
           enable = true;
 
           cameras = {
-            outside = {
+            Outside = {
               enable = true;
 
               streamUrl = "rtsp://RomanK:Um9tYW4Um@192.168.1.30:554/stream1";
@@ -55,14 +55,19 @@ in {
               };
             };
 
-            hall = {
+            Hall = {
               enable = true;
 
               streamUrl = "rtsp://RomanK:Um9tYW4Um@192.168.1.31:554/stream1";
 
               roles = ["detect" "record" "audio"];
 
-              detect.enable = true;
+              detect = {
+                enable = true;
+
+                width = 2560;
+                height = 1440;
+              };
 
               record = {
                 enable = true;
