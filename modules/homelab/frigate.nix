@@ -306,7 +306,9 @@ in {
                   snapshots = lib.mkIf cfgCamera.snapshots.enable {
                     enabled = true;
 
-                    default = 10;
+                    retain = {
+                      default = cfgCamera.record.retain.days;
+                    };
                   };
 
                   onvif = lib.mkIf cfgCamera.onvif.enable {
