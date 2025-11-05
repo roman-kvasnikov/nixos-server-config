@@ -5,6 +5,8 @@ in {
 
   "./secrets/acme/namecheap.env.age".publicKeys = [homelabSshKey];
 
+  "./secrets/microbin/env.age".publicKeys = [homelabSshKey];
+
   "./secrets/onlyoffice/jwt-secret.age".publicKeys = [homelabSshKey];
 
   "./secrets/restic/env.age".publicKeys = [homelabSshKey];

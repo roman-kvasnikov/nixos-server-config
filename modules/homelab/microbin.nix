@@ -61,19 +61,10 @@ in {
       services.microbin = {
         enable = true;
 
-        settings = let
-          adminPassword =
-            if cfgHomelab.adminPasswordFile != null
-            then builtins.readFile (cfgHomelab.adminPasswordFile)
-            else "default-password-change-me";
-        in {
+        settings = {
           MICROBIN_PUBLIC_PATH = "https://${cfg.domain}/";
           MICROBIN_BIND = cfg.host;
           MICROBIN_PORT = cfg.port;
-
-          MICROBIN_ADMIN_USERNAME = cfgHomelab.adminUser;
-          MICROBIN_ADMIN_PASSWORD = adminPassword;
-
           MICROBIN_WIDE = true;
           MICROBIN_MAX_FILE_SIZE_UNENCRYPTED_MB = 2048;
           MICROBIN_HIDE_LOGO = true;

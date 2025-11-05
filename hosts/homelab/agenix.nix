@@ -21,6 +21,13 @@
         mode = "0600";
       };
 
+      microbin-env = {
+        file = ../../secrets/microbin/env.age;
+        owner = "root";
+        group = "root";
+        mode = "0400";
+      };
+
       onlyoffice-jwt-secret = {
         file = ../../secrets/onlyoffice/jwt-secret.age;
         owner = "onlyoffice";
