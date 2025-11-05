@@ -305,6 +305,8 @@ in {
 
                   snapshots = lib.mkIf cfgCamera.snapshots.enable {
                     enabled = true;
+
+                    default = 10;
                   };
 
                   onvif = lib.mkIf cfgCamera.onvif.enable {
