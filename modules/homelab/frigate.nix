@@ -58,18 +58,22 @@ in {
                 host = lib.mkOption {
                   description = "Host of the ONVIF camera";
                   type = lib.types.str;
+                  default = "";
                 };
                 port = lib.mkOption {
                   description = "Port of the ONVIF camera";
                   type = lib.types.int;
+                  default = 0;
                 };
                 user = lib.mkOption {
                   description = "User of the ONVIF camera";
                   type = lib.types.str;
+                  default = "";
                 };
                 password = lib.mkOption {
                   description = "Password of the ONVIF camera";
                   type = lib.types.str;
+                  default = "";
                 };
               };
             };
