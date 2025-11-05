@@ -56,7 +56,15 @@ in {
               roles = ["detect" "record"];
 
               detect.enable = true;
-              record.enable = true;
+
+              record = {
+                enable = true;
+
+                retain = {
+                  mode = "motion";
+                };
+              };
+
               snapshots.enable = true;
 
               onvif = {

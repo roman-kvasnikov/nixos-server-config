@@ -98,11 +98,21 @@ in {
             enable = lib.mkEnableOption "Enable snapshots";
 
             retain = {
-              days = lib.mkOption {
+              default = lib.mkOption {
                 description = "Days to retain snapshots";
                 type = lib.types.int;
                 default = 10;
               };
+            };
+          };
+
+          motion = {
+            enable = lib.mkEnableOption "Enable snapshots";
+
+            mask = lib.mkOption {
+              description = "Motion mask coordinates";
+              type = lib.types.nullOr (lib.types.listOf lib.types.str);
+              default = null;
             };
           };
 
@@ -131,18 +141,6 @@ in {
             };
           };
 
-          audioEnabled = lib.mkOption {
-            description = "Enable audio";
-            type = lib.types.bool;
-            default = false;
-          };
-
-          snapshotsEnabled = lib.mkOption {
-            description = "Enable snapshots";
-            type = lib.types.bool;
-            default = false;
-          };
-
           motionMask = lib.mkOption {
             description = "Motion mask coordinates";
             type = lib.types.nullOr (lib.types.listOf lib.types.str);
@@ -152,68 +150,6 @@ in {
       });
 
       default = {};
-    };
-
-    recording = {
-      enable = lib.mkEnableOption "Enable recording";
-
-      retainDays = lib.mkOption {
-        type = lib.types.int;
-        default = 7;
-        description = "Days to retain recordings";
-      };
-
-      events = {
-        retainDays = lib.mkOption {
-          type = lib.types.int;
-          default = 14;
-          description = "Days to retain event recordings";
-        };
-
-        preCapture = lib.mkOption {
-          type = lib.types.int;
-          default = 5;
-          description = "Seconds to record before event";
-        };
-
-        postCapture = lib.mkOption {
-          type = lib.types.int;
-          default = 5;
-          description = "Seconds to record after event";
-        };
-      };
-    };
-
-    detection = {
-      enable = lib.mkEnableOption "Enable object detection";
-
-      fps = lib.mkOption {
-        type = lib.types.int;
-        default = 5;
-        description = "Detection FPS";
-      };
-
-      objects = lib.mkOption {
-        type = lib.types.listOf lib.types.str;
-        default = ["person" "cat" "dog"];
-        description = "Objects to detect";
-      };
-
-      coralDevice = lib.mkOption {
-        type = lib.types.nullOr lib.types.str;
-        default = null;
-        description = "Coral TPU device (usb, pci, cpu)";
-      };
-    };
-
-    snapshots = {
-      enable = lib.mkEnableOption "Enable snapshots";
-
-      retainDays = lib.mkOption {
-        type = lib.types.int;
-        default = 30;
-        description = "Days to retain snapshots";
-      };
     };
 
     homepage = {
@@ -307,8 +243,14 @@ in {
                     enabled = true;
 
                     retain = {
-                      default = cfgCamera.record.retain.days;
+                      default = cfgCamera.record.retain.default;
                     };
+                  };
+
+                  motion = lib.mkIf cfgCamera.motion.enable {
+                    enabled = true;
+
+                    mask = lib.mkIf (cfgCamera.motion.mask != null) cfgCamera.motion.mask;
                   };
 
                   onvif = lib.mkIf cfgCamera.onvif.enable {
@@ -317,20 +259,6 @@ in {
                     user = cfgCamera.onvif.user;
                     password = cfgCamera.onvif.password;
                   };
-
-                  # detect = {
-                  #   enabled = cfg.detection.enable;
-
-                  #   width = cfgCamera.detectResolution.width or 1920;
-                  #   height = cfgCamera.detectResolution.height or 1080;
-                  #   fps = cfg.detection.fps;
-                  # };
-
-                  # snapshots.enabled = cfgCamera.snapshotsEnabled;
-
-                  # motion = lib.mkIf (cfgCamera.motionMask != null) {
-                  #   mask = cfgCamera.motionMask;
-                  # };
                 }
             )
             cfg.cameras
@@ -338,10 +266,10 @@ in {
 
           detect.enabled = true;
           record.enabled = true;
+          snapshots.enabled = true;
           motion.enabled = true;
 
           audio.enabled = false;
-          snapshots.enabled = false;
 
           birdseye.enabled = false;
 
