@@ -256,7 +256,7 @@ in {
                   ffmpeg.inputs = [
                     {
                       path = cfgCamera.streamUrl;
-                      roles = ["detect"] ++ (lib.optional cfgCamera.recordEnabled "record") ++ (lib.optional cfgCamera.audioEnabled "audio");
+                      roles = ["record" "audio" "detect"];
                     }
                   ];
 
@@ -287,7 +287,13 @@ in {
             cfg.cameras
           );
 
+          record.enabled = false;
+          audio.enabled = false;
+          motion.enabled = false;
           detect.enabled = false;
+          snapshots.enabled = false;
+
+          birdseye.enabled = false;
 
           # record = {
           #   enabled = cfgCamera.recordEnabled;
