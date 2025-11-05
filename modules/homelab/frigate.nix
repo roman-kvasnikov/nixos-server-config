@@ -269,7 +269,11 @@ in {
                     password = cfgCamera.onvif.password;
                   };
 
-                  # record.enabled = cfgCamera.recordEnabled;
+                  record = {
+                    enabled = true;
+
+                    mode = "all";
+                  };
 
                   # detect = {
                   #   enabled = cfg.detection.enable;
