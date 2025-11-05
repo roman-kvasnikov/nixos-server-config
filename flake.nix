@@ -20,17 +20,13 @@
   outputs = {
     self,
     nixpkgs,
-    # nixpkgs-25_05,
     ...
   } @ inputs: let
     hostname = "homelab";
-    system = "x86_64-linux";
     version = "25.05";
-    # pkgs = import nixpkgs {inherit system;};
-    # stablePkgs = import nixpkgs-25_05 {inherit system;};
   in {
     nixosConfigurations.${hostname} = nixpkgs.lib.nixosSystem {
-      inherit system;
+      system = "x86_64-linux";
 
       specialArgs = {
         inherit inputs hostname version;
@@ -38,12 +34,6 @@
 
       modules = [
         ./hosts/${hostname}/configuration.nix
-
-        # {
-        #   environment.systemPackages = [
-        #     stablePkgs.mdadm
-        #   ];
-        # }
       ];
     };
   };
