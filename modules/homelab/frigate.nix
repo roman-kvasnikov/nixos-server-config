@@ -271,8 +271,6 @@ in {
 
                   record = {
                     enabled = true;
-
-                    mode = "all";
                   };
 
                   # detect = {
