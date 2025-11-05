@@ -43,10 +43,16 @@ in {
 
               streamUrl = "rtsp://RomanK:Um9tYW4Um@192.168.1.31:554/stream1";
 
-              roles = ["record" "detect"];
+              roles = ["record"];
 
-              detect.enable = true;
-              record.enable = true;
+              detect.enable = false;
+              record = {
+                enable = true;
+
+                retain = {
+                  mode = "all";
+                };
+              };
 
               onvif = {
                 enable = true;

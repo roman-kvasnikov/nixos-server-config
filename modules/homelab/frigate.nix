@@ -89,7 +89,7 @@ in {
               mode = lib.mkOption {
                 description = "Days to retain recordings";
                 type = lib.types.str;
-                default = "motion";
+                default = "all";
               };
             };
           };
