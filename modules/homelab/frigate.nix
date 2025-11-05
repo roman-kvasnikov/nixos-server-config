@@ -255,12 +255,12 @@ in {
                     }
                   ];
 
-                  onvif = lib.mkIf cfgCamera.onvif.enable {
-                    host = cfgCamera.onvif.host;
-                    port = cfgCamera.onvif.port;
-                    user = cfgCamera.onvif.user;
-                    password = cfgCamera.onvif.password;
-                  };
+                  # onvif = lib.mkIf cfgCamera.onvif.enable {
+                  #   host = cfgCamera.onvif.host;
+                  #   port = cfgCamera.onvif.port;
+                  #   user = cfgCamera.onvif.user;
+                  #   password = cfgCamera.onvif.password;
+                  # };
 
                   # record.enabled = cfgCamera.recordEnabled;
 
