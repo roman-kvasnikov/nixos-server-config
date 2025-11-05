@@ -222,14 +222,16 @@ in {
                     }
                   ];
 
-                  detect = lib.mkIf cfgCamera.detect.enable {
+                  detect = {
+                    enabled = cfgCamera.detect.enable;
+
                     width = cfgCamera.detect.width;
                     height = cfgCamera.detect.height;
                     fps = cfgCamera.detect.fps;
                   };
 
-                  record = lib.mkIf cfgCamera.record.enable {
-                    enabled = true;
+                  record = {
+                    enabled = cfgCamera.record.enable;
 
                     retain = {
                       days = cfgCamera.record.retain.days;
@@ -237,20 +239,20 @@ in {
                     };
                   };
 
-                  audio = lib.mkIf cfgCamera.audio.enable {
-                    enabled = true;
+                  audio = {
+                    enabled = cfgCamera.audio.enable;
                   };
 
-                  snapshots = lib.mkIf cfgCamera.snapshots.enable {
-                    enabled = true;
+                  snapshots = {
+                    enabled = cfgCamera.snapshots.enable;
 
                     retain = {
                       default = cfgCamera.snapshots.retain.default;
                     };
                   };
 
-                  motion = lib.mkIf cfgCamera.motion.enable {
-                    enabled = true;
+                  motion = {
+                    enabled = cfgCamera.motion.enable;
 
                     mask = lib.mkIf (cfgCamera.motion.mask != null) cfgCamera.motion.mask;
                   };

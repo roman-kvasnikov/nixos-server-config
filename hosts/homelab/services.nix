@@ -62,12 +62,7 @@ in {
 
               roles = ["detect" "record" "audio"];
 
-              detect = {
-                enable = true;
-
-                width = 2560;
-                height = 1440;
-              };
+              detect.enable = true;
 
               record = {
                 enable = true;
