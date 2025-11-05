@@ -49,8 +49,16 @@ in {
             example = "rtsp://user:pass@192.168.1.100:554/stream1";
           };
 
+          roles = lib.mkOption {
+            description = "List of camera roles";
+            type = lib.types.listOf lib.types.str;
+            default = [];
+            example = ["record" "audio" "detect"];
+          };
+
           onvif = lib.mkOption {
             description = "Configuration of the ONVIF camera";
+
             type = lib.types.submodule {
               options = {
                 enable = lib.mkEnableOption "Enable ONVIF camera";
@@ -62,7 +70,7 @@ in {
                 };
                 port = lib.mkOption {
                   description = "Port of the ONVIF camera";
-                  type = lib.types.int;
+                  type = lib.types.port;
                   default = 0;
                 };
                 user = lib.mkOption {
@@ -77,12 +85,6 @@ in {
                 };
               };
             };
-          };
-
-          recordEnabled = lib.mkOption {
-            description = "Enable recording";
-            type = lib.types.bool;
-            default = false;
           };
 
           detectResolution = lib.mkOption {
@@ -256,16 +258,16 @@ in {
                   ffmpeg.inputs = [
                     {
                       path = cfgCamera.streamUrl;
-                      roles = ["record" "audio" "detect"];
+                      roles = cfgCamera.roles;
                     }
                   ];
 
-                  # onvif = lib.mkIf cfgCamera.onvif.enable {
-                  #   host = cfgCamera.onvif.host;
-                  #   port = cfgCamera.onvif.port;
-                  #   user = cfgCamera.onvif.user;
-                  #   password = cfgCamera.onvif.password;
-                  # };
+                  onvif = lib.mkIf cfgCamera.onvif.enable {
+                    host = cfgCamera.onvif.host;
+                    port = cfgCamera.onvif.port;
+                    user = cfgCamera.onvif.user;
+                    password = cfgCamera.onvif.password;
+                  };
 
                   # record.enabled = cfgCamera.recordEnabled;
 
@@ -287,10 +289,10 @@ in {
             cfg.cameras
           );
 
-          record.enabled = false;
-          audio.enabled = false;
+          record.enabled = true;
+          audio.enabled = true;
+          detect.enabled = true;
           motion.enabled = false;
-          detect.enabled = false;
           snapshots.enabled = false;
 
           birdseye.enabled = false;
