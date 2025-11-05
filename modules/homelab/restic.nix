@@ -79,6 +79,10 @@ in {
   };
 
   config = lib.mkIf cfg.enable {
+    environment.systemPackages = with pkgs; [
+      restic
+    ];
+
     services.postgresqlBackup = let
       databasesToBackup = lib.filter (database: database != null) (lib.map (job: job.database) (lib.attrValues cfg.jobs));
     in {

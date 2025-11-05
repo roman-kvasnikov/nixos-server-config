@@ -1,6 +1,5 @@
 {
   imports = [
-    ./backups
     # ./filebrowser.nix
     # ./frigate.nix
     ./homepage.nix
