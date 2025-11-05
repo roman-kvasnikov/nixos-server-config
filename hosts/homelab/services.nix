@@ -38,17 +38,7 @@ in {
           enable = true;
 
           cameras = {
-            outside = {
-              enable = true;
-
-              streamUrl = "rtsp://RomanK:Um9tYW4Um@192.168.1.31:554/stream1";
-
-              roles = ["record"];
-
-              record.enable = true;
-            };
-
-            # hall = {
+            # outside = {
             #   enable = true;
 
             #   streamUrl = "rtsp://RomanK:Um9tYW4Um@192.168.1.31:554/stream1";
@@ -56,16 +46,28 @@ in {
             #   roles = ["record"];
 
             #   record.enable = true;
-
-            #   onvif = {
-            #     enable = true;
-
-            #     host = "192.168.1.31";
-            #     port = 2020;
-            #     user = "RomanK";
-            #     password = "Um9tYW4Um";
-            #   };
             # };
+
+            hall = {
+              enable = true;
+
+              streamUrl = "rtsp://RomanK:Um9tYW4Um@192.168.1.31:554/stream1";
+
+              roles = ["detect" "record"];
+
+              detect.enable = true;
+              record.enable = true;
+              snapshots.enable = true;
+
+              onvif = {
+                enable = true;
+
+                host = "192.168.1.31";
+                port = 2020;
+                user = "RomanK";
+                password = "Um9tYW4Um";
+              };
+            };
           };
         };
 

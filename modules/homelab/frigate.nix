@@ -94,6 +94,18 @@ in {
             };
           };
 
+          snapshots = {
+            enable = lib.mkEnableOption "Enable snapshots";
+
+            retain = {
+              days = lib.mkOption {
+                description = "Days to retain snapshots";
+                type = lib.types.int;
+                default = 10;
+              };
+            };
+          };
+
           onvif = {
             enable = lib.mkEnableOption "Enable ONVIF camera";
 
@@ -118,37 +130,6 @@ in {
               default = "";
             };
           };
-
-          # onvif = lib.mkOption {
-          #   description = "Configuration of the ONVIF camera";
-
-          #   type = lib.types.submodule {
-          #     options = {
-          #       enable = lib.mkEnableOption "Enable ONVIF camera";
-
-          #       host = lib.mkOption {
-          #         description = "Host of the ONVIF camera";
-          #         type = lib.types.str;
-          #         default = "";
-          #       };
-          #       port = lib.mkOption {
-          #         description = "Port of the ONVIF camera";
-          #         type = lib.types.port;
-          #         default = 0;
-          #       };
-          #       user = lib.mkOption {
-          #         description = "User of the ONVIF camera";
-          #         type = lib.types.str;
-          #         default = "";
-          #       };
-          #       password = lib.mkOption {
-          #         description = "Password of the ONVIF camera";
-          #         type = lib.types.str;
-          #         default = "";
-          #       };
-          #     };
-          #   };
-          # };
 
           audioEnabled = lib.mkOption {
             description = "Enable audio";
@@ -313,11 +294,20 @@ in {
                     fps = cfgCamera.detect.fps;
                   };
 
-                  record = {
+                  record = lib.mkIf cfgCamera.record.enable {
                     enabled = true;
+
                     retain = {
                       days = cfgCamera.record.retain.days;
                       mode = cfgCamera.record.retain.mode;
+                    };
+                  };
+
+                  snapshots = lib.mkIf cfgCamera.snapshots.enable {
+                    enabled = true;
+
+                    retain = {
+                      days = cfgCamera.snapshots.retain.days;
                     };
                   };
 
