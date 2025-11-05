@@ -67,6 +67,8 @@ in {
 
               snapshots.enable = true;
 
+              motion.enable = true;
+
               onvif = {
                 enable = true;
 
