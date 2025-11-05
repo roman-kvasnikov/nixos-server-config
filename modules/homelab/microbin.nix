@@ -36,6 +36,12 @@ in {
       default = true;
     };
 
+    passwordFile = lib.mkOption {
+      description = "Password file for Microbin";
+      type = lib.types.path;
+      default = config.age.secrets.microbin-env.path;
+    };
+
     homepage = {
       name = lib.mkOption {
         type = lib.types.str;
@@ -60,6 +66,8 @@ in {
     (lib.mkIf cfg.enable {
       services.microbin = {
         enable = true;
+
+        passwordFile = cfg.passwordFile;
 
         settings = {
           MICROBIN_PUBLIC_PATH = "https://${cfg.domain}/";
