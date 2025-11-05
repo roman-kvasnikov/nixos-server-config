@@ -53,7 +53,7 @@ in {
             description = "List of camera roles";
             type = lib.types.listOf lib.types.str;
             default = [];
-            example = ["detect" "record"];
+            example = ["detect" "audio" "record"];
           };
 
           detect = {
@@ -346,10 +346,11 @@ in {
             cfg.cameras
           );
 
+          detect.enabled = true;
           record.enabled = true;
+          motion.enabled = true;
+
           audio.enabled = false;
-          detect.enabled = false;
-          motion.enabled = false;
           snapshots.enabled = false;
 
           birdseye.enabled = false;
