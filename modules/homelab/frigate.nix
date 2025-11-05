@@ -83,7 +83,7 @@ in {
               days = lib.mkOption {
                 description = "Days to retain recordings";
                 type = lib.types.int;
-                default = 3;
+                default = 10;
               };
 
               mode = lib.mkOption {

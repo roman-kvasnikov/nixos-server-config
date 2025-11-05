@@ -45,16 +45,7 @@ in {
 
               roles = ["record"];
 
-              detect.enable = false;
-
-              record = {
-                enable = true;
-
-                retain = {
-                  days = 10;
-                  mode = "all";
-                };
-              };
+              record.enable = true;
             };
 
             Hall = {
