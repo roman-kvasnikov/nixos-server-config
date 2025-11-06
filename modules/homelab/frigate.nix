@@ -217,10 +217,10 @@ in {
 
           ffmpeg = {
             hwaccel_args = "-hwaccel cuda -hwaccel_output_format cuda";
-            output_args = {
-              detect = "-c:v h264_nvenc -preset fast -b:v 5M";
-              record = "-c:v h264_nvenc -preset fast -b:v 5M";
-            };
+            # output_args = {
+            #   detect = "-c:v h264_nvenc -preset fast -b:v 5M";
+            #   record = "-c:v h264_nvenc -preset fast -b:v 5M";
+            # };
           };
 
           cameras = lib.filterAttrs (_: cam: cam != null) (
