@@ -238,7 +238,7 @@ in {
             http2 = true;
 
             locations."/" = {
-              proxyPass = "http://127.0.0.1:8971";
+              proxyPass = "http://127.0.0.1:5000";
               proxyWebsockets = true;
               recommendedProxySettings = true;
             };
