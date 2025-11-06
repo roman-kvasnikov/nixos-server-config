@@ -228,7 +228,7 @@ in {
 
         # Дополнительно
         stopTimeout = 30; # аналог stop_grace_period: 30s
-        shmSize = "512m"; # аналог shm_size
+        # shmSize = "512m"; # аналог shm_size
       };
     })
 
