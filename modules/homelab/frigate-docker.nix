@@ -107,7 +107,7 @@ in {
 
         environment = {
           # Только необходимые переменные окружения
-          FRIGATE_RTSP_PASSWORD = cfg.rtspPassword;
+          FRIGATE_RTSP_PASSWORD = "password";
           TZ = config.time.timeZone;
           # Явно очищаем PATH чтобы не было ссылок на Nix store
           PATH = "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin";
