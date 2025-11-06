@@ -285,6 +285,12 @@ in {
           };
         };
       };
+
+      systemd.services.frigate.environment.LD_LIBRARY_PATH = lib.makeLibraryPath [
+        pkgs.cudaPackages.cudatoolkit
+        pkgs.cudaPackages.tensorrt
+        pkgs.cudaPackages.cudnn
+      ];
     })
 
     (lib.mkIf (cfg.enable && cfgAcme.enable) {

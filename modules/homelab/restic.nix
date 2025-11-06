@@ -32,6 +32,7 @@ in {
 
     jobs = lib.mkOption {
       description = "All Restic backup jobs";
+
       type = lib.types.attrsOf (lib.types.submodule ({name, ...}: {
         options = {
           repository = lib.mkOption {
@@ -74,6 +75,7 @@ in {
           };
         };
       }));
+
       default = {};
     };
   };
@@ -83,6 +85,7 @@ in {
       restic
     ];
 
+    # Создаем бекапы всех добавленных баз данных в каталог /var/lib/postgresql/backups
     services.postgresqlBackup = let
       databasesToBackup = lib.filter (database: database != null) (lib.map (job: job.database) (lib.attrValues cfg.jobs));
     in {
@@ -92,6 +95,7 @@ in {
       location = "/var/lib/postgresql/backups";
     };
 
+    # Говорим сервису resticctl, чтобы он включил в свой перечень бекапов каталог с бекапами баз данных.
     homelab.services.resticctl = {
       jobs.postgresql = {
         paths = ["/var/lib/postgresql/backups"];
