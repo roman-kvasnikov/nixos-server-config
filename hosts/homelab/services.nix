@@ -35,7 +35,7 @@ in {
         # filebrowserctl.enable = true;
 
         frigatectl = {
-          enable = false;
+          enable = true;
 
           cameras = {
             Outside = {

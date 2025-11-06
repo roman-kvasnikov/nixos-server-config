@@ -183,6 +183,10 @@ in {
       environment.systemPackages = with pkgs; [
         frigate
         ffmpeg-full
+        cudaPackages.cudatoolkit
+        cudaPackages.tensorrt
+        cudaPackages.cudnn
+        nvidia-container-toolkit
       ];
 
       systemd.tmpfiles.rules = [
@@ -268,13 +272,13 @@ in {
             cfg.cameras
           );
 
-          # detect.enabled = true;
-          # record.enabled = true;
-          # audio.enabled = true;
-          # snapshots.enabled = true;
-          # motion.enabled = true;
-
-          birdseye.enabled = true;
+          detectors = {
+            nvidia = {
+              # type = "nvidia";
+              type = "tensorrt";
+              device = 0;
+            };
+          };
 
           ui = {
             timezone = config.time.timeZone;
