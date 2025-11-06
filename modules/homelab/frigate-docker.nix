@@ -215,9 +215,6 @@ in {
 
         # Устройства
         devices = [
-          "/dev/bus/usb:/dev/bus/usb"
-          "/dev/apex_0:/dev/apex_0"
-          "/dev/video11:/dev/video11"
           "/dev/dri/renderD128:/dev/dri/renderD128"
           "/dev/dri/renderD129:/dev/dri/renderD129"
         ];
