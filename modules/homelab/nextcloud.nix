@@ -176,7 +176,7 @@ in {
     })
 
     (lib.mkIf (cfg.enable && cfg.backupEnabled) {
-      homelab.services.resticctl = {
+      services.backupctl = {
         jobs.nextcloud = {
           database = config.services.nextcloud.config.dbname;
           paths = [config.services.nextcloud.home];

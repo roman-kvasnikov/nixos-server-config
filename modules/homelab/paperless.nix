@@ -110,7 +110,7 @@ in {
     })
 
     (lib.mkIf (cfg.enable && cfg.backupEnabled) {
-      homelab.services.resticctl = {
+      services.backupctl = {
         jobs.paperless = {
           database = config.services.paperless.settings.PAPERLESS_DBNAME;
           paths = [config.services.paperless.dataDir];

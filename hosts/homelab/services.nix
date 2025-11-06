@@ -22,10 +22,16 @@ in {
       acmectl.enable = true;
       nginxctl.enable = true;
       diskspacealertctl.enable = true;
-      # dnsmasqctl.enable = false;
-      # hddfancontrolctl.enable = true;
       smartdctl.enable = true;
       xrayctl.enable = true;
+
+      backupctl = {
+        enable = true;
+
+        # jobs.data = {
+        #   paths = ["/data"];
+        # };
+      };
     };
 
     homelab = {
@@ -42,52 +48,18 @@ in {
               enable = true;
 
               streamUrl = "rtsp://RomanK:Um9tYW4Um@192.168.1.30:554/stream1";
-
               roles = ["record"];
 
               record.enable = true;
             };
 
-            # Hall = {
-            #   enable = true;
-
-            #   streamUrl = "rtsp://RomanK:Um9tYW4Um@192.168.1.31:554/stream1";
-
-            #   roles = ["detect" "record" "audio"];
-
-            #   detect.enable = true;
-
-            #   record = {
-            #     enable = true;
-
-            #     retain = {
-            #       mode = "motion";
-            #     };
-            #   };
-
-            #   audio.enable = true;
-
-            #   snapshots.enable = true;
-
-            #   motion.enable = true;
-
-            #   onvif = {
-            #     enable = true;
-
-            #     host = "192.168.1.31";
-            #     port = 2020;
-            #     user = "RomanK";
-            #     password = "Um9tYW4Um";
-            #   };
-            # };
-
             Hall = {
               enable = true;
 
               streamUrl = "rtsp://RomanK:Um9tYW4Um@192.168.1.31:554/stream1";
+              roles = ["detect" "record" "audio"];
 
-              roles = ["record"];
-
+              detect.enable = true;
               record = {
                 enable = true;
 
@@ -95,7 +67,8 @@ in {
                   mode = "motion";
                 };
               };
-
+              audio.enable = true;
+              snapshots.enable = true;
               motion.enable = true;
 
               onvif = {
