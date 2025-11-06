@@ -139,7 +139,7 @@ in {
           ])
         ];
 
-        extraOptions = lib.concatStringsSep " " [
+        extraOptions = [
           "--privileged"
           "--shm-size=${cfg.shmSize}"
           "--stop-timeout=30"
