@@ -274,8 +274,8 @@ in {
 
           detectors = {
             nvidia = {
-              # type = "nvidia";
-              type = "tensorrt";
+              type = "nvidia";
+              # type = "tensorrt";
               device = 0;
             };
           };
