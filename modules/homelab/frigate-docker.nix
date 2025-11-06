@@ -225,26 +225,26 @@ in {
       };
     })
 
-    (lib.mkIf (cfg.enable && cfgAcme.enable) {
-      security.acme.certs."${cfg.domain}" = cfgAcme.commonCertOptions;
-    })
+    # (lib.mkIf (cfg.enable && cfgAcme.enable) {
+    #   security.acme.certs."${cfg.domain}" = cfgAcme.commonCertOptions;
+    # })
 
-    (lib.mkIf (cfg.enable && cfgNginx.enable) {
-      services.nginx = {
-        virtualHosts = {
-          "${cfg.domain}" = {
-            enableACME = cfgAcme.enable;
-            forceSSL = cfgAcme.enable;
-            http2 = true;
+    # (lib.mkIf (cfg.enable && cfgNginx.enable) {
+    #   services.nginx = {
+    #     virtualHosts = {
+    #       "${cfg.domain}" = {
+    #         enableACME = cfgAcme.enable;
+    #         forceSSL = cfgAcme.enable;
+    #         http2 = true;
 
-            locations."/" = {
-              proxyPass = "http://127.0.0.1:5000";
-              proxyWebsockets = true;
-              recommendedProxySettings = true;
-            };
-          };
-        };
-      };
-    })
+    #         locations."/" = {
+    #           proxyPass = "http://127.0.0.1:5000";
+    #           proxyWebsockets = true;
+    #           recommendedProxySettings = true;
+    #         };
+    #       };
+    #     };
+    #   };
+    # })
   ];
 }
