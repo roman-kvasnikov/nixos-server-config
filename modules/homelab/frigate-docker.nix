@@ -208,13 +208,6 @@ in {
           "/etc/localtime:/etc/localtime:ro"
           "/var/lib/frigate:/config:rw"
           "/var/lib/frigate/storage:/media/frigate:rw"
-          # tmpfs
-          {
-            hostPath = "/tmp";
-            containerPath = "/tmp/cache";
-            type = "tmpfs";
-            tmpfsSize = "1000000000";
-          }
         ];
 
         # Устройства
