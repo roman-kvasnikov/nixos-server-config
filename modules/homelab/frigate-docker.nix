@@ -148,7 +148,7 @@ in {
       };
 
       # Опционально: настройка nginx reverse proxy
-      services.nginx.virtualHosts = lib.mkIf (cfgNginx.enable or false) {
+      services.nginx.virtualHosts = {
         ${cfg.domain} = {
           enableACME = cfgAcme.enable or false;
           forceSSL = cfgAcme.enable or false;

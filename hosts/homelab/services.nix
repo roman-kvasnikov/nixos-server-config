@@ -40,16 +40,6 @@ in {
 
         # filebrowserctl.enable = true;
 
-        frigatectl = {
-          enable = true;
-          # Для Intel GPU
-          enableIntelHwAccel = true;
-          # Для USB Coral
-          # enableCoralUsb = true;
-          # Настроить размер shm в зависимости от количества камер
-          shmSize = "512mb";
-        };
-
         # frigatectl = {
         #   enable = true;
 
