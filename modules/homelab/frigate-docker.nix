@@ -210,7 +210,7 @@ in {
         volumes = [
           "/etc/localtime:/etc/localtime:ro"
           "/var/lib/frigate:/config:rw"
-          "/var/lib/frigate/storage:/media/frigate:rw"
+          "/var/lib/frigate/recordings:/media/frigate:rw"
         ];
 
         # Устройства
