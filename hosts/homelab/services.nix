@@ -138,8 +138,6 @@ in {
 
         uptime-kuma-ctl.enable = true;
         vaultwardenctl.enable = true;
-
-        resticctl.enable = true;
       };
     };
   };
