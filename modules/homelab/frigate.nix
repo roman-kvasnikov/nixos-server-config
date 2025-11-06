@@ -273,9 +273,8 @@ in {
           );
 
           detectors = {
-            nvidia = {
+            onnx = {
               type = "onnx";
-              device = "cuda";
             };
           };
 
