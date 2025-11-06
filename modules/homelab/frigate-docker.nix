@@ -144,10 +144,12 @@ in {
       };
 
       # Опционально: настройка nginx reverse proxy
-      services.nginxctl.virtualHosts = lib.mkIf (cfgNginx.enable or false) {
+      services.nginx.virtualHosts = lib.mkIf (cfgNginx.enable or false) {
         ${cfg.domain} = {
           enableACME = cfgAcme.enable or false;
           forceSSL = cfgAcme.enable or false;
+          http2 = true;
+
           locations."/" = {
             proxyPass = "http://127.0.0.1:8971";
             proxyWebsockets = true;
