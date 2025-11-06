@@ -22,6 +22,12 @@
     fsType = "ext4";
   };
 
+  fileSystems."/var/lib/frigate" = {
+    device = "/dev/disk/by-uuid/0ec779e6-4af6-4f69-bd11-ab65db714af4";
+    fsType = "ext4";
+    options = ["noatime" "nodiratime"];
+  };
+
   fileSystems."/boot" = {
     device = "/dev/disk/by-uuid/0490-C3DF";
     fsType = "vfat";
