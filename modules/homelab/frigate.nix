@@ -272,21 +272,21 @@ in {
             cfg.cameras
           );
 
-          detectors = {
-            onnx = {
-              type = "onnx";
-            };
-          };
+          # detectors = {
+          #   onnx = {
+          #     type = "onnx";
+          #   };
+          # };
 
-          model = {
-            model_type = "yolox";
-            width = "416";
-            height = "416";
-            input_tensor = "nchw";
-            input_dtype = "float_denorm";
-            path = "/var/lib/frigate/model_cache/onnx/yolox_nano.onnx";
-            labelmap_path = "/labelmap/coco-80.txt";
-          };
+          # model = {
+          #   model_type = "yolox";
+          #   width = "416";
+          #   height = "416";
+          #   input_tensor = "nchw";
+          #   input_dtype = "float_denorm";
+          #   path = "/var/lib/frigate/model_cache/onnx/yolox_nano.onnx";
+          #   labelmap_path = "/labelmap/coco-80.txt";
+          # };
 
           ui = {
             timezone = config.time.timeZone;
