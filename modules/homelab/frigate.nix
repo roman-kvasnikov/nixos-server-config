@@ -285,7 +285,7 @@ in {
             input_tensor = "nchw";
             input_dtype = "float_denorm";
             path = "/var/lib/frigate/model_cache/onnx/yolox_nano.onnx";
-            # labelmap_path = "/labelmap/coco-80.txt";
+            labelmap_path = "/labelmap/coco-80.txt";
           };
 
           ui = {
