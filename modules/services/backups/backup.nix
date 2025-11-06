@@ -51,7 +51,7 @@ in {
           {
             postgresql.paths = ["/var/lib/postgresql/backups"];
           }
-          // cfg.jobs;
+          // lib.mapAttrs (_: job: builtins.removeAttrs job ["database"]) cfg.jobs;
       };
     };
   };
