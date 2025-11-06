@@ -16,6 +16,8 @@
     ffmpeg
     tree
     lsof
+    sysstat
+    procps
 
     yazi # File Manager
     filebot # Rename files based on metadata for movies and TV shows
