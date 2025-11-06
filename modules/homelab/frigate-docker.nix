@@ -36,16 +36,19 @@ in {
         image = "ghcr.io/blakeblackshear/frigate:stable";
         autoStart = true;
         privileged = true;
+
         ports = [
           "8971:8971"
           "8554:8554"
           "8555:8555/tcp"
           "8555:8555/udp"
         ];
+
         environment = {
           FRIGATE_RTSP_PASSWORD = "password";
           FRIGATE_TZ = config.time.timeZone;
         };
+
         volumes = [
           "/etc/localtime:/etc/localtime:ro"
           "${cfg.homeDir}:/config:rw"
@@ -57,12 +60,12 @@ in {
             tmpfsSize = "1000000000";
           }
         ];
+
         devices = [
           "/dev/dri/renderD128:/dev/dri/renderD128"
         ];
 
-        # Вместо shmSize и stopTimeout:
-        extraOptions = "--shm-size=512m --stop-timeout=30";
+        extraOptions = ["--shm-size=512m" "--stop-timeout=30"];
       };
     })
   ];
