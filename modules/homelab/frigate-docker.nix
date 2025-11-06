@@ -144,8 +144,6 @@ in {
           "--shm-size=${cfg.shmSize}"
           "--stop-timeout=30"
           "--mount=type=tmpfs,target=/tmp/cache,tmpfs-size=${cfg.tmpCacheSize}"
-          # Важно: очищаем переменные окружения от Nix
-          "--env-file=-"
         ];
       };
 
