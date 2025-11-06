@@ -88,7 +88,7 @@ in {
         "d '${cfg.storageDir}/exports' 0755 root root - -"
       ];
 
-      virtualisation.oci-containers.backend = lib.mkDefault "podman";
+      virtualisation.oci-containers.backend = lib.mkDefault "docker";
 
       virtualisation.oci-containers.containers.frigate = {
         image = "ghcr.io/blakeblackshear/frigate:stable";
@@ -106,8 +106,11 @@ in {
         ];
 
         environment = {
-          FRIGATE_RTSP_PASSWORD = "password"; # Замените на безопасный пароль
+          # Только необходимые переменные окружения
+          FRIGATE_RTSP_PASSWORD = cfg.rtspPassword;
           TZ = config.time.timeZone;
+          # Явно очищаем PATH чтобы не было ссылок на Nix store
+          PATH = "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin";
         };
 
         volumes = [
@@ -136,10 +139,13 @@ in {
           ])
         ];
 
-        extraOptions = [
+        extraOptions = lib.concatStringsSep " " [
+          "--privileged"
           "--shm-size=${cfg.shmSize}"
-          "--stop-timeout=30" # Согласно документации: stop_grace_period
+          "--stop-timeout=30"
           "--mount=type=tmpfs,target=/tmp/cache,tmpfs-size=${cfg.tmpCacheSize}"
+          # Важно: очищаем переменные окружения от Nix
+          "--env-file=-"
         ];
       };
 
