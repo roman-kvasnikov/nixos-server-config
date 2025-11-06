@@ -18,6 +18,7 @@
     lsof
     sysstat
     procps
+    pciutils
 
     yazi # File Manager
     filebot # Rename files based on metadata for movies and TV shows
