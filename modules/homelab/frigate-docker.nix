@@ -180,6 +180,9 @@ in {
 
   config = lib.mkMerge [
     (lib.mkIf cfg.enable {
+      networking.firewall.allowedTCPPorts = [8971 8554 8555];
+      networking.firewall.allowedUDPPorts = [8555];
+
       virtualisation.oci-containers.backend = lib.mkDefault "podman";
 
       virtualisation.oci-containers.containers.frigate = {
