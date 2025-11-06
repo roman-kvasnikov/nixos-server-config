@@ -37,7 +37,6 @@ in {
         autoStart = true;
         privileged = true;
 
-        # Порты
         ports = [
           "8971:8971"
           "8554:8554"
@@ -45,37 +44,23 @@ in {
           "8555:8555/udp"
         ];
 
-        # Окружение
         environment = {
           FRIGATE_RTSP_PASSWORD = "password";
           FRIGATE_TZ = config.time.timeZone;
         };
 
-        # Томы
         volumes = [
           "/etc/localtime:/etc/localtime:ro"
           "${cfg.homeDir}:/config:rw"
           "${cfg.homeDir}/recordings:/media/frigate:rw"
         ];
 
-        # Tmpfs
-        mounts = [
-          {
-            hostPath = "/tmp";
-            containerPath = "/tmp/cache";
-            type = "tmpfs";
-            tmpfsSize = 1000000000; # 1 GB
-          }
-        ];
-
-        # Устройства
         devices = [
           "/dev/dri/renderD128:/dev/dri/renderD128"
           "/dev/dri/renderD129:/dev/dri/renderD129"
         ];
 
-        # Дополнительно
-        extraOptions = ["--shm-size=512m" "--stop-timeout=30"];
+        extraOptions = ["--shm-size=512m" "--stop-timeout=30" "--tmpfs=/tmp/cache:size=1000000000"];
       };
     })
   ];
