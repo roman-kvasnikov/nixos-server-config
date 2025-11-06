@@ -184,7 +184,7 @@ in {
         frigate
         ffmpeg-full
         cudaPackages.cudatoolkit
-        cudaPackages.tensorrt
+        # cudaPackages.tensorrt
         cudaPackages.cudnn
         nvidia-container-toolkit
       ];
@@ -274,8 +274,8 @@ in {
 
           detectors = {
             nvidia = {
-              type = "tensorrt";
-              device = 0;
+              type = "onnx";
+              device = "cuda";
             };
           };
 
@@ -287,7 +287,7 @@ in {
 
       systemd.services.frigate.environment.LD_LIBRARY_PATH = lib.makeLibraryPath [
         pkgs.cudaPackages.cudatoolkit
-        pkgs.cudaPackages.tensorrt
+        # pkgs.cudaPackages.tensorrt
         pkgs.cudaPackages.cudnn
       ];
     })
