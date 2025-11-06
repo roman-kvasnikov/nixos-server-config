@@ -272,11 +272,11 @@ in {
             cfg.cameras
           );
 
-          detectors = {
-            onnx = {
-              type = "onnx";
-            };
-          };
+          # detectors = {
+          #   onnx = {
+          #     type = "onnx";
+          #   };
+          # };
 
           ui = {
             timezone = config.time.timeZone;
