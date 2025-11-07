@@ -5,6 +5,7 @@
     ./homepage.nix
     ./immich.nix
     ./jellyfin.nix
+    ./linkwarden.nix
     ./microbin.nix
     ./nextcloud.nix
     ./onlyoffice.nix
