@@ -62,13 +62,13 @@ in {
               };
             }
             {
-              Clouds = {
+              Monitoring = {
                 header = true;
                 style = "column";
               };
             }
             {
-              System = {
+              Clouds = {
                 header = true;
                 style = "column";
               };
