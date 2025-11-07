@@ -53,7 +53,7 @@ in {
       };
       icon = lib.mkOption {
         type = lib.types.str;
-        default = "linkwarden.svg";
+        default = "linkwarden.png";
       };
       category = lib.mkOption {
         type = lib.types.str;
