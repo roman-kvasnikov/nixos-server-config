@@ -36,6 +36,12 @@ in {
       default = false;
     };
 
+    backupEnabled = lib.mkOption {
+      description = "Enable backup for Uptime Kuma";
+      type = lib.types.bool;
+      default = true;
+    };
+
     homepage = {
       name = lib.mkOption {
         type = lib.types.str;
@@ -58,16 +64,20 @@ in {
 
   config = lib.mkMerge [
     (lib.mkIf cfg.enable {
-      environment.systemPackages = with pkgs; [
-        uptime-kuma
-      ];
-
       services.uptime-kuma = {
         enable = true;
 
         settings = {
           HOST = cfg.host;
           PORT = toString cfg.port;
+        };
+      };
+    })
+
+    (lib.mkIf (cfg.enable && cfg.backupEnabled) {
+      services.backupctl = {
+        jobs.uptime-kuma = {
+          paths = [config.services.uptime-kuma.settings.DATA_DIR];
         };
       };
     })
