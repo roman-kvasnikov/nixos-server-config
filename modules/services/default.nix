@@ -6,6 +6,7 @@
     ./openssh.nix
     ./postgresql.nix
     ./smartd.nix
+    ./virtualisation.nix
     ./xray.nix
     ./backups
   ];

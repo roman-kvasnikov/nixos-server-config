@@ -5,7 +5,7 @@ in {
     users = {
       ${cfgHomelab.adminUser} = {
         isNormalUser = true;
-        extraGroups = ["wheel" "users" "docker" "nextcloud" cfgHomelab.systemGroup];
+        extraGroups = ["wheel" "users" "docker" "podman" "nextcloud" cfgHomelab.systemGroup];
         hashedPasswordFile = cfgHomelab.adminPasswordFile;
       };
 

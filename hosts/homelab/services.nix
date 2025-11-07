@@ -85,7 +85,7 @@ in {
 
         glancesctl.enable = true;
         immichctl.enable = true;
-        jellyfinctl.enable = false;
+        jellyfinctl.enable = true;
         linkwardenctl.enable = true;
         microbinctl.enable = true;
         nextcloudctl.enable = true;
@@ -138,6 +138,7 @@ in {
           };
         };
 
+        tubearchivistctl.enable = true;
         uptime-kuma-ctl.enable = true;
         vaultwardenctl.enable = true;
       };

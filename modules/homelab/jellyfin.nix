@@ -36,6 +36,12 @@ in {
       default = true;
     };
 
+    backupEnabled = lib.mkOption {
+      description = "Enable backup for Immich";
+      type = lib.types.bool;
+      default = true;
+    };
+
     mediaDir = lib.mkOption {
       description = "Media directory for Jellyfin";
       type = lib.types.path;
@@ -64,7 +70,7 @@ in {
         default = {
           type = "jellyfin";
           url = "https://${cfg.domain}";
-          key = "868d1091409e430f8bbb835849b10149";
+          key = "bd00f8d2ea2d43088c54d172a8b25bb2";
           enableBlocks = true;
           enableNowPlaying = true;
           enableUser = true;
@@ -125,6 +131,14 @@ in {
       systemd.services.jellyfin = {
         serviceConfig = {
           SupplementaryGroups = ["video" "render"]; # доступ к /dev/dri
+        };
+      };
+    })
+
+    (lib.mkIf (cfg.enable && cfg.backupEnabled) {
+      services.backupctl = {
+        jobs.jellyfin = {
+          paths = [config.services.jellyfin.dataDir];
         };
       };
     })
