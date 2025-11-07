@@ -83,6 +83,7 @@ in {
         #   };
         # };
 
+        glancesctl.enable = true;
         immichctl.enable = true;
         jellyfinctl.enable = true;
         linkwardenctl.enable = true;

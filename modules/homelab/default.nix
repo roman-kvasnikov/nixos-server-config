@@ -2,6 +2,7 @@
   imports = [
     # ./filebrowser.nix
     ./frigate-docker.nix
+    ./glances.nix
     ./homepage.nix
     ./immich.nix
     ./jellyfin.nix
