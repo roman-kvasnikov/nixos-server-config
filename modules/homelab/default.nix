@@ -13,6 +13,7 @@
     ./paperless.nix
     ./qbittorrent.nix
     ./samba.nix
+    ./simple-container.nix
     ./tubearchivist.nix
     ./uptime-kuma.nix
     ./vaultwarden.nix

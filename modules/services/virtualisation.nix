@@ -1,8 +1,7 @@
 {pkgs, ...}: {
-  # Enable common container config files in /etc/containers
-  virtualisation.containers.enable = true;
-
   virtualisation = {
+    oci-containers.enable = true;
+
     podman = {
       enable = true;
 

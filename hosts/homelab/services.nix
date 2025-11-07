@@ -138,7 +138,7 @@ in {
           };
         };
 
-        tubearchivistctl.enable = true;
+        tubearchivistctl.enable = false;
         uptime-kuma-ctl.enable = true;
         vaultwardenctl.enable = true;
       };
