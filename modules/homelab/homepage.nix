@@ -211,7 +211,7 @@ in {
                     widget =
                       commonOptions
                       // {
-                        metric = "network:enp0s20f0u3";
+                        metric = "network:enp0s20f0u9";
                         chart = true;
                       };
                   };
