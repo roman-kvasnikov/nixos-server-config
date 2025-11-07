@@ -24,7 +24,6 @@
     libargon2
     glibc
     libgcc
-    libstdcxx
     zlib
 
     yazi # File Manager
