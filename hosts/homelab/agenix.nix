@@ -21,6 +21,13 @@
         mode = "0600";
       };
 
+      linkwarden-env = {
+        file = ../../secrets/linkwarden/env.age;
+        owner = "root";
+        group = "root";
+        mode = "0400";
+      };
+
       microbin-env = {
         file = ../../secrets/microbin/env.age;
         owner = "root";

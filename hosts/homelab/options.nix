@@ -1,6 +1,7 @@
 {
   lib,
   config,
+  hostname,
   ...
 }: {
   options.homelab = {
@@ -74,7 +75,7 @@
       repository = lib.mkOption {
         type = lib.types.str;
         description = "Restic repository for the homelab server";
-        default = "s3:https://s3.twcstorage.ru/1f382b96-c34b0ea3-eb1f-4476-b009-6e99275d7b19/backups";
+        default = "s3:https://s3.twcstorage.ru/1f382b96-c34b0ea3-eb1f-4476-b009-6e99275d7b19/backups/${hostname}";
       };
 
       environmentFile = lib.mkOption {
