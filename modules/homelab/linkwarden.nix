@@ -59,6 +59,14 @@ in {
         type = lib.types.str;
         default = "Clouds";
       };
+      widget = lib.mkOption {
+        type = lib.types.attrs;
+        default = {
+          type = "linkwarden";
+          url = "https://${cfg.domain}";
+          key = "eyJhbGciOiJkaXIiLCJlbmMiOiJBMjU2R0NNIn0..mcl89EaHz2bRHYpw.I8aZl2gY9k8sP6CHOl0H_vVnEdwJw_E8LFnWHuo0e4p6ayZ69UIx3iLpwHNAC3YCrC2CwcCpI_xsR8jRU1pIew97c-MsoEoTTaJvbDmCh-Qv7ssE5Eoo.91_J1whTgTu0hne9JWMijQ";
+        };
+      };
     };
   };
 
