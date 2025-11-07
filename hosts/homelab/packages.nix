@@ -12,6 +12,7 @@
     curl
     git
     wget
+    tar
     jq
     ffmpeg
     tree
@@ -21,6 +22,10 @@
     pciutils
     lshw
     libargon2
+    glibc
+    libgcc
+    libstdcxx
+    zlib
 
     yazi # File Manager
     filebot # Rename files based on metadata for movies and TV shows
