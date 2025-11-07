@@ -42,8 +42,8 @@ in {
 
   config = lib.mkMerge [
     (lib.mkIf cfg.enable {
-      # services.glances.enable = true;
-      # networking.firewall.allowedTCPPorts = [61208];
+      services.glances.enable = true;
+      networking.firewall.allowedTCPPorts = [61208];
 
       services.homepage-dashboard = {
         enable = true;
