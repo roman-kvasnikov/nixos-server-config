@@ -12,7 +12,7 @@
     curl
     git
     wget
-    tar
+    gnutar
     jq
     ffmpeg
     tree
