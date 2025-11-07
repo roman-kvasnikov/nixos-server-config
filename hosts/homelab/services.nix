@@ -85,7 +85,7 @@ in {
 
         glancesctl.enable = true;
         immichctl.enable = true;
-        jellyfinctl.enable = true;
+        jellyfinctl.enable = false;
         linkwardenctl.enable = true;
         microbinctl.enable = true;
         nextcloudctl.enable = true;

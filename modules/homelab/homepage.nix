@@ -120,8 +120,8 @@ in {
 
         services = let
           homepageCategories = [
+            "Monitoring"
             "Clouds"
-            "System"
             "Media"
             "Services"
           ];

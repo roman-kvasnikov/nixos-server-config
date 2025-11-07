@@ -51,7 +51,7 @@ in {
       };
       category = lib.mkOption {
         type = lib.types.str;
-        default = "Services";
+        default = "Monitoring";
       };
     };
   };
