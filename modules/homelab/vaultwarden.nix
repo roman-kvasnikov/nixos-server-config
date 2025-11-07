@@ -84,12 +84,17 @@ in {
         config = {
           DOMAIN = "https://${cfg.domain}";
           SIGNUPS_ALLOWED = true;
+          WEBSOCKET_ENABLED = true;
+          TZ = config.time.timeZone;
+
           ROCKET_ADDRESS = cfg.host;
           ROCKET_PORT = cfg.port;
           ROCKET_LOG = "critical";
 
           DATABASE_URL = "postgresql:///vaultwarden?host=/run/postgresql";
         };
+
+        environmentFile = config.age.secrets.vaultwarden-env.path;
       };
     })
 

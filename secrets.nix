@@ -17,5 +17,7 @@ in {
 
   "./secrets/samba/dssmargo-password.age".publicKeys = [homelabSshKey];
 
+  "./secrets/vaultwarden/env.age".publicKeys = [homelabSshKey];
+
   "./secrets/xray/config.json.age".publicKeys = [homelabSshKey];
 }

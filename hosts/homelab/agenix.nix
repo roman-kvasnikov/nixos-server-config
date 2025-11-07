@@ -23,8 +23,8 @@
 
       linkwarden-env = {
         file = ../../secrets/linkwarden/env.age;
-        owner = "root";
-        group = "root";
+        owner = "linkwarden";
+        group = "linkwarden";
         mode = "0400";
       };
 
@@ -59,6 +59,13 @@
         file = ../../secrets/samba/dssmargo-password.age;
         owner = "root";
         mode = "0600";
+      };
+
+      vaultwarden-env = {
+        file = ../../secrets/vaultwarden/env.age;
+        owner = "vaultwarden";
+        group = "vaultwarden";
+        mode = "0400";
       };
 
       xray-config-json = {
