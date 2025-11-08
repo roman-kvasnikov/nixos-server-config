@@ -25,21 +25,23 @@
     nixpkgs,
     ...
   } @ inputs: let
-    hostname = "homelab";
     system = "x86_64-linux";
     version = "25.05";
-  in {
-    nixosConfigurations.${hostname} = nixpkgs.lib.nixosSystem {
-      inherit system;
 
-      specialArgs = {
-        inherit inputs hostname version;
+    # Функция для получения конфигурации для конкретного хоста
+    getHostConfig = hostname:
+      nixpkgs.lib.nixosSystem {
+        inherit system;
+
+        specialArgs = {inherit inputs hostname version;};
+
+        modules = [
+          ./hosts/${hostname}/configuration.nix
+          inputs.agenix.nixosModules.default
+        ];
       };
-
-      modules = [
-        ./hosts/${hostname}/configuration.nix
-        inputs.agenix.nixosModules.default
-      ];
-    };
+  in {
+    nixosConfigurations.homelab = getHostConfig "homelab";
+    nixosConfigurations.homelab-pc = getHostConfig "homelab-pc";
   };
 }
