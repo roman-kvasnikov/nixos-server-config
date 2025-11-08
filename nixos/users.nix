@@ -19,7 +19,7 @@ in {
   };
 
   age.secrets.admin-password = {
-    file = ../../secrets/admin-password.age;
+    file = ../secrets/admin-password.age;
     owner = "root";
     group = "root";
     mode = "0400";

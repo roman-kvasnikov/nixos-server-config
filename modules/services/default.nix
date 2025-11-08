@@ -6,6 +6,7 @@
     ./openssh.nix
     ./smartd.nix
     ./virtualisation.nix
+    ./wireguard.nix
     ./xray.nix
     ./backups
   ];

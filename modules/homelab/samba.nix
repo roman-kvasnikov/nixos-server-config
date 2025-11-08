@@ -167,7 +167,7 @@ in {
         set -euo pipefail
         sleep 2
 
-        echo "Setting up Samba users from ${config.age.secrets.samba-env.path}"
+        echo "Setting up Samba users from environment file"
 
         users_list="${lib.concatStringsSep " " cfg.users}"
 
