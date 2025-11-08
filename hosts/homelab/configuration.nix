@@ -4,7 +4,7 @@
   ...
 }: {
   imports = [
-    ./agenix.nix
+    ./age.nix
     ./boot.nix
     ./hardware-configuration.nix
     ./harware.nix

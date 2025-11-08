@@ -64,25 +64,5 @@
       description = "Admin user for the homelab server";
       default = "romank";
     };
-
-    adminPasswordFile = lib.mkOption {
-      type = lib.types.path;
-      description = "Admin password file for the homelab server";
-      default = config.age.secrets.server-admin-password.path;
-    };
-
-    restic = {
-      repository = lib.mkOption {
-        type = lib.types.str;
-        description = "Restic repository for the homelab server";
-        default = "s3:https://s3.twcstorage.ru/1f382b96-c34b0ea3-eb1f-4476-b009-6e99275d7b19/backups/${hostname}";
-      };
-
-      environmentFile = lib.mkOption {
-        type = lib.types.path;
-        description = "Environment file for Restic";
-        default = config.age.secrets.restic-env.path;
-      };
-    };
   };
 }

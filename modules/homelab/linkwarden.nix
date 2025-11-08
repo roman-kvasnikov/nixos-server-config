@@ -84,6 +84,13 @@ in {
 
         environmentFile = config.age.secrets.linkwarden-env.path;
       };
+
+      age.secrets.linkwarden-env = {
+        file = ../../secrets/linkwarden.env.age;
+        owner = "linkwarden";
+        group = "linkwarden";
+        mode = "0400";
+      };
     })
 
     (lib.mkIf (cfg.enable && cfg.backupEnabled) {

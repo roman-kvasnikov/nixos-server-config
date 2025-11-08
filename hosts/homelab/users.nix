@@ -6,18 +6,22 @@ in {
       ${cfgHomelab.adminUser} = {
         isNormalUser = true;
         extraGroups = ["wheel" "users" "docker" "podman" "nextcloud" cfgHomelab.systemGroup];
-        hashedPasswordFile = cfgHomelab.adminPasswordFile;
+        hashedPasswordFile = config.age.secrets.admin-password.path;
       };
 
       ${cfgHomelab.systemUser} = {
         isSystemUser = true;
-        uid = 989;
         group = cfgHomelab.systemGroup;
       };
     };
 
-    groups.${cfgHomelab.systemGroup} = {
-      gid = 989;
-    };
+    groups.${cfgHomelab.systemGroup} = {};
+  };
+
+  age.secrets.admin-password = {
+    file = ../../secrets/admin-password.age;
+    owner = "root";
+    group = "root";
+    mode = "0400";
   };
 }

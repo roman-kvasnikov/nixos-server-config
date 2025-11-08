@@ -2,6 +2,7 @@
   config,
   lib,
   pkgs,
+  hostname,
   ...
 }: let
   cfg = config.services.resticctl;
@@ -12,13 +13,13 @@ in {
     repository = lib.mkOption {
       description = "Restic repository (e.g., s3:https://s3.example.com/my-repo)";
       type = lib.types.str;
-      default = config.homelab.restic.repository;
+      default = "s3:https://s3.twcstorage.ru/1f382b96-c34b0ea3-eb1f-4476-b009-6e99275d7b19/backups/${hostname}";
     };
 
     environmentFile = lib.mkOption {
       description = "File with RESTIC_PASSWORD and optionally S3 credentials.";
       type = lib.types.path;
-      default = config.homelab.restic.environmentFile;
+      default = config.age.secrets.restic-env.path;
     };
 
     schedule = lib.mkOption {
@@ -115,5 +116,12 @@ in {
           };
         })
         jobNames);
+
+    age.secrets.restic-env = {
+      file = ../../../secrets/restic.env.age;
+      owner = "root";
+      group = "root";
+      mode = "0400";
+    };
   };
 }

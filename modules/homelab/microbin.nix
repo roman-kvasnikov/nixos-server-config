@@ -83,6 +83,13 @@ in {
           MICROBIN_READONLY = true;
         };
       };
+
+      age.secrets.microbin-env = {
+        file = ../../secrets/microbin.env.age;
+        owner = "root";
+        group = "root";
+        mode = "0400";
+      };
     })
 
     (lib.mkIf (cfg.enable && cfgAcme.enable) {

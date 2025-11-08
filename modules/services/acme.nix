@@ -14,7 +14,7 @@ in {
       description = "Common options for ACME certificates";
       default = {
         dnsProvider = "namecheap";
-        credentialsFile = config.age.secrets.acme-namecheap-env.path;
+        credentialsFile = config.age.secrets.namecheap-env.path;
         webroot = null;
         postRun = ''
           systemctl reload nginx
@@ -29,6 +29,13 @@ in {
         acceptTerms = true;
         defaults.email = cfgHomelab.email;
       };
+    };
+
+    age.secrets.acme-namecheap-env = {
+      file = ../../secrets/namecheap.env.age;
+      owner = "root";
+      group = "root";
+      mode = "0400";
     };
   };
 }

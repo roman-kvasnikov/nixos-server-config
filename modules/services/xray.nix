@@ -12,14 +12,17 @@ in {
 
   config = lib.mkMerge [
     (lib.mkIf cfg.enable {
-      environment.systemPackages = with pkgs; [
-        xray
-      ];
-
       services.xray = {
         enable = true;
 
         settingsFile = config.age.secrets.xray-config-json.path;
+      };
+
+      age.secrets.xray-config-json = {
+        file = ../../secrets/xray.config.json.age;
+        owner = "root";
+        group = "root";
+        mode = "0400";
       };
 
       networking = {

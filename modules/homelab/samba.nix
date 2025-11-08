@@ -17,35 +17,14 @@ in {
     };
 
     users = lib.mkOption {
-      description = "Samba users with their passwords";
-      type = lib.types.attrsOf (lib.types.submodule {
-        options = {
-          passwordFile = lib.mkOption {
-            description = "Path to file containing the user's Samba password";
-            type = lib.types.path;
-            example = config.age.secrets.user-samba-password.path;
-          };
+      description = "List of Samba users";
+      type = lib.types.listOf lib.types.str;
+      default = [];
+    };
 
-          # Опциональные группы для пользователя
-          groups = lib.mkOption {
-            description = "Additional groups for this user";
-            type = lib.types.listOf lib.types.str;
-            default = [];
-          };
-        };
-      });
-      default = {};
-      example = lib.literalExpression ''
-        {
-          alice = {
-            passwordFile = config.age.secrets.alice-samba-password.path;
-            groups = [ "media" "documents" ];
-          };
-          bob = {
-            passwordFile = config.age.secrets.bob-samba-password.path;
-          };
-        }
-      '';
+    environmentFile = lib.mkOption {
+      description = "Path to environment file for Samba";
+      type = lib.types.path;
     };
 
     globalSettings = lib.mkOption {
@@ -61,6 +40,7 @@ in {
 
     shares = lib.mkOption {
       description = "Samba shares configuration";
+
       type = lib.types.attrsOf (lib.types.submodule {
         options = {
           directory = lib.mkOption {
@@ -122,6 +102,7 @@ in {
           };
         };
       });
+
       default = {};
     };
   };
@@ -133,14 +114,12 @@ in {
     ];
 
     # Создаем пользователей для Samba
-    users.users =
-      lib.mapAttrs (username: userCfg: {
-        isNormalUser = true;
-        extraGroups = [cfgHomelab.systemGroup] ++ userCfg.groups;
-      })
-      cfg.users;
+    users.users = lib.genAttrs cfg.users (_: {
+      isNormalUser = true;
+      extraGroups = [cfgHomelab.systemGroup];
+    });
 
-    # Создаем директории для шар с правильными правами
+    # Создаем директории для Samba shares с правильными правами
     systemd.tmpfiles.rules =
       ["d ${cfg.sharesDir} 0755 root root - -"]
       ++ lib.flatten (
@@ -167,16 +146,16 @@ in {
     # Скрипт для создания паролей пользователей Samba
     systemd.services."samba-users-setup" = {
       description = "Setup Samba users and passwords";
-      wantedBy = ["multi-user.target"];
       before = ["smb.service"];
       after = ["network.target" "agenix.service"];
       wants = ["agenix.service"];
+      wantedBy = ["multi-user.target"];
 
       serviceConfig = {
         Type = "oneshot";
         RemainAfterExit = true;
         User = "root";
-        # Добавляем переменную окружения для отладки
+        EnvironmentFile = cfg.environmentFile;
         Environment = "PATH=${pkgs.coreutils}/bin:${pkgs.samba}/bin:${pkgs.glibc.bin}/bin";
       };
 
@@ -184,54 +163,61 @@ in {
       path = with pkgs; [coreutils samba glibc.bin];
 
       script = ''
+        set -euo pipefail
         sleep 2
 
-        # Создаем пользователей Samba с паролями из файлов
-        ${lib.concatStringsSep "\n" (
-          lib.mapAttrsToList (username: userCfg: ''
+        echo "Setting up Samba users from ${config.age.secrets.samba-env.path}"
 
-            # Ждем пока файл с паролем появится (максимум 10 секунд)
-            COUNTER=0
-            while [ ! -f "${userCfg.passwordFile}" ] && [ $COUNTER -lt 10 ]; do
-              echo "Waiting for password file ${userCfg.passwordFile} to appear..."
-              sleep 1
-              COUNTER=$((COUNTER + 1))
-            done
+        users_list="${lib.concatStringsSep " " cfg.users}"
 
-            if [ -f "${userCfg.passwordFile}" ]; then
-              echo "Setting up Samba user: ${username}"
+        if [ -z "$users_list" ]; then
+          echo "No users defined in configuration."
+        else
+          for username in $users_list; do
+            echo "Processing user: $username"
 
-              # Читаем пароль из файла (убираем лишние переносы строк)
-              PASSWORD=$(cat "${userCfg.passwordFile}" | tr -d '\n')
+            # Получаем пароль из переменной окружения с таким же именем
+            var_name="$${username}_PASSWORD"
+            PASSWORD=$(printenv "$var_name" || true)
 
-              # Удаляем пользователя если существует
-              ${pkgs.samba}/bin/pdbedit -x -u ${username} 2>/dev/null || true
-
-              # Добавляем пользователя с паролем используя printf для точного форматирования
-              printf "%s\n%s\n" "$PASSWORD" "$PASSWORD" | \
-                ${pkgs.samba}/bin/smbpasswd -a -s ${username}
-
-              # Включаем пользователя
-              ${pkgs.samba}/bin/smbpasswd -e ${username}
-
-              echo "User ${username} configured successfully"
-            else
-              echo "Warning: Password file not found for user ${username} at ${userCfg.passwordFile}"
+            if [ -z "$PASSWORD" ]; then
+              echo "⚠️ Warning: no password for user '$username' in environment file."
+              continue
             fi
-          '')
-          cfg.users
-        )}
 
-        # Также создаем системного пользователя для публичных шар
+            echo "Creating/updating Samba account for '$username'..."
+
+            # Удаляем, если уже есть (чтобы обновить)
+            ${pkgs.samba}/bin/pdbedit -x -u "$username" 2>/dev/null || true
+
+            # Добавляем с паролем
+            printf "%s\n%s\n" "$PASSWORD" "$PASSWORD" | \
+              ${pkgs.samba}/bin/smbpasswd -a -s "$username"
+
+            # Включаем пользователя
+            ${pkgs.samba}/bin/smbpasswd -e "$username"
+
+            echo "✅ User '$username' configured successfully."
+          done
+        fi
+
+        echo ""
+        echo "Checking system Samba user: ${cfgHomelab.systemUser}"
+
         if id "${cfgHomelab.systemUser}" &>/dev/null; then
           echo "Setting up system Samba user: ${cfgHomelab.systemUser}"
+
           ${pkgs.samba}/bin/pdbedit -x -u ${cfgHomelab.systemUser} 2>/dev/null || true
           printf "guest\nguest\n" | ${pkgs.samba}/bin/smbpasswd -a -s ${cfgHomelab.systemUser}
           ${pkgs.samba}/bin/smbpasswd -e ${cfgHomelab.systemUser}
-          echo "System user ${cfgHomelab.systemUser} configured successfully"
+
+          echo "✅ System user ${cfgHomelab.systemUser} configured successfully."
         else
-          echo "System user ${cfgHomelab.systemUser} does not exist, skipping Samba setup for this user"
+          echo "⚠️ System user ${cfgHomelab.systemUser} does not exist, skipping Samba setup for this user."
         fi
+
+        echo ""
+        echo "Samba users setup completed."
       '';
     };
 

@@ -53,6 +53,13 @@ in {
 
         jwtSecretFile = cfg.jwtSecretFile;
       };
+
+      age.secrets.onlyoffice-jwt-secret = {
+        file = ../../secrets/onlyoffice.jwt-secret.age;
+        owner = "onlyoffice";
+        group = "onlyoffice";
+        mode = "0400";
+      };
     })
 
     (lib.mkIf (cfg.enable && cfgAcme.enable) {

@@ -96,14 +96,9 @@ in {
         sambactl = {
           enable = true;
 
-          users = {
-            romank = {
-              passwordFile = config.age.secrets.samba-romank-password.path;
-            };
-            dssmargo = {
-              passwordFile = config.age.secrets.samba-dssmargo-password.path;
-            };
-          };
+          users = ["romank" "dssmargo"];
+
+          environmentFile = config.age.secrets.samba-env.path;
 
           shares = {
             Shared = {
@@ -138,10 +133,17 @@ in {
           };
         };
 
-        tubearchivistctl.enable = false;
+        # tubearchivistctl.enable = false;
         uptime-kuma-ctl.enable = true;
         vaultwardenctl.enable = true;
       };
+    };
+
+    age.secrets.samba-env = {
+      file = ../../secrets/samba.env.age;
+      owner = "root";
+      group = "root";
+      mode = "0400";
     };
   };
 }
