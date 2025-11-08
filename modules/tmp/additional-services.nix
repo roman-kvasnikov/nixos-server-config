@@ -27,9 +27,9 @@
       configureRedis = true;
     };
 
-    # PostgreSQL для Nextcloud
     postgresql = {
       enable = true;
+
       ensureDatabases = ["nextcloud"];
       ensureUsers = [
         {

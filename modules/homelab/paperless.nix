@@ -51,7 +51,7 @@ in {
     passwordFile = lib.mkOption {
       description = "Password file for Paperless";
       type = lib.types.path;
-      default = config.age.secrets.server-admin-password.path;
+      default = config.age.secrets.admin-password.path;
     };
 
     homepage = {

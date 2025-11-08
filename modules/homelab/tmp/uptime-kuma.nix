@@ -1,42 +1,43 @@
 {
   config,
   lib,
+  pkgs,
   ...
 }: let
-  cfg = config.homelab.services.linkwardenctl;
+  cfg = config.homelab.services.uptime-kuma-ctl;
   cfgHomelab = config.homelab;
   cfgAcme = config.services.acmectl;
   cfgNginx = config.services.nginxctl;
 in {
-  options.homelab.services.linkwardenctl = {
-    enable = lib.mkEnableOption "Enable Linkwarden";
+  options.homelab.services.uptime-kuma-ctl = {
+    enable = lib.mkEnableOption "Enable Uptime Kuma";
 
     domain = lib.mkOption {
-      description = "Domain of the Linkwarden module";
+      description = "Domain of the Uptime Kuma module";
       type = lib.types.str;
-      default = "linkwarden.${cfgHomelab.domain}";
+      default = "uptime-kuma.${cfgHomelab.domain}";
     };
 
     host = lib.mkOption {
-      description = "Host of the Linkwarden module";
+      description = "Host of the Uptime Kuma module";
       type = lib.types.str;
       default = "127.0.0.1";
     };
 
     port = lib.mkOption {
-      description = "Port of the Linkwarden module";
+      description = "Port of the Uptime Kuma module";
       type = lib.types.port;
-      default = 3000;
+      default = 3001;
     };
 
     allowExternal = lib.mkOption {
-      description = "Allow external access to Linkwarden";
+      description = "Allow external access to Uptime Kuma";
       type = lib.types.bool;
-      default = true;
+      default = false;
     };
 
     backupEnabled = lib.mkOption {
-      description = "Enable backup for Linkwarden";
+      description = "Enable backup for Uptime Kuma";
       type = lib.types.bool;
       default = true;
     };
@@ -44,59 +45,33 @@ in {
     homepage = {
       name = lib.mkOption {
         type = lib.types.str;
-        default = "Linkwarden";
+        default = "Uptime Kuma";
       };
       description = lib.mkOption {
         type = lib.types.str;
-        default = "Bookmarks manager";
+        default = "Uptime monitoring";
       };
       icon = lib.mkOption {
         type = lib.types.str;
-        default = "linkwarden.png";
+        default = "uptime-kuma.svg";
       };
       category = lib.mkOption {
         type = lib.types.str;
-        default = "Clouds";
-      };
-      widget = lib.mkOption {
-        type = lib.types.attrs;
-        default = {
-          type = "linkwarden";
-          url = "https://${cfg.domain}";
-          key = "eyJhbGciOiJkaXIiLCJlbmMiOiJBMjU2R0NNIn0..mcl89EaHz2bRHYpw.I8aZl2gY9k8sP6CHOl0H_vVnEdwJw_E8LFnWHuo0e4p6ayZ69UIx3iLpwHNAC3YCrC2CwcCpI_xsR8jRU1pIew97c-MsoEoTTaJvbDmCh-Qv7ssE5Eoo.91_J1whTgTu0hne9JWMijQ";
-        };
+        default = "Monitoring";
       };
     };
   };
 
   config = lib.mkMerge [
     (lib.mkIf cfg.enable {
-      services.linkwarden = {
-        enable = true;
-
-        host = cfg.host;
-        port = cfg.port;
-
-        openFirewall = !cfgNginx.enable;
-
-        enableRegistration = true;
-
-        environmentFile = config.age.secrets.linkwarden-env.path;
-      };
-
-      age.secrets.linkwarden-env = {
-        file = ../../secrets/linkwarden.env.age;
-        owner = "linkwarden";
-        group = "linkwarden";
-        mode = "0400";
-      };
-    })
-
-    (lib.mkIf (cfg.enable && cfg.backupEnabled) {
-      services.backupctl = {
-        jobs.linkwarden = {
-          database = "linkwarden";
-          paths = ["/var/lib/linkwarden"];
+      virtualisation.oci-containers.containers = {
+        uptime-kuma = {
+          image = "louislam/uptime-kuma:2";
+          autoStart = true;
+          volumes = [
+            "/var/lib/uptime-kuma:/app/data"
+          ];
+          ports = ["${toString cfg.port}:3001"];
         };
       };
     })

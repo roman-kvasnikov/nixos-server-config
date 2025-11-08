@@ -14,14 +14,12 @@ in {
   networking.firewall.allowedTCPPorts = [12345];
 
   virtualisation.oci-containers.containers = {
-    # База данных (запускается первой)
     tubearchivist = {
       image = "bbilly1/tubearchivist";
       # autoStart = true;
       ports = ["12345:8000"];
       volumes = [
         "/data/media/YouTube:/youtube"
-        "/var/cache/tubearchivist:/cache"
       ];
       environment = {
         ES_URL = "http://127.0.0.1:9200";

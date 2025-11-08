@@ -31,7 +31,7 @@ in {
       };
     };
 
-    age.secrets.acme-namecheap-env = {
+    age.secrets.namecheap-env = {
       file = ../../secrets/namecheap.env.age;
       owner = "root";
       group = "root";

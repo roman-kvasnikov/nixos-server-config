@@ -45,7 +45,7 @@ in {
     adminPasswordFile = lib.mkOption {
       description = "Admin password file for Nextcloud";
       type = lib.types.path;
-      default = cfgHomelab.adminPasswordFile;
+      default = config.age.secrets.admin-password.path;
     };
 
     apps = lib.mkOption {

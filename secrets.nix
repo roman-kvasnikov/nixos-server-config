@@ -6,7 +6,8 @@ in {
   "./secrets/microbin.env.age".publicKeys = [homelabSshKey];
   "./secrets/namecheap.env.age".publicKeys = [homelabSshKey];
   "./secrets/onlyoffice.jwt-secret.age".publicKeys = [homelabSshKey];
-  "./secrets/restic.env.age".publicKeys = [homelabSshKey];
+  "./secrets/restic.password.age".publicKeys = [homelabSshKey];
+  "./secrets/s3.env.age".publicKeys = [homelabSshKey];
   "./secrets/samba.env.age".publicKeys = [homelabSshKey];
   "./secrets/vaultwarden.env.age".publicKeys = [homelabSshKey];
   "./secrets/xray.config.json.age".publicKeys = [homelabSshKey];
