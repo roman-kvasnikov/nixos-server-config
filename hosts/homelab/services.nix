@@ -13,6 +13,8 @@ in {
 
   config = {
     services = {
+      wireguardctl.enable = cfgHomelab.connectWireguard;
+
       resolved.enable = false;
       dbus.enable = true; # Для работы с systemd
       udisks2.enable = true; # Автоматическое монтирование USB
@@ -37,8 +39,6 @@ in {
     homelab = {
       services = {
         homepagectl.enable = true;
-
-        # filebrowserctl.enable = true;
 
         # frigatectl = {
         #   enable = true;
@@ -133,7 +133,6 @@ in {
           };
         };
 
-        # tubearchivistctl.enable = false;
         uptime-kuma-ctl.enable = true;
         vaultwardenctl.enable = true;
       };

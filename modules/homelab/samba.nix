@@ -24,7 +24,8 @@ in {
 
     environmentFile = lib.mkOption {
       description = "Path to environment file for Samba";
-      type = lib.types.path;
+      type = lib.types.nullOr lib.types.path;
+      default = null;
     };
 
     globalSettings = lib.mkOption {
