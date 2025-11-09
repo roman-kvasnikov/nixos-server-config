@@ -85,6 +85,7 @@ in {
 
         glancesctl.enable = true;
         immichctl.enable = true;
+        it-tools-ctl.enable = true;
         jellyfinctl.enable = true;
         linkwardenctl.enable = true;
         microbinctl.enable = true;
