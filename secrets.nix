@@ -10,5 +10,6 @@ in {
   "./secrets/s3.env.age".publicKeys = [homelabSshKey];
   "./secrets/samba.env.age".publicKeys = [homelabSshKey];
   "./secrets/vaultwarden.env.age".publicKeys = [homelabSshKey];
+  "./secrets/pgadmin.password.age".publicKeys = [homelabSshKey];
   "./secrets/xray.config.json.age".publicKeys = [homelabSshKey];
 }

@@ -28,7 +28,6 @@
     system = "x86_64-linux";
     version = "25.05";
 
-    # Функция для получения конфигурации для конкретного хоста
     getHostConfig = hostname:
       nixpkgs.lib.nixosSystem {
         inherit system;
