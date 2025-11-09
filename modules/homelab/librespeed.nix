@@ -74,7 +74,7 @@ in {
         tlsKey = null;
 
         frontend = {
-          enabled = true;
+          enable = true;
           useNginx = cfgNginx.enable;
         };
       };
