@@ -4,50 +4,50 @@
   pkgs,
   ...
 }: let
-  cfg = config.homelab.services.it-tools-ctl;
+  cfg = config.homelab.services.librespeedtl;
   cfgHomelab = config.homelab;
   cfgAcme = config.services.acmectl;
   cfgNginx = config.services.nginxctl;
 in {
-  options.homelab.services.it-tools-ctl = {
-    enable = lib.mkEnableOption "Enable IT Tools";
+  options.homelab.services.librespeedtl = {
+    enable = lib.mkEnableOption "Enable LibreSpeed";
 
     domain = lib.mkOption {
-      description = "Domain of the IT Tools module";
+      description = "Domain of the LibreSpeed module";
       type = lib.types.str;
-      default = "it-tools.${cfgHomelab.domain}";
+      default = "librespeed.${cfgHomelab.domain}";
     };
 
     host = lib.mkOption {
-      description = "Host of the IT Tools module";
+      description = "Host of the LibreSpeed module";
       type = lib.types.str;
       default = "127.0.0.1";
     };
 
     port = lib.mkOption {
-      description = "Port of the IT Tools module";
+      description = "Port of the LibreSpeed module";
       type = lib.types.port;
-      default = 5445;
+      default = 5444;
     };
 
     allowExternal = lib.mkOption {
-      description = "Allow external access to IT Tools";
+      description = "Allow external access to LibreSpeed";
       type = lib.types.bool;
-      default = true;
+      default = false;
     };
 
     homepage = {
       name = lib.mkOption {
         type = lib.types.str;
-        default = "IT Tools";
+        default = "LibreSpeed";
       };
       description = lib.mkOption {
         type = lib.types.str;
-        default = "Useful tools for IT professionals";
+        default = "Speed test your internet connection";
       };
       icon = lib.mkOption {
         type = lib.types.str;
-        default = "it-tools.png";
+        default = "librespeed.png";
       };
       category = lib.mkOption {
         type = lib.types.str;
@@ -58,11 +58,24 @@ in {
 
   config = lib.mkMerge [
     (lib.mkIf cfg.enable {
-      virtualisation.oci-containers.containers = {
-        it-tools = {
-          image = "corentinth/it-tools:latest";
-          autoStart = true;
-          ports = ["${toString cfg.port}:80"];
+      services.librespeed = {
+        enable = true;
+
+        domain = cfg.domain;
+
+        downloadIPDB = false;
+
+        settings = {
+          listen_port = cfg.port;
+        };
+
+        useACMEHost = null;
+        tlsCertificate = null;
+        tlsKey = null;
+
+        frontend = {
+          enabled = true;
+          useNginx = cfgNginx.enable;
         };
       };
     })
@@ -84,11 +97,6 @@ in {
               allow ${cfgHomelab.vpnSubnet};
               deny all;
             '';
-
-            locations."/" = {
-              proxyPass = "http://${cfg.host}:${toString cfg.port}";
-              recommendedProxySettings = true;
-            };
           };
         };
       };

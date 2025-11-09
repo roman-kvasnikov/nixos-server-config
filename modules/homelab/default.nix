@@ -6,6 +6,7 @@
     ./immich.nix
     ./it-tools.nix
     ./jellyfin.nix
+    ./librespeed.nix
     ./linkwarden.nix
     ./microbin.nix
     ./nextcloud.nix

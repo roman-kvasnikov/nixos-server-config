@@ -87,6 +87,7 @@ in {
         immichctl.enable = true;
         it-tools-ctl.enable = true;
         jellyfinctl.enable = true;
+        librespeedtl.enable = true;
         linkwardenctl.enable = true;
         microbinctl.enable = true;
         nextcloudctl.enable = true;
