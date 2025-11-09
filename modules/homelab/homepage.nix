@@ -169,9 +169,6 @@ in {
                       // {
                         metric = "cpu";
                         chart = true;
-                        diskUnits = "bytes";
-                        refreshInterval = 5000;
-                        pointsLimit = 15;
                       };
                   };
                 }
@@ -185,7 +182,16 @@ in {
                       };
                   };
                 }
-
+                {
+                  "GPU" = {
+                    widget =
+                      commonOptions
+                      // {
+                        metric = "sensors";
+                        chart = true;
+                      };
+                  };
+                }
                 {
                   Memory = {
                     widget =

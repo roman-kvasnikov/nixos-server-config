@@ -4,34 +4,34 @@
   pkgs,
   ...
 }: let
-  cfg = config.homelab.services.pgadminctl;
+  cfg = config.homelab.services.speedtest-tracker-ctl;
   cfgHomelab = config.homelab;
   cfgAcme = config.services.acmectl;
   cfgNginx = config.services.nginxctl;
 in {
-  options.homelab.services.pgadminctl = {
-    enable = lib.mkEnableOption "Enable PGAdmin";
+  options.homelab.services.speedtest-tracker-ctl = {
+    enable = lib.mkEnableOption "Enable Speedtest Tracker";
 
     domain = lib.mkOption {
-      description = "Domain of the PGAdmin module";
+      description = "Domain of the Speedtest Tracker module";
       type = lib.types.str;
-      default = "pgadmin.${cfgHomelab.domain}";
+      default = "speedtest-tracker.${cfgHomelab.domain}";
     };
 
     host = lib.mkOption {
-      description = "Host of the PGAdmin module";
+      description = "Host of the Speedtest Tracker module";
       type = lib.types.str;
       default = "127.0.0.1";
     };
 
     port = lib.mkOption {
-      description = "Port of the PGAdmin module";
+      description = "Port of the Speedtest Tracker module";
       type = lib.types.port;
-      default = 5050;
+      default = 8443;
     };
 
     allowExternal = lib.mkOption {
-      description = "Allow external access to PGAdmin";
+      description = "Allow external access to Speedtest Tracker";
       type = lib.types.bool;
       default = false;
     };
@@ -39,42 +39,40 @@ in {
     homepage = {
       name = lib.mkOption {
         type = lib.types.str;
-        default = "PGAdmin";
+        default = "Speedtest Tracker";
       };
       description = lib.mkOption {
         type = lib.types.str;
-        default = "PostgreSQL management tool";
+        default = "Monitor the performance and uptime of your internet connection";
       };
       icon = lib.mkOption {
         type = lib.types.str;
-        default = "pgadmin.png";
+        default = "speedtest-tracker.png";
       };
       category = lib.mkOption {
         type = lib.types.str;
-        default = "Services";
+        default = "Monitoring";
       };
     };
   };
 
   config = lib.mkMerge [
     (lib.mkIf cfg.enable {
-      services.pgadmin = {
-        enable = true;
-
-        port = cfg.port;
-
-        openFirewall = !cfgNginx.enable;
-
-        initialEmail = cfgHomelab.email;
-        initialPasswordFile = config.age.secrets.pgadmin-password.path;
-        minimumPasswordLength = 3;
-      };
-
-      age.secrets.pgadmin-password = {
-        file = ../../secrets/pgadmin.password.age;
-        owner = "pgadmin";
-        group = "pgadmin";
-        mode = "0400";
+      virtualisation.oci-containers.containers = {
+        speedtest-tracker = {
+          image = "lscr.io/linuxserver/speedtest-tracker:latest";
+          autoStart = true;
+          ports = ["${toString cfg.port}:443"];
+          volumes = [
+            "/var/lib/speedtest-tracker:/config"
+          ];
+          environment = {
+            PUID = "1000";
+            PGID = "1000";
+            APP_KEY = "verysecret";
+            DB_CONNECTION = "sqlite";
+          };
+        };
       };
     })
 
@@ -86,8 +84,8 @@ in {
       services.nginx = {
         virtualHosts = {
           "${cfg.domain}" = {
-            enableACME = true;
-            forceSSL = true;
+            enableACME = cfgAcme.enable;
+            forceSSL = cfgAcme.enable;
             http2 = true;
 
             extraConfig = lib.mkIf (!cfg.allowExternal) ''
@@ -98,7 +96,6 @@ in {
 
             locations."/" = {
               proxyPass = "http://${cfg.host}:${toString cfg.port}";
-              proxyWebsockets = true;
               recommendedProxySettings = true;
             };
           };

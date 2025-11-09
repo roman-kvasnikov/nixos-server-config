@@ -8,8 +8,6 @@
   cfgHomelab = config.homelab;
   cfgAcme = config.services.acmectl;
   cfgNginx = config.services.nginxctl;
-
-  tubearchivistRedisConfig = config.services.redis.servers.tubearchivist;
 in {
   options.homelab.services.tubearchivistctl = {
     enable = lib.mkEnableOption "Enable Tubearchivist";
@@ -29,7 +27,7 @@ in {
     port = lib.mkOption {
       description = "Port of the Tubearchivist module";
       type = lib.types.port;
-      default = 8000;
+      default = 8057;
     };
 
     allowExternal = lib.mkOption {
@@ -41,7 +39,7 @@ in {
     backupEnabled = lib.mkOption {
       description = "Enable backup for Tubearchivist";
       type = lib.types.bool;
-      default = true;
+      default = false;
     };
 
     homepage = {
@@ -74,51 +72,66 @@ in {
 
   config = lib.mkMerge [
     (lib.mkIf cfg.enable {
-      users.users.tubearchivist = {
-        isSystemUser = true;
-        uid = 985;
-        group = cfgHomelab.systemGroup;
-      };
+      # users.users.tubearchivist = {
+      #   isSystemUser = true;
+      #   group = cfgHomelab.systemGroup;
+      # };
 
-      virtualisation.oci-containers.backend = "podman";
-      virtualisation.oci-containers.containers.tubearchivist = {
-        image = "bbilly1/tubearchivist:v0.5.0";
-        environment = {
-          ES_URL = "http://127.0.0.1:9200";
-          REDIS_CON = "redis://${tubearchivistRedisConfig.bind}:${builtins.toString tubearchivistRedisConfig.port}";
-          HOST_UID = "${builtins.toString config.users.users.tubearchivist.uid}";
-          HOST_GID = "${builtins.toString config.users.groups.${cfgHomelab.systemGroup}.gid}";
-          TA_USERNAME = "tubearchivist";
-          TA_PASSWORD = "verysecret";
-          ELASTIC_PASSWORD = "verysecret";
-          TA_HOST = "https://${cfg.domain}";
-          TZ = config.time.timeZone;
+      # systemd.tmpfiles.rules = [
+      #   "d /var/cache/tubearchivist 0755 tubearchivist tubearchivist - -"
+      # ];
+
+      virtualisation.oci-containers.containers = {
+        tubearchivist = {
+          image = "bbilly1/tubearchivist:latest";
+          autoStart = true;
+          ports = ["${toString cfg.port}:8080"];
+          volumes = [
+            "/data/media/YouTube:/youtube"
+            "/var/cache/tubearchivist:/cache"
+          ];
+          environment = {
+            ES_URL = "http://archivist-es:9200";
+            REDIS_CON = "redis://archivist-redis:6379";
+            HOST_UID = "1000";
+            HOST_GID = "1000";
+            TA_HOST = "${cfg.domain}";
+            TA_USERNAME = "admin";
+            TA_PASSWORD = "password";
+            ELASTIC_PASSWORD = "verysecret";
+            TZ = config.time.timeZone;
+          };
+          dependsOn = ["archivist-es" "archivist-redis"];
+          # networks = ["tubearchivist-net"];
+          extraOptions = ["--network=host"];
         };
-        volumes = [
-          "/data/media/YouTube:/youtube"
-          "/var/cache/tubearchivist:/cache"
-        ];
-        extraOptions = ["--network=host"];
-        # ports = [ "${builtins.toString port}:8000" ];
-      };
-      networking.firewall.allowedTCPPorts = [8000];
 
-      # need elastic api reporting v8
-      virtualisation.oci-containers.containers.tubearchivist-es = {
-        image = "bbilly1/tubearchivist-es";
-        environment = {
-          ELASTIC_PASSWORD = "verysecret";
-          ES_JAVA_OPTS = "-Xms1g -Xmx1g";
-          "xpack.security.enabled" = "true";
-          "discovery.type" = "single-node";
-          "path.repo" = "/usr/share/elasticsearch/data/snapshot";
+        archivist-redis = {
+          image = "redis/redis-stack-server";
+          autoStart = true;
+          ports = ["6379:6379"];
+          volumes = ["/var/lib/redis-tubearchivist:/data"];
+          dependsOn = ["archivist-es"];
+          # networks = ["tubearchivist-net"];
+          extraOptions = ["--network=host"];
         };
-        volumes = ["/var/lib/tubearchivist/elasticsearch:/usr/share/elasticsearch/data"];
-        ports = ["9200:9200"];
-      };
 
-      services.redis.servers.tubearchivist.enable = true;
-      services.redis.servers.tubearchivist.port = 6379;
+        archivist-es = {
+          image = "bbilly1/tubearchivist-es";
+          autoStart = true;
+          ports = ["9200:9200"];
+          volumes = ["/var/lib/tubearchivist/elasticsearch:/usr/share/elasticsearch/data"];
+          environment = {
+            ELASTIC_PASSWORD = "verysecret";
+            ES_JAVA_OPTS = "-Xms1g -Xmx1g";
+            "xpack.security.enabled" = "true";
+            "discovery.type" = "single-node";
+            "path.repo" = "/usr/share/elasticsearch/data/snapshot";
+          };
+          # networks = ["tubearchivist-net"];
+          extraOptions = ["--network=host"];
+        };
+      };
     })
 
     (lib.mkIf (cfg.enable && cfgAcme.enable) {

@@ -12,8 +12,12 @@
     ./nextcloud.nix
     ./onlyoffice.nix
     ./paperless.nix
+    ./pgadmin.nix
     ./qbittorrent.nix
     ./samba.nix
+    ./shinobi.nix
+    ./speedtest-tracker.nix
+    ./tubearchivist.nix
     ./uptime-kuma.nix
     ./vaultwarden.nix
   ];

@@ -93,6 +93,7 @@ in {
         nextcloudctl.enable = true;
         onlyofficectl.enable = true;
         paperlessctl.enable = true;
+        pgadminctl.enable = true;
         qbittorrentctl.enable = true;
 
         sambactl = {
@@ -135,6 +136,9 @@ in {
           };
         };
 
+        shinobictl.enable = true;
+        speedtest-tracker-ctl.enable = true;
+        tubearchivistctl.enable = false;
         uptime-kuma-ctl.enable = true;
         vaultwardenctl.enable = true;
       };

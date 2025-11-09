@@ -4,34 +4,34 @@
   pkgs,
   ...
 }: let
-  cfg = config.homelab.services.pgadminctl;
+  cfg = config.homelab.services.shinobictl;
   cfgHomelab = config.homelab;
   cfgAcme = config.services.acmectl;
   cfgNginx = config.services.nginxctl;
 in {
-  options.homelab.services.pgadminctl = {
-    enable = lib.mkEnableOption "Enable PGAdmin";
+  options.homelab.services.shinobictl = {
+    enable = lib.mkEnableOption "Enable Shinobi";
 
     domain = lib.mkOption {
-      description = "Domain of the PGAdmin module";
+      description = "Domain of the Shinobi module";
       type = lib.types.str;
-      default = "pgadmin.${cfgHomelab.domain}";
+      default = "shinobi.${cfgHomelab.domain}";
     };
 
     host = lib.mkOption {
-      description = "Host of the PGAdmin module";
+      description = "Host of the Shinobi module";
       type = lib.types.str;
       default = "127.0.0.1";
     };
 
     port = lib.mkOption {
-      description = "Port of the PGAdmin module";
+      description = "Port of the Shinobi module";
       type = lib.types.port;
-      default = 5050;
+      default = 5009;
     };
 
     allowExternal = lib.mkOption {
-      description = "Allow external access to PGAdmin";
+      description = "Allow external access to Shinobi";
       type = lib.types.bool;
       default = false;
     };
@@ -39,15 +39,15 @@ in {
     homepage = {
       name = lib.mkOption {
         type = lib.types.str;
-        default = "PGAdmin";
+        default = "Shinobi";
       };
       description = lib.mkOption {
         type = lib.types.str;
-        default = "PostgreSQL management tool";
+        default = "Network Video Recorder (NVR)";
       };
       icon = lib.mkOption {
         type = lib.types.str;
-        default = "pgadmin.png";
+        default = "shinobi.png";
       };
       category = lib.mkOption {
         type = lib.types.str;
@@ -58,23 +58,22 @@ in {
 
   config = lib.mkMerge [
     (lib.mkIf cfg.enable {
-      services.pgadmin = {
-        enable = true;
-
-        port = cfg.port;
-
-        openFirewall = !cfgNginx.enable;
-
-        initialEmail = cfgHomelab.email;
-        initialPasswordFile = config.age.secrets.pgadmin-password.path;
-        minimumPasswordLength = 3;
-      };
-
-      age.secrets.pgadmin-password = {
-        file = ../../secrets/pgadmin.password.age;
-        owner = "pgadmin";
-        group = "pgadmin";
-        mode = "0400";
+      virtualisation.oci-containers.containers = {
+        shinobi = {
+          image = "shinobisystems/shinobi:latest";
+          autoStart = true;
+          ports = ["${toString cfg.port}:8080"];
+          environment = {
+            TZ = config.time.timeZone;
+          };
+          volumes = [
+            "/var/lib/shinobi/config:/config"
+            "/var/lib/shinobi/database:/var/lib/mysql"
+            "/data/media/Shinobi:/home/Shinobi/videos"
+            "/var/lib/shinobi/customAutoLoad:/home/Shinobi/customAutoLoad"
+            "/var/lib/shinobi/plugins:/home/Shinobi/plugins"
+          ];
+        };
       };
     })
 
@@ -86,8 +85,8 @@ in {
       services.nginx = {
         virtualHosts = {
           "${cfg.domain}" = {
-            enableACME = true;
-            forceSSL = true;
+            enableACME = cfgAcme.enable;
+            forceSSL = cfgAcme.enable;
             http2 = true;
 
             extraConfig = lib.mkIf (!cfg.allowExternal) ''
@@ -98,7 +97,6 @@ in {
 
             locations."/" = {
               proxyPass = "http://${cfg.host}:${toString cfg.port}";
-              proxyWebsockets = true;
               recommendedProxySettings = true;
             };
           };
