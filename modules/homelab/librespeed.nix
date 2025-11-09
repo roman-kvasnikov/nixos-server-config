@@ -75,6 +75,7 @@ in {
 
         frontend = {
           enable = true;
+          contactEmail = cfgHomelab.email;
           useNginx = cfgNginx.enable;
         };
       };
