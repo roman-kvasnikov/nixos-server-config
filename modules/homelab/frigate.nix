@@ -27,7 +27,7 @@ in {
     port = lib.mkOption {
       description = "Port of the Frigate NVR module";
       type = lib.types.port;
-      default = 5000;
+      default = 8971;
     };
 
     allowExternal = lib.mkOption {
@@ -67,7 +67,7 @@ in {
         type = lib.types.attrs;
         default = {
           type = "frigate";
-          url = "https://${cfg.domain}";
+          url = "http://0.0.0.0:5000/";
           enableRecentEvents = true;
         };
       };
@@ -80,13 +80,7 @@ in {
         frigate = {
           image = "ghcr.io/blakeblackshear/frigate:stable";
           autoStart = true;
-          ports = [
-            "${toString cfg.port}:5000"
-            # "8971:8971"
-            # "8554:8554"
-            # "8555:8555/tcp"
-            # "8555:8555/udp"
-          ];
+          privileged = true;
           devices = [
             "/dev/dri/renderD128:/dev/dri/renderD128"
             "/dev/dri/renderD129:/dev/dri/renderD129"
@@ -96,11 +90,13 @@ in {
             "${cfg.homeDir}:/config"
             "${cfg.homeDir}/storage:/media/frigate"
           ];
-          environment = {
-            FRIGATE_RTSP_PASSWORD = "password";
-          };
+          ports = [
+            "${toString cfg.port}:8971"
+            "5000:5000"
+          ];
           extraOptions = [
-            "--privileged"
+            # "--restart=unless-stopped"
+            "--device=nvidia.com/gpu=all"
             "--stop-timeout=30"
             "--mount=type=tmpfs,target=/tmp/cache,tmpfs-size=1000000000"
             "--shm-size=512mb"

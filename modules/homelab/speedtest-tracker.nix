@@ -96,6 +96,8 @@ in {
             DISPLAY_TIMEZONE = config.time.timeZone;
             PUBLIC_DASHBOARD = "true";
 
+            SPEEDTEST_SERVERS = "12362";
+
             APP_DEBUG = "true";
           };
         };

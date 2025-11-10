@@ -4,36 +4,36 @@
   pkgs,
   ...
 }: let
-  cfg = config.homelab.services.portainerctl;
+  cfg = config.homelab.services.jellyseerrctl;
   cfgHomelab = config.homelab;
   cfgAcme = config.services.acmectl;
   cfgNginx = config.services.nginxctl;
 in {
-  options.homelab.services.portainerctl = {
-    enable = lib.mkEnableOption "Enable Portainer";
+  options.homelab.services.jellyseerrctl = {
+    enable = lib.mkEnableOption "Enable Jellyseerr";
 
     domain = lib.mkOption {
-      description = "Domain of the Portainer module";
+      description = "Domain of the Jellyseerr module";
       type = lib.types.str;
-      default = "portainer.${cfgHomelab.domain}";
+      default = "jellyseerr.${cfgHomelab.domain}";
     };
 
     host = lib.mkOption {
-      description = "Host of the Portainer module";
+      description = "Host of the Jellyseerr module";
       type = lib.types.str;
       default = "127.0.0.1";
     };
 
     port = lib.mkOption {
-      description = "Port of the Portainer module";
+      description = "Port of the Jellyseerr module";
       type = lib.types.port;
-      default = 9443;
+      default = 5055;
     };
 
     allowExternal = lib.mkOption {
-      description = "Allow external access to Portainer";
+      description = "Allow external access to Jellyseerr";
       type = lib.types.bool;
-      default = false;
+      default = true;
     };
 
     homepage = {
@@ -43,27 +43,26 @@ in {
       };
       name = lib.mkOption {
         type = lib.types.str;
-        default = "Portainer";
+        default = "Jellyseerr";
       };
       description = lib.mkOption {
         type = lib.types.str;
-        default = "Container management platform";
+        default = "Managing requests for your media library";
       };
       icon = lib.mkOption {
         type = lib.types.str;
-        default = "portainer.png";
+        default = "jellyseerr.svg";
       };
       category = lib.mkOption {
         type = lib.types.str;
-        default = "Services";
+        default = "Media";
       };
       widget = lib.mkOption {
         type = lib.types.attrs;
         default = {
-          type = "portainer";
-          url = "http://0.0.0.0:9443/";
-          env = 3;
-          key = "ptr_IwM/9FvuoPY1QE0y6WursIOH7uSjYh6kUt/6HcaN1/M=";
+          type = "jellyseerr";
+          url = "https://${cfg.domain}";
+          key = "verysecret";
         };
       };
     };
@@ -71,21 +70,12 @@ in {
 
   config = lib.mkMerge [
     (lib.mkIf cfg.enable {
-      virtualisation.oci-containers.containers = {
-        portainer = {
-          image = "portainer/portainer-ce:latest";
-          autoStart = true;
-          ports = [
-            "${toString cfg.port}:9000"
-          ];
-          volumes = [
-            "/var/run/docker.sock:/var/run/docker.sock"
-            "/var/lib/portainer:/data"
-          ];
-          environment = {
-            TZ = config.time.timeZone;
-          };
-        };
+      services.jellyseerr = {
+        enable = true;
+
+        port = cfg.port;
+
+        openFirewall = !cfgNginx.enable;
       };
     })
 
@@ -109,6 +99,7 @@ in {
 
             locations."/" = {
               proxyPass = "http://${cfg.host}:${toString cfg.port}";
+              proxyWebsockets = true;
               recommendedProxySettings = true;
             };
           };

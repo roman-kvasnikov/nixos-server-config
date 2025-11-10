@@ -7,6 +7,7 @@
     ./immich.nix
     ./it-tools.nix
     ./jellyfin.nix
+    ./jellyseerr.nix
     ./librespeed.nix
     ./linkwarden.nix
     ./microbin.nix
@@ -16,8 +17,10 @@
     ./pgadmin.nix
     ./portainer.nix
     ./qbittorrent.nix
+    ./radarr.nix
     ./samba.nix
     ./shinobi.nix
+    ./sonarr.nix
     ./speedtest-tracker.nix
     ./tubearchivist.nix
     ./uptime-kuma.nix

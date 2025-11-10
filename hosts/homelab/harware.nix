@@ -21,6 +21,8 @@
       nvidiaPersistenced = true;
       open = false; # ❌ Оставляем проприетарные (закрытые) драйверы для GTX 10XX и выше
     };
+
+    nvidia-container-toolkit.enable = true; # для работы с NVIDIA GPU в контейнерах
   };
 
   services.xserver.videoDrivers = ["nvidia"];

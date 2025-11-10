@@ -45,6 +45,7 @@ in {
         immichctl.enable = true;
         it-tools-ctl.enable = true;
         jellyfinctl.enable = true;
+        jellyseerrctl.enable = true;
         librespeedtl.enable = true;
         linkwardenctl.enable = true;
         microbinctl.enable = true;
@@ -54,6 +55,7 @@ in {
         pgadminctl.enable = true;
         portainerctl.enable = true;
         qbittorrentctl.enable = true;
+        radarrctl.enable = true;
 
         sambactl = {
           enable = true;
@@ -95,6 +97,7 @@ in {
           };
         };
 
+        sonarrctl.enable = true;
         speedtest-tracker-ctl.enable = true;
         uptime-kuma-ctl.enable = true;
         vaultwardenctl.enable = true;

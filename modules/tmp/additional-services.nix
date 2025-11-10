@@ -11,34 +11,6 @@
   };
 
   services = {
-    # Nextcloud для облачного хранилища
-    nextcloud = {
-      enable = true;
-      package = pkgs.nextcloud29;
-      hostName = "nextcloud.local"; # Или ваш домен
-      config = {
-        adminpassFile = "/etc/nixos/secrets/nextcloud-admin-pass";
-        dbtype = "pgsql";
-        dbuser = "nextcloud";
-        dbhost = "/run/postgresql";
-        dbname = "nextcloud";
-      };
-      database.createLocally = true;
-      configureRedis = true;
-    };
-
-    postgresql = {
-      enable = true;
-
-      ensureDatabases = ["nextcloud"];
-      ensureUsers = [
-        {
-          name = "nextcloud";
-          ensurePermissions."DATABASE nextcloud" = "ALL PRIVILEGES";
-        }
-      ];
-    };
-
     # Home Assistant для умного дома
     home-assistant = {
       enable = true;

@@ -4,36 +4,36 @@
   pkgs,
   ...
 }: let
-  cfg = config.homelab.services.portainerctl;
+  cfg = config.homelab.services.radarrctl;
   cfgHomelab = config.homelab;
   cfgAcme = config.services.acmectl;
   cfgNginx = config.services.nginxctl;
 in {
-  options.homelab.services.portainerctl = {
-    enable = lib.mkEnableOption "Enable Portainer";
+  options.homelab.services.radarrctl = {
+    enable = lib.mkEnableOption "Enable Radarr";
 
     domain = lib.mkOption {
-      description = "Domain of the Portainer module";
+      description = "Domain of the Radarr module";
       type = lib.types.str;
-      default = "portainer.${cfgHomelab.domain}";
+      default = "radarr.${cfgHomelab.domain}";
     };
 
     host = lib.mkOption {
-      description = "Host of the Portainer module";
+      description = "Host of the Radarr module";
       type = lib.types.str;
       default = "127.0.0.1";
     };
 
     port = lib.mkOption {
-      description = "Port of the Portainer module";
+      description = "Port of the Radarr module";
       type = lib.types.port;
-      default = 9443;
+      default = 7878;
     };
 
     allowExternal = lib.mkOption {
-      description = "Allow external access to Portainer";
+      description = "Allow external access to Radarr";
       type = lib.types.bool;
-      default = false;
+      default = true;
     };
 
     homepage = {
@@ -43,27 +43,27 @@ in {
       };
       name = lib.mkOption {
         type = lib.types.str;
-        default = "Portainer";
+        default = "Radarr";
       };
       description = lib.mkOption {
         type = lib.types.str;
-        default = "Container management platform";
+        default = "A fork of Sonarr to work with movies à la Couchpotato.";
       };
       icon = lib.mkOption {
         type = lib.types.str;
-        default = "portainer.png";
+        default = "radarr.svg";
       };
       category = lib.mkOption {
         type = lib.types.str;
-        default = "Services";
+        default = "Media";
       };
       widget = lib.mkOption {
         type = lib.types.attrs;
         default = {
-          type = "portainer";
-          url = "http://0.0.0.0:9443/";
-          env = 3;
-          key = "ptr_IwM/9FvuoPY1QE0y6WursIOH7uSjYh6kUt/6HcaN1/M=";
+          type = "radarr";
+          url = "https://${cfg.domain}";
+          key = "verysecret";
+          enableQueue = true;
         };
       };
     };
@@ -71,21 +71,28 @@ in {
 
   config = lib.mkMerge [
     (lib.mkIf cfg.enable {
-      virtualisation.oci-containers.containers = {
-        portainer = {
-          image = "portainer/portainer-ce:latest";
-          autoStart = true;
-          ports = [
-            "${toString cfg.port}:9000"
-          ];
-          volumes = [
-            "/var/run/docker.sock:/var/run/docker.sock"
-            "/var/lib/portainer:/data"
-          ];
-          environment = {
-            TZ = config.time.timeZone;
+      services.radarr = {
+        enable = true;
+
+        user = "radarr";
+        group = cfgHomelab.systemGroup;
+
+        openFirewall = !cfgNginx.enable;
+
+        settings = {
+          update = {
+            automatically = true;
+            mechanism = "external";
           };
+          server = {
+            urlbase = "https://${cfg.domain}";
+            bindaddress = cfg.host;
+            port = cfg.port;
+          };
+          log.analyticsEnabled = true;
         };
+
+        environmentFiles = [];
       };
     })
 
@@ -109,6 +116,7 @@ in {
 
             locations."/" = {
               proxyPass = "http://${cfg.host}:${toString cfg.port}";
+              proxyWebsockets = true;
               recommendedProxySettings = true;
             };
           };

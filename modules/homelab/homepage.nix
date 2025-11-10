@@ -257,8 +257,12 @@ in {
           {
             resources = {
               label = "Storage";
+              expanded = true;
               diskUnits = "bytes";
-              disk = "/";
+              disk = [
+                "/"
+                "/var/lib/frigate"
+              ];
             };
           }
           {
