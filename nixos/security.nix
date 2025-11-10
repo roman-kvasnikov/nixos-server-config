@@ -15,7 +15,7 @@
       enable = true;
 
       allowPing = true; # запрещаем ICMP-пинги (опционально)
-      allowedTCPPorts = lib.mkDefault [5216]; # разрешённых TCP портов нет
+      allowedTCPPorts = lib.mkDefault []; # разрешённых TCP портов нет
       allowedUDPPorts = lib.mkDefault []; # разрешённых UDP портов нет
 
       logRefusedConnections = true;

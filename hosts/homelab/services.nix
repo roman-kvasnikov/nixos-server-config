@@ -40,49 +40,7 @@ in {
       services = {
         homepagectl.enable = true;
 
-        # frigatectl = {
-        #   enable = true;
-
-        #   cameras = {
-        #     Outside = {
-        #       enable = true;
-
-        #       streamUrl = "rtsp://RomanK:Um9tYW4Um@192.168.1.30:554/stream1";
-        #       roles = ["record"];
-
-        #       record.enable = true;
-        #     };
-
-        #     Hall = {
-        #       enable = true;
-
-        #       streamUrl = "rtsp://RomanK:Um9tYW4Um@192.168.1.31:554/stream1";
-        #       roles = ["detect" "record" "audio"];
-
-        #       detect.enable = true;
-        #       record = {
-        #         enable = true;
-
-        #         retain = {
-        #           mode = "motion";
-        #         };
-        #       };
-        #       audio.enable = true;
-        #       snapshots.enable = true;
-        #       motion.enable = true;
-
-        #       onvif = {
-        #         enable = true;
-
-        #         host = "192.168.1.31";
-        #         port = 2020;
-        #         user = "RomanK";
-        #         password = "Um9tYW4Um";
-        #       };
-        #     };
-        #   };
-        # };
-
+        frigatectl.enable = true;
         glancesctl.enable = true;
         immichctl.enable = true;
         it-tools-ctl.enable = true;
@@ -94,6 +52,7 @@ in {
         onlyofficectl.enable = true;
         paperlessctl.enable = true;
         pgadminctl.enable = true;
+        portainerctl.enable = true;
         qbittorrentctl.enable = true;
 
         sambactl = {
@@ -136,9 +95,7 @@ in {
           };
         };
 
-        shinobictl.enable = true;
         speedtest-tracker-ctl.enable = true;
-        tubearchivistctl.enable = false;
         uptime-kuma-ctl.enable = true;
         vaultwardenctl.enable = true;
       };

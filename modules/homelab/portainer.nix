@@ -4,60 +4,67 @@
   pkgs,
   ...
 }: let
-  cfg = config.homelab.services.uptime-kuma-ctl;
+  cfg = config.homelab.services.portainerctl;
   cfgHomelab = config.homelab;
   cfgAcme = config.services.acmectl;
   cfgNginx = config.services.nginxctl;
 in {
-  options.homelab.services.uptime-kuma-ctl = {
-    enable = lib.mkEnableOption "Enable Uptime Kuma";
+  options.homelab.services.portainerctl = {
+    enable = lib.mkEnableOption "Enable Portainer";
 
     domain = lib.mkOption {
-      description = "Domain of the Uptime Kuma module";
+      description = "Domain of the Portainer module";
       type = lib.types.str;
-      default = "uptime-kuma.${cfgHomelab.domain}";
+      default = "portainer.${cfgHomelab.domain}";
     };
 
     host = lib.mkOption {
-      description = "Host of the Uptime Kuma module";
+      description = "Host of the Portainer module";
       type = lib.types.str;
       default = "127.0.0.1";
     };
 
     port = lib.mkOption {
-      description = "Port of the Uptime Kuma module";
+      description = "Port of the Portainer module";
       type = lib.types.port;
-      default = 3001;
+      default = 9443;
     };
 
     allowExternal = lib.mkOption {
-      description = "Allow external access to Uptime Kuma";
+      description = "Allow external access to Portainer";
       type = lib.types.bool;
       default = false;
     };
 
-    backupEnabled = lib.mkOption {
-      description = "Enable backup for Uptime Kuma";
-      type = lib.types.bool;
-      default = true;
-    };
-
     homepage = {
+      enable = lib.mkOption {
+        type = lib.types.bool;
+        default = cfg.enable;
+      };
       name = lib.mkOption {
         type = lib.types.str;
-        default = "Uptime Kuma";
+        default = "Portainer";
       };
       description = lib.mkOption {
         type = lib.types.str;
-        default = "Uptime monitoring";
+        default = "Container management platform";
       };
       icon = lib.mkOption {
         type = lib.types.str;
-        default = "uptime-kuma.svg";
+        default = "portainer.png";
       };
       category = lib.mkOption {
         type = lib.types.str;
-        default = "Monitoring";
+        default = "Services";
+      };
+      widget = lib.mkOption {
+        type = lib.types.attrs;
+        default = {
+          type = "portainer";
+          url = "https://${cfg.domain}";
+          env = 3;
+          key = "ptr_30UTOzVYQsIxTTUMBwC3xiElX62hM2cKZRsNO86tEsE";
+        };
       };
     };
   };
@@ -65,13 +72,19 @@ in {
   config = lib.mkMerge [
     (lib.mkIf cfg.enable {
       virtualisation.oci-containers.containers = {
-        uptime-kuma = {
-          image = "louislam/uptime-kuma:2";
+        portainer = {
+          image = "portainer/portainer-ce:latest";
           autoStart = true;
-          volumes = [
-            "/var/lib/uptime-kuma:/app/data"
+          ports = [
+            "${toString cfg.port}:9000"
           ];
-          ports = ["${toString cfg.port}:3001"];
+          volumes = [
+            "/var/run/docker.sock:/var/run/docker.sock"
+            "/var/lib/portainer:/data"
+          ];
+          environment = {
+            TZ = config.time.timeZone;
+          };
         };
       };
     })
@@ -96,7 +109,6 @@ in {
 
             locations."/" = {
               proxyPass = "http://${cfg.host}:${toString cfg.port}";
-              proxyWebsockets = true;
               recommendedProxySettings = true;
             };
           };

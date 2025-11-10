@@ -127,7 +127,7 @@ in {
           ];
 
           homepageServices = x: (lib.attrsets.filterAttrs (
-              _name: value: value ? homepage && value.homepage.category == x
+              _name: value: value ? homepage && value.homepage.enable && value.homepage.category == x
             )
             config.homelab.services);
         in
@@ -182,16 +182,16 @@ in {
                       };
                   };
                 }
-                {
-                  "GPU" = {
-                    widget =
-                      commonOptions
-                      // {
-                        metric = "sensors";
-                        chart = true;
-                      };
-                  };
-                }
+                # {
+                #   "GPU" = {
+                #     widget =
+                #       commonOptions
+                #       // {
+                #         metric = "sensors";
+                #         chart = true;
+                #       };
+                #   };
+                # }
                 {
                   Memory = {
                     widget =

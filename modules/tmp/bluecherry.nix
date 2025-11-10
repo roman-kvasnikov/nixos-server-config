@@ -25,6 +25,10 @@ in {
     };
 
     homepage = {
+      enable = lib.mkOption {
+        type = lib.types.bool;
+        default = cfg.enable;
+      };
       name = lib.mkOption {
         type = lib.types.str;
         default = "Bluecherry DVR";

@@ -29,6 +29,7 @@
     zlib
     ssh-copy-id
     openssh
+    openssl
     rsync
 
     yazi # File Manager

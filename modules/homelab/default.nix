@@ -1,6 +1,7 @@
 {
   imports = [
-    # ./filebrowser.nix
+    ./filebrowser.nix
+    ./frigate.nix
     ./glances.nix
     ./homepage.nix
     ./immich.nix
@@ -13,6 +14,7 @@
     ./onlyoffice.nix
     ./paperless.nix
     ./pgadmin.nix
+    ./portainer.nix
     ./qbittorrent.nix
     ./samba.nix
     ./shinobi.nix
