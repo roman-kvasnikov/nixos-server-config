@@ -62,7 +62,7 @@ in {
         default = {
           type = "prowlarr";
           url = "https://${cfg.domain}";
-          key = "cbd1ffa00c9a48b786cf122336c6c3b7";
+          key = "4bc003706b9943fd87d60f904e1c930c";
         };
       };
     };
@@ -89,6 +89,12 @@ in {
         };
 
         environmentFiles = [];
+      };
+
+      services.flaresolverr = {
+        enable = true;
+
+        openFirewall = !cfgNginx.enable;
       };
     })
 
