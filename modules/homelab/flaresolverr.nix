@@ -4,34 +4,34 @@
   pkgs,
   ...
 }: let
-  cfg = config.homelab.services.prowlarrctl;
+  cfg = config.homelab.services.flaresolverrctl;
   cfgHomelab = config.homelab;
   cfgAcme = config.services.acmectl;
   cfgNginx = config.services.nginxctl;
 in {
-  options.homelab.services.prowlarrctl = {
-    enable = lib.mkEnableOption "Enable Prowlarr";
+  options.homelab.services.flaresolverrctl = {
+    enable = lib.mkEnableOption "Enable Flaresolverr";
 
     domain = lib.mkOption {
-      description = "Domain of the Prowlarr module";
+      description = "Domain of the Flaresolverr module";
       type = lib.types.str;
-      default = "prowlarr.${cfgHomelab.domain}";
+      default = "flaresolverr.${cfgHomelab.domain}";
     };
 
     host = lib.mkOption {
-      description = "Host of the Prowlarr module";
+      description = "Host of the Flaresolverr module";
       type = lib.types.str;
       default = "127.0.0.1";
     };
 
     port = lib.mkOption {
-      description = "Port of the Prowlarr module";
+      description = "Port of the Flaresolverr module";
       type = lib.types.port;
-      default = 9696;
+      default = 8191;
     };
 
     allowExternal = lib.mkOption {
-      description = "Allow external access to Prowlarr";
+      description = "Allow external access to Flaresolverr";
       type = lib.types.bool;
       default = true;
     };
@@ -43,52 +43,31 @@ in {
       };
       name = lib.mkOption {
         type = lib.types.str;
-        default = "Prowlarr";
+        default = "Flaresolverr";
       };
       description = lib.mkOption {
         type = lib.types.str;
-        default = "Indexer manager for Radarr and Sonarr";
+        default = "Proxy for resolving media URLs";
       };
       icon = lib.mkOption {
         type = lib.types.str;
-        default = "prowlarr.svg";
+        default = "flaresolverr.svg";
       };
       category = lib.mkOption {
         type = lib.types.str;
         default = "Media";
-      };
-      widget = lib.mkOption {
-        type = lib.types.attrs;
-        default = {
-          type = "prowlarr";
-          url = "https://${cfg.domain}";
-          key = "cbd1ffa00c9a48b786cf122336c6c3b7";
-        };
       };
     };
   };
 
   config = lib.mkMerge [
     (lib.mkIf cfg.enable {
-      services.prowlarr = {
+      services.flaresolverr = {
         enable = true;
 
+        port = cfg.port;
+
         openFirewall = !cfgNginx.enable;
-
-        settings = {
-          update = {
-            automatically = true;
-            mechanism = "external";
-          };
-          server = {
-            urlbase = "/";
-            bindaddress = cfg.host;
-            port = cfg.port;
-          };
-          log.analyticsEnabled = true;
-        };
-
-        environmentFiles = [];
       };
     })
 

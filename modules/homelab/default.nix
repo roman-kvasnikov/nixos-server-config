@@ -1,6 +1,7 @@
 {
   imports = [
     ./filebrowser.nix
+    ./flaresolverr.nix
     ./frigate.nix
     ./glances.nix
     ./homepage.nix

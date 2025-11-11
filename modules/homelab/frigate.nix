@@ -68,7 +68,6 @@ in {
         default = {
           type = "frigate";
           url = "http://0.0.0.0:5000/";
-          enableRecentEvents = true;
         };
       };
     };

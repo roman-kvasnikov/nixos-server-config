@@ -40,6 +40,7 @@ in {
       services = {
         homepagectl.enable = true;
 
+        flaresolverrctl.enable = true;
         frigatectl.enable = true;
         glancesctl.enable = true;
         immichctl.enable = true;
