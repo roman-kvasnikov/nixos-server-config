@@ -7,13 +7,13 @@
 in {
   networking = {
     hostName = hostname;
-    #useDHCP = true;
-
-    # useResolved = false;
-    nameservers = cfgHomelab.nameservers;
 
     networkmanager = {
       enable = true;
+
+      dns = "none";
     };
+
+    nameservers = cfgHomelab.nameservers;
   };
 }

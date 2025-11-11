@@ -4,34 +4,34 @@
   pkgs,
   ...
 }: let
-  cfg = config.homelab.services.jellyseerrctl;
+  cfg = config.homelab.services.prowlarrctl;
   cfgHomelab = config.homelab;
   cfgAcme = config.services.acmectl;
   cfgNginx = config.services.nginxctl;
 in {
-  options.homelab.services.jellyseerrctl = {
-    enable = lib.mkEnableOption "Enable Jellyseerr";
+  options.homelab.services.prowlarrctl = {
+    enable = lib.mkEnableOption "Enable Prowlarr";
 
     domain = lib.mkOption {
-      description = "Domain of the Jellyseerr module";
+      description = "Domain of the Prowlarr module";
       type = lib.types.str;
-      default = "jellyseerr.${cfgHomelab.domain}";
+      default = "prowlarr.${cfgHomelab.domain}";
     };
 
     host = lib.mkOption {
-      description = "Host of the Jellyseerr module";
+      description = "Host of the Prowlarr module";
       type = lib.types.str;
       default = "127.0.0.1";
     };
 
     port = lib.mkOption {
-      description = "Port of the Jellyseerr module";
+      description = "Port of the Prowlarr module";
       type = lib.types.port;
-      default = 5055;
+      default = 9696;
     };
 
     allowExternal = lib.mkOption {
-      description = "Allow external access to Jellyseerr";
+      description = "Allow external access to Prowlarr";
       type = lib.types.bool;
       default = true;
     };
@@ -43,15 +43,15 @@ in {
       };
       name = lib.mkOption {
         type = lib.types.str;
-        default = "Jellyseerr";
+        default = "Prowlarr";
       };
       description = lib.mkOption {
         type = lib.types.str;
-        default = "Managing requests for your media library";
+        default = "Indexer manager for Radarr and Sonarr";
       };
       icon = lib.mkOption {
         type = lib.types.str;
-        default = "jellyseerr.svg";
+        default = "prowlarr.svg";
       };
       category = lib.mkOption {
         type = lib.types.str;
@@ -60,9 +60,9 @@ in {
       widget = lib.mkOption {
         type = lib.types.attrs;
         default = {
-          type = "jellyseerr";
+          type = "prowlarr";
           url = "https://${cfg.domain}";
-          key = "MTc2Mjc5MDIxODA2NzAyMDYzYTQ2LWY0MjgtNDUzNi1hZWUxLTA0MDgzOGFlNGZmYQ==";
+          key = "cbd1ffa00c9a48b786cf122336c6c3b7";
         };
       };
     };
@@ -70,12 +70,28 @@ in {
 
   config = lib.mkMerge [
     (lib.mkIf cfg.enable {
-      services.jellyseerr = {
+      services.prowlarr = {
         enable = true;
 
-        port = cfg.port;
+        user = "prowlarr";
+        group = cfgHomelab.systemGroup;
 
         openFirewall = !cfgNginx.enable;
+
+        settings = {
+          update = {
+            automatically = true;
+            mechanism = "external";
+          };
+          server = {
+            urlbase = "/";
+            bindaddress = cfg.host;
+            port = cfg.port;
+          };
+          log.analyticsEnabled = true;
+        };
+
+        environmentFiles = [];
       };
     })
 

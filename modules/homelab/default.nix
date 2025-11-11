@@ -16,6 +16,7 @@
     ./paperless.nix
     ./pgadmin.nix
     ./portainer.nix
+    ./prowlarr.nix
     ./qbittorrent.nix
     ./radarr.nix
     ./samba.nix

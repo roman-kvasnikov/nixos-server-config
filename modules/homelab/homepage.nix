@@ -58,7 +58,7 @@ in {
               Glances = {
                 header = false;
                 style = "row";
-                columns = 6;
+                columns = 5;
               };
             }
             {
@@ -158,52 +158,21 @@ in {
               Glances = let
                 commonOptions = {
                   type = "glances";
-                  url = "http://localhost:${toString config.services.glances.port}";
+                  url = "http://${cfg.host}:${toString config.services.glances.port}";
                   version = 4;
                 };
               in [
                 {
-                  CPU = {
+                  Info = {
                     widget =
                       commonOptions
                       // {
-                        metric = "cpu";
-                        chart = true;
+                        metric = "info";
                       };
                   };
                 }
                 {
-                  "CPU Temp" = {
-                    widget =
-                      commonOptions
-                      // {
-                        metric = "sensor:Core 0";
-                        chart = true;
-                      };
-                  };
-                }
-                # {
-                #   "GPU" = {
-                #     widget =
-                #       commonOptions
-                #       // {
-                #         metric = "sensors";
-                #         chart = true;
-                #       };
-                #   };
-                # }
-                {
-                  Memory = {
-                    widget =
-                      commonOptions
-                      // {
-                        metric = "memory";
-                        chart = true;
-                      };
-                  };
-                }
-                {
-                  Disk = {
+                  "Mount: /data" = {
                     widget =
                       commonOptions
                       // {
@@ -213,7 +182,17 @@ in {
                   };
                 }
                 {
-                  "Network Usage" = {
+                  "Mount: /var/lib/frigate" = {
+                    widget =
+                      commonOptions
+                      // {
+                        metric = "fs:/var/lib/frigate";
+                        chart = true;
+                      };
+                  };
+                }
+                {
+                  Network = {
                     widget =
                       commonOptions
                       // {
@@ -240,39 +219,6 @@ in {
         widgets = [
           {
             resources = {
-              label = "CPU";
-              cpu = true;
-              cputemp = true;
-              tempmin = 0;
-              tempmax = 100;
-              units = "metric";
-            };
-          }
-          {
-            resources = {
-              label = "RAM";
-              memory = true;
-            };
-          }
-          {
-            resources = {
-              label = "Storage";
-              expanded = true;
-              diskUnits = "bytes";
-              disk = [
-                "/"
-                "/var/lib/frigate"
-              ];
-            };
-          }
-          {
-            resources = {
-              label = "Network";
-              network = true;
-            };
-          }
-          {
-            resources = {
               label = "Uptime";
               uptime = true;
             };
@@ -295,39 +241,6 @@ in {
             };
           }
         ];
-
-        # https://gethomepage.dev/latest/configs/kubernetes/
-        # kubernetes = {};
-
-        # https://gethomepage.dev/latest/configs/docker/
-        # docker = {};
-
-        # https://gethomepage.dev/latest/configs/custom-css-js/
-        # customJS = "";
-        # customCSS = ''
-        #   body, html {
-        #     font-family: SF Pro Display, Helvetica, Arial, sans-serif !important;
-        #   }
-        #   .font-medium {
-        #     font-weight: 700 !important;
-        #   }
-        #   .font-light {
-        #     font-weight: 500 !important;
-        #   }
-        #   .font-thin {
-        #     font-weight: 400 !important;
-        #   }
-        #   #information-widgets {
-        #     padding-left: 1.5rem;
-        #     padding-right: 1.5rem;
-        #   }
-        #   div#footer {
-        #     display: none;
-        #   }
-        #   .services-group.basis-full.flex-1.px-1.-my-1 {
-        #     padding-bottom: 3rem;
-        #   };
-        # '';
       };
     })
 

@@ -47,7 +47,7 @@ in {
       };
       description = lib.mkOption {
         type = lib.types.str;
-        default = "A fork of Sonarr to work with movies à la Couchpotato.";
+        default = "Movie collection manager for BitTorrent users";
       };
       icon = lib.mkOption {
         type = lib.types.str;
@@ -62,7 +62,7 @@ in {
         default = {
           type = "radarr";
           url = "https://${cfg.domain}";
-          key = "verysecret";
+          key = "cbd1ffa00c9a48b786cf122336c6c3b7";
           enableQueue = true;
         };
       };
@@ -85,7 +85,7 @@ in {
             mechanism = "external";
           };
           server = {
-            urlbase = "https://${cfg.domain}";
+            urlbase = "/";
             bindaddress = cfg.host;
             port = cfg.port;
           };

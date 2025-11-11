@@ -59,7 +59,7 @@ in {
       };
       description = lib.mkOption {
         type = lib.types.str;
-        default = "Free Software Media System";
+        default = "Free software Media System";
       };
       icon = lib.mkOption {
         type = lib.types.str;

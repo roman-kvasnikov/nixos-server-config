@@ -54,6 +54,7 @@ in {
         paperlessctl.enable = true;
         pgadminctl.enable = true;
         portainerctl.enable = true;
+        prowlarrctl.enable = true;
         qbittorrentctl.enable = true;
         radarrctl.enable = true;
 

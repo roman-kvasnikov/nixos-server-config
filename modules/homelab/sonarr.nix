@@ -47,7 +47,7 @@ in {
       };
       description = lib.mkOption {
         type = lib.types.str;
-        default = "An internet PVR for Usenet and Torrents.";
+        default = "TV show manager for BitTorrent users";
       };
       icon = lib.mkOption {
         type = lib.types.str;
@@ -62,7 +62,7 @@ in {
         default = {
           type = "sonarr";
           url = "https://${cfg.domain}";
-          key = "verysecret";
+          key = "e4cc70bc82d34c00a5ca6629fad9a41a";
           enableQueue = true;
         };
       };
@@ -85,7 +85,7 @@ in {
             mechanism = "external";
           };
           server = {
-            urlbase = "https://${cfg.domain}";
+            urlbase = "/";
             bindaddress = cfg.host;
             port = cfg.port;
           };
