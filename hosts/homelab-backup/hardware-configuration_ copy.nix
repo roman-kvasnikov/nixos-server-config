@@ -32,18 +32,24 @@
     options = ["fmask=0022" "dmask=0022"];
   };
 
-  # Монтирование RAID как /data
-  fileSystems."/data" = {
-    device = "/dev/disk/by-uuid/90b89241-fc0d-4c82-a33d-66eb7e04942f"; # UUID твоего RAID массива
-    fsType = "ext4";
-    neededForBoot = true; # Можно оставить, если RAID важен для загрузки системы
-  };
-
-  # Монтирование RAID как /var
-  fileSystems."/var" = {
-    device = "/dev/disk/by-uuid/90b89241-fc0d-4c82-a33d-66eb7e04942f"; # тот же RAID
+  fileSystems."/raid" = {
+    device = "/dev/disk/by-uuid/c60f6a98-d29b-4594-a8c0-ecfe6e387a16";
     fsType = "ext4";
     neededForBoot = true;
+  };
+
+  fileSystems."/var" = {
+    device = "/raid/var";
+    fsType = "none";
+    options = ["bind" "x-systemd.after=raid.mount"];
+    depends = ["/raid"];
+  };
+
+  fileSystems."/data" = {
+    device = "/raid/data";
+    fsType = "none";
+    options = ["bind" "x-systemd.after=raid.mount"];
+    depends = ["/raid"];
   };
 
   swapDevices = [
