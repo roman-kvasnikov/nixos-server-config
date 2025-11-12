@@ -13,6 +13,13 @@
   boot.kernelModules = ["kvm-intel"];
   boot.extraModulePackages = [];
 
+  boot.swraid = {
+    enable = true;
+    mdadmConf = ''
+      ARRAY /dev/md0 level=raid0 num-devices=2 metadata=1.2 name=myraid0 UUID=14e379fc:2b19eb9d:f40ff21c:7205cb6f
+    '';
+  };
+
   fileSystems."/" = {
     device = "/dev/disk/by-uuid/090e90cd-32c7-469d-b381-828783b994f6";
     fsType = "ext4";
@@ -22,6 +29,31 @@
     device = "/dev/disk/by-uuid/D0C0-CAE0";
     fsType = "vfat";
     options = ["fmask=0022" "dmask=0022"];
+  };
+
+  # Основная точка монтирования Raid0
+  fileSystems."/mnt/raid" = {
+    device = "/dev/md0";
+    fsType = "ext4";
+    options = ["defaults" "noatime"];
+    neededForBoot = true;
+  };
+
+  # Bind mount для /var
+  fileSystems."/var" = {
+    device = "/mnt/raid/var";
+    fsType = "none";
+    options = ["bind"];
+    depends = ["/mnt/raid"]; # Ждем монтирования основного тома
+    neededForBoot = true;
+  };
+
+  # Bind mount для /data
+  fileSystems."/data" = {
+    device = "/mnt/raid/data";
+    fsType = "none";
+    options = ["bind"];
+    depends = ["/mnt/raid"];
   };
 
   swapDevices = [
