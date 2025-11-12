@@ -31,38 +31,30 @@
     options = ["fmask=0022" "dmask=0022"];
   };
 
-  # fileSystems."/raid" = {
-  #   device = "/dev/disk/by-uuid/c60f6a98-d29b-4594-a8c0-ecfe6e387a16";
-  #   fsType = "ext4";
-  # };
+  # Основная точка монтирования Raid0
+  fileSystems."/mnt/raid" = {
+    device = "/dev/md0";
+    fsType = "ext4";
+    options = ["defaults" "noatime"];
+    neededForBoot = true;
+  };
 
-  # fileSystems."/var" = {
-  #   device = "/raid/var";
-  #   fsType = "none";
-  #   options = ["bind" "x-systemd.after=raid.mount"];
-  #   depends = ["/raid"];
-  # };
+  # Bind mount для /var
+  fileSystems."/var" = {
+    device = "/mnt/raid/var";
+    fsType = "none";
+    options = ["bind"];
+    depends = ["/mnt/raid"]; # Ждем монтирования основного тома
+    neededForBoot = true;
+  };
 
-  # fileSystems."/data" = {
-  #   device = "/raid/data";
-  #   fsType = "none";
-  #   options = ["bind" "x-systemd.after=raid.mount"];
-  #   depends = ["/raid"];
-  # };
-
-  # fileSystems."/var" = {
-  #   device = "/dev/md0";
-  #   fsType = "ext4";
-  #   options = ["defaults" "noatime"];
-  #   neededForBoot = true;
-  # };
-
-  # fileSystems."/data" = {
-  #   device = "/dev/md0";
-  #   fsType = "ext4";
-  #   options = ["defaults" "noatime"];
-  #   # neededForBoot = false;
-  # };
+  # Bind mount для /data
+  fileSystems."/data" = {
+    device = "/mnt/raid/data";
+    fsType = "none";
+    options = ["bind"];
+    depends = ["/mnt/raid"];
+  };
 
   swapDevices = [
     {device = "/dev/disk/by-uuid/eac00cda-2583-42fd-b517-d6cc89d96a85";}
