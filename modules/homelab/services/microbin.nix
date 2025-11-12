@@ -89,7 +89,7 @@ in {
       };
 
       age.secrets.microbin-env = {
-        file = ../../secrets/microbin.env.age;
+        file = ../../../secrets/microbin.env.age;
         owner = "root";
         group = "root";
         mode = "0400";

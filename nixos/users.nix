@@ -16,7 +16,6 @@ in {
       ${cfgHomelab.systemUser} = {
         isSystemUser = true;
         group = cfgHomelab.systemGroup;
-        shell = pkgs.nologin;
       };
     };
 

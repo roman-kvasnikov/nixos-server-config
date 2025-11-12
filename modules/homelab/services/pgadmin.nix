@@ -75,7 +75,7 @@ in {
       };
 
       age.secrets.pgadmin-password = {
-        file = ../../secrets/pgadmin.password.age;
+        file = ../../../secrets/pgadmin.password.age;
         owner = "pgadmin";
         group = "pgadmin";
         mode = "0400";

@@ -102,7 +102,7 @@ in {
       };
 
       age.secrets.vaultwarden-env = {
-        file = ../../secrets/vaultwarden.env.age;
+        file = ../../../secrets/vaultwarden.env.age;
         owner = "vaultwarden";
         group = "vaultwarden";
         mode = "0400";

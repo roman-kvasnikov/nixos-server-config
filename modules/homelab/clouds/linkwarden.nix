@@ -89,7 +89,7 @@ in {
       };
 
       age.secrets.linkwarden-env = {
-        file = ../../secrets/linkwarden.env.age;
+        file = ../../../secrets/linkwarden.env.age;
         owner = "linkwarden";
         group = "linkwarden";
         mode = "0400";

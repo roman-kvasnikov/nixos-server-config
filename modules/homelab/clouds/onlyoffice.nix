@@ -55,7 +55,7 @@ in {
       };
 
       age.secrets.onlyoffice-jwt-secret = {
-        file = ../../secrets/onlyoffice.jwt-secret.age;
+        file = ../../../secrets/onlyoffice.jwt-secret.age;
         owner = "onlyoffice";
         group = "onlyoffice";
         mode = "0400";

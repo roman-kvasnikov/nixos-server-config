@@ -85,8 +85,11 @@ in {
   config = lib.mkMerge [
     (lib.mkIf cfg.enable {
       systemd.tmpfiles.rules = [
-        "d ${cfg.downloadsDir} 2770 qbittorrent downloads - -"
-        "d ${cfg.torrentsDir} 2770 qbittorrent downloads - -"
+        "d ${cfg.downloadsDir} 2775 qbittorrent downloads - -"
+        "d ${cfg.torrentsDir} 2775 qbittorrent downloads - -"
+        "d ${cfg.downloadsDir}/cartoons 2775 qbittorrent downloads - -"
+        "d ${cfg.downloadsDir}/movies 2775 qbittorrent downloads - -"
+        "d ${cfg.downloadsDir}/shows 2775 qbittorrent downloads - -"
       ];
 
       services.qbittorrent = {

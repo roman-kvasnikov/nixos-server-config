@@ -116,9 +116,9 @@ in {
 
       systemd.tmpfiles.rules = [
         "d ${cfg.mediaDir} 2775 jellyfin media - -"
+        "d ${cfg.mediaDir}/cartoons 2775 jellyfin media - -"
         "d ${cfg.mediaDir}/movies 2775 jellyfin media - -"
         "d ${cfg.mediaDir}/shows 2775 jellyfin media - -"
-        "d ${cfg.mediaDir}/cartoons 2775 jellyfin media - -"
       ];
 
       services.jellyfin = {
