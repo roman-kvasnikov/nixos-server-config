@@ -5,5 +5,6 @@
     ./clouds
     ./media
     ./monitoring
+    ./services
   ];
 }
