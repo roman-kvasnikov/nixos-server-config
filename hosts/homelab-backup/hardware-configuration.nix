@@ -31,38 +31,34 @@
     options = ["fmask=0022" "dmask=0022"];
   };
 
-  fileSystems."/raid" = {
-    device = "/dev/disk/by-uuid/c60f6a98-d29b-4594-a8c0-ecfe6e387a16";
+  # fileSystems."/raid" = {
+  #   device = "/dev/disk/by-uuid/c60f6a98-d29b-4594-a8c0-ecfe6e387a16";
+  #   fsType = "ext4";
+  # };
+
+  # fileSystems."/var" = {
+  #   device = "/raid/var";
+  #   fsType = "none";
+  #   options = ["bind" "x-systemd.after=raid.mount"];
+  #   depends = ["/raid"];
+  # };
+
+  # fileSystems."/data" = {
+  #   device = "/raid/data";
+  #   fsType = "none";
+  #   options = ["bind" "x-systemd.after=raid.mount"];
+  #   depends = ["/raid"];
+  # };
+
+  fileSystems."/var" = {
+    device = "/dev/md0";
     fsType = "ext4";
   };
 
-  fileSystems."/var" = {
-    device = "/raid/var";
-    fsType = "none";
-    options = ["bind" "x-systemd.after=raid.mount"];
-    depends = ["/raid"];
-  };
-
   fileSystems."/data" = {
-    device = "/raid/data";
-    fsType = "none";
-    options = ["bind" "x-systemd.after=raid.mount"];
-    depends = ["/raid"];
+    device = "/dev/md0";
+    fsType = "ext4";
   };
-
-  # # Монтирование RAID как /data
-  # fileSystems."/data" = {
-  #   device = "/dev/disk/by-uuid/c60f6a98-d29b-4594-a8c0-ecfe6e387a16"; # UUID RAID
-  #   fsType = "ext4";
-  #   neededForBoot = true;
-  # };
-
-  # # Монтирование RAID как /var
-  # fileSystems."/var" = {
-  #   device = "/dev/disk/by-uuid/c60f6a98-d29b-4594-a8c0-ecfe6e387a16"; # UUID RAID
-  #   fsType = "ext4";
-  #   neededForBoot = true;
-  # };
 
   swapDevices = [
     {device = "/dev/disk/by-uuid/eac00cda-2583-42fd-b517-d6cc89d96a85";}
