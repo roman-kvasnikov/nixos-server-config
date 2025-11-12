@@ -115,21 +115,20 @@ in {
       ];
 
       systemd.tmpfiles.rules = [
-        "d ${cfg.mediaDir} 0755 root root - -"
-        "d ${cfg.mediaDir}/Movies 0770 ${cfgHomelab.systemUser} ${cfgHomelab.systemGroup} - -"
-        "d ${cfg.mediaDir}/Shows 0770 ${cfgHomelab.systemUser} ${cfgHomelab.systemGroup} - -"
-        "d ${cfg.mediaDir}/Cartoons 0770 ${cfgHomelab.systemUser} ${cfgHomelab.systemGroup} - -"
+        "d ${cfg.mediaDir} 2775 jellyfin media - -"
+        "d ${cfg.mediaDir}/movies 2775 jellyfin media - -"
+        "d ${cfg.mediaDir}/shows 2775 jellyfin media - -"
+        "d ${cfg.mediaDir}/cartoons 2775 jellyfin media - -"
       ];
-
-      users.users.jellyfin.extraGroups = ["video" "render"];
 
       services.jellyfin = {
         enable = true;
 
-        user = "jellyfin";
-        group = cfgHomelab.systemGroup;
-
         openFirewall = !cfgNginx.enable;
+      };
+
+      users.users.jellyfin = {
+        extraGroups = ["video" "render" "media"];
       };
 
       systemd.services.jellyfin = {

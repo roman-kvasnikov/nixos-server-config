@@ -36,6 +36,12 @@ in {
       default = true;
     };
 
+    backupEnabled = lib.mkOption {
+      description = "Enable backup for Prowlarr";
+      type = lib.types.bool;
+      default = true;
+    };
+
     homepage = {
       enable = lib.mkOption {
         type = lib.types.bool;
@@ -95,6 +101,14 @@ in {
         enable = true;
 
         openFirewall = !cfgNginx.enable;
+      };
+    })
+
+    (lib.mkIf (cfg.enable && cfg.backupEnabled) {
+      services.backupctl = {
+        jobs.prowlarr = {
+          paths = [config.services.prowlarr.dataDir];
+        };
       };
     })
 

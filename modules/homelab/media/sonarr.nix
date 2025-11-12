@@ -36,6 +36,12 @@ in {
       default = true;
     };
 
+    backupEnabled = lib.mkOption {
+      description = "Enable backup for Sonarr";
+      type = lib.types.bool;
+      default = true;
+    };
+
     homepage = {
       enable = lib.mkOption {
         type = lib.types.bool;
@@ -74,9 +80,6 @@ in {
       services.sonarr = {
         enable = true;
 
-        user = "sonarr";
-        group = cfgHomelab.systemGroup;
-
         openFirewall = !cfgNginx.enable;
 
         settings = {
@@ -93,6 +96,18 @@ in {
         };
 
         environmentFiles = [];
+      };
+
+      users.users.sonarr = {
+        extraGroups = ["downloads" "media"];
+      };
+    })
+
+    (lib.mkIf (cfg.enable && cfg.backupEnabled) {
+      services.backupctl = {
+        jobs.sonarr = {
+          paths = [config.services.sonarr.dataDir];
+        };
       };
     })
 

@@ -172,7 +172,7 @@ in {
                   };
                 }
                 {
-                  "Mount: /data" = {
+                  "Raid Data" = {
                     widget =
                       commonOptions
                       // {
@@ -182,7 +182,7 @@ in {
                   };
                 }
                 {
-                  "Mount: /var/lib/frigate" = {
+                  "Disk NVR" = {
                     widget =
                       commonOptions
                       // {

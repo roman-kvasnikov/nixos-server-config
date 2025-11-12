@@ -1,30 +1,9 @@
 {
   imports = [
-    ./filebrowser.nix
-    ./frigate.nix
-    ./glances.nix
     ./homepage.nix
-    ./immich.nix
-    ./it-tools.nix
-    ./jellyfin.nix
-    ./jellyseerr.nix
-    ./librespeed.nix
-    ./linkwarden.nix
-    ./microbin.nix
-    ./nextcloud.nix
-    ./onlyoffice.nix
-    ./paperless.nix
-    ./pgadmin.nix
-    ./portainer.nix
-    ./prowlarr.nix
-    ./qbittorrent.nix
-    ./radarr.nix
     ./samba.nix
-    ./shinobi.nix
-    ./sonarr.nix
-    ./speedtest-tracker.nix
-    ./tubearchivist.nix
-    ./uptime-kuma.nix
-    ./vaultwarden.nix
+    ./clouds
+    ./media
+    ./monitoring
   ];
 }

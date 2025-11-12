@@ -1,4 +1,8 @@
-{config, ...}: let
+{
+  config,
+  pkgs,
+  ...
+}: let
   cfgHomelab = config.homelab;
 in {
   users = {
@@ -12,6 +16,7 @@ in {
       ${cfgHomelab.systemUser} = {
         isSystemUser = true;
         group = cfgHomelab.systemGroup;
+        shell = pkgs.nologin;
       };
     };
 

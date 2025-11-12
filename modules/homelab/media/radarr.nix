@@ -4,48 +4,42 @@
   pkgs,
   ...
 }: let
-  cfg = config.homelab.services.qbittorrentctl;
+  cfg = config.homelab.services.radarrctl;
   cfgHomelab = config.homelab;
   cfgAcme = config.services.acmectl;
   cfgNginx = config.services.nginxctl;
 in {
-  options.homelab.services.qbittorrentctl = {
-    enable = lib.mkEnableOption "Enable qBittorrent";
+  options.homelab.services.radarrctl = {
+    enable = lib.mkEnableOption "Enable Radarr";
 
     domain = lib.mkOption {
-      description = "Domain of the qBittorrent module";
+      description = "Domain of the Radarr module";
       type = lib.types.str;
-      default = "qbittorrent.${cfgHomelab.domain}";
+      default = "radarr.${cfgHomelab.domain}";
     };
 
     host = lib.mkOption {
-      description = "Host of the qBittorrent module";
+      description = "Host of the Radarr module";
       type = lib.types.str;
       default = "127.0.0.1";
     };
 
     port = lib.mkOption {
-      description = "Port of the qBittorrent module";
+      description = "Port of the Radarr module";
       type = lib.types.port;
-      default = 8080;
+      default = 7878;
     };
 
     allowExternal = lib.mkOption {
-      description = "Allow external access to qBittorrent";
+      description = "Allow external access to Radarr";
       type = lib.types.bool;
       default = true;
     };
 
-    torrentsDir = lib.mkOption {
-      description = "Torrents directory for qBittorrent";
-      type = lib.types.path;
-      default = "/data/.torrents";
-    };
-
-    downloadsDir = lib.mkOption {
-      description = "Downloads directory for qBittorrent";
-      type = lib.types.path;
-      default = "/data/Downloads";
+    backupEnabled = lib.mkOption {
+      description = "Enable backup for Radarr";
+      type = lib.types.bool;
+      default = true;
     };
 
     homepage = {
@@ -55,28 +49,27 @@ in {
       };
       name = lib.mkOption {
         type = lib.types.str;
-        default = "qBittorrent";
+        default = "Radarr";
       };
       description = lib.mkOption {
         type = lib.types.str;
-        default = "Torrent client";
+        default = "Movie collection manager for BitTorrent users";
       };
       icon = lib.mkOption {
         type = lib.types.str;
-        default = "qbittorrent.svg";
+        default = "radarr.svg";
       };
       category = lib.mkOption {
         type = lib.types.str;
-        default = "Services";
+        default = "Media";
       };
       widget = lib.mkOption {
         type = lib.types.attrs;
         default = {
-          type = "qbittorrent";
+          type = "radarr";
           url = "https://${cfg.domain}";
-          username = "admin";
-          password = "123456";
-          enableLeechProgress = true;
+          key = "cbd1ffa00c9a48b786cf122336c6c3b7";
+          enableQueue = true;
         };
       };
     };
@@ -84,24 +77,37 @@ in {
 
   config = lib.mkMerge [
     (lib.mkIf cfg.enable {
-      environment.systemPackages = with pkgs; [
-        qbittorrent
-      ];
-
-      systemd.tmpfiles.rules = [
-        "d ${cfg.torrentsDir} 0770 ${cfgHomelab.systemUser} ${cfgHomelab.systemGroup} - -"
-        "d ${cfg.downloadsDir} 0770 ${cfgHomelab.systemUser} ${cfgHomelab.systemGroup} - -"
-      ];
-
-      services.qbittorrent = {
+      services.radarr = {
         enable = true;
 
-        user = "qbittorrent";
-        group = cfgHomelab.systemGroup;
-
-        webuiPort = cfg.port;
-
         openFirewall = !cfgNginx.enable;
+
+        settings = {
+          update = {
+            automatically = true;
+            mechanism = "external";
+          };
+          server = {
+            urlbase = "/";
+            bindaddress = cfg.host;
+            port = cfg.port;
+          };
+          log.analyticsEnabled = true;
+        };
+
+        environmentFiles = [];
+      };
+
+      users.users.radarr = {
+        extraGroups = ["downloads" "media"];
+      };
+    })
+
+    (lib.mkIf (cfg.enable && cfg.backupEnabled) {
+      services.backupctl = {
+        jobs.radarr = {
+          paths = [config.services.radarr.dataDir];
+        };
       };
     })
 
@@ -127,10 +133,6 @@ in {
               proxyPass = "http://${cfg.host}:${toString cfg.port}";
               proxyWebsockets = true;
               recommendedProxySettings = true;
-
-              extraConfig = ''
-                client_max_body_size 100M;
-              '';
             };
           };
         };

@@ -4,36 +4,48 @@
   pkgs,
   ...
 }: let
-  cfg = config.homelab.services.radarrctl;
+  cfg = config.homelab.services.qbittorrentctl;
   cfgHomelab = config.homelab;
   cfgAcme = config.services.acmectl;
   cfgNginx = config.services.nginxctl;
 in {
-  options.homelab.services.radarrctl = {
-    enable = lib.mkEnableOption "Enable Radarr";
+  options.homelab.services.qbittorrentctl = {
+    enable = lib.mkEnableOption "Enable qBittorrent";
 
     domain = lib.mkOption {
-      description = "Domain of the Radarr module";
+      description = "Domain of the qBittorrent module";
       type = lib.types.str;
-      default = "radarr.${cfgHomelab.domain}";
+      default = "qbittorrent.${cfgHomelab.domain}";
     };
 
     host = lib.mkOption {
-      description = "Host of the Radarr module";
+      description = "Host of the qBittorrent module";
       type = lib.types.str;
       default = "127.0.0.1";
     };
 
     port = lib.mkOption {
-      description = "Port of the Radarr module";
+      description = "Port of the qBittorrent module";
       type = lib.types.port;
-      default = 7878;
+      default = 8080;
     };
 
     allowExternal = lib.mkOption {
-      description = "Allow external access to Radarr";
+      description = "Allow external access to qBittorrent";
       type = lib.types.bool;
       default = true;
+    };
+
+    torrentsDir = lib.mkOption {
+      description = "Torrents directory for qBittorrent";
+      type = lib.types.path;
+      default = "/data/torrents/.torrents";
+    };
+
+    downloadsDir = lib.mkOption {
+      description = "Downloads directory for qBittorrent";
+      type = lib.types.path;
+      default = "/data/torrents";
     };
 
     homepage = {
@@ -43,15 +55,15 @@ in {
       };
       name = lib.mkOption {
         type = lib.types.str;
-        default = "Radarr";
+        default = "qBittorrent";
       };
       description = lib.mkOption {
         type = lib.types.str;
-        default = "Movie collection manager for BitTorrent users";
+        default = "Torrent client";
       };
       icon = lib.mkOption {
         type = lib.types.str;
-        default = "radarr.svg";
+        default = "qbittorrent.svg";
       };
       category = lib.mkOption {
         type = lib.types.str;
@@ -60,10 +72,11 @@ in {
       widget = lib.mkOption {
         type = lib.types.attrs;
         default = {
-          type = "radarr";
+          type = "qbittorrent";
           url = "https://${cfg.domain}";
-          key = "cbd1ffa00c9a48b786cf122336c6c3b7";
-          enableQueue = true;
+          username = "admin";
+          password = "123456";
+          enableLeechProgress = true;
         };
       };
     };
@@ -71,28 +84,21 @@ in {
 
   config = lib.mkMerge [
     (lib.mkIf cfg.enable {
-      services.radarr = {
+      systemd.tmpfiles.rules = [
+        "d ${cfg.downloadsDir} 2770 qbittorrent downloads - -"
+        "d ${cfg.torrentsDir} 2770 qbittorrent downloads - -"
+      ];
+
+      services.qbittorrent = {
         enable = true;
 
-        user = "radarr";
-        group = cfgHomelab.systemGroup;
+        webuiPort = cfg.port;
 
         openFirewall = !cfgNginx.enable;
+      };
 
-        settings = {
-          update = {
-            automatically = true;
-            mechanism = "external";
-          };
-          server = {
-            urlbase = "/";
-            bindaddress = cfg.host;
-            port = cfg.port;
-          };
-          log.analyticsEnabled = true;
-        };
-
-        environmentFiles = [];
+      users.users.qbittorrent = {
+        extraGroups = ["downloads"];
       };
     })
 
@@ -118,6 +124,10 @@ in {
               proxyPass = "http://${cfg.host}:${toString cfg.port}";
               proxyWebsockets = true;
               recommendedProxySettings = true;
+
+              extraConfig = ''
+                client_max_body_size 100M;
+              '';
             };
           };
         };
