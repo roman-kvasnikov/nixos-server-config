@@ -50,10 +50,10 @@
   #   depends = ["/raid"];
   # };
 
-  fileSystems."/var" = {
-    device = "/dev/md0";
-    fsType = "ext4";
-  };
+  # fileSystems."/var" = {
+  #   device = "/dev/md0";
+  #   fsType = "ext4";
+  # };
 
   fileSystems."/data" = {
     device = "/dev/md0";
