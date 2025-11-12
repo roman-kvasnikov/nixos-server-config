@@ -16,7 +16,7 @@
   boot.swraid = {
     enable = true;
     mdadmConf = ''
-      ARRAY /dev/md0 metadata=1.2 UUID=14e379fc:2b19eb9d:f40ff21c:7205cb6f
+      ARRAY /dev/md0 level=raid0 num-devices=2 metadata=1.2 name=myraid0 UUID=14e379fc:2b19eb9d:f40ff21c:7205cb6f
     '';
   };
 
@@ -53,12 +53,16 @@
   # fileSystems."/var" = {
   #   device = "/dev/md0";
   #   fsType = "ext4";
+  #   options = ["defaults" "noatime"];
+  #   neededForBoot = true;
   # };
 
-  fileSystems."/data" = {
-    device = "/dev/md0";
-    fsType = "ext4";
-  };
+  # fileSystems."/data" = {
+  #   device = "/dev/md0";
+  #   fsType = "ext4";
+  #   options = ["defaults" "noatime"];
+  #   # neededForBoot = false;
+  # };
 
   swapDevices = [
     {device = "/dev/disk/by-uuid/eac00cda-2583-42fd-b517-d6cc89d96a85";}
