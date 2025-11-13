@@ -107,9 +107,6 @@ in {
         host = cfg.host;
         port = cfg.port;
 
-        user = "immich";
-        group = cfgHomelab.systemGroup;
-
         openFirewall = !cfgNginx.enable;
 
         mediaLocation = cfg.dataDir;
