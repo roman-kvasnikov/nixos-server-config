@@ -30,6 +30,12 @@ in {
       default = 3001;
     };
 
+    dataDir = lib.mkOption {
+      description = "Data directory of the Uptime Kuma module";
+      type = lib.types.str;
+      default = "/data/AppData/Uptime-Kuma";
+    };
+
     allowExternal = lib.mkOption {
       description = "Allow external access to Uptime Kuma";
       type = lib.types.bool;
@@ -74,6 +80,7 @@ in {
         settings = {
           HOST = cfg.host;
           PORT = toString cfg.port;
+          DATA_DIR = cfg.dataDir;
         };
       };
     })
@@ -81,7 +88,7 @@ in {
     (lib.mkIf (cfg.enable && cfg.backupEnabled) {
       services.backupctl = {
         jobs.uptime-kuma = {
-          paths = [config.services.uptime-kuma.settings.DATA_DIR];
+          paths = [cfg.dataDir];
         };
       };
     })

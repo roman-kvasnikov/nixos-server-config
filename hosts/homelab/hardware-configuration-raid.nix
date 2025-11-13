@@ -15,47 +15,46 @@
 
   boot.swraid = {
     enable = true;
-
     mdadmConf = ''
-      ARRAY /dev/md127 metadata=1.2 name=homelab:0 UUID=236c3ed9:5dcfa9ab:83a07aa6:d228cf5b
+      ARRAY /dev/md0 level=raid5 num-devices=3 metadata=1.2 name=myraid5 UUID=14e379fc:2b19eb9d:f40ff21c:7205cb6f
     '';
   };
 
   fileSystems."/" = {
-    device = "/dev/disk/by-uuid/b59b8e3e-799d-4a8a-8bd9-30d8b85913de";
+    device = "/dev/disk/by-uuid/090e90cd-32c7-469d-b381-828783b994f6";
     fsType = "ext4";
   };
 
   fileSystems."/boot" = {
-    device = "/dev/disk/by-uuid/115E-0FA1";
+    device = "/dev/disk/by-uuid/D0C0-CAE0";
     fsType = "vfat";
     options = ["fmask=0022" "dmask=0022"];
   };
 
-  fileSystems."/raid" = {
-    device = "/dev/disk/by-uuid/90b89241-fc0d-4c82-a33d-66eb7e04942f";
+  fileSystems."/mnt/raid" = {
+    device = "/dev/md0";
     fsType = "ext4";
+    options = ["defaults" "noatime"];
     neededForBoot = true;
   };
 
-  # Bind mount для /var/lib
-  fileSystems."/var/lib" = {
-    device = "/raid/var/lib";
+  fileSystems."/var" = {
+    device = "/mnt/raid/var";
     fsType = "none";
-    options = ["bind" "x-systemd.after=raid.mount"];
-    depends = ["/raid"];
+    options = ["bind"];
+    depends = ["/mnt/raid"];
+    neededForBoot = true;
   };
 
-  # Bind mount для /data
   fileSystems."/data" = {
-    device = "/raid/data";
+    device = "/mnt/raid/data";
     fsType = "none";
-    options = ["bind" "x-systemd.after=raid.mount"];
-    depends = ["/raid"];
+    options = ["bind"];
+    depends = ["/mnt/raid"];
   };
 
   swapDevices = [
-    {device = "/dev/disk/by-uuid/029e40de-98df-4eec-8640-c7adc276e904";}
+    {device = "/dev/disk/by-uuid/eac00cda-2583-42fd-b517-d6cc89d96a85";}
   ];
 
   # Enables DHCP on each ethernet and wireless interface. In case of scripted networking

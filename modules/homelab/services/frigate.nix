@@ -30,16 +30,16 @@ in {
       default = 8971;
     };
 
+    dataDir = lib.mkOption {
+      type = lib.types.str;
+      description = "Directory for Frigate data and recordings";
+      default = "/var/lib/frigate";
+    };
+
     allowExternal = lib.mkOption {
       description = "Allow external access to Frigate";
       type = lib.types.bool;
       default = false;
-    };
-
-    homeDir = lib.mkOption {
-      type = lib.types.str;
-      description = "Directory for Frigate data and recordings";
-      default = "/var/lib/frigate";
     };
 
     homepage = {
@@ -86,8 +86,8 @@ in {
           ];
           volumes = [
             "/etc/localtime:/etc/localtime:ro"
-            "${cfg.homeDir}:/config"
-            "${cfg.homeDir}/storage:/media/frigate"
+            "${cfg.dataDir}:/config"
+            "${cfg.dataDir}/storage:/media/frigate"
           ];
           ports = [
             "${toString cfg.port}:8971"

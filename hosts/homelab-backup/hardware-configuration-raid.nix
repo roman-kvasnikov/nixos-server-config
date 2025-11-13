@@ -31,7 +31,6 @@
     options = ["fmask=0022" "dmask=0022"];
   };
 
-  # Основная точка монтирования Raid0
   fileSystems."/mnt/raid" = {
     device = "/dev/md0";
     fsType = "ext4";
@@ -39,7 +38,6 @@
     neededForBoot = true;
   };
 
-  # Bind mount для /var
   fileSystems."/var" = {
     device = "/mnt/raid/var";
     fsType = "none";
@@ -48,7 +46,6 @@
     neededForBoot = true;
   };
 
-  # Bind mount для /data
   fileSystems."/data" = {
     device = "/mnt/raid/data";
     fsType = "none";

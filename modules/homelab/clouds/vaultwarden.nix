@@ -30,6 +30,12 @@ in {
       default = 8222;
     };
 
+    dataDir = lib.mkOption {
+      description = "Data directory of the Vaultwarden module";
+      type = lib.types.str;
+      default = "/data/AppData/Vaultwarden";
+    };
+
     allowExternal = lib.mkOption {
       description = "Allow external access to Vaultwarden";
       type = lib.types.bool;
@@ -80,6 +86,14 @@ in {
         ensureDatabases = ["vaultwarden"];
       };
 
+      nixpkgs.overlays = [
+        self: super: {
+          vaultwarden = super.vaultwarden.override {
+            dataDir = cfg.dataDir;
+          };
+        }
+      ];
+
       services.vaultwarden = {
         enable = true;
 
@@ -113,7 +127,7 @@ in {
       services.backupctl = {
         jobs.vaultwarden = {
           database = "vaultwarden";
-          paths = ["/var/lib/vaultwarden"];
+          paths = [cfg.dataDir];
         };
       };
     })

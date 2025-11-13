@@ -30,6 +30,12 @@ in {
       default = 2283;
     };
 
+    dataDir = lib.mkOption {
+      description = "Data directory of the Immich module";
+      type = lib.types.str;
+      default = "/data/AppData/Immich";
+    };
+
     allowExternal = lib.mkOption {
       description = "Allow external access to Immich";
       type = lib.types.bool;
@@ -106,6 +112,8 @@ in {
 
         openFirewall = !cfgNginx.enable;
 
+        mediaLocation = cfg.dataDir;
+
         environment = {
           PUBLIC_IMMICH_SERVER_URL = "http://${cfg.host}:${toString cfg.port}";
         };
@@ -116,7 +124,7 @@ in {
       services.backupctl = {
         jobs.immich = {
           database = config.services.immich.database.name;
-          paths = [config.services.immich.mediaLocation];
+          paths = [cfg.dataDir];
         };
       };
     })

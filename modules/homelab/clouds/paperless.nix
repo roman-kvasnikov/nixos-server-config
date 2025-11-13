@@ -30,6 +30,12 @@ in {
       default = 28981;
     };
 
+    dataDir = lib.mkOption {
+      description = "Data directory of the Paperless module";
+      type = lib.types.str;
+      default = "/data/AppData/Paperless";
+    };
+
     allowExternal = lib.mkOption {
       description = "Allow external access to Paperless";
       type = lib.types.bool;
@@ -87,6 +93,8 @@ in {
 
         passwordFile = cfg.passwordFile;
 
+        dataDir = cfg.dataDir;
+
         consumptionDirIsPublic = true;
 
         configureNginx = cfgNginx.enable;
@@ -117,7 +125,7 @@ in {
       services.backupctl = {
         jobs.paperless = {
           database = config.services.paperless.settings.PAPERLESS_DBNAME;
-          paths = [config.services.paperless.dataDir];
+          paths = [cfg.dataDir];
         };
       };
     })

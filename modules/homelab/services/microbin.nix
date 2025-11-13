@@ -30,6 +30,12 @@ in {
       default = 8069;
     };
 
+    dataDir = lib.mkOption {
+      type = lib.types.str;
+      description = "Data directory of the Microbin module";
+      default = "/data/AppData/Microbin";
+    };
+
     allowExternal = lib.mkOption {
       description = "Allow external access to Microbin";
       type = lib.types.bool;
@@ -72,6 +78,8 @@ in {
         enable = true;
 
         passwordFile = cfg.passwordFile;
+
+        dataDir = cfg.dataDir;
 
         settings = {
           MICROBIN_PUBLIC_PATH = "https://${cfg.domain}/";

@@ -68,20 +68,45 @@ in {
 
   config = lib.mkMerge [
     (lib.mkIf cfg.enable {
-      services.filebrowser = {
-        enable = true;
+      services = {
+        filebrowser = {
+          enable = true;
 
-        user = "filebrowser";
-        group = cfgHomelab.systemGroup;
+          openFirewall = !cfgNginx.enable;
 
-        openFirewall = !cfgNginx.enable;
+          settings = {
+            address = cfg.host;
+            port = cfg.port;
+            root = cfg.rootDir;
+          };
+        };
 
-        settings = {
-          address = cfg.host;
-          port = cfg.port;
-          root = cfg.rootDir;
+        fail2ban = {
+          enable = true;
+
+          jails.filebrowser.settings = {
+            enabled = true;
+            port = "80,443";
+            protocol = "tcp";
+            filter = "filebrowser";
+            maxretry = 3;
+            bantime = 3600; # 1 hour
+            findtime = 600; # 10 minutes
+            logpath = "/var/log/filebrowser.log";
+            banaction = "iptables-allports";
+            banaction_allports = "iptables-allports";
+          };
         };
       };
+
+      environment.etc."fail2ban/filter.d/filebrowser.conf".text = ''
+        [INCLUDES]
+        before = common.conf
+
+        [Definition]
+        datepattern = `^%%Y\/%%m\/%%d %%H:%%M:%%S`
+        failregex   = `\/api\/login: 403 <HOST> *`
+      '';
     })
 
     (lib.mkIf (cfg.enable && cfgAcme.enable) {

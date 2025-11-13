@@ -29,6 +29,12 @@ in {
       default = 3000;
     };
 
+    dataDir = lib.mkOption {
+      description = "Data directory of the Linkwarden module";
+      type = lib.types.str;
+      default = "/data/AppData/Linkwarden";
+    };
+
     allowExternal = lib.mkOption {
       description = "Allow external access to Linkwarden";
       type = lib.types.bool;
@@ -83,6 +89,8 @@ in {
 
         openFirewall = !cfgNginx.enable;
 
+        storageLocation = cfg.dataDir;
+
         enableRegistration = true;
 
         environmentFile = config.age.secrets.linkwarden-env.path;
@@ -100,7 +108,7 @@ in {
       services.backupctl = {
         jobs.linkwarden = {
           database = "linkwarden";
-          paths = ["/var/lib/linkwarden"];
+          paths = [cfg.dataDir];
         };
       };
     })

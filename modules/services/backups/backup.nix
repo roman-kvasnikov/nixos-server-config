@@ -41,7 +41,7 @@ in {
         enable = databasesToBackup != [];
 
         databases = databasesToBackup;
-        location = "/var/lib/postgresql/backups";
+        location = "/data/AppData/Postgresql/backups";
       };
 
       resticctl = {
@@ -49,7 +49,7 @@ in {
 
         jobs =
           {
-            postgresql.paths = ["/var/lib/postgresql/backups"];
+            postgresql.paths = ["/data/AppData/Postgresql/backups"];
           }
           // lib.mapAttrs (_: job: builtins.removeAttrs job ["database"]) cfg.jobs;
       };

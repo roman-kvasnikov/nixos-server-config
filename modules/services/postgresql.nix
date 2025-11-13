@@ -4,6 +4,8 @@ in {
   services.postgresql = {
     enable = true;
 
+    dataDir = "/data/AppData/Postgresql/${config.services.postgresql.package.psqlSchema}";
+
     authentication = ''
       # локальные сокеты — peer (по системному пользователю)
       local all all peer
@@ -24,5 +26,9 @@ in {
         };
       }
     ];
+
+    initialScript = pkgs.writeText "init-postgres-user" ''
+      ALTER USER romank WITH ENCRYPTED PASSWORD '123';
+    '';
   };
 }

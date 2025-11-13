@@ -30,6 +30,12 @@ in {
       default = 8090;
     };
 
+    dataDir = lib.mkOption {
+      description = "Data directory of the Nextcloud module";
+      type = lib.types.str;
+      default = "/data/AppData/Nextcloud";
+    };
+
     allowExternal = lib.mkOption {
       description = "Allow external access to Nextcloud";
       type = lib.types.bool;
@@ -110,6 +116,8 @@ in {
           hostName = cfg.domain;
           https = true;
 
+          home = cfg.dataDir;
+
           extraApps = lib.genAttrs cfg.apps (app: config.services.nextcloud.package.packages.apps.${app});
           appstoreEnable = true;
           extraAppsEnable = true;
@@ -185,7 +193,7 @@ in {
       services.backupctl = {
         jobs.nextcloud = {
           database = config.services.nextcloud.config.dbname;
-          paths = [config.services.nextcloud.home];
+          paths = [cfg.dataDir];
         };
       };
     })
