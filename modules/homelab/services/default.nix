@@ -1,5 +1,6 @@
 {
   imports = [
+    ./filebrowser.nix
     ./frigate.nix
     ./it-tools.nix
     ./librespeed.nix
