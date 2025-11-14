@@ -74,6 +74,10 @@ in {
 
   config = lib.mkMerge [
     (lib.mkIf cfg.enable {
+      systemd.tmpfiles.rules = [
+        "d ${cfg.dataDir} 2775 root root - -"
+      ];
+
       services.uptime-kuma = {
         enable = true;
 
