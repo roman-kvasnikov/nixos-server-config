@@ -3,6 +3,7 @@
     ./hardware-configuration.nix
     ./harware.nix
     ./services.nix
+    ./zfs.nix
     ../../nixos
   ];
 
