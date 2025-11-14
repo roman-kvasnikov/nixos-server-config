@@ -1,4 +1,8 @@
-{config, ...}: let
+{
+  config,
+  pkgs,
+  ...
+}: let
   cfgHomelab = config.homelab;
 in {
   services.postgresql = {
