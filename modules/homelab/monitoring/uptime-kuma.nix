@@ -80,7 +80,7 @@ in {
         settings = {
           HOST = cfg.host;
           PORT = toString cfg.port;
-          DATA_DIR = cfg.dataDir;
+          DATA_DIR = lib.mkForce cfg.dataDir;
         };
       };
     })
