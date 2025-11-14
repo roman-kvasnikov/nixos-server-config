@@ -176,7 +176,7 @@ in {
                     widget =
                       commonOptions
                       // {
-                        metric = "fs:/";
+                        metric = "fs:/data";
                         chart = true;
                       };
                   };
