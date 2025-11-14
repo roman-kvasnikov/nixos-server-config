@@ -42,7 +42,7 @@ in {
 
         filebrowserctl.enable = true;
         actualctl.enable = true;
-        frigatectl.enable = true;
+        frigatectl.enable = false;
         glancesctl.enable = true;
         immichctl.enable = true;
         it-tools-ctl.enable = true;
