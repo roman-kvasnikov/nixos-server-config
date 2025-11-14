@@ -20,7 +20,7 @@
     ];
     interface = "enp0s20f0u9";
     connectWireguard = true;
-    email = "roman.kvasok@gmail.com";
+    email = "roman.kvasnikov@gmail.com";
     systemUser = "share";
     systemGroup = "share";
     adminUser = "romank";

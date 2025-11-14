@@ -40,7 +40,6 @@ in {
       services = {
         homepagectl.enable = true;
 
-        filebrowserctl.enable = true;
         actualctl.enable = false;
         frigatectl.enable = false;
         glancesctl.enable = true;

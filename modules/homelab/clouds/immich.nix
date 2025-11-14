@@ -100,7 +100,7 @@ in {
       # };
 
       systemd.tmpfiles.rules = [
-        "d ${cfg.dataDir} 2775 immich immich - -"
+        "d ${cfg.dataDir} 700 immich immich - -"
       ];
 
       services.immich = {

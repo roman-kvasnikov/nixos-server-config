@@ -5,6 +5,10 @@
 }: let
   cfgHomelab = config.homelab;
 in {
+  systemd.tmpfiles.rules = [
+    "d ${config.services.postgresql.dataDir} 700 postgres postgres - -"
+  ];
+
   services.postgresql = {
     enable = true;
 

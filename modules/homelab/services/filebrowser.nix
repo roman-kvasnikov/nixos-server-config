@@ -78,6 +78,7 @@ in {
             address = cfg.host;
             port = cfg.port;
             root = cfg.rootDir;
+            database = "${cfg.rootDir}/database.db";
           };
         };
 
