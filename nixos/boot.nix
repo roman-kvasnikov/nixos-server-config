@@ -11,7 +11,8 @@
       };
     };
 
-    kernelPackages = pkgs.linuxPackages_latest;
+    # kernelPackages = pkgs.linuxPackages_latest;
+    kernelPackages = config.boot.zfs.package.latestCompatibleLinuxPackages;
 
     kernel.sysctl = {
       # Увеличить лимиты для файловых дескрипторов
