@@ -83,10 +83,10 @@ in {
 
   config = lib.mkMerge [
     (lib.mkIf cfg.enable {
-      environment.systemPackages = with pkgs; [
-        immich
-        # python313Packages.redis
-      ];
+      # environment.systemPackages = with pkgs; [
+      #   immich
+      #   # python313Packages.redis
+      # ];
 
       # Fix for machine-learning
       # systemd.services.immich-machine-learning = {
