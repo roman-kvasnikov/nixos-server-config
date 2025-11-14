@@ -25,6 +25,8 @@
     options = ["fmask=0022" "dmask=0022"];
   };
 
+  boot.zfs.extraPools = ["data"];
+
   fileSystems."/data" = {
     device = "data";
     fsType = "zfs";
