@@ -69,7 +69,7 @@ in {
     logFile = lib.mkOption {
       description = "Log file for Nextcloud";
       type = lib.types.path;
-      default = "/var/lib/nextcloud/data/nextcloud.log";
+      default = "${cfg.dataDir}/data/nextcloud.log";
     };
 
     homepage = {
