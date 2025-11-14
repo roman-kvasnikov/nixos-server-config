@@ -6,6 +6,7 @@
   cfgHomelab = config.homelab;
 in {
   networking = {
+    hostId = "8425e349";
     hostName = hostname;
 
     networkmanager = {

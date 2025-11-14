@@ -41,7 +41,7 @@ in {
         homepagectl.enable = true;
 
         filebrowserctl.enable = true;
-        actualctl.enable = true;
+        actualctl.enable = false;
         frigatectl.enable = false;
         glancesctl.enable = true;
         immichctl.enable = true;
