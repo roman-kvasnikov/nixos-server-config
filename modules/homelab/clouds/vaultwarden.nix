@@ -86,13 +86,13 @@ in {
         ensureDatabases = ["vaultwarden"];
       };
 
-      nixpkgs.overlays = [
-        self: super: {
-          vaultwarden = super.vaultwarden.override {
-            dataDir = cfg.dataDir;
-          };
-        }
-      ];
+      # nixpkgs.overlays = [
+      #   self: super: {
+      #     vaultwarden = super.vaultwarden.override {
+      #       dataDir = cfg.dataDir;
+      #     };
+      #   }
+      # ];
 
       services.vaultwarden = {
         enable = true;
