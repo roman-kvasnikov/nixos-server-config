@@ -84,6 +84,7 @@ in {
     (lib.mkIf cfg.enable {
       systemd.tmpfiles.rules = [
         "d ${cfg.dataDir} 2777 nobody nogroup - -"
+        "d ${cfg.dataDir}/config 2777 nobody nogroup - -"
       ];
 
       services.jellyseerr = {
