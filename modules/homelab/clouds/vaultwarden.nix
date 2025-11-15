@@ -30,13 +30,6 @@ in {
       default = 8222;
     };
 
-    dataDir = lib.mkOption {
-      description = "Data directory of the Vaultwarden module";
-      type = lib.types.str;
-      # default = "/data/AppData/Vaultwarden";
-      default = "/var/lib/vaultwarden";
-    };
-
     allowExternal = lib.mkOption {
       description = "Allow external access to Vaultwarden";
       type = lib.types.bool;
@@ -75,10 +68,6 @@ in {
 
   config = lib.mkMerge [
     (lib.mkIf cfg.enable {
-      # systemd.tmpfiles.rules = [
-      #   "d ${cfg.dataDir} 700 vaultwarden vaultwarden - -"
-      # ];
-
       services.postgresql = {
         enable = true;
 
@@ -98,8 +87,6 @@ in {
           dbBackend = "postgresql";
 
           config = {
-            DATA_FOLDER = cfg.dataDir;
-
             DOMAIN = "https://${cfg.domain}";
             SIGNUPS_ALLOWED = true;
             WEBSOCKET_ENABLED = true;
@@ -132,8 +119,6 @@ in {
         };
       };
 
-      systemd.services.vaultwarden.serviceConfig.StateDirectory = lib.mkForce cfg.dataDir;
-
       environment.etc."fail2ban/filter.d/vaultwarden.local".text = lib.mkDefault (lib.mkAfter ''
         [INCLUDES]
         before = common.conf
@@ -155,7 +140,6 @@ in {
       services.backupctl = {
         jobs.vaultwarden = {
           database = "vaultwarden";
-          paths = [cfg.dataDir];
         };
       };
     })

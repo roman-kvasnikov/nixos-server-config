@@ -42,6 +42,12 @@ in {
       default = true;
     };
 
+    backupEnabled = lib.mkOption {
+      description = "Enable backup for Microbin";
+      type = lib.types.bool;
+      default = true;
+    };
+
     passwordFile = lib.mkOption {
       description = "Password file for Microbin";
       type = lib.types.path;
@@ -74,9 +80,9 @@ in {
 
   config = lib.mkMerge [
     (lib.mkIf cfg.enable {
-      # systemd.tmpfiles.rules = [
-      #   "d ${cfg.dataDir} 700 microbin microbin - -"
-      # ];
+      systemd.tmpfiles.rules = [
+        "d ${cfg.dataDir} 700 microbin microbin - -"
+      ];
 
       services.microbin = {
         enable = true;
@@ -100,13 +106,19 @@ in {
         };
       };
 
-      systemd.services.microbin.serviceConfig.StateDirectory = lib.mkForce cfg.dataDir;
-
       age.secrets.microbin-env = {
         file = ../../../secrets/microbin.env.age;
         owner = "root";
         group = "root";
         mode = "0400";
+      };
+    })
+
+    (lib.mkIf (cfg.enable && cfg.backupEnabled) {
+      services.backupctl = {
+        jobs.microbin = {
+          paths = [cfg.dataDir];
+        };
       };
     })
 
