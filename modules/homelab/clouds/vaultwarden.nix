@@ -101,7 +101,7 @@ in {
             DATA_FOLDER = cfg.dataDir;
 
             DOMAIN = "https://${cfg.domain}";
-            SIGNUPS_ALLOWED = false;
+            SIGNUPS_ALLOWED = true;
             WEBSOCKET_ENABLED = true;
             TZ = config.time.timeZone;
 
