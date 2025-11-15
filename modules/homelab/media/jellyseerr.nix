@@ -83,9 +83,9 @@ in {
   config = lib.mkMerge [
     (lib.mkIf cfg.enable {
       systemd.tmpfiles.rules = [
-        "d ${cfg.dataDir} 2777 nobody nogroup - -"
-        "d ${cfg.dataDir}/config 2777 nobody nogroup - -"
-        "d ${cfg.dataDir}/config/logs 2777 nobody nogroup - -"
+        "d ${cfg.dataDir} 777 nobody nogroup - -"
+        "d ${cfg.dataDir}/config 777 nobody nogroup - -"
+        "d ${cfg.dataDir}/config/logs 777 nobody nogroup - -"
       ];
 
       services.jellyseerr = {
@@ -95,7 +95,7 @@ in {
 
         openFirewall = !cfgNginx.enable;
 
-        # configDir = "${cfg.dataDir}/config";
+        configDir = "${cfg.dataDir}/config";
       };
     })
 
