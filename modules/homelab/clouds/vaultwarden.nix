@@ -140,7 +140,6 @@ in {
       services.backupctl = {
         jobs.vaultwarden = {
           database = "vaultwarden";
-          paths = ["/var/lib/vaultwarden"];
         };
       };
     })

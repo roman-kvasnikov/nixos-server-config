@@ -23,6 +23,7 @@ in {
           paths = lib.mkOption {
             description = "Paths to backup.";
             type = lib.types.listOf lib.types.path;
+            default = [];
           };
         };
       }));
@@ -47,11 +48,13 @@ in {
       resticctl = {
         enable = true;
 
-        jobs =
+        jobs = let
+          jobsWithPaths = lib.filterAttrs (_: job: job.paths != []) cfg.jobs;
+        in
           {
             postgresql.paths = ["/data/AppData/Postgresql/backups"];
           }
-          // lib.mapAttrs (_: job: builtins.removeAttrs job ["database"]) cfg.jobs;
+          // lib.mapAttrs (_: job: builtins.removeAttrs job ["database"]) jobsWithPaths;
       };
     };
   };
