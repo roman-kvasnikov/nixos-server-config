@@ -75,7 +75,7 @@ in {
   config = lib.mkMerge [
     (lib.mkIf cfg.enable {
       systemd.tmpfiles.rules = [
-        "d ${cfg.dataDir} 2775 root root - -"
+        "d ${cfg.dataDir} 2776 nobody nogroup - -"
       ];
 
       services.microbin = {
