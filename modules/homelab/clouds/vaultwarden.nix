@@ -99,9 +99,9 @@ in {
 
         dbBackend = "postgresql";
 
-        backupDir = "${cfg.dataDir}/backup";
-
         config = {
+          DATA_FOLDER = cfg.dataDir;
+
           DOMAIN = "https://${cfg.domain}";
           SIGNUPS_ALLOWED = false;
           WEBSOCKET_ENABLED = true;
