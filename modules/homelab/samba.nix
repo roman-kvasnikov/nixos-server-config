@@ -189,7 +189,7 @@ in {
 
             # Получаем пароль из переменной окружения с таким же именем
             #var_name="$(SAMBA_$username_PASSWORD)"
-            PASSWORD=$(printenv "SAMBA_$username_PASSWORD" || true)
+            PASSWORD=$(printenv "SAMBA_${username}_PASSWORD" || true)
 
             if [ -z "$PASSWORD" ]; then
               echo "⚠️ Warning: no password for user '$username' in environment file ($var_name)."
