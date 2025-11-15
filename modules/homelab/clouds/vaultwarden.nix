@@ -33,7 +33,8 @@ in {
     dataDir = lib.mkOption {
       description = "Data directory of the Vaultwarden module";
       type = lib.types.str;
-      default = "/data/AppData/Vaultwarden";
+      # default = "/data/AppData/Vaultwarden";
+      default = "/var/lib/vaultwarden";
     };
 
     allowExternal = lib.mkOption {
