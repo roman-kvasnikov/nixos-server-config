@@ -108,7 +108,7 @@ in {
       services.backupctl = {
         jobs.linkwarden = {
           database = "linkwarden";
-          paths = [cfg.dataDir];
+          paths = [config.services.linkwarden.storageLocation];
         };
       };
     })

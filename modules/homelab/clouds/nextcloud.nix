@@ -194,7 +194,7 @@ in {
       services.backupctl = {
         jobs.nextcloud = {
           database = config.services.nextcloud.config.dbname;
-          paths = [cfg.dataDir];
+          paths = [config.services.nextcloud.home];
         };
       };
     })

@@ -30,12 +30,6 @@ in {
       default = 9696;
     };
 
-    dataDir = lib.mkOption {
-      description = "Data directory of the Prowlarr module";
-      type = lib.types.str;
-      default = "/data/AppData/Prowlarr";
-    };
-
     allowExternal = lib.mkOption {
       description = "Allow external access to Prowlarr";
       type = lib.types.bool;
@@ -87,8 +81,6 @@ in {
 
         openFirewall = !cfgNginx.enable;
 
-        dataDir = cfg.dataDir;
-
         settings = {
           update = {
             automatically = true;
@@ -115,7 +107,7 @@ in {
     (lib.mkIf (cfg.enable && cfg.backupEnabled) {
       services.backupctl = {
         jobs.prowlarr = {
-          paths = [cfg.dataDir];
+          paths = [config.services.prowlarr.dataDir];
         };
       };
     })

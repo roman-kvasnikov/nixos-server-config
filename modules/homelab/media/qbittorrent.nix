@@ -30,12 +30,6 @@ in {
       default = 8080;
     };
 
-    dataDir = lib.mkOption {
-      description = "Data directory of the qBittorrent module";
-      type = lib.types.str;
-      default = "/data/AppData/qBittorrent";
-    };
-
     allowExternal = lib.mkOption {
       description = "Allow external access to qBittorrent";
       type = lib.types.bool;
@@ -115,8 +109,6 @@ in {
         webuiPort = cfg.port;
 
         openFirewall = !cfgNginx.enable;
-
-        profileDir = cfg.dataDir;
       };
 
       users.users.qbittorrent = {
@@ -127,7 +119,7 @@ in {
     (lib.mkIf (cfg.enable && cfg.backupEnabled) {
       services.backupctl = {
         jobs.qbittorrent = {
-          paths = [cfg.dataDir];
+          paths = [config.services.qbittorrent.profileDir];
         };
       };
     })

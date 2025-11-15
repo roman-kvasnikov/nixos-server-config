@@ -30,12 +30,6 @@ in {
       default = 8096;
     };
 
-    dataDir = lib.mkOption {
-      description = "Data directory of the Jellyfin module";
-      type = lib.types.str;
-      default = "/data/AppData/Jellyfin";
-    };
-
     allowExternal = lib.mkOption {
       description = "Allow external access to Jellyfin";
       type = lib.types.bool;
@@ -134,8 +128,6 @@ in {
         enable = true;
 
         openFirewall = !cfgNginx.enable;
-
-        dataDir = cfg.dataDir;
       };
 
       users.users.jellyfin = {
@@ -152,7 +144,7 @@ in {
     (lib.mkIf (cfg.enable && cfg.backupEnabled) {
       services.backupctl = {
         jobs.jellyfin = {
-          paths = [cfg.dataDir];
+          paths = [config.services.jellyfin.dataDir];
         };
       };
     })

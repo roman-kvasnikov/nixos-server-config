@@ -150,7 +150,7 @@ in {
       services.backupctl = {
         jobs.paperless = {
           database = config.services.paperless.settings.PAPERLESS_DBNAME;
-          paths = [cfg.dataDir];
+          paths = [config.services.paperless.dataDir];
         };
       };
     })

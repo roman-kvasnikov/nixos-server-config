@@ -30,12 +30,6 @@ in {
       default = 8989;
     };
 
-    dataDir = lib.mkOption {
-      description = "Data directory of the Sonarr module";
-      type = lib.types.str;
-      default = "/data/AppData/Sonarr";
-    };
-
     allowExternal = lib.mkOption {
       description = "Allow external access to Sonarr";
       type = lib.types.bool;
@@ -88,8 +82,6 @@ in {
 
         openFirewall = !cfgNginx.enable;
 
-        dataDir = cfg.dataDir;
-
         settings = {
           update = {
             automatically = true;
@@ -114,7 +106,7 @@ in {
     (lib.mkIf (cfg.enable && cfg.backupEnabled) {
       services.backupctl = {
         jobs.sonarr = {
-          paths = [cfg.dataDir];
+          paths = [config.services.sonarr.dataDir];
         };
       };
     })

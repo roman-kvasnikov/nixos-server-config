@@ -30,12 +30,6 @@ in {
       default = 7878;
     };
 
-    dataDir = lib.mkOption {
-      description = "Data directory of the Radarr module";
-      type = lib.types.str;
-      default = "/data/AppData/Radarr";
-    };
-
     allowExternal = lib.mkOption {
       description = "Allow external access to Radarr";
       type = lib.types.bool;
@@ -88,8 +82,6 @@ in {
 
         openFirewall = !cfgNginx.enable;
 
-        dataDir = cfg.dataDir;
-
         settings = {
           update = {
             automatically = true;
@@ -114,7 +106,7 @@ in {
     (lib.mkIf (cfg.enable && cfg.backupEnabled) {
       services.backupctl = {
         jobs.radarr = {
-          paths = [cfg.dataDir];
+          paths = [config.services.radarr.dataDir];
         };
       };
     })

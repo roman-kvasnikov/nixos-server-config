@@ -109,7 +109,7 @@ in {
       services.backupctl = {
         jobs.immich = {
           database = config.services.immich.database.name;
-          paths = [cfg.dataDir];
+          paths = [config.services.immich.mediaLocation];
         };
       };
     })

@@ -30,12 +30,6 @@ in {
       default = 5055;
     };
 
-    dataDir = lib.mkOption {
-      description = "Data directory of the Jellyseerr module";
-      type = lib.types.str;
-      default = "/data/AppData/Jellyseerr";
-    };
-
     allowExternal = lib.mkOption {
       description = "Allow external access to Jellyseerr";
       type = lib.types.bool;
@@ -82,27 +76,19 @@ in {
 
   config = lib.mkMerge [
     (lib.mkIf cfg.enable {
-      systemd.tmpfiles.rules = [
-        "d ${cfg.dataDir} 777 nobody nogroup - -"
-        "d ${cfg.dataDir}/config 777 nobody nogroup - -"
-        "d ${cfg.dataDir}/config/logs 777 nobody nogroup - -"
-      ];
-
       services.jellyseerr = {
         enable = true;
 
         port = cfg.port;
 
         openFirewall = !cfgNginx.enable;
-
-        configDir = "${cfg.dataDir}/config";
       };
     })
 
     (lib.mkIf (cfg.enable && cfg.backupEnabled) {
       services.backupctl = {
         jobs.jellyseerr = {
-          paths = [cfg.dataDir];
+          paths = [config.services.jellyseerr.configDir];
         };
       };
     })
