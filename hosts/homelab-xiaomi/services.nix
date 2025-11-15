@@ -26,38 +26,41 @@ in {
       diskspacealertctl.enable = true;
       smartdctl.enable = true;
       xrayctl.enable = true;
-
-      backupctl = {
-        enable = true;
-
-        # jobs.data = {
-        #   paths = ["/data"];
-        # };
-      };
     };
 
     homelab = {
       services = {
         homepagectl.enable = true;
 
+        # Clouds
         actualctl.enable = false;
-        frigatectl.enable = false;
-        glancesctl.enable = true;
         immichctl.enable = true;
-        it-tools-ctl.enable = true;
-        jellyfinctl.enable = true;
-        jellyseerrctl.enable = true;
-        librespeedtl.enable = true;
         linkwardenctl.enable = true;
-        microbinctl.enable = true;
         nextcloudctl.enable = true;
         onlyofficectl.enable = true;
         paperlessctl.enable = true;
-        pgadminctl.enable = true;
-        portainerctl.enable = true;
+        vaultwardenctl.enable = true;
+
+        # Media
+        jellyfinctl.enable = true;
+        jellyseerrctl.enable = true;
         prowlarrctl.enable = true;
         qbittorrentctl.enable = true;
         radarrctl.enable = true;
+        sonarrctl.enable = true;
+
+        # Monitoring
+        glancesctl.enable = true;
+        speedtest-tracker-ctl.enable = true;
+        uptime-kuma-ctl.enable = true;
+
+        # Services
+        frigatectl.enable = false;
+        it-tools-ctl.enable = true;
+        librespeedtl.enable = true;
+        microbinctl.enable = true;
+        pgadminctl.enable = true;
+        portainerctl.enable = true;
 
         sambactl = {
           enable = true;
@@ -98,11 +101,6 @@ in {
             };
           };
         };
-
-        sonarrctl.enable = true;
-        speedtest-tracker-ctl.enable = true;
-        uptime-kuma-ctl.enable = true;
-        vaultwardenctl.enable = true;
       };
     };
 

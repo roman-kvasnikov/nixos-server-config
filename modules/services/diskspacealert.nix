@@ -19,6 +19,7 @@ in {
             Type = "oneshot";
             ExecStart = pkgs.writeShellScript "check-disk-space" ''
               USAGE=$(df -h /data | tail -1 | awk '{print $5}' | sed 's/%//')
+
               if [ $USAGE -gt 80 ]; then
                 echo "WARNING: RAID is $USAGE% full!" | systemd-cat -t disk-alert -p warning
 

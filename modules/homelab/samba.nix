@@ -106,6 +106,12 @@ in {
 
       default = {};
     };
+
+    backupEnabled = lib.mkOption {
+      description = "Enable backup for Samba";
+      type = lib.types.bool;
+      default = true;
+    };
   };
 
   config = lib.mkIf cfg.enable {
@@ -362,6 +368,12 @@ in {
             </service>
           </service-group>
         '';
+      };
+    };
+
+    services.backupctl = lib.mkIf (cfg.enable && cfg.backupEnabled) {
+      jobs.samba = {
+        paths = [cfg.sharesDir];
       };
     };
   };
