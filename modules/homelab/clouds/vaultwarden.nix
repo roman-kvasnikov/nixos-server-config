@@ -132,7 +132,7 @@ in {
         };
       };
 
-      systemd.services.vaultwarden.serviceConfig.StateDirectory = cfg.dataDir;
+      systemd.services.vaultwarden.serviceConfig.StateDirectory = lib.mkForce cfg.dataDir;
 
       environment.etc."fail2ban/filter.d/vaultwarden.local".text = lib.mkDefault (lib.mkAfter ''
         [INCLUDES]
