@@ -30,12 +30,6 @@ in {
       default = 3001;
     };
 
-    dataDir = lib.mkOption {
-      description = "Data directory of the Uptime Kuma module";
-      type = lib.types.str;
-      default = "/data/AppData/Uptime-Kuma";
-    };
-
     allowExternal = lib.mkOption {
       description = "Allow external access to Uptime Kuma";
       type = lib.types.bool;
@@ -74,17 +68,12 @@ in {
 
   config = lib.mkMerge [
     (lib.mkIf cfg.enable {
-      systemd.tmpfiles.rules = [
-        "d ${cfg.dataDir} 2775 root root - -"
-      ];
-
       services.uptime-kuma = {
         enable = true;
 
         settings = {
           HOST = cfg.host;
           PORT = toString cfg.port;
-          DATA_DIR = lib.mkForce cfg.dataDir;
         };
       };
     })
@@ -92,7 +81,7 @@ in {
     (lib.mkIf (cfg.enable && cfg.backupEnabled) {
       services.backupctl = {
         jobs.uptime-kuma = {
-          paths = [cfg.dataDir];
+          paths = [config.services.uptime-kuma.settings.DATA_DIR];
         };
       };
     })

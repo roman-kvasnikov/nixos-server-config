@@ -42,6 +42,12 @@ in {
       default = false;
     };
 
+    backupEnabled = lib.mkOption {
+      description = "Enable backup for Portainer";
+      type = lib.types.bool;
+      default = true;
+    };
+
     homepage = {
       enable = lib.mkOption {
         type = lib.types.bool;
@@ -91,6 +97,14 @@ in {
           environment = {
             TZ = config.time.timeZone;
           };
+        };
+      };
+    })
+
+    (lib.mkIf (cfg.enable && cfg.backupEnabled) {
+      services.backupctl = {
+        jobs.portainer = {
+          paths = [cfg.dataDir];
         };
       };
     })

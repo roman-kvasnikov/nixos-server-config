@@ -117,7 +117,7 @@ in {
     (lib.mkIf (cfg.enable && cfg.backupEnabled) {
       services.backupctl = {
         jobs.microbin = {
-          paths = [cfg.dataDir];
+          paths = [config.services.microbin.dataDir];
         };
       };
     })
