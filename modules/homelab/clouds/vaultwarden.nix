@@ -124,10 +124,6 @@ in {
             port = "80,443";
             protocol = "tcp";
             filter = "vaultwarden";
-            action = ''
-              cf
-              iptables-allports
-            '';
             maxretry = 3;
             bantime = 3600; # 1 hour
             findtime = 600; # 10 minutes
