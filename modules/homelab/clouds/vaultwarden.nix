@@ -121,14 +121,13 @@ in {
           jails.vaultwarden.settings = {
             enabled = true;
 
-            backend = "pyinotify";
+            backend = "systemd";
             port = "80,443";
             protocol = "tcp";
-            filter = "vaultwarden";
+            filter = "vaultwarden[journalmatch='_SYSTEMD_UNIT=vaultwarden.service']";
             maxretry = 3;
             bantime = 3600; # 1 hour
             findtime = 600; # 10 minutes
-            logpath = "${cfg.dataDir}/vaultwarden.log";
           };
         };
       };
