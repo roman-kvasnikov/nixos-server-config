@@ -83,7 +83,7 @@ in {
   config = lib.mkMerge [
     (lib.mkIf cfg.enable {
       systemd.tmpfiles.rules = [
-        "d ${cfg.dataDir} 2776 nobody nogroup - -"
+        "d ${cfg.dataDir} 2777 nobody nogroup - -"
       ];
 
       services.jellyseerr = {
