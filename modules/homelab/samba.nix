@@ -192,7 +192,7 @@ in {
             PASSWORD=$(printenv "$var_name" || true)
 
             if [ -z "$PASSWORD" ]; then
-              echo "⚠️ Warning: no password for user '$username' in environment file ($var_name)."
+              echo "⚠️ Warning: no password for user '$username' in environment file."
               continue
             fi
 
