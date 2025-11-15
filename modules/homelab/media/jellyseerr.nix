@@ -82,10 +82,10 @@ in {
 
   config = lib.mkMerge [
     (lib.mkIf cfg.enable {
-      systemd.tmpfiles.rules = [
-        "d ${cfg.dataDir} 2777 nobody nogroup - -"
-        "d ${cfg.dataDir}/config 2777 nobody nogroup - -"
-      ];
+      # systemd.tmpfiles.rules = [
+      #   "d ${cfg.dataDir} 2777 nobody nogroup - -"
+      #   "d ${cfg.dataDir}/config 2777 nobody nogroup - -"
+      # ];
 
       services.jellyseerr = {
         enable = true;
@@ -96,6 +96,8 @@ in {
 
         configDir = "${cfg.dataDir}/config";
       };
+
+      systemd.services.jellyseerr.serviceConfig.StateDirectory = lib.mkForce cfg.dataDir;
     })
 
     (lib.mkIf (cfg.enable && cfg.backupEnabled) {

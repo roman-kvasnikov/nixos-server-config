@@ -75,9 +75,9 @@ in {
 
   config = lib.mkMerge [
     (lib.mkIf cfg.enable {
-      systemd.tmpfiles.rules = [
-        "d ${cfg.dataDir} 700 vaultwarden vaultwarden - -"
-      ];
+      # systemd.tmpfiles.rules = [
+      #   "d ${cfg.dataDir} 700 vaultwarden vaultwarden - -"
+      # ];
 
       services.postgresql = {
         enable = true;

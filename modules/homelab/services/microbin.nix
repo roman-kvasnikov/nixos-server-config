@@ -74,9 +74,9 @@ in {
 
   config = lib.mkMerge [
     (lib.mkIf cfg.enable {
-      systemd.tmpfiles.rules = [
-        "d ${cfg.dataDir} 700 microbin microbin - -"
-      ];
+      # systemd.tmpfiles.rules = [
+      #   "d ${cfg.dataDir} 700 microbin microbin - -"
+      # ];
 
       services.microbin = {
         enable = true;
@@ -99,6 +99,8 @@ in {
           MICROBIN_READONLY = true;
         };
       };
+
+      systemd.services.microbin.serviceConfig.StateDirectory = lib.mkForce cfg.dataDir;
 
       age.secrets.microbin-env = {
         file = ../../../secrets/microbin.env.age;
