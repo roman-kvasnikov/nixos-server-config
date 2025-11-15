@@ -75,7 +75,7 @@ in {
   config = lib.mkMerge [
     (lib.mkIf cfg.enable {
       systemd.tmpfiles.rules = [
-        "d ${cfg.dataDir} 755 vaultwarden vaultwarden - -"
+        "d ${cfg.dataDir} 700 vaultwarden vaultwarden - -"
       ];
 
       services.postgresql = {
@@ -89,14 +89,6 @@ in {
         ];
         ensureDatabases = ["vaultwarden"];
       };
-
-      # nixpkgs.overlays = [
-      #   self: super: {
-      #     vaultwarden = super.vaultwarden.override {
-      #       dataDir = cfg.dataDir;
-      #     };
-      #   }
-      # ];
 
       services.vaultwarden = {
         enable = true;
