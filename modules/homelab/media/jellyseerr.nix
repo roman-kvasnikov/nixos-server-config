@@ -93,7 +93,7 @@ in {
 
         openFirewall = !cfgNginx.enable;
 
-        configDir = cfg.dataDir;
+        configDir = "${cfg.dataDir}/config";
       };
     })
 
