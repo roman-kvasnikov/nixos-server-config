@@ -86,39 +86,64 @@ in {
 
   config = lib.mkMerge [
     (lib.mkIf cfg.enable {
-      services.paperless = {
-        enable = true;
+      services = {
+        paperless = {
+          enable = true;
 
-        user = cfg.systemUser;
+          user = cfg.systemUser;
 
-        passwordFile = cfg.passwordFile;
+          passwordFile = cfg.passwordFile;
 
-        dataDir = cfg.dataDir;
+          dataDir = cfg.dataDir;
 
-        consumptionDirIsPublic = true;
+          consumptionDirIsPublic = true;
 
-        configureNginx = cfgNginx.enable;
+          configureNginx = cfgNginx.enable;
 
-        domain = cfg.domain;
-        address = cfg.host;
-        port = cfg.port;
+          domain = cfg.domain;
+          address = cfg.host;
+          port = cfg.port;
 
-        database.createLocally = true;
+          database.createLocally = true;
 
-        settings = {
-          PAPERLESS_URL = "https://${cfg.domain}";
-          PAPERLESS_ADMIN_USER = cfgHomelab.adminUser;
-          PAPERLESS_CONSUMER_IGNORE_PATTERN = [
-            ".DS_STORE/*"
-            "desktop.ini"
-          ];
-          PAPERLESS_OCR_LANGUAGE = "rus+eng";
-          PAPERLESS_OCR_USER_ARGS = {
-            optimize = 1;
-            pdfa_image_compression = "lossless";
+          settings = {
+            PAPERLESS_URL = "https://${cfg.domain}";
+            PAPERLESS_ADMIN_USER = cfgHomelab.adminUser;
+            PAPERLESS_CONSUMER_IGNORE_PATTERN = [
+              ".DS_STORE/*"
+              "desktop.ini"
+            ];
+            PAPERLESS_OCR_LANGUAGE = "rus+eng";
+            PAPERLESS_OCR_USER_ARGS = {
+              optimize = 1;
+              pdfa_image_compression = "lossless";
+            };
+          };
+        };
+
+        fail2ban = {
+          enable = true;
+
+          jails.paperless.settings = {
+            enabled = true;
+
+            backend = "auto";
+            port = "80,443";
+            protocol = "tcp";
+            filter = "paperless";
+            maxretry = 3;
+            bantime = 3600; # 1 hour
+            findtime = 600; # 10 minutes
+            logpath = "${cfg.dataDir}/log/paperless.log";
           };
         };
       };
+
+      environment.etc."fail2ban/filter.d/paperless.conf".text = lib.mkDefault (lib.mkAfter ''
+        [Definition]
+        failregex = \[.*\] \[INFO\] \[paperless\.auth\] Login failed for user `.*` from IP `<HOST>`
+        ignoreregex =
+      '');
     })
 
     (lib.mkIf (cfg.enable && cfg.backupEnabled) {

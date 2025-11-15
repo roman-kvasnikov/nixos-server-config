@@ -181,7 +181,7 @@ in {
         };
       };
 
-      environment.etc."fail2ban/filter.d/nextcloud.local".text = lib.mkDefault (lib.mkAfter ''
+      environment.etc."fail2ban/filter.d/nextcloud.conf".text = lib.mkDefault (lib.mkAfter ''
         [Definition]
         _groupsre = (?:(?:,?\s*"\w+":(?:"[^"]+"|\w+))*)
         failregex = ^\{%(_groupsre)s,?\s*"remoteAddr":"<HOST>"%(_groupsre)s,?\s*"message":"Login failed:
