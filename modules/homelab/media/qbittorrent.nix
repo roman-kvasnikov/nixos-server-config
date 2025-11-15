@@ -30,6 +30,12 @@ in {
       default = 8080;
     };
 
+    dataDir = lib.mkOption {
+      description = "Data directory of the qBittorrent module";
+      type = lib.types.str;
+      default = "/data/AppData/qBittorrent";
+    };
+
     allowExternal = lib.mkOption {
       description = "Allow external access to qBittorrent";
       type = lib.types.bool;
@@ -39,13 +45,25 @@ in {
     torrentsDir = lib.mkOption {
       description = "Torrents directory for qBittorrent";
       type = lib.types.path;
-      default = "/data/torrents/.torrents";
+      default = "/data/Torrents/.torrents";
     };
 
     downloadsDir = lib.mkOption {
       description = "Downloads directory for qBittorrent";
       type = lib.types.path;
-      default = "/data/torrents";
+      default = "/data/Torrents";
+    };
+
+    mediaFolders = lib.mkOption {
+      description = "Media folders for qBittorrent";
+      type = lib.types.listOf lib.types.str;
+      default = ["Downloads" "Cartoons" "Movies" "Shows"];
+    };
+
+    backupEnabled = lib.mkOption {
+      description = "Enable backup for qBittorrent";
+      type = lib.types.bool;
+      default = true;
     };
 
     homepage = {
@@ -84,13 +102,12 @@ in {
 
   config = lib.mkMerge [
     (lib.mkIf cfg.enable {
-      systemd.tmpfiles.rules = [
-        "d ${cfg.downloadsDir} 2775 qbittorrent downloads - -"
-        "d ${cfg.torrentsDir} 2775 qbittorrent downloads - -"
-        "d ${cfg.downloadsDir}/cartoons 2775 qbittorrent downloads - -"
-        "d ${cfg.downloadsDir}/movies 2775 qbittorrent downloads - -"
-        "d ${cfg.downloadsDir}/shows 2775 qbittorrent downloads - -"
-      ];
+      systemd.tmpfiles.rules =
+        [
+          "d ${cfg.downloadsDir} 2775 qbittorrent downloads - -"
+          "d ${cfg.torrentsDir} 2775 qbittorrent downloads - -"
+        ]
+        ++ (lib.map (folder: "d ${cfg.downloadsDir}/${folder} 2775 qbittorrent downloads - -") cfg.mediaFolders);
 
       services.qbittorrent = {
         enable = true;
@@ -98,10 +115,20 @@ in {
         webuiPort = cfg.port;
 
         openFirewall = !cfgNginx.enable;
+
+        profileDir = cfg.dataDir;
       };
 
       users.users.qbittorrent = {
         extraGroups = ["downloads"];
+      };
+    })
+
+    (lib.mkIf (cfg.enable && cfg.backupEnabled) {
+      services.backupctl = {
+        jobs.qbittorrent = {
+          paths = [cfg.dataDir];
+        };
       };
     })
 

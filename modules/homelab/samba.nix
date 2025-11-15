@@ -13,7 +13,7 @@ in {
     sharesDir = lib.mkOption {
       description = "Directory for Samba sharing paths";
       type = lib.types.path;
-      default = "/data/shares";
+      default = "/data/Shares";
     };
 
     users = lib.mkOption {
@@ -114,11 +114,17 @@ in {
       cifs-utils
     ];
 
-    # Создаем пользователей для Samba
-    users.users = lib.genAttrs cfg.users (_: {
-      isNormalUser = true;
-      extraGroups = [cfgHomelab.systemGroup];
-    });
+    users.users =
+      lib.genAttrs cfg.users (_: {
+        isNormalUser = true;
+        extraGroups = ["samba"];
+      })
+      ++ {
+        samba = {
+          isSystemUser = true;
+          group = "samba";
+        };
+      };
 
     # Создаем директории для Samba shares с правильными правами
     systemd.tmpfiles.rules =
@@ -129,11 +135,11 @@ in {
             user =
               if share.forceUser != null
               then share.forceUser
-              else cfgHomelab.systemUser;
+              else "samba";
             group =
               if share.forceGroup != null
               then share.forceGroup
-              else cfgHomelab.systemGroup;
+              else "samba";
             # Для приватных шар используем более строгие права
             mode =
               if share.public
@@ -203,18 +209,18 @@ in {
         fi
 
         echo ""
-        echo "Checking system Samba user: ${cfgHomelab.systemUser}"
+        echo "Checking system Samba user..."
 
-        if id "${cfgHomelab.systemUser}" &>/dev/null; then
-          echo "Setting up system Samba user: ${cfgHomelab.systemUser}"
+        if id "samba" &>/dev/null; then
+          echo "Setting up system Samba user..."
 
-          ${pkgs.samba}/bin/pdbedit -x -u ${cfgHomelab.systemUser} 2>/dev/null || true
-          printf "guest\nguest\n" | ${pkgs.samba}/bin/smbpasswd -a -s ${cfgHomelab.systemUser}
-          ${pkgs.samba}/bin/smbpasswd -e ${cfgHomelab.systemUser}
+          ${pkgs.samba}/bin/pdbedit -x -u samba 2>/dev/null || true
+          printf "guest\nguest\n" | ${pkgs.samba}/bin/smbpasswd -a -s samba
+          ${pkgs.samba}/bin/smbpasswd -e samba
 
-          echo "✅ System user ${cfgHomelab.systemUser} configured successfully."
+          echo "✅ System Samba user configured successfully."
         else
-          echo "⚠️ System user ${cfgHomelab.systemUser} does not exist, skipping Samba setup for this user."
+          echo "⚠️ System Samba user does not exist, skipping Samba setup for this user."
         fi
 
         echo ""
@@ -238,7 +244,7 @@ in {
               "invalid users" = ["root"];
               "hosts allow" = ["192.168.0.0/16" "10.0.0.0/8" "127.0.0.1" "localhost"];
               "hosts deny" = ["0.0.0.0/0"];
-              "guest account" = cfgHomelab.systemUser;
+              "guest account" = "samba";
               "map to guest" = "bad user";
               "passdb backend" = "tdbsam";
               "printing" = "bsd";
@@ -287,8 +293,8 @@ in {
                 then {
                   "public" = "yes";
                   "guest ok" = "yes";
-                  "force user" = cfgHomelab.systemUser;
-                  "force group" = cfgHomelab.systemGroup;
+                  "force user" = "samba";
+                  "force group" = "samba";
                 }
                 else
                   {

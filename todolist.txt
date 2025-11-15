@@ -1,3 +1,2 @@
-RAID-5
-Frigate
-Virtual Machines
+Убрать Systenm User
+Внести папки Картунс в медиа

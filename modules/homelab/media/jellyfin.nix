@@ -30,6 +30,12 @@ in {
       default = 8096;
     };
 
+    dataDir = lib.mkOption {
+      description = "Data directory of the Jellyfin module";
+      type = lib.types.str;
+      default = "/data/AppData/Jellyfin";
+    };
+
     allowExternal = lib.mkOption {
       description = "Allow external access to Jellyfin";
       type = lib.types.bool;
@@ -45,7 +51,13 @@ in {
     mediaDir = lib.mkOption {
       description = "Media directory for Jellyfin";
       type = lib.types.path;
-      default = "/data/media";
+      default = "/data/Media";
+    };
+
+    mediaFolders = lib.mkOption {
+      description = "Media folders for Jellyfin";
+      type = lib.types.listOf lib.types.str;
+      default = ["Cartoons" "Movies" "Shows"];
     };
 
     homepage = {
@@ -114,17 +126,16 @@ in {
         jellyfin-ffmpeg
       ];
 
-      systemd.tmpfiles.rules = [
-        "d ${cfg.mediaDir} 2775 jellyfin media - -"
-        "d ${cfg.mediaDir}/cartoons 2775 jellyfin media - -"
-        "d ${cfg.mediaDir}/movies 2775 jellyfin media - -"
-        "d ${cfg.mediaDir}/shows 2775 jellyfin media - -"
-      ];
+      systemd.tmpfiles.rules =
+        ["d ${cfg.mediaDir} 2775 jellyfin media - -"]
+        ++ (lib.map (folder: "d ${cfg.mediaDir}/${folder} 2775 jellyfin media - -") cfg.mediaFolders);
 
       services.jellyfin = {
         enable = true;
 
         openFirewall = !cfgNginx.enable;
+
+        dataDir = cfg.dataDir;
       };
 
       users.users.jellyfin = {
@@ -133,7 +144,7 @@ in {
 
       systemd.services.jellyfin = {
         serviceConfig = {
-          SupplementaryGroups = ["video" "render"]; # доступ к /dev/dri
+          SupplementaryGroups = ["video" "render"];
         };
       };
     })
@@ -141,7 +152,7 @@ in {
     (lib.mkIf (cfg.enable && cfg.backupEnabled) {
       services.backupctl = {
         jobs.jellyfin = {
-          paths = [config.services.jellyfin.dataDir];
+          paths = [cfg.dataDir];
         };
       };
     })

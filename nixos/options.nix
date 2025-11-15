@@ -40,16 +40,6 @@
       description = "Email for ACME SSL certificate registration for the homelab server";
     };
 
-    systemUser = lib.mkOption {
-      type = lib.types.str;
-      description = "System user to run the homelab server services as";
-    };
-
-    systemGroup = lib.mkOption {
-      type = lib.types.str;
-      description = "System group to run the homelab server services as";
-    };
-
     adminUser = lib.mkOption {
       type = lib.types.str;
       description = "Admin user for the homelab server";

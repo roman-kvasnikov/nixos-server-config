@@ -9,17 +9,10 @@ in {
     users = {
       ${cfgHomelab.adminUser} = {
         isNormalUser = true;
-        extraGroups = ["wheel" "users" "docker" "podman" "nextcloud" cfgHomelab.systemGroup];
+        extraGroups = ["wheel" "users" "docker" "podman" "nextcloud" "samba"];
         hashedPasswordFile = config.age.secrets.admin-password.path;
       };
-
-      ${cfgHomelab.systemUser} = {
-        isSystemUser = true;
-        group = cfgHomelab.systemGroup;
-      };
     };
-
-    groups.${cfgHomelab.systemGroup} = {};
   };
 
   age.secrets.admin-password = {
