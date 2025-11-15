@@ -188,7 +188,7 @@ in {
             echo "Processing user: $username"
 
             # Получаем пароль из переменной окружения с таким же именем
-            var_name="SAMBA\_$username_PASSWORD"
+            var_name="SAMBA_${username}_PASSWORD"
             PASSWORD=$(printenv "$var_name" || true)
 
             if [ -z "$PASSWORD" ]; then
