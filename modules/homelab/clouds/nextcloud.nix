@@ -167,8 +167,9 @@ in {
           enable = true;
 
           jails.nextcloud.settings = {
-            backend = "auto";
             enabled = true;
+
+            backend = "auto";
             port = "80,443";
             protocol = "tcp";
             filter = "nextcloud";
@@ -180,13 +181,13 @@ in {
         };
       };
 
-      environment.etc."fail2ban/filter.d/nextcloud.conf".text = ''
+      environment.etc."fail2ban/filter.d/nextcloud.local".text = lib.mkDefault (lib.mkAfter ''
         [Definition]
         _groupsre = (?:(?:,?\s*"\w+":(?:"[^"]+"|\w+))*)
         failregex = ^\{%(_groupsre)s,?\s*"remoteAddr":"<HOST>"%(_groupsre)s,?\s*"message":"Login failed:
                     ^\{%(_groupsre)s,?\s*"remoteAddr":"<HOST>"%(_groupsre)s,?\s*"message":"Trusted domain error.
         datepattern = ,?\s*"time"\s*:\s*"%%Y-%%m-%%d[T ]%%H:%%M:%%S(%%z)?"
-      '';
+      '');
     })
 
     (lib.mkIf (cfg.enable && cfg.backupEnabled) {

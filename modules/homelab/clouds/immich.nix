@@ -83,22 +83,6 @@ in {
 
   config = lib.mkMerge [
     (lib.mkIf cfg.enable {
-      # environment.systemPackages = with pkgs; [
-      #   immich
-      #   # python313Packages.redis
-      # ];
-
-      # Fix for machine-learning
-      # systemd.services.immich-machine-learning = {
-      #   environment = {
-      #     PYTHONPATH = lib.mkForce "${pkgs.python3Packages.redis}/lib/python3.13/site-packages:${pkgs.immich.machine-learning}/lib/python3.13/site-packages";
-      #     MPLCONFIGDIR = "/var/cache/immich/matplotlib";
-      #   };
-      #   serviceConfig = {
-      #     CacheDirectory = "immich";
-      #   };
-      # };
-
       systemd.tmpfiles.rules = [
         "d ${cfg.dataDir} 700 immich immich - -"
       ];

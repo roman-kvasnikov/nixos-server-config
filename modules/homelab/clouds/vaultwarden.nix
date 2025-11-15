@@ -90,28 +90,60 @@ in {
         ensureDatabases = ["vaultwarden"];
       };
 
-      services.vaultwarden = {
-        enable = true;
+      services = {
+        vaultwarden = {
+          enable = true;
 
-        dbBackend = "postgresql";
+          dbBackend = "postgresql";
 
-        config = {
-          DATA_FOLDER = cfg.dataDir;
+          config = {
+            DATA_FOLDER = cfg.dataDir;
 
-          DOMAIN = "https://${cfg.domain}";
-          SIGNUPS_ALLOWED = false;
-          WEBSOCKET_ENABLED = true;
-          TZ = config.time.timeZone;
+            DOMAIN = "https://${cfg.domain}";
+            SIGNUPS_ALLOWED = false;
+            WEBSOCKET_ENABLED = true;
+            TZ = config.time.timeZone;
 
-          ROCKET_ADDRESS = cfg.host;
-          ROCKET_PORT = cfg.port;
-          ROCKET_LOG = "critical";
+            ROCKET_ADDRESS = cfg.host;
+            ROCKET_PORT = cfg.port;
+            ROCKET_LOG = "critical";
 
-          DATABASE_URL = "postgresql:///vaultwarden?host=/run/postgresql";
+            DATABASE_URL = "postgresql:///vaultwarden?host=/run/postgresql";
+          };
+
+          environmentFile = config.age.secrets.vaultwarden-env.path;
         };
 
-        environmentFile = config.age.secrets.vaultwarden-env.path;
+        fail2ban = {
+          enable = true;
+
+          jails.vaultwarden.settings = {
+            enabled = true;
+
+            backend = "pyinotify";
+            port = "80,443";
+            protocol = "tcp";
+            filter = "vaultwarden";
+            action = ''
+              cf
+              iptables-allports
+            '';
+            maxretry = 3;
+            bantime = 3600; # 1 hour
+            findtime = 600; # 10 minutes
+            logpath = "${cfg.dataDir}/vaultwarden.log";
+          };
+        };
       };
+
+      environment.etc."fail2ban/filter.d/vaultwarden.local".text = lib.mkDefault (lib.mkAfter ''
+        [INCLUDES]
+        before = common.conf
+
+        [Definition]
+        failregex = ^.*?Username or password is incorrect\. Try again\. IP: <ADDR>\. Username:.*$
+        ignoreregex =
+      '');
 
       age.secrets.vaultwarden-env = {
         file = ../../../secrets/vaultwarden.env.age;
