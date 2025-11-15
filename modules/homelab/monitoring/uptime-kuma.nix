@@ -87,6 +87,8 @@ in {
           DATA_DIR = lib.mkForce cfg.dataDir;
         };
       };
+
+      systemd.services.uptime-kuma.serviceConfig.StateDirectory = lib.mkForce cfg.dataDir;
     })
 
     (lib.mkIf (cfg.enable && cfg.backupEnabled) {
