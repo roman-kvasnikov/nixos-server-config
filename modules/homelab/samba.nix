@@ -114,17 +114,21 @@ in {
       cifs-utils
     ];
 
-    users.users =
-      lib.genAttrs cfg.users (_: {
-        isNormalUser = true;
-        extraGroups = ["samba"];
-      })
-      ++ {
-        samba = {
-          isSystemUser = true;
-          group = "samba";
+    users = {
+      users =
+        lib.genAttrs cfg.users (_: {
+          isNormalUser = true;
+          extraGroups = ["samba"];
+        })
+        // {
+          samba = {
+            isSystemUser = true;
+            group = "samba";
+          };
         };
-      };
+
+      groups.samba = {};
+    };
 
     # Создаем директории для Samba shares с правильными правами
     systemd.tmpfiles.rules =
