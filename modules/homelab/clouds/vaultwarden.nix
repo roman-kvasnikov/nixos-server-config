@@ -99,6 +99,8 @@ in {
 
         dbBackend = "postgresql";
 
+        backupDir = "${cfg.dataDir}/backup";
+
         config = {
           DOMAIN = "https://${cfg.domain}";
           SIGNUPS_ALLOWED = false;
