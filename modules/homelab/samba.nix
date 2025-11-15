@@ -188,11 +188,11 @@ in {
             echo "Processing user: $username"
 
             # Получаем пароль из переменной окружения с таким же именем
-            var_name="$${username}_PASSWORD"
+            var_name="SAMBA_$${username}_PASSWORD"
             PASSWORD=$(printenv "$var_name" || true)
 
             if [ -z "$PASSWORD" ]; then
-              echo "⚠️ Warning: no password for user '$username' in environment file."
+              echo "⚠️ Warning: no password for user '$username' in environment file ($var_name)."
               continue
             fi
 
