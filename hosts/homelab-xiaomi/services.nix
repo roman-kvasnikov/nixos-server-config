@@ -26,6 +26,8 @@ in {
       diskspacealertctl.enable = true;
       smartdctl.enable = true;
       xrayctl.enable = true;
+
+      backupctl.enable = true;
     };
 
     homelab = {
@@ -57,7 +59,7 @@ in {
         # Services
         frigatectl.enable = false;
         it-tools-ctl.enable = true;
-        jitsi-meet-ctl.enable = true;
+        # jitsi-meet-ctl.enable = true;
         librespeedtl.enable = true;
         microbinctl.enable = true;
         pgadminctl.enable = true;
