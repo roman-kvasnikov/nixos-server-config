@@ -25,7 +25,7 @@ in {
       nginxctl.enable = true;
       diskspacealertctl.enable = true;
       smartdctl.enable = true;
-      xrayctl.enable = true;
+      xrayctl.enable = false;
 
       backupctl.enable = true;
     };
