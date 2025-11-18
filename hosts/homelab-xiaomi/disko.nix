@@ -59,21 +59,21 @@
             };
           };
 
-          # zcache-data = {
-          #   size = "10G";
-          #   content = {
-          #     type = "zfs";
-          #     pool = "zdata";
-          #   };
-          # };
+          zcache-data = {
+            size = "10G";
+            content = {
+              type = "zfs";
+              pool = "zdata";
+            };
+          };
 
-          # zcache-media = {
-          #   size = "10G";
-          #   content = {
-          #     type = "zfs";
-          #     pool = "zmedia";
-          #   };
-          # };
+          zcache-media = {
+            size = "10G";
+            content = {
+              type = "zfs";
+              pool = "zmedia";
+            };
+          };
         };
       };
     };
@@ -82,19 +82,19 @@
       zdata = {
         type = "zpool";
 
-        # mode = {
-        #   topology = {
-        #     type = "topology";
-        #     vdev = [
-        #       {
-        #         members = [
-        #           "data"
-        #         ];
-        #       }
-        #     ];
-        #     cache = ["zcache-data"];
-        #   };
-        # };
+        mode = {
+          topology = {
+            type = "topology";
+            vdev = [
+              {
+                members = [
+                  "data"
+                ];
+              }
+            ];
+            # cache = ["zcache-data"];
+          };
+        };
 
         mountpoint = "/mnt/data";
 
