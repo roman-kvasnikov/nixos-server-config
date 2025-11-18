@@ -43,7 +43,7 @@
       content = {
         type = "gpt";
         partitions = {
-          data0 = {
+          data = {
             size = "100G";
             content = {
               type = "zfs";
@@ -88,7 +88,7 @@
             vdev = [
               {
                 members = [
-                  "data0"
+                  "/dev/nvme0n1p1"
                 ];
               }
             ];
@@ -140,19 +140,19 @@
       zmedia = {
         type = "zpool";
 
-        # mode = {
-        #   topology = {
-        #     type = "topology";
-        #     vdev = [
-        #       {
-        #         members = [
-        #           "media"
-        #         ];
-        #       }
-        #     ];
-        #     cache = ["zcache-media"];
-        #   };
-        # };
+        mode = {
+          topology = {
+            type = "topology";
+            vdev = [
+              {
+                members = [
+                  "/dev/nvme0n1p2"
+                ];
+              }
+            ];
+            # cache = ["zcache-media"];
+          };
+        };
 
         mountpoint = "/mnt/media";
 
