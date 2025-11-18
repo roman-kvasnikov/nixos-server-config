@@ -160,7 +160,7 @@ in {
           };
 
           phpOptions = {
-            "opcache.interned_strings_buffer" = 10;
+            "opcache.interned_strings_buffer" = 16;
           };
 
           nginx = {
