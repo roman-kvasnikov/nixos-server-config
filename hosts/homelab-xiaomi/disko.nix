@@ -59,21 +59,21 @@
             };
           };
 
-          zcache-data = {
-            size = "10G";
-            content = {
-              type = "zfs";
-              pool = "zdata";
-            };
-          };
+          # zcache-data = {
+          #   size = "10G";
+          #   content = {
+          #     type = "zfs";
+          #     pool = "zdata";
+          #   };
+          # };
 
-          zcache-media = {
-            size = "10G";
-            content = {
-              type = "zfs";
-              pool = "zmedia";
-            };
-          };
+          # zcache-media = {
+          #   size = "10G";
+          #   content = {
+          #     type = "zfs";
+          #     pool = "zmedia";
+          #   };
+          # };
         };
       };
     };
@@ -92,7 +92,7 @@
                 ];
               }
             ];
-            cache = ["zcache-data"];
+            # cache = ["zcache-data"];
           };
         };
 
@@ -150,7 +150,7 @@
                 ];
               }
             ];
-            cache = ["zcache-media"];
+            # cache = ["zcache-media"];
           };
         };
 
