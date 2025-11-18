@@ -43,7 +43,7 @@
       content = {
         type = "gpt";
         partitions = {
-          data = {
+          data0 = {
             size = "100G";
             content = {
               type = "zfs";
@@ -88,7 +88,7 @@
             vdev = [
               {
                 members = [
-                  "/dev/disk/by-partlabel/disk-data-zfs"
+                  "data0"
                 ];
               }
             ];
