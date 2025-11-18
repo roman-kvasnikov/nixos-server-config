@@ -60,7 +60,7 @@
           };
 
           zcache-data = {
-            size = "50%";
+            size = "10G";
             content = {
               type = "zfs";
               pool = "zdata";
@@ -68,7 +68,7 @@
           };
 
           zcache-media = {
-            size = "100%";
+            size = "10G";
             content = {
               type = "zfs";
               pool = "zmedia";
