@@ -159,6 +159,10 @@ in {
             logfile = cfg.logFile;
           };
 
+          phpOptions = {
+            "opcache.interned_strings_buffer" = 10;
+          };
+
           nginx = {
             enableFastcgiRequestBuffering = true;
           };
