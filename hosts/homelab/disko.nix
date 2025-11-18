@@ -213,14 +213,14 @@
               {
                 mode = "raidz1";
                 members = [
-                  "data0"
-                  "data1"
-                  "data2"
-                  "data3"
+                  "/dev/disk/by-partlabel/disk-data0-zfs"
+                  "/dev/disk/by-partlabel/disk-data1-zfs"
+                  "/dev/disk/by-partlabel/disk-data2-zfs"
+                  "/dev/disk/by-partlabel/disk-data3-zfs"
                 ];
               }
             ];
-            cache = ["zcache-data"];
+            cache = ["/dev/disk/by-partlabel/disk-cache-zcache-data"];
           };
         };
 
@@ -274,13 +274,13 @@
             vdev = [
               {
                 members = [
-                  "media0"
-                  "media1"
-                  "media2"
+                  "/dev/disk/by-partlabel/disk-media0-zfs"
+                  "/dev/disk/by-partlabel/disk-media1-zfs"
+                  "/dev/disk/by-partlabel/disk-media2-zfs"
                 ];
               }
             ];
-            cache = ["zcache-media"];
+            cache = ["/dev/disk/by-partlabel/disk-cache-zcache-media"];
           };
         };
 
