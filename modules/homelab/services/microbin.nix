@@ -80,6 +80,15 @@ in {
 
   config = lib.mkMerge [
     (lib.mkIf cfg.enable {
+      users = {
+        users.microbin = {
+          isSystemUser = true;
+          group = "microbin";
+        };
+
+        groups.microbin = {};
+      };
+
       systemd.tmpfiles.rules = [
         "d ${cfg.dataDir} 700 microbin microbin - -"
       ];

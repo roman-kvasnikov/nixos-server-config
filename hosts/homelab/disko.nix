@@ -232,7 +232,6 @@
           canmount = "on";
           compression = "lz4";
           dnodesize = "auto";
-          # mountpoint = "legacy";
           normalization = "formD";
           relatime = "on";
           xattr = "sa";
@@ -249,7 +248,6 @@
             type = "zfs_fs";
             mountpoint = "/mnt/data/AppData";
             options = {
-              # mountpoint = "legacy";
               "com.sun:auto-snapshot" = "true";
             };
           };
@@ -258,7 +256,6 @@
             type = "zfs_fs";
             mountpoint = "/mnt/data/Shares";
             options = {
-              # mountpoint = "legacy";
               "com.sun:auto-snapshot" = "true";
             };
           };
@@ -292,7 +289,6 @@
           canmount = "on";
           compression = "off";
           dnodesize = "auto";
-          # mountpoint = "legacy";
           normalization = "formD";
           relatime = "on";
           xattr = "sa";
@@ -315,7 +311,6 @@
           canmount = "on";
           compression = "lz4";
           dnodesize = "auto";
-          # mountpoint = "legacy";
           normalization = "formD";
           relatime = "on";
           xattr = "sa";
