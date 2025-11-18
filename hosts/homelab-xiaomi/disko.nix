@@ -68,7 +68,7 @@
           };
 
           zcache-media = {
-            size = "50%";
+            size = "100%";
             content = {
               type = "zfs";
               pool = "zmedia";
