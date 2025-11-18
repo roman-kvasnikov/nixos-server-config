@@ -1,8 +1,61 @@
-{
-  lib,
-  config,
-  ...
-}: {
+let
+  createZfsDisk = {
+    device,
+    pool,
+    end ? "-100G",
+  }: {
+    zfsDisk = {
+      device = device;
+      type = "disk";
+      content = {
+        type = "gpt";
+        partitions = {
+          zfs = {
+            end = end;
+            content = {
+              type = "zfs";
+              pool = pool;
+            };
+          };
+        };
+      };
+    };
+  };
+
+  createRootFsOptions = {
+    acltype ? "posixacl",
+    atime ? "off",
+    canmount ? "on",
+    compression ? "lz4",
+    dnodesize ? "auto",
+    normalization ? "formD",
+    relatime ? "on",
+    xattr ? "sa",
+    autoSnapshot ? "false",
+  }: {
+    rootFsOptions = {
+      acltype = acltype;
+      atime = atime;
+      canmount = canmount;
+      compression = compression;
+      dnodesize = dnodesize;
+      normalization = normalization;
+      relatime = relatime;
+      xattr = xattr;
+      "com.sun:auto-snapshot" = autoSnapshot;
+    };
+  };
+
+  createOptions = {
+    ashift ? "12",
+    autotrim ? "on",
+  }: {
+    options = {
+      ashift = ashift;
+      autotrim = autotrim;
+    };
+  };
+in {
   disko.devices = {
     disk.system = {
       device = "/dev/sda";
@@ -41,140 +94,44 @@
       };
     };
 
-    disk.data0 = {
-      device = "/dev/sdb";
-      type = "disk";
-      content = {
-        type = "gpt";
-        partitions = {
-          zfs = {
-            end = "-100G";
-            content = {
-              type = "zfs";
-              pool = "zdata";
-            };
-          };
-        };
+    disk = {
+      data0 = createZfsDisk {
+        device = "/dev/sdb";
+        pool = "zdata";
+      };
+      data1 = createZfsDisk {
+        device = "/dev/sdc";
+        pool = "zdata";
+      };
+      data2 = createZfsDisk {
+        device = "/dev/sdd";
+        pool = "zdata";
+      };
+      data3 = createZfsDisk {
+        device = "/dev/sde";
+        pool = "zdata";
       };
     };
 
-    disk.data1 = {
-      device = "/dev/sdc";
-      type = "disk";
-      content = {
-        type = "gpt";
-        partitions = {
-          zfs = {
-            end = "-100G";
-            content = {
-              type = "zfs";
-              pool = "zdata";
-            };
-          };
-        };
+    disk = {
+      media0 = createZfsDisk {
+        device = "/dev/sdf";
+        pool = "zmedia";
       };
-    };
-
-    disk.data2 = {
-      device = "/dev/sdd";
-      type = "disk";
-      content = {
-        type = "gpt";
-        partitions = {
-          zfs = {
-            end = "-100G";
-            content = {
-              type = "zfs";
-              pool = "zdata";
-            };
-          };
-        };
+      media1 = createZfsDisk {
+        device = "/dev/sdg";
+        pool = "zmedia";
       };
-    };
-
-    disk.data3 = {
-      device = "/dev/sde";
-      type = "disk";
-      content = {
-        type = "gpt";
-        partitions = {
-          zfs = {
-            end = "-100G";
-            content = {
-              type = "zfs";
-              pool = "zdata";
-            };
-          };
-        };
-      };
-    };
-
-    disk.media0 = {
-      device = "/dev/sdf";
-      type = "disk";
-      content = {
-        type = "gpt";
-        partitions = {
-          zfs = {
-            end = "-100G";
-            content = {
-              type = "zfs";
-              pool = "zmedia";
-            };
-          };
-        };
-      };
-    };
-
-    disk.media1 = {
-      device = "/dev/sdg";
-      type = "disk";
-      content = {
-        type = "gpt";
-        partitions = {
-          zfs = {
-            end = "-100G";
-            content = {
-              type = "zfs";
-              pool = "zmedia";
-            };
-          };
-        };
-      };
-    };
-
-    disk.media2 = {
-      device = "/dev/sdh";
-      type = "disk";
-      content = {
-        type = "gpt";
-        partitions = {
-          zfs = {
-            end = "-100G";
-            content = {
-              type = "zfs";
-              pool = "zmedia";
-            };
-          };
-        };
+      media2 = createZfsDisk {
+        device = "/dev/sdh";
+        pool = "zmedia";
       };
     };
 
     disk.frigate = {
       device = "/dev/sdi";
-      type = "disk";
-      content = {
-        type = "gpt";
-        partitions = {
-          zfs = {
-            end = "-50G";
-            content = {
-              type = "zfs";
-              pool = "zfrigate";
-            };
-          };
-        };
-      };
+      pool = "zfrigate";
+      end = "-50G";
     };
 
     disk.cache = {
@@ -225,41 +182,8 @@
         };
 
         mountpoint = "/mnt/data";
-
-        rootFsOptions = {
-          acltype = "posixacl";
-          atime = "off";
-          canmount = "on";
-          compression = "lz4";
-          dnodesize = "auto";
-          normalization = "formD";
-          relatime = "on";
-          xattr = "sa";
-          "com.sun:auto-snapshot" = "false";
-        };
-
-        options = {
-          ashift = "12";
-          autotrim = "on";
-        };
-
-        # datasets = {
-        #   AppData = {
-        #     type = "zfs_fs";
-        #     mountpoint = "/mnt/data/AppData";
-        #     options = {
-        #       "com.sun:auto-snapshot" = "true";
-        #     };
-        #   };
-
-        #   Shares = {
-        #     type = "zfs_fs";
-        #     mountpoint = "/mnt/data/Shares";
-        #     options = {
-        #       "com.sun:auto-snapshot" = "true";
-        #     };
-        #   };
-        # };
+        rootFsOptions = createRootFsOptions;
+        options = createOptions;
       };
 
       zmedia = {
@@ -282,45 +206,29 @@
         };
 
         mountpoint = "/mnt/media";
-
-        rootFsOptions = {
-          acltype = "posixacl";
-          atime = "off";
-          canmount = "on";
-          compression = "off";
-          dnodesize = "auto";
-          normalization = "formD";
-          relatime = "on";
-          xattr = "sa";
-          "com.sun:auto-snapshot" = "false";
-        };
-
-        options = {
-          ashift = "12";
-          autotrim = "on";
-        };
+        rootFsOptions = createRootFsOptions;
+        options = createOptions;
       };
 
       zfrigate = {
         type = "zpool";
+
+        mode = {
+          topology = {
+            type = "topology";
+            vdev = [
+              {
+                members = [
+                  "/dev/disk/by-partlabel/disk-frigate-zfs"
+                ];
+              }
+            ];
+          };
+        };
+
         mountpoint = "/var/lib/frigate";
-
-        rootFsOptions = {
-          acltype = "posixacl";
-          atime = "off";
-          canmount = "on";
-          compression = "lz4";
-          dnodesize = "auto";
-          normalization = "formD";
-          relatime = "on";
-          xattr = "sa";
-          "com.sun:auto-snapshot" = "false";
-        };
-
-        options = {
-          ashift = "12";
-          autotrim = "on";
-        };
+        rootFsOptions = createRootFsOptions;
+        options = createOptions;
       };
     };
   };
