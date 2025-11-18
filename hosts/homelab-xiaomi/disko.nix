@@ -59,21 +59,21 @@
             };
           };
 
-          zcache-data = {
-            size = "10G";
-            content = {
-              type = "zfs";
-              pool = "zdata";
-            };
-          };
+          # zcache-data = {
+          #   size = "10G";
+          #   content = {
+          #     type = "zfs";
+          #     pool = "zdata";
+          #   };
+          # };
 
-          zcache-media = {
-            size = "10G";
-            content = {
-              type = "zfs";
-              pool = "zmedia";
-            };
-          };
+          # zcache-media = {
+          #   size = "10G";
+          #   content = {
+          #     type = "zfs";
+          #     pool = "zmedia";
+          #   };
+          # };
         };
       };
     };
@@ -88,7 +88,7 @@
             vdev = [
               {
                 members = [
-                  "data"
+                  "/dev/disk/by-partlabel/disk-data-zfs"
                 ];
               }
             ];
