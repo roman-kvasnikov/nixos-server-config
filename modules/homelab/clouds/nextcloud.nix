@@ -146,6 +146,7 @@ in {
               "127.0.0.1"
               "${cfgHomelab.subnet}"
               "${cfgHomelab.vpnSubnet}"
+              "${cfgHomelab.wireguardSubnet}"
             ];
 
             overwriteprotocol = "https";
@@ -214,6 +215,7 @@ in {
             extraConfig = lib.mkIf (!cfg.allowExternal) ''
               allow ${cfgHomelab.subnet};
               allow ${cfgHomelab.vpnSubnet};
+              allow ${cfgHomelab.wireguardSubnet};
               deny all;
             '';
           };

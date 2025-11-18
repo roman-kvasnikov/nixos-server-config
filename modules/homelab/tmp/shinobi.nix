@@ -96,6 +96,7 @@ in {
             extraConfig = lib.mkIf (!cfg.allowExternal) ''
               allow ${cfgHomelab.subnet};
               allow ${cfgHomelab.vpnSubnet};
+              allow ${cfgHomelab.wireguardSubnet};
               deny all;
             '';
 

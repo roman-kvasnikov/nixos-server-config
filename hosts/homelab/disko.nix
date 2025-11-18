@@ -206,7 +206,9 @@ in {
         };
 
         mountpoint = "/mnt/media";
-        rootFsOptions = createRootFsOptions;
+        rootFsOptions = createRootFsOptions {
+          compression = "off";
+        };
         options = createOptions;
       };
 
