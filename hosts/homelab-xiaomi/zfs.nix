@@ -21,7 +21,7 @@
 in {
   boot = {
     kernelPackages = lib.mkForce latestKernelPackage;
-    zfs.extraPools = ["data"];
+    zfs.extraPools = ["zdata" "zmedia"];
   };
 
   networking.hostId = "8425e349";
