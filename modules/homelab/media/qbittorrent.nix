@@ -39,13 +39,13 @@ in {
     torrentsDir = lib.mkOption {
       description = "Torrents directory for qBittorrent";
       type = lib.types.path;
-      default = "/data/Torrents/.torrents";
+      default = "/mnt/media/Torrents/.torrents";
     };
 
     downloadsDir = lib.mkOption {
       description = "Downloads directory for qBittorrent";
       type = lib.types.path;
-      default = "/data/Torrents";
+      default = "/mnt/media/Torrents";
     };
 
     mediaFolders = lib.mkOption {

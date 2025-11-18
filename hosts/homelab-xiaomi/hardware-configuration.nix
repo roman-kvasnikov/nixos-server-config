@@ -25,7 +25,7 @@
     options = ["fmask=0022" "dmask=0022"];
   };
 
-  fileSystems."/data" = {
+  fileSystems."/mnt/data" = {
     device = "data";
     fsType = "zfs";
   };

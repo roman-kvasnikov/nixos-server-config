@@ -12,7 +12,7 @@ in {
   services.postgresql = {
     enable = true;
 
-    dataDir = "/data/AppData/Postgresql/${config.services.postgresql.package.psqlSchema}";
+    dataDir = "/mnt/data/AppData/Postgresql/${config.services.postgresql.package.psqlSchema}";
 
     authentication = ''
       # локальные сокеты — peer (по системному пользователю)

@@ -33,7 +33,7 @@ in {
     dataDir = lib.mkOption {
       description = "Data directory of the Immich module";
       type = lib.types.str;
-      default = "/data/AppData/Immich";
+      default = "/mnt/data/AppData/Immich";
     };
 
     allowExternal = lib.mkOption {

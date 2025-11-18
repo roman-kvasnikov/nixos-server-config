@@ -31,7 +31,7 @@
           };
 
           root = {
-            size = "100% - 10G";
+            size = "100% - 20G";
             content = {
               type = "filesystem";
               format = "ext4";
@@ -50,7 +50,7 @@
         type = "gpt";
         partitions = {
           zfs = {
-            size = "100% - 10G";
+            size = "100% - 100G";
             content = {
               type = "zfs";
               pool = "zdata";
@@ -67,7 +67,7 @@
         type = "gpt";
         partitions = {
           zfs = {
-            size = "100% - 10G";
+            size = "100% - 100G";
             content = {
               type = "zfs";
               pool = "zdata";
@@ -84,7 +84,7 @@
         type = "gpt";
         partitions = {
           zfs = {
-            size = "100% - 10G";
+            size = "100% - 100G";
             content = {
               type = "zfs";
               pool = "zdata";

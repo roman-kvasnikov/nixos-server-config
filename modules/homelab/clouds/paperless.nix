@@ -33,7 +33,7 @@ in {
     dataDir = lib.mkOption {
       description = "Data directory of the Paperless module";
       type = lib.types.str;
-      default = "/data/AppData/Paperless";
+      default = "/mnt/data/AppData/Paperless";
     };
 
     allowExternal = lib.mkOption {

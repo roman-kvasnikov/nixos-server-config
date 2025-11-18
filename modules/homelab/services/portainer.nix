@@ -33,7 +33,7 @@ in {
     dataDir = lib.mkOption {
       description = "Data directory of the Portainer module";
       type = lib.types.str;
-      default = "/data/AppData/Portainer";
+      default = "/mnt/data/AppData/Portainer";
     };
 
     allowExternal = lib.mkOption {

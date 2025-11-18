@@ -14,9 +14,7 @@
     nameservers = ["192.168.1.1"];
     interface = "enp2s0";
     connectWireguard = false;
-    email = "roman.kvasok@gmail.com";
-    systemUser = "share";
-    systemGroup = "share";
+    email = "roman.kvasnikov@gmail.com";
     adminUser = "romank";
   };
 }

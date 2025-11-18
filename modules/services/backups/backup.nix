@@ -42,7 +42,7 @@ in {
         enable = databasesToBackup != [];
 
         databases = databasesToBackup;
-        location = "/data/AppData/Postgresql/backups";
+        location = "/mnt/data/AppData/Postgresql/backups";
       };
 
       resticctl = {
@@ -52,7 +52,7 @@ in {
           jobsWithPaths = lib.filterAttrs (_: job: job.paths != []) cfg.jobs;
         in
           {
-            postgresql.paths = ["/data/AppData/Postgresql/backups"];
+            postgresql.paths = ["/mnt/data/AppData/Postgresql/backups"];
           }
           // lib.mapAttrs (_: job: builtins.removeAttrs job ["database"]) jobsWithPaths;
       };

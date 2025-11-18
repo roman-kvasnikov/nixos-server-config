@@ -33,7 +33,7 @@ in {
     dataDir = lib.mkOption {
       description = "Data directory of the Nextcloud module";
       type = lib.types.str;
-      default = "/data/AppData/Nextcloud";
+      default = "/mnt/data/AppData/Nextcloud";
     };
 
     allowExternal = lib.mkOption {

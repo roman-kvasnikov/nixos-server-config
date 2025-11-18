@@ -32,7 +32,7 @@ in {
     dataDir = lib.mkOption {
       description = "Data directory of the Linkwarden module";
       type = lib.types.str;
-      default = "/data/AppData/Linkwarden";
+      default = "/mnt/data/AppData/Linkwarden";
     };
 
     allowExternal = lib.mkOption {

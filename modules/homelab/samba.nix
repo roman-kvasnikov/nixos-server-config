@@ -13,7 +13,7 @@ in {
     sharesDir = lib.mkOption {
       description = "Directory for Samba sharing paths";
       type = lib.types.path;
-      default = "/data/Shares";
+      default = "/mnt/data/Shares";
     };
 
     users = lib.mkOption {

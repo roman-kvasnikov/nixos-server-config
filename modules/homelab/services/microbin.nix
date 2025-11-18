@@ -33,7 +33,7 @@ in {
     dataDir = lib.mkOption {
       type = lib.types.str;
       description = "Data directory of the Microbin module";
-      default = "/data/AppData/Microbin";
+      default = "/mnt/data/AppData/Microbin";
     };
 
     allowExternal = lib.mkOption {

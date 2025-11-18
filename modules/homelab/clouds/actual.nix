@@ -33,7 +33,7 @@ in {
     dataDir = lib.mkOption {
       description = "Data directory of the Actual module";
       type = lib.types.str;
-      default = "/data/AppData/Actual";
+      default = "/mnt/data/AppData/Actual";
     };
 
     allowExternal = lib.mkOption {

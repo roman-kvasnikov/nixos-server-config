@@ -45,7 +45,7 @@ in {
     mediaDir = lib.mkOption {
       description = "Media directory for Jellyfin";
       type = lib.types.path;
-      default = "/data/Media";
+      default = "/mnt/media/Media";
     };
 
     mediaFolders = lib.mkOption {
