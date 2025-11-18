@@ -59,21 +59,21 @@
             };
           };
 
-          # zcache-data = {
-          #   size = "10G";
-          #   content = {
-          #     type = "zfs";
-          #     pool = "zdata";
-          #   };
-          # };
+          zcache-data = {
+            size = "10G";
+            content = {
+              type = "zfs";
+              pool = "zdata";
+            };
+          };
 
-          # zcache-media = {
-          #   size = "10G";
-          #   content = {
-          #     type = "zfs";
-          #     pool = "zmedia";
-          #   };
-          # };
+          zcache-media = {
+            size = "10G";
+            content = {
+              type = "zfs";
+              pool = "zmedia";
+            };
+          };
         };
       };
     };
@@ -92,7 +92,7 @@
                 ];
               }
             ];
-            # cache = ["zcache-data"];
+            cache = ["/dev/disk/by-partlabel/disk-data-zcache-data"];
           };
         };
 
@@ -146,11 +146,11 @@
             vdev = [
               {
                 members = [
-                  "/dev/nvme0n1p2"
+                  "/dev/disk/by-partlabel/disk-data-media"
                 ];
               }
             ];
-            # cache = ["zcache-media"];
+            cache = ["/dev/disk/by-partlabel/disk-data-zcache-media"];
           };
         };
 
