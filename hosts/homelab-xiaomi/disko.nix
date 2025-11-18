@@ -88,7 +88,7 @@
             vdev = [
               {
                 members = [
-                  "data"
+                  "/dev/nvme0n1"
                 ];
               }
             ];
@@ -146,7 +146,7 @@
             vdev = [
               {
                 members = [
-                  "media"
+                  "/dev/nvme0n1"
                 ];
               }
             ];
