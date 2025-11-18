@@ -11,7 +11,7 @@
         type = "gpt";
         partitions = {
           esp = {
-            size = "500M";
+            size = "1G";
             type = "EF00";
             content = {
               type = "filesystem";
@@ -30,7 +30,7 @@
           };
 
           root = {
-            size = "100% - 20G";
+            end = "-20G";
             content = {
               type = "filesystem";
               format = "ext4";
@@ -48,7 +48,7 @@
         type = "gpt";
         partitions = {
           zfs = {
-            size = "100% - 100G";
+            end = "-100G";
             content = {
               type = "zfs";
               pool = "zdata";
@@ -65,7 +65,7 @@
         type = "gpt";
         partitions = {
           zfs = {
-            size = "100% - 100G";
+            end = "-100G";
             content = {
               type = "zfs";
               pool = "zdata";
@@ -82,7 +82,7 @@
         type = "gpt";
         partitions = {
           zfs = {
-            size = "100% - 100G";
+            end = "-100G";
             content = {
               type = "zfs";
               pool = "zdata";
@@ -99,7 +99,7 @@
         type = "gpt";
         partitions = {
           zfs = {
-            size = "100% - 100G";
+            end = "-100G";
             content = {
               type = "zfs";
               pool = "zdata";
@@ -116,7 +116,7 @@
         type = "gpt";
         partitions = {
           zfs = {
-            size = "100% - 100G";
+            end = "-100G";
             content = {
               type = "zfs";
               pool = "zmedia";
@@ -133,7 +133,7 @@
         type = "gpt";
         partitions = {
           zfs = {
-            size = "100% - 100G";
+            end = "-100G";
             content = {
               type = "zfs";
               pool = "zmedia";
@@ -150,7 +150,7 @@
         type = "gpt";
         partitions = {
           zfs = {
-            size = "100% - 100G";
+            end = "-100G";
             content = {
               type = "zfs";
               pool = "zmedia";
@@ -167,7 +167,7 @@
         type = "gpt";
         partitions = {
           zfs = {
-            size = "100% - 20G";
+            end = "-50G";
             content = {
               type = "zfs";
               pool = "zfrigate";
@@ -184,7 +184,7 @@
         type = "gpt";
         partitions = {
           zcache-data = {
-            size = "40%";
+            size = "100G";
             content = {
               type = "zfs";
               pool = "zdata";
@@ -192,7 +192,7 @@
           };
 
           zcache-media = {
-            size = "40%";
+            size = "100G";
             content = {
               type = "zfs";
               pool = "zmedia";
@@ -243,23 +243,23 @@
           autotrim = "on";
         };
 
-        datasets = {
-          AppData = {
-            type = "zfs_fs";
-            mountpoint = "/mnt/data/AppData";
-            options = {
-              "com.sun:auto-snapshot" = "true";
-            };
-          };
+        # datasets = {
+        #   AppData = {
+        #     type = "zfs_fs";
+        #     mountpoint = "/mnt/data/AppData";
+        #     options = {
+        #       "com.sun:auto-snapshot" = "true";
+        #     };
+        #   };
 
-          Shares = {
-            type = "zfs_fs";
-            mountpoint = "/mnt/data/Shares";
-            options = {
-              "com.sun:auto-snapshot" = "true";
-            };
-          };
-        };
+        #   Shares = {
+        #     type = "zfs_fs";
+        #     mountpoint = "/mnt/data/Shares";
+        #     options = {
+        #       "com.sun:auto-snapshot" = "true";
+        #     };
+        #   };
+        # };
       };
 
       zmedia = {
