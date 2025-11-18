@@ -131,6 +131,7 @@
             mountpoint = "/mnt/data/Shares";
             options = {
               # mountpoint = "legacy";
+              sharesmb = "on";
               "com.sun:auto-snapshot" = "true";
             };
           };

@@ -2,7 +2,7 @@
   imports = [
     ./hardware-configuration.nix
     ./harware.nix
-    # ./services.nix
+    ./services.nix
     ./zfs.nix
     ../../nixos
   ];

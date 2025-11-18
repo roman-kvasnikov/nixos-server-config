@@ -20,6 +20,7 @@
   );
 in {
   boot = {
+    supportedFilesystems = ["zfs"];
     kernelPackages = lib.mkForce latestKernelPackage;
     zfs.extraPools = ["zdata" "zmedia"];
   };
