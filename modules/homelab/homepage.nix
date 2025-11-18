@@ -176,21 +176,31 @@ in {
                     widget =
                       commonOptions
                       // {
-                        metric = "fs:/data";
+                        metric = "fs:/mnt/data";
                         chart = true;
                       };
                   };
                 }
                 {
-                  "Disk NVR" = {
+                  "Raid Media" = {
                     widget =
                       commonOptions
                       // {
-                        metric = "fs:/var/lib/frigate";
+                        metric = "fs:/mnt/media";
                         chart = true;
                       };
                   };
                 }
+                # {
+                #   "Disk NVR" = {
+                #     widget =
+                #       commonOptions
+                #       // {
+                #         metric = "fs:/var/lib/frigate";
+                #         chart = true;
+                #       };
+                #   };
+                # }
                 {
                   Network = {
                     widget =
