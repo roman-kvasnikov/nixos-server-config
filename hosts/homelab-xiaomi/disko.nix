@@ -88,7 +88,7 @@
             vdev = [
               {
                 members = [
-                  "/dev/nvme0n1p1"
+                  "/dev/disk/by-partlabel/disk-data-data"
                 ];
               }
             ];
