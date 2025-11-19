@@ -2,6 +2,7 @@
   config,
   lib,
   pkgs,
+  denyExternal,
   ...
 }: let
   cfg = config.homelab.services.jellyfinctl;
@@ -166,11 +167,7 @@ in {
               ${
                 if cfg.allowExternal
                 then ""
-                else ''
-                  allow ${cfgHomelab.subnet};
-                  allow ${cfgHomelab.vpnSubnet};
-                  deny all;
-                ''
+                else denyExternal
               }
 
               client_max_body_size 20M;

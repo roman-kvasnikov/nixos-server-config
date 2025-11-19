@@ -2,6 +2,7 @@
   config,
   lib,
   pkgs,
+  denyExternal,
   ...
 }: let
   cfg = config.homelab.services.speedtest-tracker-ctl;
@@ -117,9 +118,7 @@ in {
             http2 = true;
 
             extraConfig = lib.mkIf (!cfg.allowExternal) ''
-              allow ${cfgHomelab.subnet};
-              allow ${cfgHomelab.vpnSubnet};
-              deny all;
+              ${denyExternal}
 
               add_header Strict-Transport-Security "max-age=31536000;includeSubdomains";
             '';
