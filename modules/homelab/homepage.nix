@@ -172,17 +172,17 @@ in {
                   };
                 }
                 {
-                  "Raid Data" = {
+                  "Data Storage" = {
                     widget =
                       commonOptions
                       // {
-                        metric = "fs:/mnt/data/Shares";
+                        metric = "fs:/mnt/data";
                         chart = true;
                       };
                   };
                 }
                 {
-                  "Raid Media" = {
+                  "Media Storage" = {
                     widget =
                       commonOptions
                       // {
@@ -191,16 +191,16 @@ in {
                       };
                   };
                 }
-                # {
-                #   "Disk NVR" = {
-                #     widget =
-                #       commonOptions
-                #       // {
-                #         metric = "fs:/var/lib/frigate";
-                #         chart = true;
-                #       };
-                #   };
-                # }
+                {
+                  "Frigate Storage" = {
+                    widget =
+                      commonOptions
+                      // {
+                        metric = "fs:/var/lib/frigate";
+                        chart = true;
+                      };
+                  };
+                }
                 {
                   Network = {
                     widget =

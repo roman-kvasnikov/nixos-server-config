@@ -1,4 +1,6 @@
 {
+  # https://wiki.nixos.org/wiki/Uninterruptible_power_supply
+
   power.ups = {
     enable = true;
 
