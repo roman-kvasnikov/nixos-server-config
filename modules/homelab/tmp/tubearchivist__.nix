@@ -2,6 +2,7 @@
   config,
   lib,
   pkgs,
+  denyExternal,
   ...
 }: let
   cfg = config.homelab.services.tubearchivistctl;
