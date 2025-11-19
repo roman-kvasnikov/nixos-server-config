@@ -143,13 +143,12 @@ in {
 
             "upgrade.disable-web" = lib.mkForce false;
 
-            trusted_domains = [
-              "localhost"
-              "127.0.0.1"
-              "${cfgHomelab.subnet}"
-              "${cfgHomelab.vpnSubnet}"
-              "${cfgHomelab.wireguardSubnet}"
-            ];
+            # trusted_domains = [
+            #   "localhost"
+            #   "127.0.0.1"
+            #   "${cfgHomelab.subnet}"
+            #   "${cfgHomelab.vpnSubnet}"
+            # ];
 
             overwriteprotocol = "https";
             default_phone_region = "RU";
