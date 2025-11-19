@@ -141,6 +141,8 @@ in {
           settings = {
             maintenance = false; # Disable maintenance mode
 
+            "upgrade.disable-web" = true;
+
             trusted_domains = [
               "localhost"
               "127.0.0.1"
