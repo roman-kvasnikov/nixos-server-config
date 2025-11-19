@@ -57,7 +57,7 @@ in {
               Glances = {
                 header = false;
                 style = "row";
-                columns = 5;
+                columns = 6;
               };
             }
             {
