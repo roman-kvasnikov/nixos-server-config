@@ -19,4 +19,8 @@ in {
     ./monitoring
     ./services
   ];
+
+  _module.args = {
+    inherit denyExternal;
+  };
 }

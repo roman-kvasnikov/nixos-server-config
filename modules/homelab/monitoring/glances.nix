@@ -9,12 +9,6 @@
   cfgHomelab = config.homelab;
   cfgAcme = config.services.acmectl;
   cfgNginx = config.services.nginxctl;
-
-  denyExternal = ''
-    allow ${cfgHomelab.subnet}; # Разрешаем локальный трафик
-    allow ${cfgHomelab.vpnSubnet}; # Разрешаем VPN трафик
-    deny all;
-  '';
 in {
   options.homelab.services.glancesctl = {
     enable = lib.mkEnableOption "Enable Glances";
