@@ -3,8 +3,7 @@
 {
   config,
   lib,
-  pkgs,
-  inputs,
+  denyExternal,
   ...
 }: let
   cfg = config.homelab.services.homepagectl;
@@ -276,11 +275,7 @@ in {
               ${
                 if cfg.allowExternal
                 then ""
-                else ''
-                  allow ${cfgHomelab.subnet};
-                  allow ${cfgHomelab.vpnSubnet};
-                  deny all;
-                ''
+                else denyExternal
               }
             '';
 
