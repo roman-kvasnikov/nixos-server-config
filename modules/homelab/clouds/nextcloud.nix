@@ -141,7 +141,7 @@ in {
           settings = {
             maintenance = false; # Disable maintenance mode
 
-            "upgrade.disable-web" = false;
+            "upgrade.disable-web" = lib.mkForce false;
 
             trusted_domains = [
               "localhost"
