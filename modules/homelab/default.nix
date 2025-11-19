@@ -1,4 +1,10 @@
-let
+{
+  config,
+  lib,
+  ...
+}: let
+  cfgHomelab = config.homelab;
+
   denyExternal = ''
     allow ${cfgHomelab.subnet}; # Разрешаем локальный трафик
     allow ${cfgHomelab.vpnSubnet}; # Разрешаем VPN трафик
