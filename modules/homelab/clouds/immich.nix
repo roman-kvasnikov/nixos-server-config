@@ -127,9 +127,7 @@ in {
             forceSSL = cfgAcme.enable;
             http2 = true;
 
-            extraConfig = lib.mkIf (!cfg.allowExternal) ''
-              ${denyExternal}
-            '';
+            extraConfig = lib.mkIf (!cfg.allowExternal) denyExternal;
 
             locations."/" = {
               proxyPass = "http://${cfg.host}:${toString cfg.port}";
