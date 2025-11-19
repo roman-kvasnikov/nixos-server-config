@@ -169,7 +169,6 @@ in {
                 else ''
                   allow ${cfgHomelab.subnet};
                   allow ${cfgHomelab.vpnSubnet};
-                  allow ${cfgHomelab.wireguardSubnet};
                   deny all;
                 ''
               }

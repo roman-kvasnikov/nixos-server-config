@@ -20,11 +20,6 @@
       description = "VPN subnet for the homelab server";
     };
 
-    wireguardSubnet = lib.mkOption {
-      type = lib.types.str;
-      description = "WireGuard subnet for the homelab server";
-    };
-
     nameservers = lib.mkOption {
       type = lib.types.listOf lib.types.str;
       description = "Nameservers for the homelab server";

@@ -1,4 +1,10 @@
-{
+let
+  denyExternal = ''
+    allow ${cfgHomelab.subnet}; # Разрешаем локальный трафик
+    allow ${cfgHomelab.vpnSubnet}; # Разрешаем VPN трафик
+    deny all;
+  '';
+in {
   imports = [
     ./homepage.nix
     ./samba.nix
