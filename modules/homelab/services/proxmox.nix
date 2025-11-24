@@ -2,6 +2,7 @@
   config,
   lib,
   cfgHomelab,
+  proxmox-nixos,
   ...
 }: let
   cfg = config.homelab.services.proxmox-ctl;
