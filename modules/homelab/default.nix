@@ -4,6 +4,8 @@
   ...
 }: let
   cfgHomelab = config.homelab;
+  cfgAcme = config.services.acmectl;
+  cfgNginx = config.services.nginxctl;
 
   denyExternal = ''
     allow ${cfgHomelab.subnet}; # Разрешаем локальный трафик
@@ -21,6 +23,6 @@ in {
   ];
 
   _module.args = {
-    inherit denyExternal;
+    inherit cfgHomelab cfgAcme cfgNginx denyExternal;
   };
 }
