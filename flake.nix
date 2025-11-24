@@ -4,6 +4,8 @@
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
 
+    proxmox-nixos.url = "github:SaumonNet/proxmox-nixos";
+
     agenix = {
       url = "github:ryantm/agenix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -37,6 +39,7 @@
         modules = [
           ./hosts/${hostname}/configuration.nix
           inputs.agenix.nixosModules.default
+          inputs.proxmox-nixos.nixosModules.proxmox-ve
         ];
       };
   in {

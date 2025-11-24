@@ -16,8 +16,4 @@
   time.timeZone = "Europe/Moscow";
 
   system.stateVersion = version;
-
-  services.proxmox-ve = {
-    enable = true;
-  };
 }

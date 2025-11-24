@@ -8,5 +8,6 @@
     ./microbin.nix
     ./pgadmin.nix
     ./portainer.nix
+    ./proxmox.nix
   ];
 }
