@@ -54,7 +54,7 @@
             };
 
             nixpkgs.overlays = [
-              proxmox-nixos.overlays.${system}
+              inputs.proxmox-nixos.overlays.${system}
             ];
 
             # networking.bridges.vmbr0.interfaces = [cfgHomelab.interface];
