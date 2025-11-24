@@ -39,7 +39,27 @@
         modules = [
           ./hosts/${hostname}/configuration.nix
           inputs.agenix.nixosModules.default
+          # inputs.proxmox-nixos.nixosModules.proxmox-ve
+
           inputs.proxmox-nixos.nixosModules.proxmox-ve
+
+          ({
+            pkgs,
+            lib,
+            ...
+          }: {
+            services.proxmox-ve = {
+              enable = true;
+              ipAddress = "192.168.0.1";
+            };
+
+            nixpkgs.overlays = [
+              proxmox-nixos.overlays.${system}
+            ];
+
+            # networking.bridges.vmbr0.interfaces = [cfgHomelab.interface];
+            # networking.interfaces.vmbr0.useDHCP = lib.mkDefault true;
+          })
         ];
       };
   in {
