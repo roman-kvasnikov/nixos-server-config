@@ -2,7 +2,7 @@
   config,
   lib,
   cfgHomelab,
-  proxmox-nixos,
+  # proxmox-nixos,
   ...
 }: let
   cfg = config.homelab.services.proxmox-ctl;
@@ -44,9 +44,9 @@ in {
         bridges = ["vmbr0"];
       };
 
-      nixpkgs.overlays = [
-        proxmox-nixos.overlays.${system}
-      ];
+      # nixpkgs.overlays = [
+      #   proxmox-nixos.overlays.${system}
+      # ];
 
       networking.bridges.vmbr0.interfaces = [cfgHomelab.interface];
       networking.interfaces.vmbr0.useDHCP = lib.mkDefault true;
