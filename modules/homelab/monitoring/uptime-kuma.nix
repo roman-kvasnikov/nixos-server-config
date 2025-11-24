@@ -1,14 +1,13 @@
 {
   config,
   lib,
-  pkgs,
+  cfgHomelab,
+  cfgAcme,
+  cfgNginx,
   denyExternal,
   ...
 }: let
   cfg = config.homelab.services.uptime-kuma-ctl;
-  cfgHomelab = config.homelab;
-  cfgAcme = config.services.acmectl;
-  cfgNginx = config.services.nginxctl;
 in {
   options.homelab.services.uptime-kuma-ctl = {
     enable = lib.mkEnableOption "Enable Uptime Kuma";

@@ -1,14 +1,13 @@
 {
   config,
   lib,
-  pkgs,
+  cfgHomelab,
+  cfgAcme,
+  cfgNginx,
   denyExternal,
   ...
 }: let
   cfg = config.homelab.services.sonarrctl;
-  cfgHomelab = config.homelab;
-  cfgAcme = config.services.acmectl;
-  cfgNginx = config.services.nginxctl;
 in {
   options.homelab.services.sonarrctl = {
     enable = lib.mkEnableOption "Enable Sonarr";

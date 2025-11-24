@@ -1,14 +1,13 @@
 {
   config,
   lib,
-  pkgs,
+  cfgHomelab,
+  cfgAcme,
+  cfgNginx,
   denyExternal,
   ...
 }: let
   cfg = config.homelab.services.qbittorrentctl;
-  cfgHomelab = config.homelab;
-  cfgAcme = config.services.acmectl;
-  cfgNginx = config.services.nginxctl;
 in {
   options.homelab.services.qbittorrentctl = {
     enable = lib.mkEnableOption "Enable qBittorrent";

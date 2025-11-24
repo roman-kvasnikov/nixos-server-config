@@ -1,13 +1,13 @@
 {
   config,
   lib,
+  cfgHomelab,
+  cfgAcme,
+  cfgNginx,
   denyExternal,
   ...
 }: let
   cfg = config.homelab.services.linkwardenctl;
-  cfgHomelab = config.homelab;
-  cfgAcme = config.services.acmectl;
-  cfgNginx = config.services.nginxctl;
 in {
   options.homelab.services.linkwardenctl = {
     enable = lib.mkEnableOption "Enable Linkwarden";

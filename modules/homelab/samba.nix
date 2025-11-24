@@ -2,10 +2,10 @@
   config,
   lib,
   pkgs,
+  cfgHomelab,
   ...
 }: let
   cfg = config.homelab.services.sambactl;
-  cfgHomelab = config.homelab;
 in {
   options.homelab.services.sambactl = {
     enable = lib.mkEnableOption "Enable Samba (SMB/CIFS) file sharing";

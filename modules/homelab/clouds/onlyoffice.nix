@@ -2,13 +2,13 @@
   config,
   lib,
   pkgs,
+  cfgHomelab,
+  cfgAcme,
+  cfgNginx,
   denyExternal,
   ...
 }: let
   cfg = config.homelab.services.onlyofficectl;
-  cfgHomelab = config.homelab;
-  cfgAcme = config.services.acmectl;
-  cfgNginx = config.services.nginxctl;
 in {
   options.homelab.services.onlyofficectl = {
     enable = lib.mkEnableOption "Enable Only Office";
