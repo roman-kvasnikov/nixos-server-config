@@ -126,6 +126,8 @@ in {
             forceSSL = cfgAcme.enable;
             http2 = true;
 
+            basicAuth = {romank = "123";};
+
             extraConfig = lib.mkIf (!cfg.allowExternal) denyExternal;
 
             locations."/" = {
