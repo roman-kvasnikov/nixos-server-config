@@ -64,7 +64,7 @@ in {
         microbinctl.enable = true;
         pgadminctl.enable = true;
         portainerctl.enable = true;
-        proxmox-ctl.enable = true;
+        # proxmox-ctl.enable = true;
 
         sambactl = {
           enable = true;
