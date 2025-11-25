@@ -1,4 +1,5 @@
 {
+  system,
   config,
   lib,
   ...
@@ -23,6 +24,6 @@ in {
   ];
 
   _module.args = {
-    inherit cfgHomelab cfgAcme cfgNginx denyExternal;
+    inherit system cfgHomelab cfgAcme cfgNginx denyExternal;
   };
 }
