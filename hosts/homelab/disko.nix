@@ -113,29 +113,20 @@ in {
       };
     };
 
-    disk = {
-      media0 = createZfsDisk {
-        device = "/dev/sdf";
-        pool = "zmedia";
-      };
-      media1 = createZfsDisk {
-        device = "/dev/sdg";
-        pool = "zmedia";
-      };
-      media2 = createZfsDisk {
-        device = "/dev/sdh";
-        pool = "zmedia";
-      };
+    disk.media = createZfsDisk {
+      device = "/dev/sdf";
+      pool = "zmedia";
+      end = "-500G";
     };
 
     disk.frigate = createZfsDisk {
-      device = "/dev/sdi";
+      device = "/dev/sdg";
       pool = "zfrigate";
       end = "-50G";
     };
 
     disk.cache = {
-      device = "/dev/sdj";
+      device = "/dev/sdh";
       type = "disk";
       content = {
         type = "gpt";
@@ -195,9 +186,7 @@ in {
             vdev = [
               {
                 members = [
-                  "/dev/disk/by-partlabel/disk-media0-zfs"
-                  "/dev/disk/by-partlabel/disk-media1-zfs"
-                  "/dev/disk/by-partlabel/disk-media2-zfs"
+                  "/dev/disk/by-partlabel/disk-media-zfs"
                 ];
               }
             ];
