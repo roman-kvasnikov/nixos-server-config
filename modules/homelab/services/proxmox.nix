@@ -1,8 +1,9 @@
 {
+  inputs,
+  system,
   config,
   lib,
   cfgHomelab,
-  proxmox-nixos,
   ...
 }: let
   cfg = config.homelab.services.proxmox-ctl;
@@ -39,13 +40,13 @@ in {
       services.proxmox-ve = {
         enable = true;
 
-        ipAddress = "192.168.0.15";
+        ipAddress = "192.168.1.15";
 
         bridges = ["vmbr0"];
       };
 
       nixpkgs.overlays = [
-        proxmox-nixos.overlays.x86_64-linux
+        inputs.proxmox-nixos.overlays.${system}
       ];
 
       networking.bridges.vmbr0.interfaces = [cfgHomelab.interface];
