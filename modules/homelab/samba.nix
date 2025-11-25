@@ -252,7 +252,7 @@ in {
               "netbios name" = config.networking.hostName;
               "security" = "user";
               "invalid users" = ["root"];
-              "hosts allow" = ["192.168.0.0/16" "10.0.0.0/8" "127.0.0.1" "localhost"];
+              "hosts allow" = ["127.0.0.1" "localhost" cfgHomelab.subnet cfgHomelab.vpnSubnet];
               "hosts deny" = ["0.0.0.0/0"];
               "guest account" = "samba";
               "map to guest" = "bad user";
@@ -371,7 +371,7 @@ in {
       };
     };
 
-    services.backupctl = lib.mkIf (cfg.enable && cfg.backupEnabled) {
+    services.backupctl = lib.mkIf cfg.backupEnabled {
       jobs.samba = {
         paths = [cfg.sharesDir];
       };
