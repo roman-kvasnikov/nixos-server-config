@@ -1,9 +1,4 @@
-{
-  system,
-  config,
-  lib,
-  ...
-}: let
+{config, ...}: let
   cfgHomelab = config.homelab;
   cfgAcme = config.services.acmectl;
   cfgNginx = config.services.nginxctl;
