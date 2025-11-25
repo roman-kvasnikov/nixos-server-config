@@ -195,6 +195,8 @@ in {
                     ^\{%(_groupsre)s,?\s*"remoteAddr":"<HOST>"%(_groupsre)s,?\s*"message":"Trusted domain error.
         datepattern = ,?\s*"time"\s*:\s*"%%Y-%%m-%%d[T ]%%H:%%M:%%S(%%z)?"
       '');
+
+      users.users.nextcloud.extraGroups = lib.mkIf cfgHomelab.services.sambactl.enable ["samba"];
     })
 
     (lib.mkIf (cfg.enable && cfg.backupEnabled) {
