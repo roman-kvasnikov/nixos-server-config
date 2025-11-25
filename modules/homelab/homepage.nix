@@ -3,13 +3,16 @@
 {
   config,
   lib,
-  cfgHomelab,
-  cfgAcme,
-  cfgNginx,
+  # cfgHomelab,
+  # cfgAcme,
+  # cfgNginx,
   denyExternal,
   ...
 }: let
   cfg = config.homelab.services.homepagectl;
+  cfgHomelab = config.homelab;
+  cfgAcme = config.services.acmectl;
+  cfgNginx = config.services.nginxctl;
 in {
   options.homelab.services.homepagectl = {
     enable = lib.mkEnableOption "Enable Homepage";
