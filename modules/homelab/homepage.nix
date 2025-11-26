@@ -231,7 +231,7 @@ in {
           ]
           ++ [
             {
-              Glances = let
+              Storage = let
                 commonOptions = {
                   type = "glances";
                   url = "http://${cfg.host}:${toString config.services.glances.port}";
