@@ -61,7 +61,7 @@ in {
               };
             }
             {
-              Storage = {
+              Storages = {
                 header = true;
                 style = "column";
               };
@@ -177,36 +177,6 @@ in {
                   };
                 }
                 {
-                  "Data Storage" = {
-                    widget =
-                      commonOptions
-                      // {
-                        metric = "fs:/mnt/data";
-                        chart = true;
-                      };
-                  };
-                }
-                {
-                  "Media Storage" = {
-                    widget =
-                      commonOptions
-                      // {
-                        metric = "fs:/mnt/media";
-                        chart = true;
-                      };
-                  };
-                }
-                {
-                  "Frigate Storage" = {
-                    widget =
-                      commonOptions
-                      // {
-                        metric = "fs:/var/lib/frigate";
-                        chart = true;
-                      };
-                  };
-                }
-                {
                   Network = {
                     widget =
                       commonOptions
@@ -226,18 +196,6 @@ in {
                       };
                   };
                 }
-              ];
-            }
-          ]
-          ++ [
-            {
-              Storage = let
-                commonOptions = {
-                  type = "glances";
-                  url = "http://${cfg.host}:${toString config.services.glances.port}";
-                  version = 4;
-                };
-              in [
                 {
                   "Data Storage" = {
                     widget =
