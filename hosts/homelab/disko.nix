@@ -4,18 +4,16 @@ let
     pool,
     end ? "-100G",
   }: {
-    zfsDisk = {
-      device = device;
-      type = "disk";
-      content = {
-        type = "gpt";
-        partitions = {
-          zfs = {
-            end = end;
-            content = {
-              type = "zfs";
-              pool = pool;
-            };
+    device = device;
+    type = "disk";
+    content = {
+      type = "gpt";
+      partitions = {
+        zfs = {
+          end = end;
+          content = {
+            type = "zfs";
+            pool = pool;
           };
         };
       };
@@ -33,27 +31,23 @@ let
     xattr ? "sa",
     autoSnapshot ? "false",
   }: {
-    rootFsOptions = {
-      acltype = acltype;
-      atime = atime;
-      canmount = canmount;
-      compression = compression;
-      dnodesize = dnodesize;
-      normalization = normalization;
-      relatime = relatime;
-      xattr = xattr;
-      "com.sun:auto-snapshot" = autoSnapshot;
-    };
+    acltype = acltype;
+    atime = atime;
+    canmount = canmount;
+    compression = compression;
+    dnodesize = dnodesize;
+    normalization = normalization;
+    relatime = relatime;
+    xattr = xattr;
+    "com.sun:auto-snapshot" = autoSnapshot;
   };
 
   createOptions = {
     ashift ? "12",
     autotrim ? "on",
   }: {
-    options = {
-      ashift = ashift;
-      autotrim = autotrim;
-    };
+    ashift = ashift;
+    autotrim = autotrim;
   };
 in {
   disko.devices = {
@@ -173,8 +167,8 @@ in {
         };
 
         mountpoint = "/mnt/data";
-        rootFsOptions = createRootFsOptions;
-        options = createOptions;
+        rootFsOptions = createRootFsOptions {};
+        options = createOptions {};
       };
 
       zmedia = {
@@ -198,7 +192,7 @@ in {
         rootFsOptions = createRootFsOptions {
           compression = "off";
         };
-        options = createOptions;
+        options = createOptions {};
       };
 
       zfrigate = {
@@ -218,8 +212,8 @@ in {
         };
 
         mountpoint = "/var/lib/frigate";
-        rootFsOptions = createRootFsOptions;
-        options = createOptions;
+        rootFsOptions = createRootFsOptions {};
+        options = createOptions {};
       };
     };
   };

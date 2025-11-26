@@ -11,7 +11,6 @@
     ip = "192.168.1.11";
     subnet = "192.168.1.0/24";
     vpnSubnet = "172.16.0.0/16";
-    # wireguardSubnet = "10.0.0.0/24";
     nameservers = ["192.168.1.1"];
     interface = "enp2s0";
     connectWireguard = true;
