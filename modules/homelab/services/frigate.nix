@@ -95,7 +95,7 @@ in {
           ];
           extraOptions = [
             # "--restart=unless-stopped"
-            "--device=nvidia.com/gpu=all"
+            # "--device=nvidia.com/gpu=all"
             "--stop-timeout=30"
             "--mount=type=tmpfs,target=/tmp/cache,tmpfs-size=1000000000"
             "--shm-size=512mb"
