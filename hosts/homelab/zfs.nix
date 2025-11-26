@@ -22,7 +22,7 @@ in {
   boot = {
     supportedFilesystems = ["zfs"];
     kernelPackages = lib.mkForce latestKernelPackage;
-    zfs.extraPools = ["zdata" "zmedia"];
+    zfs.extraPools = ["zdata" "zmedia" "zfrigate"];
   };
 
   networking.hostId = "8425e349";
