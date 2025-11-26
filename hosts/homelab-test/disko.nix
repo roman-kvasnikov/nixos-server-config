@@ -116,7 +116,7 @@ in {
     };
 
     disk.frigate = createZfsDisk {
-      device = "/dev/sdf";
+      device = "/dev/sdh";
       pool = "zfrigate";
       end = "-5G";
     };
