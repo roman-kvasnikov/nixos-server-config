@@ -69,7 +69,7 @@ in {
           type = "pihole";
           url = "http://0.0.0.0:5000/";
           version = 6;
-          key = "";
+          key = "correct horse battery staple";
         };
       };
     };
