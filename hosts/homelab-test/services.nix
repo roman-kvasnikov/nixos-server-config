@@ -27,7 +27,7 @@ in {
       smartdctl.enable = true;
       xrayctl.enable = true;
 
-      backupctl.enable = false;
+      backupctl.enable = true;
     };
 
     homelab = {
@@ -57,12 +57,13 @@ in {
         uptime-kuma-ctl.enable = true;
 
         # Services
-        frigatectl.enable = false;
+        frigatectl.enable = true;
         it-tools-ctl.enable = true;
         # jitsi-meet-ctl.enable = true;
         librespeedtl.enable = true;
         microbinctl.enable = true;
         pgadminctl.enable = true;
+        piholectl.enable = true;
         portainerctl.enable = true;
 
         sambactl = {
