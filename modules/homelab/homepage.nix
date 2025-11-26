@@ -205,7 +205,7 @@ in {
                     widget =
                       commonOptions
                       // {
-                        metric = "network:enp0s20f0u9";
+                        metric = "network:${cfgHomelab.interface}";
                         chart = true;
                       };
                   };
