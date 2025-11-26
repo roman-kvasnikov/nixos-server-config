@@ -52,7 +52,7 @@ let
 in {
   disko.devices = {
     disk.system = {
-      device = "/dev/sda";
+      device = "/dev/sdb";
       type = "disk";
       content = {
         type = "gpt";
@@ -98,7 +98,7 @@ in {
         pool = "zdata";
       };
       data2 = createZfsDisk {
-        device = "/dev/sde";
+        device = "/dev/sdf";
         pool = "zdata";
       };
     };
@@ -116,7 +116,7 @@ in {
     };
 
     disk.cache = {
-      device = "/dev/sdb";
+      device = "/dev/sda";
       type = "disk";
       content = {
         type = "gpt";
