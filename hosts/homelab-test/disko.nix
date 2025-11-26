@@ -169,7 +169,10 @@ in {
 
         mountpoint = "/mnt/data";
         rootFsOptions = createRootFsOptions;
-        options = createOptions;
+        options = {
+          ashift = "12";
+          autotrim = "on";
+        };
       };
 
       zmedia = {
@@ -193,7 +196,10 @@ in {
         rootFsOptions = createRootFsOptions {
           compression = "off";
         };
-        options = createOptions;
+        options = {
+          ashift = "12";
+          autotrim = "on";
+        };
       };
 
       zfrigate = {
@@ -214,7 +220,10 @@ in {
 
         mountpoint = "/var/lib/frigate";
         rootFsOptions = createRootFsOptions;
-        options = createOptions;
+        options = {
+          ashift = "12";
+          autotrim = "on";
+        };
       };
     };
   };
