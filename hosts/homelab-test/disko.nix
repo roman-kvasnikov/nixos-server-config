@@ -50,10 +50,10 @@ let
     ashift ? "12",
     autotrim ? "on",
   }: {
-    options = {
-      ashift = ashift;
-      autotrim = autotrim;
-    };
+    # options = {
+    ashift = ashift;
+    autotrim = autotrim;
+    # };
   };
 in {
   disko.devices = {
@@ -168,11 +168,8 @@ in {
         };
 
         mountpoint = "/mnt/data";
-        rootFsOptions = createRootFsOptions;
-        options = {
-          ashift = "12";
-          autotrim = "on";
-        };
+        rootFsOptions = createRootFsOptions {};
+        options = createOptions {};
       };
 
       zmedia = {
@@ -196,10 +193,7 @@ in {
         rootFsOptions = createRootFsOptions {
           compression = "off";
         };
-        options = {
-          ashift = "12";
-          autotrim = "on";
-        };
+        options = createOptions {};
       };
 
       zfrigate = {
@@ -219,11 +213,8 @@ in {
         };
 
         mountpoint = "/var/lib/frigate";
-        rootFsOptions = createRootFsOptions;
-        options = {
-          ashift = "12";
-          autotrim = "on";
-        };
+        rootFsOptions = createRootFsOptions {};
+        options = createOptions {};
       };
     };
   };
