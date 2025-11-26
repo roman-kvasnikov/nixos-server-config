@@ -57,7 +57,7 @@ in {
       };
       icon = lib.mkOption {
         type = lib.types.str;
-        default = "pihole.png";
+        default = "pi-hole.svg";
       };
       category = lib.mkOption {
         type = lib.types.str;
