@@ -4,22 +4,22 @@ let
     pool,
     end ? "-100G",
   }: {
-    zfsDisk = {
-      device = device;
-      type = "disk";
-      content = {
-        type = "gpt";
-        partitions = {
-          zfs = {
-            end = end;
-            content = {
-              type = "zfs";
-              pool = pool;
-            };
+    # zfsDisk = {
+    device = device;
+    type = "disk";
+    content = {
+      type = "gpt";
+      partitions = {
+        zfs = {
+          end = end;
+          content = {
+            type = "zfs";
+            pool = pool;
           };
         };
       };
     };
+    # };
   };
 
   createRootFsOptions = {
@@ -33,27 +33,27 @@ let
     xattr ? "sa",
     autoSnapshot ? "false",
   }: {
-    rootFsOptions = {
-      acltype = acltype;
-      atime = atime;
-      canmount = canmount;
-      compression = compression;
-      dnodesize = dnodesize;
-      normalization = normalization;
-      relatime = relatime;
-      xattr = xattr;
-      "com.sun:auto-snapshot" = autoSnapshot;
-    };
+    # rootFsOptions = {
+    acltype = acltype;
+    atime = atime;
+    canmount = canmount;
+    compression = compression;
+    dnodesize = dnodesize;
+    normalization = normalization;
+    relatime = relatime;
+    xattr = xattr;
+    "com.sun:auto-snapshot" = autoSnapshot;
+    # };
   };
 
   createOptions = {
     ashift ? "12",
     autotrim ? "on",
   }: {
-    options = {
-      ashift = ashift;
-      autotrim = autotrim;
-    };
+    # options = {
+    ashift = ashift;
+    autotrim = autotrim;
+    # };
   };
 in {
   disko.devices = {
