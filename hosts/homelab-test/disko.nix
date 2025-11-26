@@ -50,10 +50,10 @@ let
     ashift ? "12",
     autotrim ? "on",
   }: {
-    # options = {
-    ashift = ashift;
-    autotrim = autotrim;
-    # };
+    options = {
+      ashift = ashift;
+      autotrim = autotrim;
+    };
   };
 in {
   disko.devices = {
