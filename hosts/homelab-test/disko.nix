@@ -52,7 +52,7 @@ let
 in {
   disko.devices = {
     disk.system = {
-      device = "/dev/sdb";
+      device = "/dev/disk/by-id/ata-P3-256_0023292067143";
       type = "disk";
       content = {
         type = "gpt";
@@ -90,33 +90,33 @@ in {
 
     disk = {
       data0 = createZfsDisk {
-        device = "/dev/sdc";
+        device = "/dev/disk/by-id/ata-ST500DM002-1BD142_W2AAF3TE";
         pool = "zdata";
       };
       data1 = createZfsDisk {
-        device = "/dev/sdd";
+        device = "/dev/disk/by-id/ata-ST500DM002-1BD142_Z3T1NB5E";
         pool = "zdata";
       };
       data2 = createZfsDisk {
-        device = "/dev/sdf";
+        device = "/dev/disk/by-id/ata-ST500DM002-1BD142_Z3T1RZ86";
         pool = "zdata";
       };
     };
 
     disk.media = createZfsDisk {
-      device = "/dev/sdg";
+      device = "/dev/disk/by-id/ata-WDC_WD120EDAZ-11F3RA0_5PJLL1VE";
       pool = "zmedia";
       end = "-500G";
     };
 
     disk.frigate = createZfsDisk {
-      device = "/dev/sdh";
+      device = "/dev/disk/by-id/ata-ST3500418AS_9VMPGV0G";
       pool = "zfrigate";
       end = "-5G";
     };
 
     disk.cache = {
-      device = "/dev/sda";
+      device = "/dev/disk/by-id/ata-P3-256_0023292067128";
       type = "disk";
       content = {
         type = "gpt";
