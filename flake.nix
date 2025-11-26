@@ -4,7 +4,7 @@
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
 
-    proxmox-nixos.url = "github:SaumonNet/proxmox-nixos";
+    # proxmox-nixos.url = "github:SaumonNet/proxmox-nixos";
 
     agenix = {
       url = "github:ryantm/agenix";
@@ -39,12 +39,13 @@
         modules = [
           ./hosts/${hostname}/configuration.nix
           inputs.agenix.nixosModules.default
-          inputs.proxmox-nixos.nixosModules.proxmox-ve
+          # inputs.proxmox-nixos.nixosModules.proxmox-ve
         ];
       };
   in {
     nixosConfigurations.homelab-xiaomi = getHostConfig "homelab-xiaomi";
     nixosConfigurations.homelab-pc = getHostConfig "homelab-pc";
     nixosConfigurations.homelab-backup = getHostConfig "homelab-backup";
+    nixosConfigurations.homelab-test = getHostConfig "homelab-test";
   };
 }
