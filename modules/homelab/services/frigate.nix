@@ -82,7 +82,7 @@ in {
           privileged = true;
           devices = [
             "/dev/dri/renderD128:/dev/dri/renderD128"
-            "/dev/dri/renderD129:/dev/dri/renderD129"
+            # "/dev/dri/renderD129:/dev/dri/renderD129"
           ];
           volumes = [
             "/etc/localtime:/etc/localtime:ro"
@@ -90,7 +90,7 @@ in {
             "${cfg.dataDir}/storage:/media/frigate"
           ];
           ports = [
-            "${toString cfg.port}:8971"
+            "${toString cfg.port}:5000"
             # "5000:5000"
           ];
           extraOptions = [
