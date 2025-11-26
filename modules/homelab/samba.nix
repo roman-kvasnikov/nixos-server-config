@@ -183,7 +183,7 @@ in {
         set -euo pipefail
         sleep 2
 
-        echo "Setting up Samba users from environment file"
+        echo "Setting up Samba users from environment file."
 
         users_list="${lib.concatStringsSep " " cfg.users}"
 
@@ -193,7 +193,7 @@ in {
           for username in $users_list; do
             echo "Processing user: $username"
 
-            # Получаем пароль из переменной окружения с таким же именем
+            # Получаем пароль из переменной окружения
             var_name="SAMBA_''${username}_PASSWORD"
             PASSWORD=$(printenv "$var_name" || true)
 
@@ -252,7 +252,7 @@ in {
               "netbios name" = config.networking.hostName;
               "security" = "user";
               "invalid users" = ["root"];
-              "hosts allow" = ["127.0.0.1" "localhost" cfgHomelab.subnet cfgHomelab.vpnSubnet];
+              "hosts allow" = [cfgHomelab.subnet cfgHomelab.vpnSubnet];
               "hosts deny" = ["0.0.0.0/0"];
               "guest account" = "samba";
               "map to guest" = "bad user";

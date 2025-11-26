@@ -63,6 +63,7 @@ in {
         librespeedtl.enable = true;
         microbinctl.enable = true;
         pgadminctl.enable = true;
+        piholectl.enable = true;
         portainerctl.enable = true;
         # proxmox-ctl.enable = true;
 

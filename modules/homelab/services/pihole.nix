@@ -7,37 +7,37 @@
   denyExternal,
   ...
 }: let
-  cfg = config.homelab.services.frigatectl;
+  cfg = config.homelab.services.piholectl;
 in {
-  options.homelab.services.frigatectl = {
-    enable = lib.mkEnableOption "Enable Frigate NVR";
+  options.homelab.services.piholectl = {
+    enable = lib.mkEnableOption "Enable Pi-hole";
 
     domain = lib.mkOption {
-      description = "Domain of the Frigate NVR module";
+      description = "Domain of the Pi-hole module";
       type = lib.types.str;
-      default = "frigate.${cfgHomelab.domain}";
+      default = "pi-hole.${cfgHomelab.domain}";
     };
 
     host = lib.mkOption {
-      description = "Host of the Frigate NVR module";
+      description = "Host of the Pi-hole module";
       type = lib.types.str;
       default = "127.0.0.1";
     };
 
     port = lib.mkOption {
-      description = "Port of the Frigate NVR module";
+      description = "Port of the Pi-hole module";
       type = lib.types.port;
-      default = 8971;
+      default = 8020;
     };
 
     dataDir = lib.mkOption {
       type = lib.types.str;
-      description = "Directory for Frigate data and recordings";
-      default = "/var/lib/frigate";
+      description = "Directory for Pi-hole configurations";
+      default = "/mnt/data/AppData/Pi-hole";
     };
 
     allowExternal = lib.mkOption {
-      description = "Allow external access to Frigate";
+      description = "Allow external access to Pi-hole";
       type = lib.types.bool;
       default = false;
     };
@@ -49,15 +49,15 @@ in {
       };
       name = lib.mkOption {
         type = lib.types.str;
-        default = "Frigate";
+        default = "Pi-hole";
       };
       description = lib.mkOption {
         type = lib.types.str;
-        default = "NVR with AI object detection";
+        default = "DNS server and ad blocker";
       };
       icon = lib.mkOption {
         type = lib.types.str;
-        default = "frigate.svg";
+        default = "pihole.svg";
       };
       category = lib.mkOption {
         type = lib.types.str;
@@ -66,8 +66,10 @@ in {
       widget = lib.mkOption {
         type = lib.types.attrs;
         default = {
-          type = "frigate";
+          type = "pihole";
           url = "http://0.0.0.0:5000/";
+          version = 6;
+          key = "";
         };
       };
     };
@@ -76,30 +78,23 @@ in {
   config = lib.mkMerge [
     (lib.mkIf cfg.enable {
       virtualisation.oci-containers.containers = {
-        frigate = {
-          image = "ghcr.io/blakeblackshear/frigate:stable";
+        pihole = {
+          image = "pihole/pihole:latest";
           autoStart = true;
-          privileged = true;
-          devices = [
-            "/dev/dri/renderD128:/dev/dri/renderD128"
-            "/dev/dri/renderD129:/dev/dri/renderD129"
-          ];
           volumes = [
-            "/etc/localtime:/etc/localtime:ro"
-            "${cfg.dataDir}:/config"
-            "${cfg.dataDir}/storage:/media/frigate"
+            "${cfg.dataDir}:/etc/pihole"
           ];
           ports = [
-            "${toString cfg.port}:8971"
-            # "5000:5000"
+            "53:53/tcp"
+            "53:53/udp"
+            "${toString cfg.port}:80/tcp"
+            # "443:443/tcp"
           ];
-          extraOptions = [
-            # "--restart=unless-stopped"
-            "--device=nvidia.com/gpu=all"
-            "--stop-timeout=30"
-            "--mount=type=tmpfs,target=/tmp/cache,tmpfs-size=1000000000"
-            "--shm-size=512mb"
-          ];
+          environment = {
+            TZ = config.time.timeZone;
+            FTLCONF_webserver_api_password = "correct horse battery staple";
+            FTLCONF_dns_listeningMode = "ALL";
+          };
         };
       };
     })

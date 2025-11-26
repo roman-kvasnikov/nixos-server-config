@@ -7,6 +7,7 @@
     ./librespeed.nix
     ./microbin.nix
     ./pgadmin.nix
+    ./pihole.nix
     ./portainer.nix
     # ./proxmox.nix
   ];
