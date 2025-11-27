@@ -68,6 +68,7 @@ in {
         default = {
           type = "frigate";
           url = "http://0.0.0.0:5000/";
+          enableRecentEvents = true;
         };
       };
     };
@@ -86,7 +87,7 @@ in {
           ];
           ports = [
             "${toString cfg.port}:8971/tcp"
-            # "5000:5000/tcp"
+            "5000:5000/tcp"
           ];
           volumes = [
             "/etc/localtime:/etc/localtime:ro"
