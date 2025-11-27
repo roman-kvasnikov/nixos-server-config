@@ -113,7 +113,7 @@ in {
             extraConfig = lib.mkIf (!cfg.allowExternal) denyExternal;
 
             locations."/" = {
-              proxyPass = "http://${cfg.host}:${toString cfg.port}";
+              proxyPass = "http://${cfg.host}:${toString cfg.port}/admin/";
               proxyWebsockets = true;
               recommendedProxySettings = true;
             };
