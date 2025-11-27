@@ -66,7 +66,7 @@ in {
         it-tools = {
           image = "corentinth/it-tools:latest";
           autoStart = true;
-          ports = ["${toString cfg.port}:80"];
+          ports = ["${toString cfg.port}:80/tcp"];
         };
       };
     })

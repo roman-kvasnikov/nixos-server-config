@@ -73,7 +73,7 @@ in {
         type = lib.types.attrs;
         default = {
           type = "portainer";
-          url = "http://0.0.0.0:9443/";
+          url = "http://0.0.0.0:${toString cfg.port}/";
           env = 3;
           key = "ptr_IwM/9FvuoPY1QE0y6WursIOH7uSjYh6kUt/6HcaN1/M=";
         };
@@ -88,10 +88,10 @@ in {
           image = "portainer/portainer-ce:latest";
           autoStart = true;
           ports = [
-            "${toString cfg.port}:9000"
+            "${toString cfg.port}:9000/tcp"
           ];
           volumes = [
-            "/var/run/docker.sock:/var/run/docker.sock"
+            "/var/run/docker.sock:/var/run/docker.sock:ro"
             "${cfg.dataDir}:/data"
           ];
           environment = {

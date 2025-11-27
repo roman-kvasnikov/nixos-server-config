@@ -81,14 +81,13 @@ in {
         pihole = {
           image = "pihole/pihole:latest";
           autoStart = true;
-          volumes = [
-            "${cfg.dataDir}:/etc/pihole"
-          ];
           ports = [
             "53:53/tcp"
             "53:53/udp"
             "${toString cfg.port}:80/tcp"
-            # "443:443/tcp"
+          ];
+          volumes = [
+            "${cfg.dataDir}:/etc/pihole"
           ];
           environment = {
             TZ = config.time.timeZone;

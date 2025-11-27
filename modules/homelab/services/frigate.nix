@@ -84,14 +84,14 @@ in {
             "/dev/dri/renderD128:/dev/dri/renderD128"
             # "/dev/dri/renderD129:/dev/dri/renderD129"
           ];
+          ports = [
+            "${toString cfg.port}:8971/tcp"
+            # "5000:5000/tcp"
+          ];
           volumes = [
             "/etc/localtime:/etc/localtime:ro"
             "${cfg.dataDir}:/config"
             "${cfg.dataDir}/storage:/media/frigate"
-          ];
-          ports = [
-            "${toString cfg.port}:5000"
-            # "5000:5000"
           ];
           extraOptions = [
             # "--restart=unless-stopped"

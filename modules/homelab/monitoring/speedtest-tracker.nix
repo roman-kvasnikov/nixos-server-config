@@ -78,7 +78,7 @@ in {
           image = "lscr.io/linuxserver/speedtest-tracker:latest";
           autoStart = true;
           ports = [
-            "${toString cfg.port}:80"
+            "${toString cfg.port}:80/tcp"
           ];
           volumes = [
             "/var/lib/speedtest-tracker:/config"
