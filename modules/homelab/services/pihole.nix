@@ -100,7 +100,17 @@ in {
             FTLCONF_webserver_api_password = "correct horse battery staple";
             FTLCONF_dns_listeningMode = "ALL";
           };
+          environmentFiles = [
+            config.age.secrets.pihole-env.path
+          ];
         };
+      };
+
+      age.secrets.pihole-env = {
+        file = ../../secrets/pihole.env.age;
+        owner = "root";
+        group = "root";
+        mode = "0400";
       };
     })
 
