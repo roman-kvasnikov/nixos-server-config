@@ -67,7 +67,7 @@ in {
         type = lib.types.attrs;
         default = {
           type = "pihole";
-          url = "http://0.0.0.0:5000/";
+          url = "http://0.0.0.0:${toString cfg.port}/";
           version = 6;
           key = "correct horse battery staple";
         };
