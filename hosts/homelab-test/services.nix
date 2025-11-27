@@ -39,7 +39,7 @@ in {
         immichctl.enable = true;
         linkwardenctl.enable = true;
         nextcloudctl.enable = true;
-        # onlyofficectl.enable = true;
+        onlyofficectl.enable = true;
         paperlessctl.enable = true;
         vaultwardenctl.enable = true;
 
