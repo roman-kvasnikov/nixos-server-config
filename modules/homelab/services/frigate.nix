@@ -68,7 +68,7 @@ in {
         default = {
           type = "frigate";
           url = "http://${cfg.host}:5000/";
-          enableRecentEvents = true;
+          enableRecentEvents = false;
         };
       };
     };
