@@ -23,8 +23,8 @@ in {
       # User services
       acmectl.enable = true;
       nginxctl.enable = true;
-      diskspacealertctl.enable = true;
       smartdctl.enable = true;
+      storagespacealertctl.enable = true;
       xrayctl.enable = true;
 
       backupctl.enable = true;
@@ -35,19 +35,36 @@ in {
         homepagectl.enable = true;
 
         # Clouds
-        actualctl.enable = false;
-        immichctl.enable = true;
-        linkwardenctl.enable = true;
-        nextcloudctl.enable = true;
+        immichctl = {
+          enable = true;
+          allowExternal = true;
+        };
+        linkwardenctl = {
+          enable = true;
+          allowExternal = true;
+        };
+        nextcloudctl = {
+          enable = true;
+          allowExternal = true;
+        };
         onlyofficectl.enable = true;
         paperlessctl.enable = true;
         vaultwardenctl.enable = true;
 
         # Media
-        jellyfinctl.enable = true;
-        jellyseerrctl.enable = true;
+        jellyfinctl = {
+          enable = true;
+          allowExternal = true;
+        };
+        jellyseerrctl = {
+          enable = true;
+          allowExternal = true;
+        };
         prowlarrctl.enable = true;
-        qbittorrentctl.enable = true;
+        qbittorrentctl = {
+          enable = true;
+          allowExternal = true;
+        };
         radarrctl.enable = true;
         sonarrctl.enable = true;
 
@@ -57,12 +74,19 @@ in {
         uptime-kuma-ctl.enable = true;
 
         # Services
-        frigatectl.enable = false;
-        it-tools-ctl.enable = true;
+        frigatectl.enable = true;
+        it-tools-ctl = {
+          enable = true;
+          allowExternal = true;
+        };
         # jitsi-meet-ctl.enable = true;
         librespeedtl.enable = true;
-        microbinctl.enable = true;
+        microbinctl = {
+          enable = true;
+          allowExternal = true;
+        };
         pgadminctl.enable = true;
+        piholectl.enable = true;
         portainerctl.enable = true;
 
         sambactl = {

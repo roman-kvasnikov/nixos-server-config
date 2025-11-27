@@ -34,13 +34,19 @@ in {
     dataDir = lib.mkOption {
       type = lib.types.str;
       description = "Directory for Speedtest Tracker data";
-      default = "/var/lib/speedtest-tracker";
+      default = "/mnt/data/AppData/Speedtest-Tracker";
     };
 
     allowExternal = lib.mkOption {
       description = "Allow external access to Speedtest Tracker";
       type = lib.types.bool;
       default = false;
+    };
+
+    backupEnabled = lib.mkOption {
+      description = "Enable backup for Speedtest Tracker";
+      type = lib.types.bool;
+      default = true;
     };
 
     homepage = {
@@ -107,6 +113,14 @@ in {
 
             APP_DEBUG = "true";
           };
+        };
+      };
+    })
+
+    (lib.mkIf (cfg.enable && cfg.backupEnabled) {
+      services.backupctl = {
+        jobs.speedtest-tracker = {
+          paths = [cfg.dataDir];
         };
       };
     })

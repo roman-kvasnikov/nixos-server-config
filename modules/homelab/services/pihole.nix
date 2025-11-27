@@ -42,6 +42,12 @@ in {
       default = false;
     };
 
+    backupEnabled = lib.mkOption {
+      description = "Enable backup for Pi-hole";
+      type = lib.types.bool;
+      default = true;
+    };
+
     homepage = {
       enable = lib.mkOption {
         type = lib.types.bool;
@@ -67,7 +73,7 @@ in {
         type = lib.types.attrs;
         default = {
           type = "pihole";
-          url = "http://0.0.0.0:${toString cfg.port}/";
+          url = "http://${cfg.host}:${toString cfg.port}/";
           version = 6;
           key = "correct horse battery staple";
         };
@@ -94,6 +100,14 @@ in {
             FTLCONF_webserver_api_password = "correct horse battery staple";
             FTLCONF_dns_listeningMode = "ALL";
           };
+        };
+      };
+    })
+
+    (lib.mkIf (cfg.enable && cfg.backupEnabled) {
+      services.backupctl = {
+        jobs.pihole = {
+          paths = [cfg.dataDir];
         };
       };
     })

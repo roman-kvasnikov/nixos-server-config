@@ -39,7 +39,7 @@ in {
     allowExternal = lib.mkOption {
       description = "Allow external access to Linkwarden";
       type = lib.types.bool;
-      default = true;
+      default = false;
     };
 
     backupEnabled = lib.mkOption {

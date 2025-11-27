@@ -34,11 +34,11 @@ in {
     allowExternal = lib.mkOption {
       description = "Allow external access to Jellyfin";
       type = lib.types.bool;
-      default = true;
+      default = false;
     };
 
     backupEnabled = lib.mkOption {
-      description = "Enable backup for Immich";
+      description = "Enable backup for Jellyfin";
       type = lib.types.bool;
       default = true;
     };

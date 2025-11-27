@@ -33,7 +33,7 @@ in {
     allowExternal = lib.mkOption {
       description = "Allow external access to Radarr";
       type = lib.types.bool;
-      default = true;
+      default = false;
     };
 
     backupEnabled = lib.mkOption {

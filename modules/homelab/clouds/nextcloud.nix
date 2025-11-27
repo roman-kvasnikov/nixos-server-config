@@ -40,7 +40,7 @@ in {
     allowExternal = lib.mkOption {
       description = "Allow external access to Nextcloud";
       type = lib.types.bool;
-      default = true;
+      default = false;
     };
 
     adminUser = lib.mkOption {
