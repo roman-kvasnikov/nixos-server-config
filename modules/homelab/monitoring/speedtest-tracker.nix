@@ -31,6 +31,12 @@ in {
       default = 8443;
     };
 
+    dataDir = lib.mkOption {
+      type = lib.types.str;
+      description = "Directory for Speedtest Tracker data";
+      default = "/var/lib/speedtest-tracker";
+    };
+
     allowExternal = lib.mkOption {
       description = "Allow external access to Speedtest Tracker";
       type = lib.types.bool;
@@ -81,7 +87,7 @@ in {
             "${toString cfg.port}:80/tcp"
           ];
           volumes = [
-            "/var/lib/speedtest-tracker:/config"
+            "${cfg.dataDir}:/config"
           ];
           environment = {
             PUID = "1000";
@@ -117,8 +123,12 @@ in {
             forceSSL = cfgAcme.enable;
             http2 = true;
 
-            extraConfig = lib.mkIf (!cfg.allowExternal) ''
-              ${denyExternal}
+            extraConfig = ''
+              ${
+                if cfg.allowExternal
+                then ""
+                else denyExternal
+              }
 
               add_header Strict-Transport-Security "max-age=31536000;includeSubdomains";
             '';

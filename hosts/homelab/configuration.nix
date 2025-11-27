@@ -9,7 +9,7 @@
 
   homelab = {
     domain = "kvasok.xyz";
-    ip = "192.168.1.11";
+    ip = "192.168.1.10";
     subnet = "192.168.1.0/24";
     vpnSubnet = "172.16.0.0/16";
     nameservers = ["192.168.1.1"];

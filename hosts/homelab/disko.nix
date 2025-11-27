@@ -107,7 +107,7 @@ in {
       };
     };
 
-    disk.media = createZfsDisk {
+    disk.media0 = createZfsDisk {
       device = "/dev/disk/by-id/ata-WDC_WD120EDAZ-11F3RA0_5PJLL1VE";
       pool = "zmedia";
       end = "-500G";
@@ -180,7 +180,7 @@ in {
             vdev = [
               {
                 members = [
-                  "/dev/disk/by-partlabel/disk-media-zfs"
+                  "/dev/disk/by-partlabel/disk-media0-zfs"
                 ];
               }
             ];

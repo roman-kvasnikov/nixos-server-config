@@ -23,8 +23,8 @@ in {
       # User services
       acmectl.enable = true;
       nginxctl.enable = true;
-      diskspacealertctl.enable = true;
       smartdctl.enable = true;
+      storagespacealertctl.enable = true;
       xrayctl.enable = true;
 
       backupctl.enable = true;
