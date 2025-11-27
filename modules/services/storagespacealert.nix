@@ -17,8 +17,8 @@ in {
 
     threshold = lib.mkOption {
       description = "Threshold for disk space alert";
-      type = lib.types.int;
-      default = 80;
+      type = lib.types.str;
+      default = "80";
     };
   };
 
