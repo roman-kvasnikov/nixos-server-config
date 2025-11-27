@@ -67,7 +67,7 @@ in {
         type = lib.types.attrs;
         default = {
           type = "frigate";
-          url = "http://0.0.0.0:5000/";
+          url = "http://${cfg.host}:5000/";
           enableRecentEvents = true;
         };
       };
@@ -86,8 +86,8 @@ in {
             # "/dev/dri/renderD129:/dev/dri/renderD129"
           ];
           ports = [
-            "${toString cfg.port}:8971/tcp"
-            "5000:5000/tcp"
+            "${toString cfg.port}:8971/tcp" # For the Web GUI
+            "5000:5000/tcp" # For the Homepage widget
           ];
           volumes = [
             "/etc/localtime:/etc/localtime:ro"
