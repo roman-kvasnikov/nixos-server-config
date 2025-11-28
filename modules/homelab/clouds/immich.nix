@@ -98,7 +98,7 @@ in {
         mediaLocation = cfg.dataDir;
 
         environment = {
-          PUBLIC_IMMICH_SERVER_URL = "http://${cfg.host}:${toString cfg.port}";
+          PUBLIC_IMMICH_SERVER_URL = "https://${cfg.domain}";
         };
       };
 
