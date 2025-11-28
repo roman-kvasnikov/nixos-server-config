@@ -68,7 +68,7 @@ in {
         default = {
           type = "sonarr";
           url = "https://${cfg.domain}";
-          key = "e4cc70bc82d34c00a5ca6629fad9a41a";
+          key = "9a99b19c5f9342be94fe2bf853bb6007";
           enableQueue = true;
         };
       };

@@ -68,7 +68,7 @@ in {
         default = {
           type = "prowlarr";
           url = "https://${cfg.domain}";
-          key = "4bc003706b9943fd87d60f904e1c930c";
+          key = "6f5f09a268674db48689b910bfc160cf";
         };
       };
     };

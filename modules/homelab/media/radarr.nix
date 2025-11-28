@@ -68,7 +68,7 @@ in {
         default = {
           type = "radarr";
           url = "https://${cfg.domain}";
-          key = "cbd1ffa00c9a48b786cf122336c6c3b7";
+          key = "d496dd29061d40cc8eed84fb99d899ed";
           enableQueue = true;
         };
       };

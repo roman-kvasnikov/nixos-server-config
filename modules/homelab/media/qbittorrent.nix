@@ -51,7 +51,7 @@ in {
     mediaFolders = lib.mkOption {
       description = "Media folders for qBittorrent";
       type = lib.types.listOf lib.types.str;
-      default = ["Downloads" "Cartoons" "Movies" "Shows"];
+      default = ["Cartoons" "Movies" "Shows"];
     };
 
     backupEnabled = lib.mkOption {
@@ -81,16 +81,16 @@ in {
         type = lib.types.str;
         default = "Media";
       };
-      widget = lib.mkOption {
-        type = lib.types.attrs;
-        default = {
-          type = "qbittorrent";
-          url = "https://${cfg.domain}";
-          username = "admin";
-          password = "123456";
-          enableLeechProgress = true;
-        };
-      };
+      # widget = lib.mkOption {
+      #   type = lib.types.attrs;
+      #   default = {
+      #     type = "qbittorrent";
+      #     url = "https://${cfg.domain}";
+      #     username = "admin";
+      #     password = "123456";
+      #     enableLeechProgress = true;
+      #   };
+      # };
     };
   };
 

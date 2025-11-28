@@ -69,14 +69,14 @@ in {
         type = lib.types.str;
         default = "Clouds";
       };
-      widget = lib.mkOption {
-        type = lib.types.attrs;
-        default = {
-          type = "linkwarden";
-          url = "https://${cfg.domain}";
-          key = "eyJhbGciOiJkaXIiLCJlbmMiOiJBMjU2R0NNIn0..g-aaAKBHBd2IGHNz.5Y3lEHtCGQfOGStCUKSI4dIHMwdFp3RU-XgSbAH_EupYvCPqHHK8iZQ3wZSecVJ2kD_OXL4TMa67SPbCj9i76DHw7tj2HrVDF3wMcKz0riHyhJvdajrO.jW1dSwn89sypQ5pxDaw8NA";
-        };
-      };
+      # widget = lib.mkOption {
+      #   type = lib.types.attrs;
+      #   default = {
+      #     type = "linkwarden";
+      #     url = "https://${cfg.domain}";
+      #     key = "eyJhbGciOiJkaXIiLCJlbmMiOiJBMjU2R0NNIn0..g-aaAKBHBd2IGHNz.5Y3lEHtCGQfOGStCUKSI4dIHMwdFp3RU-XgSbAH_EupYvCPqHHK8iZQ3wZSecVJ2kD_OXL4TMa67SPbCj9i76DHw7tj2HrVDF3wMcKz0riHyhJvdajrO.jW1dSwn89sypQ5pxDaw8NA";
+      #   };
+      # };
     };
   };
 
