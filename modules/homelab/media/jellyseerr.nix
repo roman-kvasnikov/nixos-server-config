@@ -68,7 +68,7 @@ in {
         default = {
           type = "jellyseerr";
           url = "https://${cfg.domain}";
-          key = "7b9f58149a3a492196d3616b5da06375";
+          key = "MTc2NDMzNTEyMjg3MmEzYjE3NjczLWJkODYtNGMyOS04NTM3LWRiMjljYTQ4NTZlMg==";
         };
       };
     };
