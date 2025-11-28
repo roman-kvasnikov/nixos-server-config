@@ -52,7 +52,8 @@ let
 in {
   disko.devices = {
     disk.system = {
-      device = "/dev/disk/by-id/ata-P3-256_0023292067143";
+      # device = "/dev/disk/by-id/ata-P3-256_0023292067143";
+      device = "/dev/sda";
       type = "disk";
       content = {
         type = "gpt";
@@ -108,19 +109,22 @@ in {
     };
 
     disk.media0 = createZfsDisk {
-      device = "/dev/disk/by-id/ata-WDC_WD120EDAZ-11F3RA0_5PJLL1VE";
+      # device = "/dev/disk/by-id/ata-WDC_WD120EDAZ-11F3RA0_5PJLL1VE";
+      device = "/dev/sdg";
       pool = "zmedia";
       end = "-500G";
     };
 
     disk.frigate = createZfsDisk {
-      device = "/dev/disk/by-id/ata-ST3500418AS_9VMPGV0G";
+      # device = "/dev/disk/by-id/ata-ST3500418AS_9VMPGV0G";
+      device = "/dev/sdi";
       pool = "zfrigate";
       end = "-65G";
     };
 
     disk.cache = {
-      device = "/dev/disk/by-id/ata-P3-256_0023292067128";
+      # device = "/dev/disk/by-id/ata-P3-256_0023292067128";
+      device = "/dev/sdb";
       type = "disk";
       content = {
         type = "gpt";
