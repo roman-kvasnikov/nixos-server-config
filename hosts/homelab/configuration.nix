@@ -2,7 +2,7 @@
   imports = [
     ./hardware-configuration.nix
     ./harware.nix
-    ./services.nix # Закомментировать при первой установке
+    # ./services.nix # Закомментировать при первой установке
     ./zfs.nix
     ../../nixos
   ];

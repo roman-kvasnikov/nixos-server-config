@@ -90,19 +90,19 @@ in {
 
     disk = {
       data0 = createZfsDisk {
-        device = "/dev/sdb";
-        pool = "zdata";
-      };
-      data1 = createZfsDisk {
         device = "/dev/sdc";
         pool = "zdata";
       };
-      data2 = createZfsDisk {
+      data1 = createZfsDisk {
         device = "/dev/sdd";
         pool = "zdata";
       };
-      data3 = createZfsDisk {
+      data2 = createZfsDisk {
         device = "/dev/sde";
+        pool = "zdata";
+      };
+      data3 = createZfsDisk {
+        device = "/dev/sdf";
         pool = "zdata";
       };
     };
@@ -114,9 +114,9 @@ in {
     };
 
     disk.frigate = createZfsDisk {
-      device = "/dev/sdg";
+      device = "/dev/disk/by-id/ata-ST3500418AS_9VMPGV0G";
       pool = "zfrigate";
-      end = "-50G";
+      end = "-65G";
     };
 
     disk.cache = {
