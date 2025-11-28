@@ -52,8 +52,7 @@ let
 in {
   disko.devices = {
     disk.system = {
-      # device = "/dev/disk/by-id/ata-P3-256_0023292067143";
-      device = "/dev/sda";
+      device = "/dev/disk/by-id/ata-P3-256_0023292067143";
       type = "disk";
       content = {
         type = "gpt";
@@ -91,40 +90,37 @@ in {
 
     disk = {
       data0 = createZfsDisk {
-        device = "/dev/sdc";
+        device = "/dev/disk/by-id/ata-WDC_WD40EZAX-00C8UB0_WD-WX62DC3EF9ST";
         pool = "zdata";
       };
       data1 = createZfsDisk {
-        device = "/dev/sdd";
+        device = "/dev/disk/by-id/ata-WDC_WD40EZAX-00C8UB0_WD-WX62DA3CPNP7";
         pool = "zdata";
       };
       data2 = createZfsDisk {
-        device = "/dev/sde";
+        device = "/dev/disk/by-id/ata-WDC_WD40EZAX-00C8UB0_WD-WX52D45M207U";
         pool = "zdata";
       };
       data3 = createZfsDisk {
-        device = "/dev/sdf";
+        device = "/dev/disk/by-id/ata-WDC_WD40EZAX-00C8UB0_WD-WX52DA31R113";
         pool = "zdata";
       };
     };
 
     disk.media0 = createZfsDisk {
-      # device = "/dev/disk/by-id/ata-WDC_WD120EDAZ-11F3RA0_5PJLL1VE";
-      device = "/dev/sdg";
+      device = "/dev/disk/by-id/ata-WDC_WD120EDAZ-11F3RA0_5PJLL1VE";
       pool = "zmedia";
       end = "-500G";
     };
 
     disk.frigate = createZfsDisk {
-      # device = "/dev/disk/by-id/ata-ST3500418AS_9VMPGV0G";
-      device = "/dev/sdi";
+      device = "/dev/disk/by-id/ata-ST3500418AS_9VMPGV0G";
       pool = "zfrigate";
       end = "-65G";
     };
 
     disk.cache = {
-      # device = "/dev/disk/by-id/ata-P3-256_0023292067128";
-      device = "/dev/sdb";
+      device = "/dev/disk/by-id/ata-P3-256_0023292067128";
       type = "disk";
       content = {
         type = "gpt";
