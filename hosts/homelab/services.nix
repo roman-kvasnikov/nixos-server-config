@@ -97,6 +97,7 @@ in {
           environmentFile = config.age.secrets.samba-env.path;
 
           shares = {
+            # Public shares
             Shared = {
               directory = "Shared";
               comment = "Shared files for everyone";
@@ -105,6 +106,23 @@ in {
               writeable = true;
             };
 
+            Software = {
+              directory = "Software";
+              comment = "Software for everyone";
+              public = true;
+              browseable = true;
+              writeable = true;
+            };
+
+            Photos = {
+              directory = "Photos";
+              comment = "Photos for everyone";
+              public = true;
+              browseable = true;
+              writeable = true;
+            };
+
+            # Private shares
             RomanK = {
               directory = "RomanK";
               comment = "RomanK's Private Share";
