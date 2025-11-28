@@ -1,4 +1,6 @@
-{lib, ...}: {
+{lib, ...}: let
+  cfgHomelab = config.homelab;
+in {
   security = {
     sudo = {
       enable = true;
@@ -22,5 +24,20 @@
     };
   };
 
-  services.fail2ban.enable = true;
+  services = {
+    openssh = {
+      enable = true;
+
+      openFirewall = true;
+
+      settings = {
+        AllowUsers = [cfgHomelab.adminUser];
+        # PasswordAuthentication = false;
+        # PermitRootLogin = "no";
+        # X11Forwarding = false;
+      };
+    };
+
+    fail2ban.enable = true;
+  };
 }

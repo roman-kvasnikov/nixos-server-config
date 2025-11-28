@@ -43,6 +43,7 @@
         ];
       };
   in {
+    nixosConfigurations.homelab = getHostConfig "homelab";
     nixosConfigurations.homelab-xiaomi = getHostConfig "homelab-xiaomi";
     nixosConfigurations.homelab-pc = getHostConfig "homelab-pc";
     nixosConfigurations.homelab-backup = getHostConfig "homelab-backup";
