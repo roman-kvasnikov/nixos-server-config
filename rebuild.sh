@@ -1,2 +1,2 @@
 git pull
-sudo nixos-rebuild switch --flake .#homelab-xiaomi
+sudo nixos-rebuild switch --flake .#homelab
