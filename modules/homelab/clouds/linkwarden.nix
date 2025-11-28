@@ -74,7 +74,7 @@ in {
         default = {
           type = "linkwarden";
           url = "https://${cfg.domain}";
-          key = "eyJhbGciOiJkaXIiLCJlbmMiOiJBMjU2R0NNIn0..3N-SVkpE4JbcE9sl.FLD9v4NDI6vN70Gt9olMNWPRRCTOlNLIlyXwYkVGxNTI6ecD9KXZoWKjqfb6k6z3wMtHM4_FgJ2IVMyQ_9KE16WPfwSBbO8mqzVy-xNmhPMTpTh4aRfi.EcbxXcYYNrvucZUIus9K2w";
+          key = "eyJhbGciOiJkaXIiLCJlbmMiOiJBMjU2R0NNIn0..g-aaAKBHBd2IGHNz.5Y3lEHtCGQfOGStCUKSI4dIHMwdFp3RU-XgSbAH_EupYvCPqHHK8iZQ3wZSecVJ2kD_OXL4TMa67SPbCj9i76DHw7tj2HrVDF3wMcKz0riHyhJvdajrO.jW1dSwn89sypQ5pxDaw8NA";
         };
       };
     };

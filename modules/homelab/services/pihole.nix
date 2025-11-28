@@ -75,7 +75,7 @@ in {
           type = "pihole";
           url = "http://${cfg.host}:${toString cfg.port}/";
           version = 6;
-          key = "correct horse battery staple";
+          key = "xP9k72+@b82,WF";
         };
       };
     };
