@@ -1,4 +1,8 @@
-{lib, ...}: let
+{
+  config,
+  lib,
+  ...
+}: let
   cfgHomelab = config.homelab;
 in {
   security = {
