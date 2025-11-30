@@ -79,7 +79,7 @@ in {
 
         openFirewall = !cfgNginx.enable;
 
-        # openFirewall = true;
+        mutableSettings = true;
 
         settings = {
           dns = {
