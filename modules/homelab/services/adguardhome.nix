@@ -27,7 +27,7 @@ in {
     port = lib.mkOption {
       description = "Port of the AdGuard Home module";
       type = lib.types.port;
-      default = 3003;
+      default = 3007;
     };
 
     allowExternal = lib.mkOption {
