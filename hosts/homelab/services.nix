@@ -74,6 +74,7 @@ in {
         uptime-kuma-ctl.enable = true;
 
         # Services
+        adguardhomectl.enable = true;
         frigatectl.enable = true;
         it-tools-ctl = {
           enable = true;
@@ -86,7 +87,7 @@ in {
           allowExternal = true;
         };
         pgadminctl.enable = true;
-        piholectl.enable = true;
+        # piholectl.enable = true;
         portainerctl.enable = true;
 
         sambactl = {
