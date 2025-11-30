@@ -77,9 +77,9 @@ in {
         host = cfg.host;
         port = cfg.port;
 
-        # openFirewall = !cfgNginx.enable;
+        openFirewall = !cfgNginx.enable;
 
-        openFirewall = true;
+        # openFirewall = true;
 
         settings = {
           dns = {
