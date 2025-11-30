@@ -89,15 +89,6 @@ in {
             ];
           };
 
-          filtering = {
-            protection_enabled = true;
-            filtering_enabled = true;
-            parental_enabled = false; # Parental control-based DNS requests filtering.
-            safe_search = {
-              enabled = false; # Enforcing "Safe search" option for search engines, when possible.
-            };
-          };
-
           filters =
             map (url: {
               enabled = true;
