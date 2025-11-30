@@ -109,6 +109,8 @@ in {
             ];
         };
       };
+
+      networking.firewall.allowedUDPPorts = [53];
     })
 
     (lib.mkIf (cfg.enable && cfgAcme.enable) {
