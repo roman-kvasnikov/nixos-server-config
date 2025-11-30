@@ -97,8 +97,18 @@ in {
 
         mediaLocation = cfg.dataDir;
 
+        accelerationDevices = [
+          "/dev/dri/renderD128"
+        ];
+
+        settings = {
+          newVersionCheck.enabled = false;
+
+          ffmpeg.accel = "enabled";
+        };
+
         environment = {
-          PUBLIC_IMMICH_SERVER_URL = "https://${cfg.domain}";
+          TZ = config.time.timeZone;
         };
       };
 
