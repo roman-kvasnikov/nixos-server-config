@@ -33,7 +33,7 @@ in {
     allowExternal = lib.mkOption {
       description = "Allow external access to AdGuard Home";
       type = lib.types.bool;
-      default = true;
+      default = false;
     };
 
     homepage = {
@@ -77,7 +77,9 @@ in {
         host = cfg.host;
         port = cfg.port;
 
-        openFirewall = !cfgNginx.enable;
+        # openFirewall = !cfgNginx.enable;
+
+        openFirewall = true;
 
         settings = {
           dns = {
