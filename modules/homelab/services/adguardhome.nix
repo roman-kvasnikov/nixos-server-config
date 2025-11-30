@@ -51,7 +51,7 @@ in {
       };
       icon = lib.mkOption {
         type = lib.types.str;
-        default = "adguardhome.png";
+        default = "adguard-home.png";
       };
       category = lib.mkOption {
         type = lib.types.str;
