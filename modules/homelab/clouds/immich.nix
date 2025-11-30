@@ -138,20 +138,41 @@ in {
 
             extraConfig = lib.mkIf (!cfg.allowExternal) denyExternal;
 
+            # --- Frontend (Immich Web) ---
             locations."/" = {
-              proxyPass = "http://${cfg.host}:${toString cfg.port}";
+              root = "/var/lib/immich/web"; # путь к сборке immich-web
+              index = "index.html";
+              tryFiles = "$uri /index.html";
+            };
+
+            # --- Backend API ---
+            locations."/api/" = {
+              proxyPass = "http://${cfg.host}:${toString cfg.port}/api/";
               proxyWebsockets = true;
               recommendedProxySettings = true;
 
               extraConfig = ''
                 client_max_body_size 50000M;
-
-                # set timeout
                 proxy_read_timeout 600s;
                 proxy_send_timeout 600s;
                 send_timeout       600s;
               '';
             };
+
+            # locations."/" = {
+            #   proxyPass = "http://${cfg.host}:${toString cfg.port}";
+            #   proxyWebsockets = true;
+            #   recommendedProxySettings = true;
+
+            #   extraConfig = ''
+            #     client_max_body_size 50000M;
+
+            #     # set timeout
+            #     proxy_read_timeout 600s;
+            #     proxy_send_timeout 600s;
+            #     send_timeout       600s;
+            #   '';
+            # };
           };
         };
       };
