@@ -74,7 +74,7 @@ in {
         default = {
           type = "immich";
           url = "https://${cfg.domain}";
-          key = "OzGTW9auqbtAWBbW8GBmxYMzyxTjKBn9JL728psss";
+          key = "zBnoyr8KnC5CTmOeR9uPFbh3oTB0W4sUSTqaR66p5w";
           version = 2;
         };
       };
@@ -100,12 +100,6 @@ in {
         accelerationDevices = [
           "/dev/dri/renderD128"
         ];
-
-        settings = {
-          newVersionCheck.enabled = false;
-
-          # ffmpeg.accel = "enabled";
-        };
 
         environment = {
           TZ = config.time.timeZone;
