@@ -14,6 +14,6 @@ in {
       dns = "none";
     };
 
-    # nameservers = cfgHomelab.nameservers;
+    nameservers = cfgHomelab.nameservers;
   };
 }
