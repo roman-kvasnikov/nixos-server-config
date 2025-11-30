@@ -47,7 +47,7 @@ in {
           enable = true;
           allowExternal = true;
         };
-        onlyofficectl.enable = true;
+        onlyofficectl.enable = false;
         paperlessctl.enable = true;
         vaultwardenctl.enable = true;
 
