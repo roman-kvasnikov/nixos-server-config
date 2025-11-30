@@ -33,7 +33,7 @@ in {
     allowExternal = lib.mkOption {
       description = "Allow external access to AdGuard Home";
       type = lib.types.bool;
-      default = false;
+      default = true;
     };
 
     homepage = {
