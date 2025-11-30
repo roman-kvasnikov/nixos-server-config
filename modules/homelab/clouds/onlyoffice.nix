@@ -53,6 +53,8 @@ in {
         port = cfg.port;
 
         jwtSecretFile = cfg.jwtSecretFile;
+
+        securityNonceFile = "";
       };
 
       age.secrets.onlyoffice-jwt-secret = {
