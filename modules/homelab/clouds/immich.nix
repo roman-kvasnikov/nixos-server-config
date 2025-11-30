@@ -101,11 +101,11 @@ in {
           "/dev/dri/renderD128"
         ];
 
-        settings = {
-          newVersionCheck.enabled = false;
+        # settings = {
+        #   newVersionCheck.enabled = false;
 
-          ffmpeg.accel = "enabled";
-        };
+        #   ffmpeg.accel = "enabled";
+        # };
 
         environment = {
           TZ = config.time.timeZone;
