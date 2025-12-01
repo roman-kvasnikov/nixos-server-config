@@ -88,10 +88,6 @@ in {
         "d ${cfg.dataDir} 700 immich immich - -"
       ];
 
-      environment.systemPackages = with pkgs; [
-        immich-cli
-      ];
-
       services.immich = {
         enable = true;
 
