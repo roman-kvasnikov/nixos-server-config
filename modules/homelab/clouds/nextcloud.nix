@@ -84,7 +84,7 @@ in {
       };
       description = lib.mkOption {
         type = lib.types.str;
-        default = "Enterprise File Storage and Collaboration";
+        default = "Enterprise file storage and collaboration";
       };
       icon = lib.mkOption {
         type = lib.types.str;
@@ -135,8 +135,9 @@ in {
             adminuser = cfg.adminUser;
             adminpassFile = cfg.adminPasswordFile;
             dbtype = "pgsql";
-            dbname = "nextcloud";
-            dbuser = "nextcloud";
+            dbhost = "127.0.0.1:6432"; # pgbouncer
+            # dbname = "nextcloud";
+            # dbuser = "nextcloud";
           };
 
           settings = {
@@ -167,6 +168,12 @@ in {
 
           nginx = {
             enableFastcgiRequestBuffering = true;
+          };
+        };
+
+        pgbouncer = {
+          databases = {
+            "nextcloud" = "host=/run/postgresql dbname=nextcloud dbuser=nextcloud";
           };
         };
 

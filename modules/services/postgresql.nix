@@ -23,24 +23,20 @@ in {
       host all all ::1/128 md5
     '';
 
-    settings = {
-      max_connections = 200;
-    };
+    # ensureUsers = [
+    #   {
+    #     name = cfgHomelab.adminUser;
 
-    ensureUsers = [
-      {
-        name = cfgHomelab.adminUser;
+    #     ensureClauses = {
+    #       superuser = true;
+    #       createrole = true;
+    #       createdb = true;
+    #     };
+    #   }
+    # ];
 
-        ensureClauses = {
-          superuser = true;
-          createrole = true;
-          createdb = true;
-        };
-      }
-    ];
-
-    initialScript = pkgs.writeText "init-postgres-user" ''
-      ALTER USER romank WITH ENCRYPTED PASSWORD '123';
-    '';
+    # initialScript = pkgs.writeText "init-postgres-user" ''
+    #   ALTER USER postgres WITH ENCRYPTED PASSWORD '1234567890';
+    # '';
   };
 }

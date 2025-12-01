@@ -2,6 +2,7 @@
   imports = [
     ./acme.nix
     ./nginx.nix
+    ./pgbouncer.nix
     ./postgresql.nix
     ./smartd.nix
     ./storagespacealert.nix

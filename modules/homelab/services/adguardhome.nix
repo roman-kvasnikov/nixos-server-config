@@ -33,7 +33,7 @@ in {
     allowExternal = lib.mkOption {
       description = "Allow external access to AdGuard Home";
       type = lib.types.bool;
-      default = true;
+      default = false;
     };
 
     homepage = {
@@ -100,8 +100,12 @@ in {
         };
       };
 
-      networking.firewall.allowedTCPPorts = [53];
-      networking.firewall.allowedUDPPorts = [53];
+      networking = {
+        firewall = {
+          allowedTCPPorts = [53];
+          allowedUDPPorts = [53];
+        };
+      };
     })
 
     (lib.mkIf (cfg.enable && cfgAcme.enable) {

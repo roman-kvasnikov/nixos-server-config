@@ -54,7 +54,7 @@ in {
       };
       description = lib.mkOption {
         type = lib.types.str;
-        default = "Password manager";
+        default = "Passwords manager";
       };
       icon = lib.mkOption {
         type = lib.types.str;

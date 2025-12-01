@@ -100,11 +100,6 @@ in {
         accelerationDevices = [
           "/dev/dri/renderD128"
         ];
-
-        # environment = {
-        #   TZ = config.time.timeZone;
-        #   IMMICH_CONFIG_FILE = "${cfg.dataDir}/immich.json";
-        # };
       };
 
       users.users.immich.extraGroups = ["video" "render"];

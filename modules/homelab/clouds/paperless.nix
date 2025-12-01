@@ -72,7 +72,7 @@ in {
       };
       description = lib.mkOption {
         type = lib.types.str;
-        default = "Document management system";
+        default = "Documents management solution";
       };
       icon = lib.mkOption {
         type = lib.types.str;
