@@ -123,6 +123,14 @@ in {
               writeable = true;
             };
 
+            Videos = {
+              directory = "Videos";
+              comment = "Videos for everyone";
+              public = true;
+              browseable = true;
+              writeable = true;
+            };
+
             # Private shares
             RomanK = {
               directory = "RomanK";
