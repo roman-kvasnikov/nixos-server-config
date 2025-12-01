@@ -84,8 +84,9 @@ in {
         settings = {
           dns = {
             upstream_dns = [
-              "8.8.8.8"
-              "1.1.1.1"
+              "https://dns10.quad9.net/dns-query"
+              "tls://8.8.8.8"
+              "tls://8.8.4.4"
             ];
           };
 
