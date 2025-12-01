@@ -173,7 +173,7 @@ in {
 
         pgbouncer.settings = {
           databases = {
-            "nextcloud" = "host=/run/postgresql dbname=nextcloud dbuser=nextcloud";
+            "nextcloud" = "host=/run/postgresql dbname=nextcloud";
           };
         };
 
