@@ -23,6 +23,10 @@ in {
       host all all ::1/128 md5
     '';
 
+    settings = {
+      max_connections = 200;
+    };
+
     ensureUsers = [
       {
         name = cfgHomelab.adminUser;
