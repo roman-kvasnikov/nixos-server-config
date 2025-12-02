@@ -49,18 +49,6 @@ in {
       default = true;
     };
 
-    systemUser = lib.mkOption {
-      description = "System user for Paperless";
-      type = lib.types.str;
-      default = "paperless";
-    };
-
-    passwordFile = lib.mkOption {
-      description = "Password file for Paperless";
-      type = lib.types.path;
-      default = config.age.secrets.admin-password.path;
-    };
-
     homepage = {
       enable = lib.mkOption {
         type = lib.types.bool;
@@ -91,9 +79,7 @@ in {
         paperless = {
           enable = true;
 
-          user = cfg.systemUser;
-
-          passwordFile = cfg.passwordFile;
+          passwordFile = config.age.secrets.admin-password.path;
 
           dataDir = cfg.dataDir;
 
