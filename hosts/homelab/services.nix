@@ -115,17 +115,9 @@ in {
               writeable = true;
             };
 
-            Photos = {
-              directory = "Photos";
-              comment = "Photos for everyone";
-              public = true;
-              browseable = true;
-              writeable = true;
-            };
-
-            Videos = {
-              directory = "Videos";
-              comment = "Videos for everyone";
+            Media = {
+              directory = "Media";
+              comment = "Home Videos and Photos";
               public = true;
               browseable = true;
               writeable = true;

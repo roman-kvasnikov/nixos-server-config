@@ -81,24 +81,27 @@ in {
 
         mutableSettings = true;
 
-        settings = {
-          dns = {
-            upstream_dns = [
-              "https://dns10.quad9.net/dns-query"
-              "tls://8.8.8.8"
-              "tls://8.8.4.4"
-            ];
-          };
+        # settings = {
+        #   dns = {
+        #     upstream_dns = [
+        #       "https://dns.adguard-dns.com/dns-query"
+        #       "tls://8.8.8.8"
+        #       "tls://8.8.4.4"
+        #       "tls://1.1.1.1"
+        #       "tls://1.0.0.1"
+        #     ];
+        #   };
 
-          filters =
-            map (url: {
-              enabled = true;
-              url = url;
-            }) [
-              "https://adguardteam.github.io/HostlistsRegistry/assets/filter_9.txt" # The Big List of Hacked Malware Web Sites
-              "https://adguardteam.github.io/HostlistsRegistry/assets/filter_11.txt" # malicious url blocklist
-            ];
-        };
+        #   filters =
+        #     map (url: {
+        #       enabled = true;
+        #       url = url;
+        #     }) [
+        #       "https://adguardteam.github.io/HostlistsRegistry/assets/filter_9.txt" # The Big List of Hacked Malware Web Sites
+        #       "https://adguardteam.github.io/HostlistsRegistry/assets/filter_11.txt" # malicious url blocklist
+        #       "https://adguardteam.github.io/AdGuardSDNSFilter/Filters/filter.txt" # AdGuard DNS Filter
+        #     ];
+        # };
       };
 
       networking = {
