@@ -70,6 +70,14 @@ in {
         type = lib.types.str;
         default = "Clouds";
       };
+      widget = lib.mkOption {
+        type = lib.types.attrs;
+        default = {
+          type = "paperlessngx";
+          url = "https://${cfg.domain}";
+          key = "1f0bd45961a6cb5b1f88ef5ed3db9426771e2700";
+        };
+      };
     };
   };
 
