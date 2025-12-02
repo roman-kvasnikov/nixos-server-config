@@ -23,7 +23,7 @@ in {
     };
 
     environmentFile = lib.mkOption {
-      description = "File with RESTIC_PASSWORD and optionally S3 credentials.";
+      description = "File with S3 credentials for Restic.";
       type = lib.types.path;
       default = config.age.secrets.s3-env.path;
     };

@@ -134,7 +134,7 @@ in {
             adminuser = cfg.adminUser;
             adminpassFile = cfg.adminPasswordFile;
             dbtype = "pgsql";
-            # dbhost = "127.0.0.1:6432"; # pgbouncer
+            dbhost = "127.0.0.1:6432"; # pgbouncer
             dbname = "nextcloud";
             dbuser = "nextcloud";
           };
@@ -170,11 +170,11 @@ in {
           };
         };
 
-        # pgbouncer.settings = {
-        #   databases = {
-        #     "nextcloud" = "host=/run/postgresql dbname=nextcloud";
-        #   };
-        # };
+        pgbouncer.settings = {
+          databases = {
+            "nextcloud" = "host=/run/postgresql port=5432 dbname=nextcloud auth_user=nextcloud";
+          };
+        };
 
         fail2ban = {
           enable = true;
