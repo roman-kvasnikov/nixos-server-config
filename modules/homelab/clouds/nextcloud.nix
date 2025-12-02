@@ -172,7 +172,7 @@ in {
 
         pgbouncer.settings = {
           databases = {
-            "nextcloud" = "host=/run/postgresql port=5432 dbname=nextcloud auth_user=nextcloud";
+            "nextcloud" = "host=/run/postgresql port=5432 pool_mode=session dbname=nextcloud auth_user=nextcloud";
           };
         };
 
