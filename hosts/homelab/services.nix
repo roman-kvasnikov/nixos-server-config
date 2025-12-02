@@ -70,7 +70,7 @@ in {
 
         # Monitoring
         glancesctl.enable = true;
-        speedtest-tracker-ctl.enable = true;
+        # speedtest-tracker-ctl.enable = true;
         uptime-kuma-ctl.enable = true;
 
         # Services

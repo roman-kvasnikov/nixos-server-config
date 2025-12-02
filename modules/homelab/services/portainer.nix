@@ -75,7 +75,7 @@ in {
           type = "portainer";
           url = "http://0.0.0.0:${toString cfg.port}/";
           env = 3;
-          key = "ptr_IwM/9FvuoPY1QE0y6WursIOH7uSjYh6kUt/6HcaN1/M=";
+          key = "ptr_/iNQfHK+QKvoKBpDiXBqc76ZLeHsGIIwS0UL/15IYQ4=";
         };
       };
     };
