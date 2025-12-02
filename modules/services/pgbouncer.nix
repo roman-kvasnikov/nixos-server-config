@@ -8,13 +8,13 @@ in {
   services.pgbouncer = {
     enable = true;
 
-    # settings = {
-    # pgbouncer = {
-    # listen_addr = "127.0.0.1";
-    # listen_port = 6432;
-    # pool_mode = "session";
-    # auth_type = "peer";
-    # };
-    # };
+    settings = {
+      pgbouncer = {
+        listen_addr = "/run/pgbouncer";
+        listen_port = 0;
+        # pool_mode = "session";
+        # auth_type = "peer";
+      };
+    };
   };
 }
