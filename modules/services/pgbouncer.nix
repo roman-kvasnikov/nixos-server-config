@@ -12,7 +12,7 @@ in {
       pgbouncer = {
         listen_addr = "127.0.0.1";
         listen_port = 6432;
-        # pool_mode = "session";
+        pool_mode = "session";
       };
     };
   };
