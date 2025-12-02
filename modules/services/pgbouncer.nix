@@ -11,7 +11,7 @@ in {
     settings = {
       pgbouncer = {
         listen_addr = "*";
-        auth_type = "peer";
+        auth_type = "trust";
       };
     };
   };
