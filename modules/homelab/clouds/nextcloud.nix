@@ -94,15 +94,14 @@ in {
         type = lib.types.str;
         default = "Clouds";
       };
-      # widget = lib.mkOption {
-      #   type = lib.types.attrs;
-      #   default = {
-      #     type = "nextcloud";
-      #     url = "https://${cfg.domain}";
-      #     username = cfg.adminUser;
-      #     password = "123";
-      #   };
-      # };
+      widget = lib.mkOption {
+        type = lib.types.attrs;
+        default = {
+          type = "nextcloud";
+          url = "https://${cfg.domain}";
+          key = "cu0EjQ4YlkjKJH";
+        };
+      };
     };
   };
 

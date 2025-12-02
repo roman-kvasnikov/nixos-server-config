@@ -56,15 +56,9 @@ in {
           enable = true;
           allowExternal = true;
         };
-        jellyseerrctl = {
-          enable = true;
-          allowExternal = true;
-        };
+        jellyseerrctl.enable = true;
         prowlarrctl.enable = true;
-        qbittorrentctl = {
-          enable = true;
-          allowExternal = true;
-        };
+        qbittorrentctl.enable = true;
         radarrctl.enable = true;
         sonarrctl.enable = true;
 
