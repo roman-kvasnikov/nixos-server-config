@@ -11,7 +11,7 @@ in {
     settings = {
       pgbouncer = {
         listen_addr = "/run/pgbouncer";
-        auth_type = "hba";
+        auth_type = "trust";
         auth_file = "/etc/pgbouncer/userlist.txt";
         auth_hba_file = "/etc/pgbouncer/pg_hba.conf";
       };
