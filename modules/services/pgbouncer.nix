@@ -10,7 +10,7 @@ in {
 
     settings = {
       pgbouncer = {
-        listen_addr = "*";
+        listen_addr = "/run/pgbouncer";
         auth_type = "trust";
       };
     };
