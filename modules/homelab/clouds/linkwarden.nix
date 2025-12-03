@@ -93,12 +93,12 @@ in {
 
           storageLocation = cfg.dataDir;
 
-          database = {
-            host = "/run/pgbouncer";
-            port = 6432;
-            name = "linkwarden";
-            user = "linkwarden";
-          };
+          # database = {
+          #   host = "/run/pgbouncer";
+          #   port = 6432;
+          #   name = "linkwarden";
+          #   user = "linkwarden";
+          # };
 
           enableRegistration = true;
 
@@ -112,11 +112,11 @@ in {
           '';
         };
 
-        pgbouncer.settings = {
-          databases = {
-            linkwarden = "host=/run/postgresql dbname=linkwarden";
-          };
-        };
+        # pgbouncer.settings = {
+        #   databases = {
+        #     linkwarden = "host=/run/postgresql port=5432 dbname=linkwarden";
+        #   };
+        # };
       };
 
       age.secrets.linkwarden-env = {
