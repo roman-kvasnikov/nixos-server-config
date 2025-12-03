@@ -116,12 +116,12 @@ in {
           };
         };
 
-        # postgresql = {
-        #   identMap = lib.mkAfter ''
-        #     pgbouncer pgbouncer paperless
-        #     pgbouncer paperless paperless
-        #   '';
-        # };
+        postgresql = {
+          identMap = lib.mkAfter ''
+            pgbouncer pgbouncer paperless
+            pgbouncer paperless paperless
+          '';
+        };
 
         # pgbouncer.settings = {
         #   databases = {
