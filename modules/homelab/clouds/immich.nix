@@ -99,15 +99,6 @@ in {
 
           mediaLocation = cfg.dataDir;
 
-          accelerationDevices = [
-            "/dev/dri/renderD128"
-          ];
-
-          # database = {
-          #   host = "/run/pgbouncer";
-          #   port = 6432;
-          # };
-
           environment = {
             DB_URL = lib.mkForce "postgresql:///${config.services.immich.database.name}?host=/run/pgbouncer&port=6432";
           };
@@ -126,6 +117,10 @@ in {
           };
         };
       };
+
+      environment.etc."pgbouncer/userslist.txt".text = lib.mkAfter ''
+        "immich" ""
+      '';
 
       users.users.immich.extraGroups = ["video" "render"];
     })

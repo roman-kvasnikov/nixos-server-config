@@ -206,6 +206,10 @@ in {
                     ^\{%(_groupsre)s,?\s*"remoteAddr":"<HOST>"%(_groupsre)s,?\s*"message":"Trusted domain error.
         datepattern = ,?\s*"time"\s*:\s*"%%Y-%%m-%%d[T ]%%H:%%M:%%S(%%z)?"
       '');
+
+      environment.etc."pgbouncer/userslist.txt".text = lib.mkAfter ''
+        "nextcloud" ""
+      '';
     })
 
     (lib.mkIf (cfg.enable && cfg.backupEnabled) {

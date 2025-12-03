@@ -21,7 +21,6 @@ in {
 
   environment.etc."pgbouncer/userslist.txt".text = ''
     "nextcloud" ""
-    "immich" ""
     "linkwarden" ""
     "paperless" ""
     "vaultwarden" ""

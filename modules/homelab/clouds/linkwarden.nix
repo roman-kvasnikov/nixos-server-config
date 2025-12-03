@@ -93,12 +93,12 @@ in {
 
           storageLocation = cfg.dataDir;
 
-          # database = {
-          #   host = "/run/pgbouncer";
-          #   port = 6432;
-          # };
-
           enableRegistration = true;
+
+          environment = {
+            DATABASE_URL = lib.mkForce "postgresql:///${config.services.linkwarden.database.name}?host=/run/pgbouncer&port=6432";
+            # DATABASE_URL = lib.mkForce "postgresql://${config.services.linkwarden.database.user}@localhost/${lib.strings.escapeURL cfg.database.name}?host=${cfg.database.host}";
+          };
 
           environmentFile = config.age.secrets.linkwarden-env.path;
         };
@@ -110,12 +110,16 @@ in {
           '';
         };
 
-        # pgbouncer.settings = {
-        #   databases = {
-        #     linkwarden = "host=/run/postgresql port=5432 dbname=linkwarden";
-        #   };
-        # };
+        pgbouncer.settings = {
+          databases = {
+            linkwarden = "host=/run/postgresql port=5432 dbname=linkwarden";
+          };
+        };
       };
+
+      environment.etc."pgbouncer/userslist.txt".text = lib.mkAfter ''
+        "linkwarden" ""
+      '';
 
       age.secrets.linkwarden-env = {
         file = ../../../secrets/linkwarden.env.age;
