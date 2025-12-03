@@ -15,10 +15,7 @@ in {
     dataDir = "/mnt/data/AppData/Postgresql/${config.services.postgresql.package.psqlSchema}";
 
     authentication = ''
-      # локальные сокеты — peer (по системному пользователю)
-      # local all all peer
-
-      local all pgbouncer peer
+      # Локальные сокеты - pgbouncer
       local all all peer map=pgbouncer
 
       # TCP-подключения — по паролю
@@ -27,7 +24,21 @@ in {
     '';
 
     identMap = ''
-      pgbouncer pgbouncer nextcloud
+      # Mapping        SystemUser     DatabaseUser
+      # -----------------------------------------
+      # pgbouncer может представляться любым из этих пользователей
+      pgbouncer        pgbouncer       nextcloud
+      pgbouncer        pgbouncer       immich
+      pgbouncer        pgbouncer       paperless
+      pgbouncer        pgbouncer       vaultwarden
+      pgbouncer        pgbouncer       postgres
+
+      # сервисы напрямую (если будут подключаться без pgbouncer)
+      pgbouncer        nextcloud       nextcloud
+      pgbouncer        immich          immich
+      pgbouncer        paperless       paperless
+      pgbouncer        vaultwarden     vaultwarden
+      pgbouncer        postgres        postgres
     '';
 
     # ensureUsers = [

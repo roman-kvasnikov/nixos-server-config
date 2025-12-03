@@ -11,17 +11,15 @@ in {
     settings = {
       pgbouncer = {
         listen_addr = "/run/pgbouncer";
+        listen_port = 6432;
         auth_type = "trust";
-        auth_file = "/etc/pgbouncer/userslist.txt";
-      };
-
-      databases = {
-        nextcloud = "host=/run/postgresql port=5432 dbname=nextcloud";
+        # auth_file = "/etc/pgbouncer/userslist.txt";
+        admin_users = "postgres";
       };
     };
   };
 
-  environment.etc."pgbouncer/userslist.txt".text = ''
-    "nextcloud" ""
-  '';
+  # environment.etc."pgbouncer/userslist.txt".text = ''
+  #   "nextcloud" ""
+  # '';
 }
