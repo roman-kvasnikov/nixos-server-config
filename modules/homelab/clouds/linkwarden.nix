@@ -82,19 +82,41 @@ in {
 
   config = lib.mkMerge [
     (lib.mkIf cfg.enable {
-      services.linkwarden = {
-        enable = true;
+      services = {
+        linkwarden = {
+          enable = true;
 
-        host = cfg.host;
-        port = cfg.port;
+          host = cfg.host;
+          port = cfg.port;
 
-        openFirewall = !cfgNginx.enable;
+          openFirewall = !cfgNginx.enable;
 
-        storageLocation = cfg.dataDir;
+          storageLocation = cfg.dataDir;
 
-        enableRegistration = true;
+          database = {
+            host = "/run/pgbouncer";
+            port = 6432;
+            name = "linkwarden";
+            user = "linkwarden";
+          };
 
-        environmentFile = config.age.secrets.linkwarden-env.path;
+          enableRegistration = true;
+
+          environmentFile = config.age.secrets.linkwarden-env.path;
+        };
+
+        postgresql = {
+          identMap = lib.mkAfter ''
+            pgbouncer pgbouncer  linkwarden
+            pgbouncer linkwarden linkwarden
+          '';
+        };
+
+        pgbouncer.settings = {
+          databases = {
+            linkwarden = "host=/run/postgresql port=5432 dbname=linkwarden";
+          };
+        };
       };
 
       age.secrets.linkwarden-env = {
