@@ -85,7 +85,7 @@ in {
             ROCKET_PORT = cfg.port;
             ROCKET_LOG = "critical";
 
-            DATABASE_URL = "postgresql:///vaultwarden?host=/run/postgresql";
+            DATABASE_URL = lib.mkForce "postgresql:///vaultwarden?host=/run/pgbouncer&port=6432";
           };
 
           environmentFile = config.age.secrets.vaultwarden-env.path;
@@ -108,11 +108,11 @@ in {
           '';
         };
 
-        # pgbouncer.settings = {
-        #   databases = {
-        #     vaultwarden = "host=/run/postgresql port=5432 dbname=vaultwarden";
-        #   };
-        # };
+        pgbouncer.settings = {
+          databases = {
+            vaultwarden = "host=/run/postgresql port=5432 dbname=vaultwarden";
+          };
+        };
 
         fail2ban = {
           enable = true;
@@ -139,6 +139,10 @@ in {
         failregex = ^.*?Username or password is incorrect\. Try again\. IP: <ADDR>\. Username:.*$
         ignoreregex =
       '');
+
+      environment.etc."pgbouncer/userslist.txt".text = lib.mkAfter ''
+        "vaultwarden" ""
+      '';
 
       age.secrets.vaultwarden-env = {
         file = ../../../secrets/vaultwarden.env.age;
