@@ -11,18 +11,13 @@ in {
     settings = {
       pgbouncer = {
         listen_addr = "/run/pgbouncer";
-        auth_type = "trust";
-        auth_file = "/etc/pgbouncer/userlist.txt";
-        auth_hba_file = "/etc/pgbouncer/pg_hba.conf";
+        auth_type = "md5";
+        auth_file = "/etc/pgbouncer/userslist.txt";
       };
     };
   };
 
-  environment.etc."pgbouncer/userlist.txt".text = ''
-    "nextcloud" ""
-  '';
-
-  environment.etc."pgbouncer/pg_hba.conf".text = ''
-    local all all peer
+  environment.etc."pgbouncer/userslist.txt".text = ''
+    "nextcloud" "password"
   '';
 }
