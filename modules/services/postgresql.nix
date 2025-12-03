@@ -16,11 +16,18 @@ in {
 
     authentication = ''
       # локальные сокеты — peer (по системному пользователю)
-      local all all peer
+      # local all all peer
+
+      local all pgbouncer peer
+      local all all peer map=pgbouncer
 
       # TCP-подключения — по паролю
       host all all 127.0.0.1/32 md5
       host all all ::1/128 md5
+    '';
+
+    identMap = ''
+      pgbouncer pgbouncer nextcloud
     '';
 
     # ensureUsers = [

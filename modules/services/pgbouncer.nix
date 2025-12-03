@@ -16,7 +16,7 @@ in {
       };
 
       databases = {
-        "*" = "host=/run/postgresql port=5432";
+        nextcloud = "host=/run/postgresql port=5432 dbname=nextcloud";
       };
     };
   };
