@@ -13,13 +13,18 @@ in {
         listen_addr = "/run/pgbouncer";
         listen_port = 6432;
         auth_type = "trust";
-        # auth_file = "/etc/pgbouncer/userslist.txt";
+        auth_file = "/etc/pgbouncer/userslist.txt";
         admin_users = "postgres";
       };
     };
   };
 
-  # environment.etc."pgbouncer/userslist.txt".text = ''
-  #   "nextcloud" ""
-  # '';
+  environment.etc."pgbouncer/userslist.txt".text = ''
+    "nextcloud" ""
+    "immich" ""
+    "linkwarden" ""
+    "paperless" ""
+    "vaultwarden" ""
+    "postgres" ""
+  '';
 }
