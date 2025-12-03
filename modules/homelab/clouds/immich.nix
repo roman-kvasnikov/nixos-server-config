@@ -103,9 +103,13 @@ in {
             "/dev/dri/renderD128"
           ];
 
-          database = {
-            host = "/run/pgbouncer";
-            port = 6432;
+          # database = {
+          #   host = "/run/pgbouncer";
+          #   port = 6432;
+          # };
+
+          environment = {
+            DB_URL = "postgresql:///${config.services.immich.database.name}?host=/run/pgbouncer&port=6432";
           };
         };
 
