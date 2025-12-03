@@ -106,8 +106,6 @@ in {
           database = {
             host = "/run/pgbouncer";
             port = 6432;
-            name = "immich";
-            user = "immich";
           };
         };
 

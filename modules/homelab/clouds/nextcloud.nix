@@ -135,8 +135,6 @@ in {
             adminpassFile = cfg.adminPasswordFile;
             dbtype = "pgsql";
             dbhost = "/run/pgbouncer:6432"; # pgbouncer
-            dbname = "nextcloud";
-            dbuser = "nextcloud";
           };
 
           settings = {
