@@ -33,7 +33,6 @@ in {
       pgbouncer        postgres        postgres
 
       pgbouncer        immich          immich
-      pgbouncer        linkwarden      linkwarden
       pgbouncer        paperless       paperless
     '';
   };

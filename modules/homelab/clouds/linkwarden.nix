@@ -94,7 +94,7 @@ in {
           storageLocation = cfg.dataDir;
 
           database = {
-            host = "/run/pgbouncer";
+            host = "/run/pgbouncer:6432";
             port = 6432;
             name = "linkwarden";
             user = "linkwarden";
