@@ -12,9 +12,15 @@ in {
       pgbouncer = {
         listen_addr = "/run/pgbouncer";
         listen_port = 6432;
+
+        admin_users = "postgres";
+
         auth_type = "trust";
         auth_file = "/etc/pgbouncer/userslist.txt";
-        admin_users = "postgres";
+
+        pool_mode = "transaction";
+        max_client_conn = 200;
+        default_pool_size = 20;
       };
     };
   };
