@@ -137,7 +137,7 @@ in {
             dbhost = "/run/pgbouncer:6432"; # pgbouncer
             dbname = "nextcloud";
             dbuser = "nextcloud";
-            dbpassword = "password";
+            dbpass = "password";
           };
 
           settings = {
