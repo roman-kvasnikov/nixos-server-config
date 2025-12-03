@@ -58,7 +58,7 @@
     users."upsmon" = {
       # Создай файл с паролем: echo "твой_пароль" > /etc/nixos/secrets/ups-password
       # И убедись, что права доступа ограничены: chmod 600 /etc/nixos/secrets/ups-password
-      passwordFile = "/etc/nixos/secrets/ups-password";
+      passwordFile = config.age.secrets.ups-password.path;
       upsmon = "primary";
     };
 
@@ -67,7 +67,7 @@
       system = "ippon@localhost";
       powerValue = 1;
       user = "upsmon";
-      passwordFile = "/etc/nixos/secrets/ups-password";
+      passwordFile = config.age.secrets.ups-password.path;
       type = "primary";
     };
 
@@ -182,4 +182,11 @@
     # Ippon Back Basic 650 (Cypress USB-to-Serial)
     SUBSYSTEM=="usb", ATTR{idVendor}=="0665", ATTR{idProduct}=="5161", MODE="0664", GROUP="nut"
   '';
+
+  age.secrets.ups-password = {
+    file = ../../secrets/ups.password.age;
+    owner = "root";
+    group = "root";
+    mode = "0400";
+  };
 }
