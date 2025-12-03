@@ -69,18 +69,6 @@ in {
 
   config = lib.mkMerge [
     (lib.mkIf cfg.enable {
-      services.postgresql = {
-        enable = true;
-
-        ensureUsers = [
-          {
-            name = "vaultwarden";
-            ensureDBOwnership = true;
-          }
-        ];
-        ensureDatabases = ["vaultwarden"];
-      };
-
       services = {
         vaultwarden = {
           enable = true;
@@ -97,10 +85,33 @@ in {
             ROCKET_PORT = cfg.port;
             ROCKET_LOG = "critical";
 
-            DATABASE_URL = "postgresql:///vaultwarden?host=/run/postgresql";
+            DATABASE_URL = "postgresql:///vaultwarden?host=/run/pgbouncer:6432";
           };
 
           environmentFile = config.age.secrets.vaultwarden-env.path;
+        };
+
+        postgresql = {
+          enable = true;
+
+          ensureUsers = [
+            {
+              name = "vaultwarden";
+              ensureDBOwnership = true;
+            }
+          ];
+          ensureDatabases = ["vaultwarden"];
+
+          identMap = lib.mkAfter ''
+            pgbouncer pgbouncer vaultwarden
+            pgbouncer postgres  vaultwarden
+          '';
+        };
+
+        pgbouncer.settings = {
+          databases = {
+            vaultwarden = "host=/run/postgresql port=5432 dbname=vaultwarden";
+          };
         };
 
         fail2ban = {

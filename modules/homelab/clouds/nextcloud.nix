@@ -170,6 +170,13 @@ in {
           };
         };
 
+        postgresql = {
+          identMap = lib.mkAfter ''
+            pgbouncer pgbouncer nextcloud
+            pgbouncer postgres  nextcloud
+          '';
+        };
+
         pgbouncer.settings = {
           databases = {
             nextcloud = "host=/run/postgresql port=5432 dbname=nextcloud";

@@ -24,39 +24,28 @@ in {
     '';
 
     identMap = ''
-      # Mapping        SystemUser     DatabaseUser
-      # -----------------------------------------
-      # pgbouncer может представляться любым из этих пользователей
-      pgbouncer        pgbouncer       postgres
-      pgbouncer        pgbouncer       immich
-      pgbouncer        pgbouncer       linkwarden
-      pgbouncer        pgbouncer       nextcloud
-      pgbouncer        pgbouncer       paperless
-      pgbouncer        pgbouncer       vaultwarden
-
-      # сервисы напрямую (если будут подключаться без pgbouncer)
-      pgbouncer        postgres        postgres
-      pgbouncer        immich          immich
-      pgbouncer        linkwarden      linkwarden
-      pgbouncer        nextcloud       nextcloud
-      pgbouncer        paperless       paperless
-      pgbouncer        vaultwarden     vaultwarden
+      pgbouncer pgbouncer postgres
+      pgbouncer postgres  postgres
     '';
 
-    # ensureUsers = [
-    #   {
-    #     name = cfgHomelab.adminUser;
+    # identMap = ''
+    #   # Mapping        SystemUser     DatabaseUser
+    #   # -----------------------------------------
+    #   # pgbouncer может представляться любым из этих пользователей
+    #   pgbouncer        pgbouncer       postgres
+    #   pgbouncer        pgbouncer       immich
+    #   pgbouncer        pgbouncer       linkwarden
+    #   pgbouncer        pgbouncer       nextcloud
+    #   pgbouncer        pgbouncer       paperless
+    #   pgbouncer        pgbouncer       vaultwarden
 
-    #     ensureClauses = {
-    #       superuser = true;
-    #       createrole = true;
-    #       createdb = true;
-    #     };
-    #   }
-    # ];
-
-    # initialScript = pkgs.writeText "init-postgres-user" ''
-    #   ALTER USER postgres WITH ENCRYPTED PASSWORD '1234567890';
+    #   # сервисы напрямую (если будут подключаться без pgbouncer)
+    #   pgbouncer        postgres        postgres
+    #   pgbouncer        immich          immich
+    #   pgbouncer        linkwarden      linkwarden
+    #   pgbouncer        nextcloud       nextcloud
+    #   pgbouncer        paperless       paperless
+    #   pgbouncer        vaultwarden     vaultwarden
     # '';
   };
 }
