@@ -173,7 +173,7 @@ in {
         postgresql = {
           identMap = lib.mkAfter ''
             pgbouncer pgbouncer nextcloud
-            pgbouncer postgres  nextcloud
+            pgbouncer nextcloud nextcloud
           '';
         };
 

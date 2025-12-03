@@ -85,8 +85,7 @@ in {
             ROCKET_PORT = cfg.port;
             ROCKET_LOG = "critical";
 
-            # DATABASE_URL = "postgresql:///vaultwarden?host=/run/pgbouncer:6432";
-            DATABASE_URL = "postgresql:///vaultwarden?host=/run/pgbouncer&port=6432";
+            DATABASE_URL = "postgresql:///vaultwarden?host=/run/postgresql";
           };
 
           environmentFile = config.age.secrets.vaultwarden-env.path;
@@ -104,16 +103,16 @@ in {
           ensureDatabases = ["vaultwarden"];
 
           identMap = lib.mkAfter ''
-            pgbouncer pgbouncer vaultwarden
-            pgbouncer postgres  vaultwarden
+            pgbouncer pgbouncer   vaultwarden
+            pgbouncer vaultwarden vaultwarden
           '';
         };
 
-        pgbouncer.settings = {
-          databases = {
-            vaultwarden = "host=/run/postgresql port=5432 dbname=vaultwarden";
-          };
-        };
+        # pgbouncer.settings = {
+        #   databases = {
+        #     vaultwarden = "host=/run/postgresql port=5432 dbname=vaultwarden";
+        #   };
+        # };
 
         fail2ban = {
           enable = true;
