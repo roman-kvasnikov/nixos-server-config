@@ -27,5 +27,10 @@ in {
       pgbouncer pgbouncer postgres
       pgbouncer postgres  postgres
     '';
+
+    settings = {
+      max_connections = 100;
+      superuser_reserved_connections = 5;
+    };
   };
 }
