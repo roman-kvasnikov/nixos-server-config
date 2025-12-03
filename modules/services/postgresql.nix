@@ -16,6 +16,7 @@ in {
 
     authentication = ''
       # локальные сокеты — peer (по системному пользователю)
+      local nextcloud nextcloud md5
       local all all peer
 
       # TCP-подключения — по паролю
