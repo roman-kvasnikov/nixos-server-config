@@ -20,10 +20,6 @@ in {
   };
 
   environment.etc."pgbouncer/userslist.txt".text = ''
-    "nextcloud" ""
-    "linkwarden" ""
-    "paperless" ""
-    "vaultwarden" ""
     "postgres" ""
   '';
 }
