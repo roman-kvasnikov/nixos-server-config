@@ -85,7 +85,8 @@ in {
             ROCKET_PORT = cfg.port;
             ROCKET_LOG = "critical";
 
-            DATABASE_URL = "postgresql:///vaultwarden?host=/run/pgbouncer:6432";
+            # DATABASE_URL = "postgresql:///vaultwarden?host=/run/pgbouncer:6432";
+            DATABASE_URL = "postgresql:///vaultwarden?host=/run/pgbouncer&port=6432";
           };
 
           environmentFile = config.age.secrets.vaultwarden-env.path;
