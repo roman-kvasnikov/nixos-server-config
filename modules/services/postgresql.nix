@@ -27,18 +27,20 @@ in {
       # Mapping        SystemUser     DatabaseUser
       # -----------------------------------------
       # pgbouncer может представляться любым из этих пользователей
-      pgbouncer        pgbouncer       nextcloud
+      pgbouncer        pgbouncer       postgres
       pgbouncer        pgbouncer       immich
+      pgbouncer        pgbouncer       linkwarden
+      pgbouncer        pgbouncer       nextcloud
       pgbouncer        pgbouncer       paperless
       pgbouncer        pgbouncer       vaultwarden
-      pgbouncer        pgbouncer       postgres
 
       # сервисы напрямую (если будут подключаться без pgbouncer)
-      pgbouncer        nextcloud       nextcloud
+      pgbouncer        postgres        postgres
       pgbouncer        immich          immich
+      pgbouncer        linkwarden      linkwarden
+      pgbouncer        nextcloud       nextcloud
       pgbouncer        paperless       paperless
       pgbouncer        vaultwarden     vaultwarden
-      pgbouncer        postgres        postgres
     '';
 
     # ensureUsers = [
