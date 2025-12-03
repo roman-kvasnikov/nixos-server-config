@@ -116,6 +116,19 @@ in {
           };
         };
 
+        postgresql = {
+          identMap = lib.mkAfter ''
+            pgbouncer pgbouncer paperless
+            pgbouncer paperless paperless
+          '';
+        };
+
+        # pgbouncer.settings = {
+        #   databases = {
+        #     paperless = "host=/run/postgresql port=5432 dbname=paperless";
+        #   };
+        # };
+
         fail2ban = {
           enable = true;
 

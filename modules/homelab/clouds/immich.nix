@@ -88,19 +88,41 @@ in {
         "d ${cfg.dataDir} 700 immich immich - -"
       ];
 
-      services.immich = {
-        enable = true;
+      services = {
+        immich = {
+          enable = true;
 
-        host = cfg.host;
-        port = cfg.port;
+          host = cfg.host;
+          port = cfg.port;
 
-        openFirewall = !cfgNginx.enable;
+          openFirewall = !cfgNginx.enable;
 
-        mediaLocation = cfg.dataDir;
+          mediaLocation = cfg.dataDir;
 
-        accelerationDevices = [
-          "/dev/dri/renderD128"
-        ];
+          accelerationDevices = [
+            "/dev/dri/renderD128"
+          ];
+
+          database = {
+            host = "/run/pgbouncer";
+            port = 6432;
+            name = "immich";
+            user = "immich";
+          };
+        };
+
+        postgresql = {
+          identMap = lib.mkAfter ''
+            pgbouncer pgbouncer immich
+            pgbouncer immich immich
+          '';
+        };
+
+        pgbouncer.settings = {
+          databases = {
+            immich = "host=/run/postgresql port=5432 dbname=immich";
+          };
+        };
       };
 
       users.users.immich.extraGroups = ["video" "render"];
