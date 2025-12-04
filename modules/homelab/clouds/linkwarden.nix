@@ -102,7 +102,7 @@ in {
 
           environment = {
             DATABASE_URL = lib.mkForce "postgresql:///${config.services.linkwarden.database.name}?host=/run/pgbouncer";
-            DATABASE_PORT = lib.mkForce toString config.services.linkwarden.database.port;
+            DATABASE_PORT = lib.mkForce "${toString config.services.linkwarden.database.port}";
           };
 
           environmentFile = config.age.secrets.linkwarden-env.path;
