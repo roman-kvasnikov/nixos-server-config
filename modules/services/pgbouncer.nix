@@ -10,12 +10,13 @@ in {
 
     settings = {
       pgbouncer = {
-        listen_addr = "127.0.0.1";
+        unix_socket_dir = "/run/pgbouncer";
+        listen_addr = "*";
         listen_port = 6432;
 
         admin_users = "postgres";
 
-        auth_type = "md5";
+        auth_type = "trust";
         auth_file = "/etc/pgbouncer/userslist.txt";
 
         pool_mode = "transaction";
@@ -26,7 +27,6 @@ in {
   };
 
   environment.etc."pgbouncer/userslist.txt".text = ''
-    "postgres" "md53175bce1d3201d16594cebf9d7eb3f9d"
-    "pgbounce" "md50933e178e4d78061b63ad05a469c62c3"
+    "postgres" ""
   '';
 }

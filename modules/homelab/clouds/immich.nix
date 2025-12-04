@@ -118,13 +118,14 @@ in {
 
         pgbouncer.settings = {
           databases = {
-            immich = "host=127.0.0.1 port=5432 dbname=immich auth_user=immich";
+            immich = "host=/run/postgresql port=5432 dbname=immich";
+            # immich = "host=127.0.0.1 port=5432 dbname=immich auth_user=immich";
           };
         };
       };
 
       environment.etc."pgbouncer/userslist.txt".text = lib.mkAfter ''
-        "immich" "md5ffff2c25da37f6fdc93190905b8fe2e1"
+        "immich" ""
       '';
 
       users.users.immich.extraGroups = ["video" "render"];
