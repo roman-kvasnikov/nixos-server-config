@@ -134,8 +134,7 @@ in {
             adminuser = cfg.adminUser;
             adminpassFile = cfg.adminPasswordFile;
             dbtype = "pgsql";
-            # dbhost = "/run/pgbouncer:6432"; # pgbouncer
-            # dbhost = "127.0.0.1:6432"; # pgbouncer
+            dbhost = "/run/pgbouncer:6432";
           };
 
           settings = {
@@ -169,20 +168,6 @@ in {
           };
         };
 
-        # postgresql = {
-        #   identMap = lib.mkAfter ''
-        #     pgbouncer pgbouncer nextcloud
-        #     pgbouncer nextcloud nextcloud
-        #   '';
-        # };
-
-        # pgbouncer.settings = {
-        #   databases = {
-        #     nextcloud = "host=/run/postgresql port=5432 dbname=nextcloud";
-        #     # nextcloud = "host=127.0.0.1 port=5432 dbname=nextcloud";
-        #   };
-        # };
-
         fail2ban = {
           enable = true;
 
@@ -209,9 +194,9 @@ in {
         datepattern = ,?\s*"time"\s*:\s*"%%Y-%%m-%%d[T ]%%H:%%M:%%S(%%z)?"
       '');
 
-      # environment.etc."pgbouncer/userslist.txt".text = lib.mkAfter ''
-      #   "nextcloud" ""
-      # '';
+      environment.etc."pgbouncer/userslist.txt".text = lib.mkAfter ''
+        "nextcloud" ""
+      '';
     })
 
     (lib.mkIf (cfg.enable && cfg.backupEnabled) {
