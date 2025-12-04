@@ -27,5 +27,6 @@ in {
 
   environment.etc."pgbouncer/userslist.txt".text = ''
     "postgres" "md53175bce1d3201d16594cebf9d7eb3f9d"
+    "pgbounce" "md50933e178e4d78061b63ad05a469c62c3"
   '';
 }
