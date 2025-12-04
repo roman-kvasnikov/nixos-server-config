@@ -15,14 +15,18 @@ in {
 
         unix_socket_dir = "/run/postgresql";
 
-        admin_users = "postgres";
+        # admin_users = "postgres";
 
-        auth_type = "trust";
+        auth_type = "md5";
         auth_file = "/etc/pgbouncer/userslist.txt";
 
         max_client_conn = 500;
         # pool_mode = "transaction";
         # default_pool_size = 20;
+      };
+
+      databases = {
+        "*" = "host=/run/postgresql port=5432";
       };
     };
   };
