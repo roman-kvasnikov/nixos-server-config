@@ -104,7 +104,7 @@ in {
           settings = {
             PAPERLESS_URL = "https://${cfg.domain}";
             PAPERLESS_ADMIN_USER = cfgHomelab.adminUser;
-            PAPERLESS_DBHOST = lib.mkForce "/run/pgbouncer:6432";
+            PAPERLESS_DBHOST = lib.mkForce "127.0.0.1:6432";
             PAPERLESS_CONSUMER_IGNORE_PATTERN = [
               ".DS_STORE/*"
               "desktop.ini"
