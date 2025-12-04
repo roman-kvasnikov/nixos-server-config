@@ -14,4 +14,5 @@ in {
   "./secrets/pgadmin.password.age".publicKeys = [homelabSshKey];
   "./secrets/ups.password.age".publicKeys = [homelabSshKey];
   "./secrets/xray.config.json.age".publicKeys = [homelabSshKey];
+  "./secrets/xray-novpn.config.json.age".publicKeys = [homelabSshKey];
 }
