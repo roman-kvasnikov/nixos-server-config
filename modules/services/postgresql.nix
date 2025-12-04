@@ -32,9 +32,9 @@ in {
       host all all ::1/128 md5
     '';
 
-    identMap = ''
-      pgbouncer pgbouncer postgres
-      pgbouncer postgres  postgres
-    '';
+    # identMap = ''
+    #   pgbouncer pgbouncer postgres
+    #   pgbouncer postgres  postgres
+    # '';
   };
 }
