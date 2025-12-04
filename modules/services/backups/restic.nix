@@ -11,9 +11,10 @@ in {
     enable = lib.mkEnableOption "Enable Restic backups";
 
     repository = lib.mkOption {
-      description = "Restic repository (e.g., s3:https://s3.example.com/my-repo)";
+      description = "Restic repository (S3 or SFTP)";
       type = lib.types.str;
-      default = "s3:https://s3.twcstorage.ru/1f382b96-c34b0ea3-eb1f-4476-b009-6e99275d7b19/backups/${hostname}";
+      # default = "s3:https://s3.twcstorage.ru/1f382b96-c34b0ea3-eb1f-4476-b009-6e99275d7b19/backups/${hostname}";
+      default = "sftp:backup@192.168.1.11:/home/backup/backups/${hostname}";
     };
 
     passwordFile = lib.mkOption {
@@ -24,8 +25,9 @@ in {
 
     environmentFile = lib.mkOption {
       description = "File with S3 credentials for Restic.";
-      type = lib.types.path;
-      default = config.age.secrets.s3-env.path;
+      type = lib.types.nullOr lib.types.path;
+      default = null;
+      # default = config.age.secrets.s3-env.path;
     };
 
     schedule = lib.mkOption {
@@ -101,7 +103,7 @@ in {
             initialize = true;
             repository = cfg.repository;
             passwordFile = cfg.passwordFile;
-            environmentFile = cfg.environmentFile;
+            environmentFile = lib.mkIf (cfg.environmentFile != null) cfg.environmentFile;
             paths = job.paths;
 
             extraBackupArgs = [

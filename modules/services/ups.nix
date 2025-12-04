@@ -1,5 +1,6 @@
 # /etc/nixos/ups.nix
 # Подключи этот файл в configuration.nix через imports = [ ./ups.nix ];
+# сделать как модуль
 {
   config,
   pkgs,
