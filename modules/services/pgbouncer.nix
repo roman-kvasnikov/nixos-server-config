@@ -10,10 +10,10 @@ in {
 
     settings = {
       pgbouncer = {
-        listen_addr = "*";
+        listen_addr = "127.0.0.1";
         listen_port = 6432;
 
-        unix_socket_dir = "/run/postgresql";
+        unix_socket_dir = "/run/pgbouncer";
 
         admin_users = "postgres";
 
@@ -27,7 +27,7 @@ in {
 
       databases = {
         "*" = "host=/run/postgresql port=5432";
-        immich = "host=/run/postgresql port=5432 dbname=immich";
+        immich = "host=/run/postgresql port=5432 dbname=immich auth_user=immich";
       };
     };
   };
