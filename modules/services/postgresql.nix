@@ -14,32 +14,27 @@ in {
 
     dataDir = "/mnt/data/AppData/Postgresql/${config.services.postgresql.package.psqlSchema}";
 
-    authentication = ''
-      # TCP-подключения — по паролю
-      host all all 127.0.0.1/32 md5
-      host all all ::1/128 md5
-    '';
-
     # authentication = ''
-    #   # Локальные сокеты - pgbouncer
-    #   local all all peer map=pgbouncer
-
-    #   # TCP для PgBouncer — trust (без пароля)
-    #   host all pgbouncer 127.0.0.1/32 trust
-
     #   # TCP-подключения — по паролю
     #   host all all 127.0.0.1/32 md5
     #   host all all ::1/128 md5
     # '';
 
-    # identMap = ''
-    #   pgbouncer pgbouncer postgres
-    #   pgbouncer postgres  postgres
-    # '';
+    authentication = ''
+      # Локальные сокеты - pgbouncer
+      local all all peer map=pgbouncer
 
-    # settings = {
-    #   max_connections = 100;
-    #   superuser_reserved_connections = 5;
-    # };
+      # TCP для PgBouncer — trust (без пароля)
+      host all pgbouncer 127.0.0.1/32 trust
+
+      # TCP-подключения — по паролю
+      host all all 127.0.0.1/32 md5
+      host all all ::1/128 md5
+    '';
+
+    identMap = ''
+      pgbouncer pgbouncer postgres
+      pgbouncer postgres  postgres
+    '';
   };
 }

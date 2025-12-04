@@ -126,8 +126,8 @@ in {
 
         pgbouncer.settings = {
           databases = {
-            # paperless = "host=/run/postgresql port=5432 dbname=paperless";
-            paperless = "host=127.0.0.1 port=5432 dbname=paperless";
+            paperless = "host=/run/postgresql port=5432 dbname=paperless";
+            # paperless = "host=127.0.0.1 port=5432 dbname=paperless";
           };
         };
 

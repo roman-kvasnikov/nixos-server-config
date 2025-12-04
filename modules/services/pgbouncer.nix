@@ -15,7 +15,7 @@ in {
 
         admin_users = "postgres";
 
-        auth_type = "md5";
+        auth_type = "trust";
         auth_file = "/etc/pgbouncer/userslist.txt";
 
         pool_mode = "transaction";

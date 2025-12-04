@@ -112,7 +112,8 @@ in {
 
         pgbouncer.settings = {
           databases = {
-            linkwarden = "host=127.0.0.1 port=5432 dbname=linkwarden";
+            linkwarden = "host=/run/postgresql port=5432 dbname=linkwarden";
+            # linkwarden = "host=127.0.0.1 port=5432 dbname=linkwarden";
           };
         };
       };
