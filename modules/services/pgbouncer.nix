@@ -17,23 +17,23 @@ in {
 
         admin_users = "postgres";
 
-        auth_type = "trust";
+        auth_type = "md5";
         auth_file = "/etc/pgbouncer/userslist.txt";
 
         max_client_conn = 500;
-        # pool_mode = "transaction";
-        # default_pool_size = 20;
+        pool_mode = "transaction";
+        default_pool_size = 20;
       };
 
       databases = {
-        # "*" = "host=/run/postgresql port=5432";
-        immich = "host=/run/postgresql port=5432 dbname=immich auth_user=immich";
+        # "*" = "host=/run/postgresql port=5432 auth_user=pgbouncer";
+        "immich" = "host=/run/postgresql port=5432 dbname=immich auth_user=postgres";
       };
     };
   };
 
   environment.etc."pgbouncer/userslist.txt".text = ''
-    "postgres" ""
-    "immich" ""
+    "postgres" "postgres"
+    "immich" "immich"
   '';
 }

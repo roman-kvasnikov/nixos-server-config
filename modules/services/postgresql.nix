@@ -15,12 +15,7 @@ in {
     dataDir = "/mnt/data/AppData/Postgresql/${config.services.postgresql.package.psqlSchema}";
 
     authentication = ''
-      local all pgbouncer peer map=pgbouncer
-    '';
-
-    identMap = ''
-      pgbouncer pgbouncer postgres
-      pgbouncer pgbouncer immich
+      local all all md5
     '';
   };
 }
