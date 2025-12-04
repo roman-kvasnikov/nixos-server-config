@@ -95,6 +95,10 @@ in {
 
           enableRegistration = true;
 
+          database = {
+            port = 6432;
+          };
+
           environment = {
             DATABASE_URL = lib.mkForce "postgresql://${config.services.linkwarden.database.name}?host=/run/pgbouncer&port=6432";
           };
