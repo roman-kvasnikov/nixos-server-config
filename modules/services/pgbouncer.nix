@@ -16,7 +16,8 @@ in {
         listen_addr = "127.0.0.1";
         listen_port = 6432;
 
-        unix_socket_dir = "/run/postgresql";
+        # unix_socket_dir = "/run/postgresql";
+        unix_socket_dir = "/run/pgbouncer";
 
         admin_users = "postgres";
 
