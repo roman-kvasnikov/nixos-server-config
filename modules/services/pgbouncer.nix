@@ -26,8 +26,8 @@ in {
       };
 
       databases = {
-        # "*" = "host=/run/postgresql port=5432 auth_user=pgbouncer";
-        "immich" = "host=/run/postgresql port=5432 dbname=immich";
+        "*" = "host=/run/postgresql port=5432";
+        # "immich" = "host=/run/postgresql port=5432 dbname=immich";
       };
     };
   };
