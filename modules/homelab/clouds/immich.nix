@@ -99,8 +99,9 @@ in {
 
           mediaLocation = cfg.dataDir;
 
-          environment = {
-            DB_URL = lib.mkForce "postgresql:///${config.services.immich.database.name}?host=/run/pgbouncer&port=6432";
+          database = {
+            host = "127.0.0.1";
+            port = 6432;
           };
         };
 
