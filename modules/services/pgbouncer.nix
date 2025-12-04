@@ -20,8 +20,8 @@ in {
         auth_type = "trust";
         auth_file = "/etc/pgbouncer/userslist.txt";
 
-        max_client_conn = 500;
         pool_mode = "transaction";
+        max_client_conn = 500;
         default_pool_size = 20;
       };
 
@@ -34,6 +34,5 @@ in {
 
   environment.etc."pgbouncer/userslist.txt".text = ''
     "postgres" ""
-    "immich" ""
   '';
 }
