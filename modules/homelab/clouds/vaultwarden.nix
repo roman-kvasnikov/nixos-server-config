@@ -85,7 +85,8 @@ in {
             ROCKET_PORT = cfg.port;
             ROCKET_LOG = "critical";
 
-            DATABASE_URL = lib.mkForce "postgresql:///vaultwarden?host=/run/pgbouncer&port=6432";
+            # DATABASE_URL = lib.mkForce "postgresql:///vaultwarden?host=/run/pgbouncer&port=6432";
+            DATABASE_URL = lib.mkForce "postgresql:///vaultwarden?host=127.0.0.1&port=6432";
           };
 
           environmentFile = config.age.secrets.vaultwarden-env.path;
@@ -110,7 +111,7 @@ in {
 
         pgbouncer.settings = {
           databases = {
-            vaultwarden = "host=/run/postgresql port=5432 dbname=vaultwarden";
+            vaultwarden = "host=127.0.0.1 port=5432 dbname=vaultwarden";
           };
         };
 
