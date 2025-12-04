@@ -15,6 +15,14 @@ in {
     dataDir = "/mnt/data/AppData/Postgresql/${config.services.postgresql.package.psqlSchema}";
 
     authentication = ''
+      # postgres может подключаться через peer (без пароля)
+      local all postgres peer
+      local all linkwarden peer
+      local all nextcloud peer
+      local all paperless peer
+      local all vaulwarden peer
+
+      # Остальные через пароль
       local all all md5
     '';
   };
