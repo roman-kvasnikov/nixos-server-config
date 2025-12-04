@@ -16,7 +16,7 @@ in {
 
     authentication = ''
       # Локальные сокеты - pgbouncer
-      # local all all peer
+      local all all peer
 
       # Локальные сокеты - pgbouncer
       #local all all peer map=pgbouncer
@@ -25,8 +25,8 @@ in {
       #host all pgbouncer 127.0.0.1/32 md5
 
       # TCP-подключения — по паролю
-      host all all 127.0.0.1/32 md5
-      host all all ::1/128 md5
+      # host all all 127.0.0.1/32 md5
+      # host all all ::1/128 md5
     '';
 
     # identMap = ''
