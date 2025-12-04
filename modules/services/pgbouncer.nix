@@ -33,5 +33,6 @@ in {
 
   environment.etc."pgbouncer/userslist.txt".text = ''
     "postgres" "postgres"
+    "immich" "immich"
   '';
 }
