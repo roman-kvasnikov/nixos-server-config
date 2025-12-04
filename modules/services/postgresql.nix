@@ -18,7 +18,6 @@ in {
       # postgres может подключаться через peer (без пароля)
       local all postgres peer
       local all linkwarden peer
-      local all paperless peer
 
       # Остальные через пароль
       local all all trust
