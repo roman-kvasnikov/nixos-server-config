@@ -29,7 +29,7 @@ in {
     '';
 
     settings = {
-      max_connections = 100;
+      max_connections = 300;
       superuser_reserved_connections = 5;
     };
   };
