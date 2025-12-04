@@ -8,9 +8,6 @@ in {
   services.pgbouncer = {
     enable = true;
 
-    user = "postgres";
-    group = "postgres";
-
     settings = {
       pgbouncer = {
         listen_addr = "127.0.0.1";
