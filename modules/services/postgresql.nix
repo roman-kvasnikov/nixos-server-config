@@ -19,7 +19,6 @@ in {
       local all postgres peer
       local all linkwarden peer
       local all paperless peer
-      local all vaulwarden peer
 
       # Остальные через пароль
       local all all trust
