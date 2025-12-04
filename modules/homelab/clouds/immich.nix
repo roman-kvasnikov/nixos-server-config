@@ -99,27 +99,32 @@ in {
 
           mediaLocation = cfg.dataDir;
 
-          environment = {
-            DB_URL = lib.mkForce "postgresql:///${config.services.immich.database.name}?host=/run/pgbouncer&port=6432";
+          database = {
+            host = "127.0.0.1";
+            port = 6432;
           };
+
+          # environment = {
+          #   DB_URL = lib.mkForce "postgresql:///${config.services.immich.database.name}?host=/run/pgbouncer&port=6432";
+          # };
         };
 
-        postgresql = {
-          identMap = lib.mkAfter ''
-            pgbouncer pgbouncer immich
-            pgbouncer immich immich
-          '';
-        };
+        # postgresql = {
+        #   identMap = lib.mkAfter ''
+        #     pgbouncer pgbouncer immich
+        #     pgbouncer immich immich
+        #   '';
+        # };
 
         pgbouncer.settings = {
           databases = {
-            immich = "host=/run/postgresql port=5432 dbname=immich";
+            immich = "host=127.0.0.1 port=5432 dbname=immich auth_user=immich";
           };
         };
       };
 
       environment.etc."pgbouncer/userslist.txt".text = lib.mkAfter ''
-        "immich" ""
+        "immich" "md5ffff2c25da37f6fdc93190905b8fe2e1"
       '';
 
       users.users.immich.extraGroups = ["video" "render"];
