@@ -23,7 +23,7 @@ in {
       local all vaulwarden peer
 
       # Остальные через пароль
-      local all all md5
+      local all all trust
     '';
   };
 }

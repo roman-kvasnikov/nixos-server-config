@@ -17,7 +17,7 @@ in {
 
         admin_users = "postgres";
 
-        auth_type = "md5";
+        auth_type = "trust";
         auth_file = "/etc/pgbouncer/userslist.txt";
 
         max_client_conn = 500;
@@ -34,6 +34,6 @@ in {
 
   environment.etc."pgbouncer/userslist.txt".text = ''
     "postgres" "postgres"
-    "immich" "immich"
+    "immich" "md5ffff2c25da37f6fdc93190905b8fe2e1"
   '';
 }
