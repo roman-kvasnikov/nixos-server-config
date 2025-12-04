@@ -27,13 +27,13 @@ in {
 
       databases = {
         # "*" = "host=/run/postgresql port=5432 auth_user=pgbouncer";
-        "immich" = "host=/run/postgresql port=5432 dbname=immich auth_user=postgres";
+        "immich" = "host=/run/postgresql port=5432 dbname=immich";
       };
     };
   };
 
   environment.etc."pgbouncer/userslist.txt".text = ''
-    "postgres" "postgres"
-    "immich" "md5ffff2c25da37f6fdc93190905b8fe2e1"
+    "postgres" ""
+    "immich" ""
   '';
 }
