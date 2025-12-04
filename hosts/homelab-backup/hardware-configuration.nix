@@ -34,6 +34,14 @@
     fsType = "ext4";
   };
 
+  # Bind mount: папка с диска в домашнюю директорию
+  fileSystems."/home/backup/backups" = {
+    device = "/mnt/disk0/backups";
+    fsType = "none";
+    options = ["bind"];
+    depends = ["/mnt/disk0"];
+  };
+
   swapDevices = [
     {device = "/dev/disk/by-uuid/eac00cda-2583-42fd-b517-d6cc89d96a85";}
   ];
