@@ -25,12 +25,12 @@ in {
         mode = "0400";
       };
 
-      # networking = {
-      #   proxy = {
-      #     default = "socks5://127.0.0.1:10808";
-      #     noProxy = "localhost,127.0.0.1,192.168.0.0/16,10.0.0.0/8,172.16.0.0/12";
-      #   };
-      # };
+      networking = {
+        proxy = {
+          default = "socks5://127.0.0.1:10808";
+          noProxy = "localhost,127.0.0.1,192.168.0.0/16,10.0.0.0/8,172.16.0.0/12";
+        };
+      };
     })
 
     (lib.mkIf (cfg.enable && config.homelab.services.jellyfinctl.enable) {
