@@ -15,7 +15,7 @@ in {
 
         unix_socket_dir = "/run/postgresql";
 
-        admin_users = "immich";
+        admin_users = "postgres";
 
         auth_type = "md5";
         auth_file = "/etc/pgbouncer/userslist.txt";
