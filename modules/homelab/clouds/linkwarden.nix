@@ -96,13 +96,8 @@ in {
           enableRegistration = true;
 
           database = {
-            host = "/run/pgbouncer";
+            host = "127.0.0.1";
             port = 6432;
-          };
-
-          environment = {
-            DATABASE_URL = lib.mkForce "postgresql:///${config.services.linkwarden.database.name}?host=/run/pgbouncer";
-            DATABASE_PORT = lib.mkForce "${toString config.services.linkwarden.database.port}";
           };
 
           environmentFile = config.age.secrets.linkwarden-env.path;
