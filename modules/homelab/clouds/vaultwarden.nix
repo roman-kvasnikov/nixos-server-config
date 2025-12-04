@@ -85,7 +85,8 @@ in {
             ROCKET_PORT = cfg.port;
             ROCKET_LOG = "critical";
 
-            DATABASE_URL = lib.mkForce "postgresql:///vaultwarden?host=/run/pgbouncer&port=6432";
+            DATABASE_URL = lib.mkForce "postgresql:///vaultwarden?host=/run/postgresql";
+            # DATABASE_URL = lib.mkForce "postgresql:///vaultwarden?host=/run/pgbouncer&port=6432";
             # DATABASE_URL = lib.mkForce "postgresql:///vaultwarden?host=127.0.0.1&port=6432";
           };
 
@@ -103,18 +104,18 @@ in {
           ];
           ensureDatabases = ["vaultwarden"];
 
-          identMap = lib.mkAfter ''
-            pgbouncer pgbouncer   vaultwarden
-            pgbouncer vaultwarden vaultwarden
-          '';
+          # identMap = lib.mkAfter ''
+          #   pgbouncer pgbouncer   vaultwarden
+          #   pgbouncer vaultwarden vaultwarden
+          # '';
         };
 
-        pgbouncer.settings = {
-          databases = {
-            vaultwarden = "host=/run/postgresql port=5432 dbname=vaultwarden";
-            # vaultwarden = "host=127.0.0.1 port=5432 dbname=vaultwarden";
-          };
-        };
+        # pgbouncer.settings = {
+        #   databases = {
+        #     vaultwarden = "host=/run/postgresql port=5432 dbname=vaultwarden";
+        #     # vaultwarden = "host=127.0.0.1 port=5432 dbname=vaultwarden";
+        #   };
+        # };
 
         fail2ban = {
           enable = true;
@@ -142,9 +143,9 @@ in {
         ignoreregex =
       '');
 
-      environment.etc."pgbouncer/userslist.txt".text = lib.mkAfter ''
-        "vaultwarden" ""
-      '';
+      # environment.etc."pgbouncer/userslist.txt".text = lib.mkAfter ''
+      #   "vaultwarden" ""
+      # '';
 
       age.secrets.vaultwarden-env = {
         file = ../../../secrets/vaultwarden.env.age;

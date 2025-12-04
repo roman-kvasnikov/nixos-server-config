@@ -10,23 +10,24 @@ in {
 
     settings = {
       pgbouncer = {
-        unix_socket_dir = "/run/pgbouncer";
         listen_addr = "*";
         listen_port = 6432;
+
+        unix_socket_dir = "/run/postgresql";
 
         admin_users = "postgres";
 
         auth_type = "trust";
         auth_file = "/etc/pgbouncer/userslist.txt";
 
-        pool_mode = "transaction";
         max_client_conn = 500;
-        default_pool_size = 20;
+        # pool_mode = "transaction";
+        # default_pool_size = 20;
       };
     };
   };
 
   environment.etc."pgbouncer/userslist.txt".text = ''
-    "postgres" ""
+    "postgres" "postgres"
   '';
 }
