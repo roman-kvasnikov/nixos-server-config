@@ -17,6 +17,8 @@ in {
     authentication = ''
       local all postgres peer
       local all all trust
+
+      host all linkwarden trust
     '';
   };
 }
