@@ -53,6 +53,7 @@ in {
         in
           {
             postgresql.paths = ["/mnt/data/AppData/Postgresql/backups"];
+            secrets.paths = ["/mnt/data/Secrets"];
           }
           // lib.mapAttrs (_: job: builtins.removeAttrs job ["database"]) jobsWithPaths;
       };
