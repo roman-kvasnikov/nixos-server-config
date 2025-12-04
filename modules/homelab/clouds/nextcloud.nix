@@ -134,7 +134,8 @@ in {
             adminuser = cfg.adminUser;
             adminpassFile = cfg.adminPasswordFile;
             dbtype = "pgsql";
-            dbhost = "/run/pgbouncer:6432"; # pgbouncer
+            # dbhost = "/run/pgbouncer:6432"; # pgbouncer
+            dbhost = "127.0.0.1:6432"; # pgbouncer
           };
 
           settings = {
@@ -177,7 +178,8 @@ in {
 
         pgbouncer.settings = {
           databases = {
-            nextcloud = "host=/run/postgresql port=5432 dbname=nextcloud";
+            # nextcloud = "host=/run/postgresql port=5432 dbname=nextcloud";
+            nextcloud = "host=127.0.0.1 port=5432 dbname=nextcloud";
           };
         };
 
