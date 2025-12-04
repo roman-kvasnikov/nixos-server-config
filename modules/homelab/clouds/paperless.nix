@@ -104,6 +104,7 @@ in {
           settings = {
             PAPERLESS_URL = "https://${cfg.domain}";
             PAPERLESS_ADMIN_USER = cfgHomelab.adminUser;
+            PAPERLESS_DBHOST = "/run/pgbouncer:6432";
             PAPERLESS_CONSUMER_IGNORE_PATTERN = [
               ".DS_STORE/*"
               "desktop.ini"
@@ -123,11 +124,11 @@ in {
           '';
         };
 
-        # pgbouncer.settings = {
-        #   databases = {
-        #     paperless = "host=/run/postgresql port=5432 dbname=paperless";
-        #   };
-        # };
+        pgbouncer.settings = {
+          databases = {
+            paperless = "host=/run/postgresql port=5432 dbname=paperless";
+          };
+        };
 
         fail2ban = {
           enable = true;
@@ -153,9 +154,9 @@ in {
         ignoreregex =
       '');
 
-      # environment.etc."pgbouncer/userslist.txt".text = lib.mkAfter ''
-      #   "paperless" ""
-      # '';
+      environment.etc."pgbouncer/userslist.txt".text = lib.mkAfter ''
+        "paperless" ""
+      '';
     })
 
     (lib.mkIf (cfg.enable && cfg.backupEnabled) {
