@@ -11,7 +11,7 @@ in {
     settings = {
       pgbouncer = {
         unix_socket_dir = "/run/pgbouncer";
-        listen_addr = "/run/pgbouncer";
+        listen_addr = "*";
         listen_port = 6432;
 
         admin_users = "postgres";
