@@ -27,7 +27,7 @@ in {
       storagespacealertctl.enable = true;
       xrayctl.enable = true;
 
-      backupctl.enable = true;
+      backupctl.enable = false;
     };
 
     homelab = {
