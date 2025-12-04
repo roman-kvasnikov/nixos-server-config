@@ -18,7 +18,7 @@ in {
       local all postgres peer
       local all all trust
 
-      host all linkwarden trust
+      host all linkwarden 127.0.0.1 trust
     '';
   };
 }
