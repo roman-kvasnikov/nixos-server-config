@@ -16,7 +16,7 @@ in {
 
     authentication = ''
       # Локальные сокеты - pgbouncer
-      local all all md5
+      local all all peer
 
       # Локальные сокеты - pgbouncer
       #local all all peer map=pgbouncer
