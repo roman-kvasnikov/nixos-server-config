@@ -123,13 +123,20 @@ in {
 
             # extraOptions = afterDeps ++ serviceTuning;
 
-            extraOptions =
+            # extraOptions =
+            #   afterDeps
+            #   ++ [
+            #     "After=wake-backup-server.service"
+            #   ]
+            #   ++ lib.optional (index == (builtins.length jobNames - 1)) "OnSuccess=shutdown-backup-server.service"
+            #   ++ serviceTuning;
+
+            extraOptions = lib.uniq (
               afterDeps
-              ++ [
-                "After=wake-backup-server.service"
-              ]
+              ++ ["After=wake-backup-server.service"] # обязательно после пробуждения сервера
               ++ lib.optional (index == (builtins.length jobNames - 1)) "OnSuccess=shutdown-backup-server.service"
-              ++ serviceTuning;
+              ++ serviceTuning
+            );
           };
         })
         jobNames);
