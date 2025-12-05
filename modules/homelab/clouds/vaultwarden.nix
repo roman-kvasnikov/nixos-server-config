@@ -77,7 +77,7 @@ in {
 
           config = {
             DOMAIN = "https://${cfg.domain}";
-            SIGNUPS_ALLOWED = true;
+            SIGNUPS_ALLOWED = false;
             WEBSOCKET_ENABLED = true;
             TZ = config.time.timeZone;
 

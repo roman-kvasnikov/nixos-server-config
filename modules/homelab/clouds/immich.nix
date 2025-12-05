@@ -37,6 +37,12 @@ in {
       default = "/mnt/data/AppData/Immich";
     };
 
+    externalDataDir = lib.mkOption {
+      description = "External data directory of the Immich module";
+      type = lib.types.str;
+      default = "/mnt/data/AppData/Immich-External";
+    };
+
     allowExternal = lib.mkOption {
       description = "Allow external access to Immich";
       type = lib.types.bool;
@@ -116,7 +122,10 @@ in {
       services.backupctl = {
         jobs.immich = {
           database = config.services.immich.database.name;
-          paths = [config.services.immich.mediaLocation];
+          paths = [
+            cfg.dataDir
+            cfg.externalDataDir
+          ];
         };
       };
     })
