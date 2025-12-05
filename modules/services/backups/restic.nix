@@ -131,7 +131,7 @@ in {
             #   ++ lib.optional (index == (builtins.length jobNames - 1)) "OnSuccess=shutdown-backup-server.service"
             #   ++ serviceTuning;
 
-            extraOptions = lib.uniq (
+            extraOptions = lib.unique (
               afterDeps
               ++ ["After=wake-backup-server.service"] # обязательно после пробуждения сервера
               ++ lib.optional (index == (builtins.length jobNames - 1)) "OnSuccess=shutdown-backup-server.service"
