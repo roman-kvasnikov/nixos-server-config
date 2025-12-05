@@ -121,10 +121,57 @@ in {
               "--keep-monthly ${cfg.prune.keepMonthly}"
             ];
 
-            extraOptions = afterDeps ++ serviceTuning;
+            # extraOptions = afterDeps ++ serviceTuning;
+
+            extraOptions =
+              afterDeps
+              ++ [
+                "After=wake-backup-server.service"
+              ]
+              ++ lib.optional (index == (builtins.length jobNames - 1)) "OnSuccess=shutdown-backup-server.service"
+              ++ serviceTuning;
           };
         })
         jobNames);
+
+    # 1. Сервис пробуждения бэкап-сервера
+    systemd.services.wake-backup-server = {
+      description = "Wake backup server before restic backup";
+      serviceConfig = {
+        Type = "oneshot";
+      };
+      path = [pkgs.wakeonlan pkgs.openssh];
+      script = ''
+        MAC="1c:1b:0d:8b:d7:1f"
+        BACKUP_IP="192.168.1.11"
+
+        echo "→ Sending Wake-on-LAN magic packet to $MAC"
+        wakeonlan "$MAC"
+
+        echo "→ Waiting for backup server to accept SSH…"
+        until ssh -o ConnectTimeout=3 -o StrictHostKeyChecking=no \
+            backup@$BACKUP_IP "echo ok" >/dev/null 2>&1; do
+          sleep 5
+        done
+
+        echo "→ Backup server is online."
+      '';
+    };
+
+    # 2. Сервис выключения бэкап-сервера после завершения restic
+    systemd.services.shutdown-backup-server = {
+      description = "Shutdown backup server after all restic jobs finish";
+      serviceConfig = {
+        Type = "oneshot";
+      };
+      path = [pkgs.openssh];
+      script = ''
+        BACKUP_IP="192.168.1.11"
+
+        echo "→ Shutting down backup server..."
+        ssh backup@$BACKUP_IP "sudo shutdown -h now"
+      '';
+    };
 
     age.secrets = {
       restic-password = {

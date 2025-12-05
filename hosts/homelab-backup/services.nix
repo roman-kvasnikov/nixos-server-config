@@ -10,4 +10,13 @@ in {
     ../../modules/programs
     ../../modules/services
   ];
+
+  services.ethtool.enable = true;
+
+  networking.interfaces.${cfgHomelab.interface} = {
+    useDHCP = true;
+    ethtoolOptions = {
+      wol = "g";
+    };
+  };
 }
