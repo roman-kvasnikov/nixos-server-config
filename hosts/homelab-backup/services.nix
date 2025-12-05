@@ -11,12 +11,12 @@ in {
     ../../modules/services
   ];
 
-  services.ethtool.enable = true;
-
   networking.interfaces.${cfgHomelab.interface} = {
     useDHCP = true;
-    ethtoolOptions = {
-      wol = "g";
+
+    wakeOnLan = {
+      enable = true;
+      policy = "magic";
     };
   };
 }
