@@ -158,7 +158,7 @@ in {
         echo "→ Waiting for backup server to accept SSH…"
         until ssh -o ConnectTimeout=3 -o StrictHostKeyChecking=no \
             backup@$BACKUP_IP "echo ok" >/dev/null 2>&1; do
-          sleep 5
+          sleep 60
         done
 
         echo "→ Backup server is online."
