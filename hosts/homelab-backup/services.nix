@@ -16,7 +16,7 @@ in {
 
     wakeOnLan = {
       enable = true;
-      policy = "magic";
+      policy = ["magic"];
     };
   };
 }
