@@ -151,7 +151,7 @@ in {
           };
         })
         jobNames)
-      ++ {
+      // {
         wake-backup-server = {
           description = "Wake backup server before restic backup";
           serviceConfig = {
@@ -173,8 +173,7 @@ in {
             echo "→ Backup server is online."
           '';
         };
-      }
-      ++ {
+
         shutdown-backup-server = {
           description = "Shutdown backup server after all restic jobs finish";
           serviceConfig = {
