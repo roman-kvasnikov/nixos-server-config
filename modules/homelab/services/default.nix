@@ -7,6 +7,7 @@
     # ./jitsi-meet.nix
     ./librespeed.nix
     ./microbin.nix
+    ./obsidian.nix
     ./pgadmin.nix
     # ./pihole.nix
     ./portainer.nix

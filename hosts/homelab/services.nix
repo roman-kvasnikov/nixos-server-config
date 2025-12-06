@@ -86,6 +86,7 @@ in {
           enable = true;
           allowExternal = true;
         };
+        obsidianctl.enable = true;
         pgadminctl.enable = true;
         # piholectl.enable = true;
         portainerctl.enable = true;
