@@ -86,8 +86,8 @@ in {
           ];
           environment = {
             TZ = config.time.timeZone;
-            PUID = 1000;
-            PGID = 1000;
+            PUID = "1000";
+            PGID = "1000";
             CUSTOM_USER = cfgHomelab.adminUser;
             PASSWORD = "123";
           };
