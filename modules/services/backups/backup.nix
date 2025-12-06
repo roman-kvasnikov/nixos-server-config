@@ -43,7 +43,7 @@ in {
     schedule = lib.mkOption {
       description = "Systemd OnCalendar schedule (e.g., daily, weekly, hourly)";
       type = lib.types.str;
-      default = "17:20";
+      default = "03:00";
     };
 
     prune = lib.mkOption {
