@@ -43,7 +43,7 @@ in {
     schedule = lib.mkOption {
       description = "Systemd OnCalendar schedule (e.g., daily, weekly, hourly)";
       type = lib.types.str;
-      default = "18:25";
+      default = "03:00";
     };
 
     prune = lib.mkOption {
@@ -158,6 +158,10 @@ in {
         databases = databasesToBackup;
         location = "/mnt/data/AppData/Postgresql/backups";
       };
+
+      environment.systemPackages = with pkgs; [
+        restic
+      ];
 
       services.restic.backups =
         lib.mapAttrs
