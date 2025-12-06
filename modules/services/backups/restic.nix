@@ -6,57 +6,10 @@
   ...
 }: let
   cfg = config.services.resticctl;
+  cfgBackupCtl = config.services.backupctl;
 in {
   options.services.resticctl = {
     enable = lib.mkEnableOption "Enable Restic backups";
-
-    backupServerMac = lib.mkOption {
-      description = "MAC address of the backup server";
-      type = lib.types.str;
-      default = "1c:1b:0d:8b:d7:1f";
-    };
-
-    backupServerIp = lib.mkOption {
-      description = "IP address of the backup server";
-      type = lib.types.str;
-      default = "192.168.1.11";
-    };
-
-    repository = lib.mkOption {
-      description = "Restic repository (S3 or SFTP)";
-      type = lib.types.str;
-      # default = "s3:https://s3.twcstorage.ru/1f382b96-c34b0ea3-eb1f-4476-b009-6e99275d7b19/backups/${hostname}";
-      default = "sftp:backup@${cfg.backupServerIp}:/home/backup/backups/${hostname}";
-    };
-
-    passwordFile = lib.mkOption {
-      description = "File with RESTIC_PASSWORD";
-      type = lib.types.path;
-      default = config.age.secrets.restic-password.path;
-    };
-
-    environmentFile = lib.mkOption {
-      description = "File with S3 credentials for Restic.";
-      type = lib.types.nullOr lib.types.path;
-      default = null;
-      # default = config.age.secrets.s3-env.path;
-    };
-
-    schedule = lib.mkOption {
-      description = "Systemd OnCalendar schedule (e.g., daily, weekly, hourly)";
-      type = lib.types.str;
-      default = "12:20";
-    };
-
-    prune = lib.mkOption {
-      description = "Retention policy for restic prune.";
-      type = lib.types.attrsOf lib.types.str;
-      default = {
-        keepDaily = "7";
-        keepWeekly = "4";
-        keepMonthly = "6";
-      };
-    };
 
     serialize = lib.mkOption {
       description = ''
@@ -100,22 +53,22 @@ in {
 
           value = {
             initialize = true;
-            repository = cfg.repository;
-            passwordFile = cfg.passwordFile;
-            environmentFile = lib.mkIf (cfg.environmentFile != null) cfg.environmentFile;
+            repository = cfgBackupCtl.repository;
+            passwordFile = cfgBackupCtl.passwordFile;
+            environmentFile = lib.mkIf (cfgBackupCtl.environmentFile != null) cfgBackupCtl.environmentFile;
             paths = job.paths;
 
             extraBackupArgs = ["--tag ${name}"];
 
             timerConfig = {
-              OnCalendar = cfg.schedule;
+              OnCalendar = cfgBackupCtl.schedule;
               Persistent = true;
             };
 
             pruneOpts = [
-              "--keep-daily ${cfg.prune.keepDaily}"
-              "--keep-weekly ${cfg.prune.keepWeekly}"
-              "--keep-monthly ${cfg.prune.keepMonthly}"
+              "--keep-daily ${cfgBackupCtl.prune.keepDaily}"
+              "--keep-weekly ${cfgBackupCtl.prune.keepWeekly}"
+              "--keep-monthly ${cfgBackupCtl.prune.keepMonthly}"
             ];
           };
         })
@@ -188,20 +141,5 @@ in {
           '';
         };
       };
-
-    age.secrets = {
-      restic-password = {
-        file = ../../../secrets/restic.password.age;
-        owner = "root";
-        group = "root";
-        mode = "0400";
-      };
-      s3-env = {
-        file = ../../../secrets/s3.env.age;
-        owner = "root";
-        group = "root";
-        mode = "0400";
-      };
-    };
   };
 }

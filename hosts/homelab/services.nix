@@ -27,7 +27,13 @@ in {
       storagespacealertctl.enable = true;
       xrayctl.enable = true;
 
-      backupctl.enable = true;
+      backupctl = {
+        enable = true;
+
+        jobs.secrets = {
+          paths = ["/mnt/data/Secrets"];
+        };
+      };
     };
 
     homelab = {
