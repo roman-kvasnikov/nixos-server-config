@@ -107,6 +107,7 @@ in {
 
           environment = {
             DB_URL = lib.mkForce "postgresql:///${config.services.immich.database.name}?host=/run/pgbouncer&port=6432";
+            DB_VECTOR_EXTENSION = "pgvecto.rs";
           };
         };
       };
