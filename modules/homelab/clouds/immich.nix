@@ -28,7 +28,7 @@ in {
     port = lib.mkOption {
       description = "Port of the Immich module";
       type = lib.types.port;
-      default = 2283;
+      default = 3001;
     };
 
     dataDir = lib.mkOption {
